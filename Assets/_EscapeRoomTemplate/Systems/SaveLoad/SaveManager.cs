@@ -37,8 +37,7 @@ namespace EscapeRoomRevolt.Systems.SaveLoad
         private void Start()
         {
             // Find all saveables in the scene automatically
-            // In a larger game, you might want entities to register themselves instead
-            var foundSaveables = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None);
+            var foundSaveables = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Exclude);
             foreach (var mono in foundSaveables)
             {
                 if (mono is ISaveable saveable)
