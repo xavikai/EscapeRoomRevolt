@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace EscapeRoomRevolt.UI.PC
@@ -19,6 +20,9 @@ namespace EscapeRoomRevolt.UI.PC
         
         [Header("State")]
         private int _openPanelsCount = 0;
+
+        // Stack to know which panel to close when Escape is pressed
+        private readonly Stack<GameObject> _panelStack = new();
 
         private void Awake()
         {
@@ -56,7 +60,7 @@ namespace EscapeRoomRevolt.UI.PC
         public void ShowNoteReader()
         {
             _noteReaderPanel.SetActive(true);
-            RegisterPanelOpened();
+            RegisterPanelOpened(_noteReaderPanel);
         }
 
         public void HideNoteReader()
@@ -70,8 +74,33 @@ namespace EscapeRoomRevolt.UI.PC
             bool isActive = _inventoryPanel.activeSelf;
             _inventoryPanel.SetActive(!isActive);
 
-            if (!isActive) RegisterPanelOpened();
-            else RegisterPanelClosed();
+            if (!isActive) RegisterPanelOpened(_inventoryPanel);
+            else           RegisterPanelClosed();
+        }
+
+        public void TogglePauseMenu()
+        {
+            bool isActive = _pauseMenuPanel.activeSelf;
+            _pauseMenuPanel.SetActive(!isActive);
+
+            if (!isActive) RegisterPanelOpened(_pauseMenuPanel);
+            else           RegisterPanelClosed();
+        }
+
+        /// <summary>
+        /// Closes the most recently opened UI panel (used by Escape key).
+        /// </summary>
+        public void CloseTopPanel()
+        {
+            if (_panelStack.Count == 0) return;
+            GameObject top = _panelStack.Pop();
+            top.SetActive(false);
+            _openPanelsCount--;
+            if (_openPanelsCount <= 0)
+            {
+                _openPanelsCount = 0;
+                LockCursor();
+            }
         }
 
         // ── Private Helpers ───────────────────────────────────────────────
@@ -82,16 +111,19 @@ namespace EscapeRoomRevolt.UI.PC
             if (_inventoryPanel) _inventoryPanel.SetActive(false);
             if (_pauseMenuPanel) _pauseMenuPanel.SetActive(false);
             _openPanelsCount = 0;
+            _panelStack.Clear();
         }
 
-        private void RegisterPanelOpened()
+        private void RegisterPanelOpened(GameObject panel)
         {
             _openPanelsCount++;
+            _panelStack.Push(panel);
             UnlockCursor();
         }
 
         private void RegisterPanelClosed()
         {
+            if (_panelStack.Count > 0) _panelStack.Pop();
             _openPanelsCount--;
             if (_openPanelsCount <= 0)
             {
