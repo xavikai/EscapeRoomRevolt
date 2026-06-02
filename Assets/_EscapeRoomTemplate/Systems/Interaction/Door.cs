@@ -31,14 +31,32 @@ namespace EscapeRoomRevolt.Systems.Interaction
         {
             if (_isLocked)
             {
-                Debug.Log($"[Door] {name} is locked. Required item: {_requiredItemId}");
-                return;
+                // Check if we have the required key in the inventory
+                var inventory = EscapeRoomRevolt.Systems.Inventory.InventoryManager.Instance;
+                if (!string.IsNullOrEmpty(_requiredItemId) && inventory != null && inventory.HasItem(_requiredItemId))
+                {
+                    inventory.UseItem(_requiredItemId);
+                    Unlock();
+                    // Proceed to open the door below
+                }
+                else
+                {
+                    Debug.Log($"[Door] {name} is locked. Required item: {_requiredItemId}");
+                    return;
+                }
             }
 
             _isOpen = !_isOpen;
 
             if (_animator != null)
+            {
                 _animator.SetTrigger(_isOpen ? _openTrigger : _closeTrigger);
+            }
+            else
+            {
+                // Fallback visual for primitive objects without animations
+                transform.localRotation = _isOpen ? Quaternion.Euler(0, 90, 0) : Quaternion.identity;
+            }
 
             Debug.Log($"[Door] {name} is now {(_isOpen ? "open" : "closed")}.");
         }

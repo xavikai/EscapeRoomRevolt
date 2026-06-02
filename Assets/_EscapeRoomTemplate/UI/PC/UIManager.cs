@@ -59,18 +59,21 @@ namespace EscapeRoomRevolt.UI.PC
         // ── Panel Toggles ─────────────────────────────────────────────────
         public void ShowNoteReader()
         {
+            if (_noteReaderPanel == null) return;
             _noteReaderPanel.SetActive(true);
             RegisterPanelOpened(_noteReaderPanel);
         }
 
         public void HideNoteReader()
         {
+            if (_noteReaderPanel == null) return;
             _noteReaderPanel.SetActive(false);
             RegisterPanelClosed();
         }
 
         public void ToggleInventory()
         {
+            if (_inventoryPanel == null) return;
             bool isActive = _inventoryPanel.activeSelf;
             _inventoryPanel.SetActive(!isActive);
 
@@ -80,6 +83,7 @@ namespace EscapeRoomRevolt.UI.PC
 
         public void TogglePauseMenu()
         {
+            if (_pauseMenuPanel == null) return;
             bool isActive = _pauseMenuPanel.activeSelf;
             _pauseMenuPanel.SetActive(!isActive);
 
