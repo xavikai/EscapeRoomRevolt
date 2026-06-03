@@ -12,7 +12,6 @@ namespace EscapeRoomRevolt.Systems.Interaction
     public class ReadableNote : InteractableBase
     {
         [Header("Note Content")]
-        [SerializeField] private string _noteId = "";
         [TextArea(4, 12)]
         [SerializeField] private string _content = "Write your note content here...";
         [SerializeField] private string _prompt = "Read";
@@ -28,11 +27,10 @@ namespace EscapeRoomRevolt.Systems.Interaction
         {
             _hasBeenRead = true;
 
-            EventBus.Publish(new OnNoteRead
+            if (EscapeRoomRevolt.UI.PC.UIManager.Instance != null)
             {
-                noteId = string.IsNullOrEmpty(_noteId) ? SaveId : _noteId,
-                content = _content
-            });
+                EscapeRoomRevolt.UI.PC.UIManager.Instance.ShowNoteReader(_content);
+            }
 
             Debug.Log($"[Note] Reading: {name}");
 

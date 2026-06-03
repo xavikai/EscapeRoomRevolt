@@ -17,6 +17,9 @@ namespace EscapeRoomRevolt.UI.PC
         [SerializeField] private GameObject _noteReaderPanel;
         [SerializeField] private GameObject _inventoryPanel;
         [SerializeField] private GameObject _pauseMenuPanel;
+        [SerializeField] private GameObject _keypadPanel;
+        
+        private KeypadUI _keypadUI;
         
         [Header("State")]
         private int _openPanelsCount = 0;
@@ -57,9 +60,30 @@ namespace EscapeRoomRevolt.UI.PC
         }
 
         // ── Panel Toggles ─────────────────────────────────────────────────
-        public void ShowNoteReader()
+        public void ShowKeypad(EscapeRoomRevolt.Systems.Puzzle.CodePanelPuzzle puzzle)
+        {
+            if (_keypadPanel == null) return;
+            if (_keypadUI == null) _keypadUI = _keypadPanel.GetComponentInChildren<KeypadUI>();
+            if (_keypadUI != null) _keypadUI.Setup(puzzle);
+            
+            _keypadPanel.SetActive(true);
+            RegisterPanelOpened(_keypadPanel);
+        }
+
+        public void HideKeypad()
+        {
+            if (_keypadPanel == null) return;
+            _keypadPanel.SetActive(false);
+            RegisterPanelClosed();
+        }
+
+        public void ShowNoteReader(string content)
         {
             if (_noteReaderPanel == null) return;
+            
+            var reader = _noteReaderPanel.GetComponent<NoteReaderUI>();
+            if (reader != null) reader.DisplayText(content);
+            
             _noteReaderPanel.SetActive(true);
             RegisterPanelOpened(_noteReaderPanel);
         }
@@ -114,6 +138,7 @@ namespace EscapeRoomRevolt.UI.PC
             if (_noteReaderPanel) _noteReaderPanel.SetActive(false);
             if (_inventoryPanel) _inventoryPanel.SetActive(false);
             if (_pauseMenuPanel) _pauseMenuPanel.SetActive(false);
+            if (_keypadPanel) _keypadPanel.SetActive(false);
             _openPanelsCount = 0;
             _panelStack.Clear();
         }

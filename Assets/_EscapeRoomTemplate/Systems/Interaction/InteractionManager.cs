@@ -37,6 +37,9 @@ namespace EscapeRoomRevolt.Systems.Interaction
 
         private void Update()
         {
+            if (EscapeRoomRevolt.UI.PC.UIManager.Instance != null && EscapeRoomRevolt.UI.PC.UIManager.Instance.IsUIBlockingGameplay)
+                return;
+
             DetectInteractable();
 
             if (_currentTarget != null && _currentTarget.CanInteract && Input.GetKeyDown(_interactKey))

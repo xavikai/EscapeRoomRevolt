@@ -10,7 +10,6 @@ namespace EscapeRoomRevolt.Systems.Interaction
     ///   public class Door : InteractableBase { ... }
     ///   public class Note : InteractableBase { ... }
     /// </summary>
-    [RequireComponent(typeof(Collider))]
     public abstract class InteractableBase : MonoBehaviour, IInteractable
     {
         [Header("Interaction Settings")]

@@ -12,27 +12,11 @@ namespace EscapeRoomRevolt.UI.PC
     {
         [SerializeField] private TextMeshProUGUI _noteTextDisplay;
         
-        private void OnEnable()
-        {
-            EventBus.Subscribe<OnNoteRead>(HandleNoteRead);
-        }
-
-        private void OnDisable()
-        {
-            EventBus.Unsubscribe<OnNoteRead>(HandleNoteRead);
-        }
-
-        private void HandleNoteRead(OnNoteRead data)
+        public void DisplayText(string content)
         {
             if (_noteTextDisplay != null)
             {
-                _noteTextDisplay.text = data.content;
-            }
-            
-            // Tell UIManager to show this panel (which also unlocks the cursor)
-            if (UIManager.Instance != null)
-            {
-                UIManager.Instance.ShowNoteReader();
+                _noteTextDisplay.text = content;
             }
         }
 
