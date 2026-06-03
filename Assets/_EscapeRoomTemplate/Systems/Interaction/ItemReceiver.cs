@@ -178,6 +178,9 @@ namespace EscapeRoomRevolt.Systems.Interaction
                     
                     var pickable = spawned.GetComponentInChildren<PickableItem>();
                     if (pickable != null) Destroy(pickable);
+
+                    var simpleAnim = spawned.GetComponentInChildren<EscapeRoomRevolt.Systems.Animation.SimpleAnimator>();
+                    if (simpleAnim != null) simpleAnim.ForceToEndState();
                 }
             }
         }

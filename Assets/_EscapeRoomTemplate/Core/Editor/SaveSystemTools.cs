@@ -12,6 +12,9 @@ namespace EscapeRoomRevolt.EditorTools
             int count = 0;
             var interactables = GameObject.FindObjectsByType<InteractableBase>(FindObjectsInactive.Include);
             
+            var usedIds = new System.Collections.Generic.HashSet<string>();
+            int duplicates = 0;
+
             foreach (var item in interactables)
             {
                 SerializedObject so = new SerializedObject(item);
@@ -24,6 +27,13 @@ namespace EscapeRoomRevolt.EditorTools
                     EditorUtility.SetDirty(item);
                     count++;
                 }
+
+                string finalId = string.IsNullOrEmpty(item.SaveId) ? item.name : item.SaveId;
+                if (!usedIds.Add(finalId))
+                {
+                    Debug.LogError($"[SaveSystem] CRITICAL ERROR: Duplicate Save ID found: '{finalId}' on GameObject '{item.name}'. This will cause objects to disappear when loading! Please select this object and change its Save ID in the Inspector.");
+                    duplicates++;
+                }
             }
             
             if (count > 0)
@@ -31,7 +41,7 @@ namespace EscapeRoomRevolt.EditorTools
                 UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene());
                 Debug.Log($"[SaveSystem] Assigned unique GUIDs to {count} interactable objects.");
             }
-            else
+            else if (duplicates == 0)
             {
                 Debug.Log("[SaveSystem] All interactable objects already have unique Save IDs.");
             }

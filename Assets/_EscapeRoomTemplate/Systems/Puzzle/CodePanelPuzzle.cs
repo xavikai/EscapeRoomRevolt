@@ -31,9 +31,11 @@ namespace EscapeRoomRevolt.Systems.Puzzle
 
         private void Start()
         {
-            if (_statusLed != null)
+            if (_statusLed != null && !IsSolved)
             {
                 _statusLed.material.color = Color.red;
+                _statusLed.material.EnableKeyword("_EMISSION");
+                _statusLed.material.SetColor("_EmissionColor", Color.red * 2f);
             }
         }
 
@@ -77,12 +79,6 @@ namespace EscapeRoomRevolt.Systems.Puzzle
                 if (_successSound != null && EscapeRoomRevolt.Systems.Audio.AudioManager.Instance != null)
                 {
                     EscapeRoomRevolt.Systems.Audio.AudioManager.Instance.PlaySoundAt(_successSound, transform.position);
-                }
-                if (_statusLed != null)
-                {
-                    _statusLed.material.color = Color.green;
-                    _statusLed.material.EnableKeyword("_EMISSION");
-                    _statusLed.material.SetColor("_EmissionColor", Color.green * 2f);
                 }
                 Solve();
             }
@@ -132,6 +128,20 @@ namespace EscapeRoomRevolt.Systems.Puzzle
             if (_display3D != null)
             {
                 _display3D.text = _currentInput;
+            }
+        }
+
+        protected override void OnPuzzleCompleted()
+        {
+            base.OnPuzzleCompleted();
+            _currentInput = _correctCode;
+            UpdateDisplay();
+
+            if (_statusLed != null)
+            {
+                _statusLed.material.color = Color.green;
+                _statusLed.material.EnableKeyword("_EMISSION");
+                _statusLed.material.SetColor("_EmissionColor", Color.green * 2f);
             }
         }
     }

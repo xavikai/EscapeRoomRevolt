@@ -2252,17 +2252,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e76181b24d408d4a8a84d037eab8f20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.InteractableSafe
-  _interactionPrompt: Interact
-  _canInteract: 1
-  _saveId: 
-  _enableOutline: 1
-  _outlineColor:
-    r: 1
-    g: 1
-    b: 0
-    a: 1
-  _outlineWidth: 0.02
-  _use3DKeypad: 1
 --- !u!114 &216486090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11761,7 +11750,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2015135190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12013,7 +12002,7 @@ GameObject:
   - component: {fileID: 2040230899}
   - component: {fileID: 2040230898}
   m_Layer: 0
-  m_Name: NewPickableItem_Logic
+  m_Name: Clau
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12033,7 +12022,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Inventory.PickableItem
   _interactionPrompt: Interact
   _canInteract: 1
-  _saveId: clau_mestra
+  _saveId: 05b68aa7-148c-4d62-a8a0-fd1cf97b17d2
   _enableOutline: 1
   _outlineColor: {r: 1, g: 1, b: 0, a: 1}
   _outlineWidth: 0.02

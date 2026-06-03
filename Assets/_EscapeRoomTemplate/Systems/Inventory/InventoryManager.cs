@@ -70,14 +70,23 @@ namespace EscapeRoomRevolt.Systems.Inventory
 
             Clear(); // Clear existing inventory
 
+            // Load all available item data from Resources
+            InventoryItemData[] allItems = Resources.LoadAll<InventoryItemData>("Items");
+            Dictionary<string, InventoryItemData> catalog = new Dictionary<string, InventoryItemData>();
+            foreach (var item in allItems)
+            {
+                if (item != null && !string.IsNullOrEmpty(item.ItemId))
+                {
+                    catalog[item.ItemId] = item;
+                }
+            }
+
             for (int i = 0; i < state.itemIds.Count; i++)
             {
                 string id = state.itemIds[i];
                 int qty = state.quantities[i];
 
-                // Load the item data from Resources
-                InventoryItemData data = Resources.Load<InventoryItemData>("Items/" + id);
-                if (data != null)
+                if (catalog.TryGetValue(id, out InventoryItemData data))
                 {
                     _items[id] = qty;
                     _itemData[id] = data;
@@ -91,7 +100,7 @@ namespace EscapeRoomRevolt.Systems.Inventory
                 }
                 else
                 {
-                    Debug.LogWarning($"[InventoryManager] Could not find item in Resources/Items/ with ID {id}");
+                    Debug.LogWarning($"[InventoryManager] Could not find item in Resources/Items/ with internal ItemId: {id}");
                 }
             }
         }

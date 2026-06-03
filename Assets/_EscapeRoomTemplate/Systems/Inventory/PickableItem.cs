@@ -61,8 +61,9 @@ namespace EscapeRoomRevolt.Systems.Inventory
         }
 
 #if UNITY_EDITOR
-        private void OnValidate()
+        protected override void OnValidate()
         {
+            base.OnValidate();
             if (_itemData != null && string.IsNullOrEmpty(name))
                 name = _itemData.DisplayName;
         }

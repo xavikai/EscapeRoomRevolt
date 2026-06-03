@@ -18,6 +18,7 @@ namespace EscapeRoomRevolt.Core.Save
     /// Singleton that orchestrates the global save/load process.
     /// Saves to Application.persistentDataPath.
     /// </summary>
+    [DefaultExecutionOrder(-50)]
     public class SaveManager : MonoBehaviour
     {
         public static SaveManager Instance { get; private set; }

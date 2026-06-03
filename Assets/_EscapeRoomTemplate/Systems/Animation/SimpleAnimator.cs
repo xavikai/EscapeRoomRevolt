@@ -34,10 +34,24 @@ namespace EscapeRoomRevolt.Systems.Animation
 
         private void Start()
         {
-            if (_playOnAwake)
+            if (_playOnAwake && enabled)
             {
                 PlayAnimation();
             }
+        }
+
+        /// <summary>
+        /// Immediately snaps the object to its final animated state and stops further animation.
+        /// Useful when loading a game where the animation already happened.
+        /// </summary>
+        public void ForceToEndState()
+        {
+            StopAllCoroutines();
+            
+            transform.localPosition = transform.localPosition + _movementAmount;
+            transform.localRotation = transform.localRotation * Quaternion.Euler(_rotationAmount);
+            
+            enabled = false;
         }
 
         /// <summary>
