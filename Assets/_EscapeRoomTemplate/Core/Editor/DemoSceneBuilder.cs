@@ -23,10 +23,11 @@ namespace EscapeRoomRevolt.EditorTools
             // 1. Crear nova escena
             Scene newScene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
             
-            // 2. GameManager (Bootstrapper + EventBus logic + Inventory)
+            // 2. GameManager (Bootstrapper + EventBus logic + Inventory + SaveSystem)
             GameObject gm = new GameObject("GameManager");
             gm.AddComponent<Bootstrapper>();
             gm.AddComponent<InventoryManager>();
+            gm.AddComponent<EscapeRoomRevolt.Core.Save.SaveManager>();
 
             // 3. UI Canvas
             GameObject canvas = new GameObject("UI_Canvas");

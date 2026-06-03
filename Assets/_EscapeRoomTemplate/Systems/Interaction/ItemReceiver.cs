@@ -99,7 +99,10 @@ namespace EscapeRoomRevolt.Systems.Interaction
             if (_requiredItem.WorldPrefab != null)
             {
                 Transform spawnPoint = _spawnLocation != null ? _spawnLocation : transform;
-                Instantiate(_requiredItem.WorldPrefab, spawnPoint.position, spawnPoint.rotation, spawnPoint);
+                var spawned = Instantiate(_requiredItem.WorldPrefab, spawnPoint.position, spawnPoint.rotation, spawnPoint);
+
+                var pickable = spawned.GetComponentInChildren<PickableItem>();
+                if (pickable != null) Destroy(pickable);
             }
 
             // Show success message temporarily
@@ -137,6 +140,46 @@ namespace EscapeRoomRevolt.Systems.Interaction
 
             Debug.Log($"[ItemReceiver] Missing {_requiredItem.DisplayName}. {_missingItemMessage}");
             OnItemRejected?.Invoke();
+        }
+
+        // ── Save/Load ────────────────────────────────────────────────────────
+
+        [System.Serializable]
+        private class ReceiverSaveState
+        {
+            public bool alreadySolved;
+        }
+
+        public override string SaveData()
+        {
+            var state = new ReceiverSaveState
+            {
+                alreadySolved = _alreadySolved
+            };
+            return JsonUtility.ToJson(state);
+        }
+
+        public override void LoadData(string json)
+        {
+            var state = JsonUtility.FromJson<ReceiverSaveState>(json);
+            if (state == null) return;
+
+            if (state.alreadySolved)
+            {
+                _alreadySolved = true;
+                enabled = false;
+
+                // Spawn the prefab instantly without firing the OnItemAccepted event 
+                // because the event targets (doors) will load their own state!
+                if (_requiredItem != null && _requiredItem.WorldPrefab != null)
+                {
+                    Transform spawnPoint = _spawnLocation != null ? _spawnLocation : transform;
+                    var spawned = Instantiate(_requiredItem.WorldPrefab, spawnPoint.position, spawnPoint.rotation, spawnPoint);
+                    
+                    var pickable = spawned.GetComponentInChildren<PickableItem>();
+                    if (pickable != null) Destroy(pickable);
+                }
+            }
         }
     }
 }

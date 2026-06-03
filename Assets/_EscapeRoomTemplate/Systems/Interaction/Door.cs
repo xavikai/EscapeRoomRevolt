@@ -63,8 +63,9 @@ namespace EscapeRoomRevolt.Systems.Interaction
         public override string InteractionPrompt =>
             _isLocked ? _lockedPrompt : (_isOpen ? "Close" : _openPrompt);
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             _closedRotation = transform.rotation;
             _closedPosition = transform.position;
 
@@ -214,5 +215,55 @@ namespace EscapeRoomRevolt.Systems.Interaction
         public bool IsLocked => _isLocked;
         public bool IsOpen => _isOpen;
         public string RequiredItemId => _requiredItemId;
+
+        [System.Serializable]
+        private class DoorSaveState
+        {
+            public bool isLocked;
+            public bool isOpen;
+        }
+
+        public override string SaveData()
+        {
+            var state = new DoorSaveState
+            {
+                isLocked = _isLocked,
+                isOpen = _isOpen
+            };
+            return JsonUtility.ToJson(state);
+        }
+
+        public override void LoadData(string json)
+        {
+            var state = JsonUtility.FromJson<DoorSaveState>(json);
+            if (state == null) return;
+
+            _isLocked = state.isLocked;
+            _isOpen = state.isOpen;
+
+            // Instantly apply transforms without animation
+            if (_movementType == DoorMovementType.Pivot)
+            {
+                Quaternion targetRotation = _closedRotation;
+                if (_isOpen)
+                {
+                    Quaternion rotationDelta = Quaternion.Euler(0, _openAngle * _openDirection, 0);
+                    targetRotation = _closedRotation * rotationDelta;
+                }
+                transform.rotation = targetRotation;
+                transform.position = _worldHingePoint - (targetRotation * _localPivotOffset);
+            }
+            else if (_movementType == DoorMovementType.Slide)
+            {
+                Vector3 localClosed = transform.parent != null ? transform.parent.InverseTransformPoint(_closedPosition) : _closedPosition;
+                Vector3 targetLocalPosition = _isOpen ? localClosed + _slideOffset : localClosed;
+                transform.localPosition = targetLocalPosition;
+            }
+
+            if (_animator != null && _isOpen)
+            {
+                _animator.Play(_openTrigger, 0, 1f); // Instant jump to end of animation
+            }
+        }
     }
 }

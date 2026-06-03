@@ -50,6 +50,9 @@ namespace EscapeRoomRevolt.Systems.Inventory
             if (_pickupSound != null)
                 AudioSource.PlayClipAtPoint(_pickupSound, transform.position);
 
+            // Tell SaveManager to never spawn this again
+            EscapeRoomRevolt.Core.Save.SaveManager.Instance?.MarkAsDestroyed(SaveId);
+
             // Remove from world
             if (_destroyOnPickup)
                 Destroy(gameObject);

@@ -28,6 +28,14 @@ namespace EscapeRoomRevolt.Systems.Animation
         {
             // Unity coroutines can only run if the object is active!
             gameObject.SetActive(true);
+
+            if (!gameObject.activeInHierarchy)
+            {
+                Debug.LogWarning("[CinematicCamera] Cannot play cinematic because a parent object is disabled. Unparenting camera temporarely...");
+                transform.SetParent(null);
+                gameObject.SetActive(true);
+            }
+
             StartCoroutine(CinematicRoutine());
         }
 

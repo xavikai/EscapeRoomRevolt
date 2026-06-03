@@ -1,16 +1,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 using EscapeRoomRevolt.Core;
+using EscapeRoomRevolt.Core.Save;
 
 namespace EscapeRoomRevolt.Systems.Inventory
 {
+    [System.Serializable]
+    public class InventorySaveState
+    {
+        public List<string> itemIds = new List<string>();
+        public List<int> quantities = new List<int>();
+    }
+
     /// <summary>
     /// Manages the player's inventory at runtime.
     /// Place one instance in the scene (on the Player or a dedicated manager GameObject).
     ///
     /// Publishes: OnItemPickedUp, OnItemUsed
     /// </summary>
-    public class InventoryManager : MonoBehaviour
+    public class InventoryManager : MonoBehaviour, ISaveable
     {
         [Header("Debug")]
         [SerializeField] private bool _logActions = true;
@@ -32,11 +40,60 @@ namespace EscapeRoomRevolt.Systems.Inventory
                 return;
             }
             Instance = this;
+
+            SaveManager.Instance?.Register(this);
         }
 
         private void OnDestroy()
         {
             if (Instance == this) Instance = null;
+            SaveManager.Instance?.Unregister(this);
+        }
+
+        public string SaveId => "InventoryManager";
+
+        public string SaveData()
+        {
+            var state = new InventorySaveState();
+            foreach (var kvp in _items)
+            {
+                state.itemIds.Add(kvp.Key);
+                state.quantities.Add(kvp.Value);
+            }
+            return JsonUtility.ToJson(state);
+        }
+
+        public void LoadData(string json)
+        {
+            var state = JsonUtility.FromJson<InventorySaveState>(json);
+            if (state == null) return;
+
+            Clear(); // Clear existing inventory
+
+            for (int i = 0; i < state.itemIds.Count; i++)
+            {
+                string id = state.itemIds[i];
+                int qty = state.quantities[i];
+
+                // Load the item data from Resources
+                InventoryItemData data = Resources.Load<InventoryItemData>("Items/" + id);
+                if (data != null)
+                {
+                    _items[id] = qty;
+                    _itemData[id] = data;
+
+                    // Publish event so UI can update
+                    EventBus.Publish(new OnItemPickedUp
+                    {
+                        itemId = id,
+                        itemName = data.DisplayName
+                    });
+                }
+                else
+                {
+                    Debug.LogWarning($"[InventoryManager] Could not find item in Resources/Items/ with ID {id}");
+                }
+            }
         }
 
         // ── Public API ───────────────────────────────────────────────────────

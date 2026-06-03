@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using EscapeRoomRevolt.Core.Save;
 
 namespace EscapeRoomRevolt.Systems.Interaction
 {
@@ -11,7 +12,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
     ///   public class Door : InteractableBase { ... }
     ///   public class Note : InteractableBase { ... }
     /// </summary>
-    public abstract class InteractableBase : MonoBehaviour, IInteractable
+    public abstract class InteractableBase : MonoBehaviour, IInteractable, ISaveable
     {
         [Header("Interaction Settings")]
         [SerializeField] private string _interactionPrompt = "Interact";
@@ -49,8 +50,18 @@ namespace EscapeRoomRevolt.Systems.Interaction
             }
         }
 
+        protected virtual void Start()
+        {
+            // Set layer to 'Interactable' (Layer 6 by default)
+            gameObject.layer = 6;
+            
+            SaveManager.Instance?.Register(this);
+        }
+
         protected virtual void OnDestroy()
         {
+            SaveManager.Instance?.Unregister(this);
+            
             if (_outlineMaterial != null)
             {
                 Destroy(_outlineMaterial);
@@ -123,5 +134,30 @@ namespace EscapeRoomRevolt.Systems.Interaction
 
         /// <summary>Stable ID used by the Save system to persist state.</summary>
         public string SaveId => string.IsNullOrEmpty(_saveId) ? name : _saveId;
+
+        public virtual string SaveData()
+        {
+            return "{}"; // Override in derived classes
+        }
+
+        public virtual void LoadData(string json)
+        {
+            // Override in derived classes
+        }
+
+#if UNITY_EDITOR
+        protected virtual void OnValidate()
+        {
+            if (string.IsNullOrEmpty(_saveId))
+            {
+                // Only generate for instances in the scene, not raw prefabs in the project
+                if (!UnityEditor.PrefabUtility.IsPartOfPrefabAsset(this) && !Application.isPlaying)
+                {
+                    _saveId = System.Guid.NewGuid().ToString();
+                    UnityEditor.EditorUtility.SetDirty(this);
+                }
+            }
+        }
+#endif
     }
 }

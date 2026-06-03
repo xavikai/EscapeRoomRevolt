@@ -1,5 +1,6 @@
 using UnityEngine;
 using EscapeRoomRevolt.UI.PC;
+using EscapeRoomRevolt.Core.Save;
 
 namespace EscapeRoomRevolt.Player.PC
 {
@@ -13,7 +14,7 @@ namespace EscapeRoomRevolt.Player.PC
     ///   - UIManager in the scene (used to block movement when UI is open)
     /// </summary>
     [RequireComponent(typeof(CharacterController))]
-    public class PlayerMovement : MonoBehaviour
+    public class PlayerMovement : MonoBehaviour, ISaveable
     {
         // ── Inspector ────────────────────────────────────────────────────────
         [Header("Movement")]
@@ -43,6 +44,13 @@ namespace EscapeRoomRevolt.Player.PC
                 if (cam != null) _playerCamera = cam.transform;
                 else Debug.LogError("[PlayerMovement] No camera assigned or found as a child!", this);
             }
+
+            SaveManager.Instance?.Register(this);
+        }
+
+        private void OnDestroy()
+        {
+            SaveManager.Instance?.Unregister(this);
         }
 
         private void Update()
@@ -95,5 +103,46 @@ namespace EscapeRoomRevolt.Player.PC
         // ── Public API ───────────────────────────────────────────────────────
         /// <summary>Overrides the mouse sensitivity at runtime (e.g. from settings menu).</summary>
         public void SetMouseSensitivity(float sensitivity) => _mouseSensitivity = sensitivity;
+
+        // ── Save / Load ──────────────────────────────────────────────────────
+        public string SaveId => "Player";
+
+        [System.Serializable]
+        private class PlayerSaveState
+        {
+            public Vector3 position;
+            public Quaternion rotation;
+            public float cameraPitch;
+        }
+
+        public string SaveData()
+        {
+            var state = new PlayerSaveState
+            {
+                position = transform.position,
+                rotation = transform.rotation,
+                cameraPitch = _cameraPitch
+            };
+            return JsonUtility.ToJson(state);
+        }
+
+        public void LoadData(string json)
+        {
+            var state = JsonUtility.FromJson<PlayerSaveState>(json);
+            if (state == null) return;
+
+            if (_cc != null) _cc.enabled = false;
+            
+            transform.position = state.position;
+            transform.rotation = state.rotation;
+            
+            if (_cc != null) _cc.enabled = true;
+
+            _cameraPitch = state.cameraPitch;
+            if (_playerCamera != null)
+            {
+                _playerCamera.localRotation = Quaternion.Euler(_cameraPitch, 0f, 0f);
+            }
+        }
     }
 }

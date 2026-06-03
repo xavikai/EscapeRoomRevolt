@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using EscapeRoomRevolt.Core;
+using EscapeRoomRevolt.Core.Save;
 
 namespace EscapeRoomRevolt.Systems.Puzzle
 {
@@ -10,7 +11,7 @@ namespace EscapeRoomRevolt.Systems.Puzzle
     ///
     /// Publishes: OnPuzzleSolved, OnPuzzleFailed
     /// </summary>
-    public abstract class PuzzleController : MonoBehaviour
+    public abstract class PuzzleController : MonoBehaviour, ISaveable
     {
         public enum PuzzleState { Unsolved, InProgress, Solved }
 
@@ -39,6 +40,49 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         public PuzzleState State => _state;
         public bool IsSolved => _state == PuzzleState.Solved;
         public string PuzzleId => string.IsNullOrEmpty(_puzzleId) ? name : _puzzleId;
+
+        protected virtual void Awake()
+        {
+            SaveManager.Instance?.Register(this);
+        }
+
+        protected virtual void OnDestroy()
+        {
+            SaveManager.Instance?.Unregister(this);
+        }
+
+        // ── Save/Load ────────────────────────────────────────────────────────
+
+        public string SaveId => PuzzleId;
+
+        [System.Serializable]
+        private class PuzzleSaveData
+        {
+            public int stateIndex;
+        }
+
+        public virtual string SaveData()
+        {
+            var data = new PuzzleSaveData
+            {
+                stateIndex = (int)_state
+            };
+            return JsonUtility.ToJson(data);
+        }
+
+        public virtual void LoadData(string json)
+        {
+            var data = JsonUtility.FromJson<PuzzleSaveData>(json);
+            if (data == null) return;
+
+            _state = (PuzzleState)data.stateIndex;
+            
+            if (_state == PuzzleState.Solved)
+            {
+                // Call virtual method to restore visuals immediately
+                OnPuzzleCompleted();
+            }
+        }
 
         // ── Protected Methods ────────────────────────────────────────────────
 
