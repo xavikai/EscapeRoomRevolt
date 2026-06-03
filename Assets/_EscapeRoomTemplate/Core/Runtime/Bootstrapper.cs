@@ -25,6 +25,12 @@ namespace EscapeRoomRevolt.Core
 
         private void InitializeSystems()
         {
+            // Add AudioManager to this GameObject so it persists and is ready for use
+            if (gameObject.GetComponent<EscapeRoomRevolt.Systems.Audio.AudioManager>() == null)
+            {
+                gameObject.AddComponent<EscapeRoomRevolt.Systems.Audio.AudioManager>();
+            }
+
             // Systems will be initialized here as they are implemented.
             // Order matters — add systems in dependency order:
             //
@@ -37,7 +43,7 @@ namespace EscapeRoomRevolt.Core
             //   GameContext.Inventory.Initialize();
             //   GameContext.SaveManager.Initialize();
 
-            Log("Core systems initialized (EventBus ready).");
+            Log("Core systems initialized (AudioManager & EventBus ready).");
         }
 
         private void OnDestroy()

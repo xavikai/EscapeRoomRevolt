@@ -44,6 +44,12 @@ namespace EscapeRoomRevolt.Systems.Interaction
         [Tooltip("The local offset to move the door when open.")]
         [SerializeField] private Vector3 _slideOffset = new Vector3(1.5f, 0, 0);
 
+        [Header("Audio Settings")]
+        [SerializeField] private AudioClip _openSound;
+        [SerializeField] private AudioClip _closeSound;
+        [SerializeField] private AudioClip _lockedSound;
+        [SerializeField] private float _pitchVariance = 0.1f;
+
         private bool _isOpen = false;
         private Coroutine _movementCoroutine;
         
@@ -87,6 +93,8 @@ namespace EscapeRoomRevolt.Systems.Interaction
                 else
                 {
                     Debug.Log($"[Door] {name} is locked. Required item: {_requiredItemId}");
+                    if (_lockedSound != null && EscapeRoomRevolt.Systems.Audio.AudioManager.Instance != null)
+                        EscapeRoomRevolt.Systems.Audio.AudioManager.Instance.PlaySoundAt(_lockedSound, transform.position, 1f, _pitchVariance);
                     return;
                 }
             }
@@ -128,6 +136,13 @@ namespace EscapeRoomRevolt.Systems.Interaction
                     
                     _movementCoroutine = StartCoroutine(SmoothSlide(transform, transform.localPosition, targetLocalPosition, _openDuration));
                 }
+            }
+
+            // Play open or close sound
+            AudioClip soundToPlay = _isOpen ? _openSound : _closeSound;
+            if (soundToPlay != null && EscapeRoomRevolt.Systems.Audio.AudioManager.Instance != null)
+            {
+                EscapeRoomRevolt.Systems.Audio.AudioManager.Instance.PlaySoundAt(soundToPlay, transform.position, 1f, _pitchVariance);
             }
 
             Debug.Log($"[Door] {name} is now {(_isOpen ? "open" : "closed")}.");
@@ -175,6 +190,25 @@ namespace EscapeRoomRevolt.Systems.Interaction
         {
             _isLocked = true;
             EventBus.Publish(new OnLockStateChanged { lockableId = SaveId, isLocked = true });
+        }
+
+        /// <summary>
+        /// Call this from a UnityEvent (like an ItemReceiver) to force the door to open automatically.
+        /// </summary>
+        public void ForceOpen()
+        {
+            if (_isOpen) return;
+            _isLocked = false; // Bypass locks
+            Interact();
+        }
+
+        /// <summary>
+        /// Call this from a UnityEvent to force the door to close.
+        /// </summary>
+        public void ForceClose()
+        {
+            if (!_isOpen) return;
+            Interact();
         }
 
         public bool IsLocked => _isLocked;

@@ -178,7 +178,7 @@ namespace EscapeRoomRevolt.EditorTools
 
             // 6.5 La Nota amb la Pista
             GameObject noteObj = CreateInteractableObject("ClueNote", new Vector3(0.5f, 1.05f, 3), new Vector3(0.3f, 0.05f, 0.4f), Color.white);
-            var note = noteObj.AddComponent<ReadableNote>();
+            var note = noteObj.AddComponent<FixedNote>();
             SerializedObject soNote = new SerializedObject(note);
             soNote.FindProperty("_content").stringValue = "The boss changed the safe code again. It's the year the company was founded: 1984.";
             soNote.ApplyModifiedProperties();
@@ -192,7 +192,7 @@ namespace EscapeRoomRevolt.EditorTools
             soCode.FindProperty("_maxCodeLength").intValue = 4;
             soCode.ApplyModifiedProperties();
             
-            safeObj.AddComponent<InteractableSafe>();
+            safeObj.AddComponent<InteractableKeypad>();
 
             // 7. La Porta Final
             GameObject door = CreateInteractableObject("FinalDoor", new Vector3(0, 1.25f, 4.9f), new Vector3(1.5f, 2.5f, 0.2f), new Color(0.8f, 0.2f, 0.2f));

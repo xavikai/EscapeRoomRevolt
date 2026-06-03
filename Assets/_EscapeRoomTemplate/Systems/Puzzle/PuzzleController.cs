@@ -22,6 +22,14 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         [SerializeField] private UnityEvent _onSolved;
         [SerializeField] private UnityEvent _onFailed;
 
+        [Header("Cinematics")]
+        [Tooltip("If assigned, this camera will turn on when the puzzle is solved to show the result (e.g. a door opening).")]
+        [SerializeField] private Camera _feedbackCamera;
+        [Tooltip("How long to wait after solving before cutting to the feedback camera.")]
+        [SerializeField] private float _feedbackDelay = 1.0f;
+        [Tooltip("How long to stay on the feedback camera before returning to the player.")]
+        [SerializeField] private float _feedbackDuration = 2f;
+
         [Header("Debug")]
         [SerializeField] private bool _logState = true;
 
@@ -45,7 +53,27 @@ namespace EscapeRoomRevolt.Systems.Puzzle
             EventBus.Publish(new OnPuzzleSolved { puzzleId = PuzzleId });
             _onSolved?.Invoke();
 
+            if (_feedbackCamera != null)
+            {
+                StartCoroutine(PlayFeedbackCinematic());
+            }
+
             OnPuzzleCompleted();
+        }
+
+        private System.Collections.IEnumerator PlayFeedbackCinematic()
+        {
+            if (_feedbackDelay > 0)
+            {
+                yield return new WaitForSeconds(_feedbackDelay);
+            }
+
+            _feedbackCamera.gameObject.SetActive(true);
+            _feedbackCamera.depth = 5; // Ensure it renders on top of everything
+            
+            yield return new WaitForSeconds(_feedbackDuration);
+            
+            _feedbackCamera.gameObject.SetActive(false);
         }
 
         /// <summary>Call this when the player makes a wrong attempt.</summary>

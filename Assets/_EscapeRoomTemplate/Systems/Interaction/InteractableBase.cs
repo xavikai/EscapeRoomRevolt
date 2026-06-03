@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace EscapeRoomRevolt.Systems.Interaction
 {
@@ -17,6 +18,45 @@ namespace EscapeRoomRevolt.Systems.Interaction
         [SerializeField] private bool _canInteract = true;
         [SerializeField] private string _saveId = "";
 
+        [Header("Visual Feedback (Outline)")]
+        [SerializeField] private bool _enableOutline = true;
+        [SerializeField] private Color _outlineColor = new Color(1f, 1f, 0f, 1f);
+        [SerializeField] private float _outlineWidth = 0.02f;
+        [Tooltip("Specific renderers to outline. If empty, it will auto-find child renderers (can cause issues on complex objects).")]
+        [SerializeField] private Renderer[] _highlightRenderers;
+        
+        private Material _outlineMaterial;
+
+        // ── Unity Lifecycle ──────────────────────────────────────────────────
+        protected virtual void Awake()
+        {
+            if (_highlightRenderers == null || _highlightRenderers.Length == 0)
+            {
+                // Auto-fetch if not specified, but this is dangerous for compound objects like keypads!
+                _highlightRenderers = GetComponentsInChildren<Renderer>();
+            }
+            
+            Shader outlineShader = Shader.Find("EscapeRoom/Outline");
+            if (outlineShader != null)
+            {
+                _outlineMaterial = new Material(outlineShader);
+                _outlineMaterial.SetColor("_OutlineColor", _outlineColor);
+                _outlineMaterial.SetFloat("_OutlineWidth", _outlineWidth);
+            }
+            else
+            {
+                Debug.LogWarning("[Interactable] Outline shader 'EscapeRoom/Outline' not found.");
+            }
+        }
+
+        protected virtual void OnDestroy()
+        {
+            if (_outlineMaterial != null)
+            {
+                Destroy(_outlineMaterial);
+            }
+        }
+
         // ── IInteractable ────────────────────────────────────────────────────
         public virtual string InteractionPrompt => _interactionPrompt;
         public virtual bool CanInteract => _canInteract && gameObject.activeInHierarchy;
@@ -29,12 +69,49 @@ namespace EscapeRoomRevolt.Systems.Interaction
 
         public virtual void OnFocusEnter()
         {
-            // Override to add highlight effect, outline, etc.
+            if (!_enableOutline || _outlineMaterial == null) return;
+
+            // Sync properties in case they were changed in the inspector at runtime
+            _outlineMaterial.SetColor("_OutlineColor", _outlineColor);
+            _outlineMaterial.SetFloat("_OutlineWidth", _outlineWidth);
+
+            if (_highlightRenderers == null) return;
+
+            foreach (var r in _highlightRenderers)
+            {
+                if (r == null) continue;
+                
+                // Add outline material to the end of the array using sharedMaterials to prevent instancing leaks
+                var materials = r.sharedMaterials;
+                var newMaterials = new Material[materials.Length + 1];
+                materials.CopyTo(newMaterials, 0);
+                newMaterials[materials.Length] = _outlineMaterial;
+                r.sharedMaterials = newMaterials;
+            }
         }
 
         public virtual void OnFocusExit()
         {
-            // Override to remove highlight effect
+            if (!_enableOutline || _highlightRenderers == null || _outlineMaterial == null) return;
+
+            foreach (var r in _highlightRenderers)
+            {
+                if (r == null) continue;
+
+                var materials = r.sharedMaterials;
+                var newMaterials = new List<Material>();
+                
+                foreach (var mat in materials)
+                {
+                    // Keep all materials EXCEPT our dynamic outline material
+                    if (mat != _outlineMaterial)
+                    {
+                        newMaterials.Add(mat);
+                    }
+                }
+                
+                r.sharedMaterials = newMaterials.ToArray();
+            }
         }
 
         // ── Abstract / Virtual ───────────────────────────────────────────────

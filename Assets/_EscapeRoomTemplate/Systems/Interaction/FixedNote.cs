@@ -4,12 +4,10 @@ using EscapeRoomRevolt.Core;
 namespace EscapeRoomRevolt.Systems.Interaction
 {
     /// <summary>
-    /// A readable note, document or diary entry.
-    /// When interacted with, fires OnNoteRead so the UI can display the content.
-    ///
-    /// Publishes: OnNoteRead
+    /// A text note that exists physically in the world (e.g. a poster on a wall)
+    /// and cannot be picked up. Clicking it displays its content on screen.
     /// </summary>
-    public class ReadableNote : InteractableBase
+    public class FixedNote : InteractableBase
     {
         [Header("Note Content")]
         [TextArea(4, 12)]

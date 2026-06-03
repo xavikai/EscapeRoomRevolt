@@ -26,6 +26,12 @@ namespace EscapeRoomRevolt.Systems.Inventory
         [SerializeField] private bool _isConsumable = true;
         [SerializeField] private bool _isStackable = false;
         [SerializeField] private int _maxStack = 1;
+        
+        [Header("Readable Note")]
+        [Tooltip("If true, this item can be read from the inventory like a piece of paper.")]
+        [SerializeField] private bool _isReadable = false;
+        [TextArea(5, 10)]
+        [SerializeField] private string _noteContent = "";
 
         // ── Public API ───────────────────────────────────────────────────────
         /// <summary>Unique ID used by all systems to reference this item.</summary>
@@ -37,6 +43,8 @@ namespace EscapeRoomRevolt.Systems.Inventory
         public bool IsConsumable => _isConsumable;
         public bool IsStackable => _isStackable;
         public int MaxStack => _maxStack;
+        public bool IsReadable => _isReadable;
+        public string NoteContent => _noteContent;
 
         private void OnValidate()
         {

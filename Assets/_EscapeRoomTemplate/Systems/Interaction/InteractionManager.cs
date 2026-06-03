@@ -21,7 +21,8 @@ namespace EscapeRoomRevolt.Systems.Interaction
         [SerializeField] private bool _showDebugRay = true;
 
         private IInteractable _currentTarget;
-        private Camera _camera;
+        private Camera _mainCamera;
+        private Camera _overrideCamera;
 
         // ── Events ───────────────────────────────────────────────────────────
         /// <summary>Called every frame when the focused interactable changes.</summary>
@@ -30,9 +31,9 @@ namespace EscapeRoomRevolt.Systems.Interaction
         // ── Unity Lifecycle ──────────────────────────────────────────────────
         private void Awake()
         {
-            _camera = GetComponent<Camera>();
-            if (_camera == null)
-                _camera = Camera.main;
+            _mainCamera = GetComponent<Camera>();
+            if (_mainCamera == null)
+                _mainCamera = Camera.main;
         }
 
         private void Update()
@@ -42,14 +43,47 @@ namespace EscapeRoomRevolt.Systems.Interaction
 
             DetectInteractable();
 
-            if (_currentTarget != null && _currentTarget.CanInteract && Input.GetKeyDown(_interactKey))
-                TriggerInteraction();
+            // Support either 'E' key or Left Mouse Click for interaction
+            if (_currentTarget != null && _currentTarget.CanInteract)
+            {
+                bool isMouseFree = Cursor.lockState == CursorLockMode.None || Cursor.visible;
+
+                if (isMouseFree)
+                {
+                    // In Focus Mode, only allow mouse clicks
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        TriggerInteraction();
+                    }
+                }
+                else
+                {
+                    // In FPS Mode, allow Interaction Key or mouse clicks
+                    if (Input.GetKeyDown(_interactKey) || Input.GetMouseButtonDown(0))
+                    {
+                        TriggerInteraction();
+                    }
+                }
+            }
         }
 
         // ── Private Methods ──────────────────────────────────────────────────
         private void DetectInteractable()
         {
-            Ray ray = new Ray(_camera.transform.position, _camera.transform.forward);
+            Camera activeCamera = _overrideCamera != null ? _overrideCamera : _mainCamera;
+            if (activeCamera == null) return;
+
+            Ray ray;
+            if (Cursor.lockState == CursorLockMode.None || Cursor.visible)
+            {
+                // Mouse is free, raycast from pointer
+                ray = activeCamera.ScreenPointToRay(Input.mousePosition);
+            }
+            else
+            {
+                // FPS style, raycast from center of screen
+                ray = new Ray(activeCamera.transform.position, activeCamera.transform.forward);
+            }
 
             if (_showDebugRay)
                 Debug.DrawRay(ray.origin, ray.direction * _interactionRange, Color.cyan);
@@ -88,5 +122,11 @@ namespace EscapeRoomRevolt.Systems.Interaction
 
         /// <summary>Whether the player is currently looking at something interactable.</summary>
         public bool HasTarget => _currentTarget != null && _currentTarget.CanInteract;
+
+        /// <summary>Forces the interaction manager to raycast from a specific camera (useful for puzzle zoom).</summary>
+        public void SetOverrideCamera(Camera cam) => _overrideCamera = cam;
+
+        /// <summary>Restores the interaction manager to use the player's main camera.</summary>
+        public void ClearOverrideCamera() => _overrideCamera = null;
     }
 }
