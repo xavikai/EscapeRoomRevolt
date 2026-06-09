@@ -21,12 +21,10 @@ namespace EscapeRoomRevolt.Systems.Interaction
 
         [Header("Visual Feedback (Outline)")]
         [SerializeField] private bool _enableOutline = true;
-        [SerializeField] private Color _outlineColor = new Color(1f, 1f, 0f, 1f);
-        [SerializeField] private float _outlineWidth = 0.02f;
+        [Tooltip("Assign the Material you created from the Shader Graph tutorial here.")]
+        [SerializeField] private Material _outlineMaterial;
         [Tooltip("Specific renderers to outline. If empty, it will auto-find child renderers (can cause issues on complex objects).")]
         [SerializeField] private Renderer[] _highlightRenderers;
-        
-        private Material _outlineMaterial;
 
         // ── Unity Lifecycle ──────────────────────────────────────────────────
         protected virtual void Awake()
@@ -35,18 +33,6 @@ namespace EscapeRoomRevolt.Systems.Interaction
             {
                 // Auto-fetch if not specified, but this is dangerous for compound objects like keypads!
                 _highlightRenderers = GetComponentsInChildren<Renderer>();
-            }
-            
-            Shader outlineShader = Shader.Find("EscapeRoom/Outline");
-            if (outlineShader != null)
-            {
-                _outlineMaterial = new Material(outlineShader);
-                _outlineMaterial.SetColor("_OutlineColor", _outlineColor);
-                _outlineMaterial.SetFloat("_OutlineWidth", _outlineWidth);
-            }
-            else
-            {
-                Debug.LogWarning("[Interactable] Outline shader 'EscapeRoom/Outline' not found.");
             }
         }
 
@@ -61,11 +47,6 @@ namespace EscapeRoomRevolt.Systems.Interaction
         protected virtual void OnDestroy()
         {
             SaveManager.Instance?.Unregister(this);
-            
-            if (_outlineMaterial != null)
-            {
-                Destroy(_outlineMaterial);
-            }
         }
 
         // ── IInteractable ────────────────────────────────────────────────────
@@ -81,10 +62,6 @@ namespace EscapeRoomRevolt.Systems.Interaction
         public virtual void OnFocusEnter()
         {
             if (!_enableOutline || _outlineMaterial == null) return;
-
-            // Sync properties in case they were changed in the inspector at runtime
-            _outlineMaterial.SetColor("_OutlineColor", _outlineColor);
-            _outlineMaterial.SetFloat("_OutlineWidth", _outlineWidth);
 
             if (_highlightRenderers == null) return;
 

@@ -273,8 +273,7 @@ MonoBehaviour:
   _canInteract: 1
   _saveId: 41c50a7b-7a45-4cf1-981a-627bfb991db7
   _enableOutline: 1
-  _outlineColor: {r: 1, g: 1, b: 0, a: 1}
-  _outlineWidth: 0.02
+  _outlineMaterial: {fileID: 2100000, guid: 8c2f7d5a77bc67b41b5c09aeea7802fe, type: 2}
   _highlightRenderers: []
   _isLocked: 1
   _requiredItemId: key_office_01
@@ -817,8 +816,7 @@ MonoBehaviour:
   _canInteract: 1
   _saveId: 937ae39f-7dc2-42d7-84ee-7f4027dd35be
   _enableOutline: 1
-  _outlineColor: {r: 1, g: 1, b: 0, a: 1}
-  _outlineWidth: 0.02
+  _outlineMaterial: {fileID: 0}
   _highlightRenderers:
   - {fileID: 169046803}
   _targetPuzzle: {fileID: 233794413}
@@ -859,8 +857,7 @@ MonoBehaviour:
   _canInteract: 1
   _saveId: 4ac7901f-2efb-419e-8df1-67478f1793d4
   _enableOutline: 1
-  _outlineColor: {r: 1, g: 1, b: 0, a: 1}
-  _outlineWidth: 0.02
+  _outlineMaterial: {fileID: 2100000, guid: 8c2f7d5a77bc67b41b5c09aeea7802fe, type: 2}
   _highlightRenderers: []
   _isLocked: 0
   _requiredItemId: 
@@ -1429,8 +1426,7 @@ MonoBehaviour:
   _canInteract: 1
   _saveId: df3da2dc-3113-4564-92a2-a42b45fe440e
   _enableOutline: 1
-  _outlineColor: {r: 1, g: 1, b: 0, a: 1}
-  _outlineWidth: 0.02
+  _outlineMaterial: {fileID: 0}
   _highlightRenderers:
   - {fileID: 2060906883}
   _targetPuzzle: {fileID: 233794413}
@@ -1875,8 +1871,7 @@ MonoBehaviour:
   _canInteract: 1
   _saveId: 521cc807-9505-44e0-9b6b-fe912e0fd752
   _enableOutline: 1
-  _outlineColor: {r: 1, g: 1, b: 0, a: 1}
-  _outlineWidth: 0.02
+  _outlineMaterial: {fileID: 0}
   _highlightRenderers:
   - {fileID: 1390260541}
   _targetPuzzle: {fileID: 233794413}
@@ -2366,8 +2361,7 @@ MonoBehaviour:
   _canInteract: 1
   _saveId: fb291932-807d-49f7-99e6-fd634799cedc
   _enableOutline: 1
-  _outlineColor: {r: 1, g: 1, b: 0, a: 1}
-  _outlineWidth: 0.02
+  _outlineMaterial: {fileID: 2100000, guid: 8c2f7d5a77bc67b41b5c09aeea7802fe, type: 2}
   _highlightRenderers: []
   _isLocked: 1
   _requiredItemId: 
@@ -2437,8 +2431,7 @@ MonoBehaviour:
   _canInteract: 1
   _saveId: 3154fda6-0084-4fb8-a96a-bd12b7e37889
   _enableOutline: 1
-  _outlineColor: {r: 1, g: 1, b: 0, a: 1}
-  _outlineWidth: 0.02
+  _outlineMaterial: {fileID: 2100000, guid: 8c2f7d5a77bc67b41b5c09aeea7802fe, type: 2}
   _highlightRenderers:
   - {fileID: 1643510977}
   _focusCamera: {fileID: 215386704}
@@ -2969,7 +2962,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &387640815
 Transform:
   m_ObjectHideFlags: 0
@@ -3804,8 +3797,7 @@ MonoBehaviour:
   _canInteract: 1
   _saveId: nota_secreta
   _enableOutline: 1
-  _outlineColor: {r: 1, g: 1, b: 0, a: 1}
-  _outlineWidth: 0.02
+  _outlineMaterial: {fileID: 2100000, guid: 8c2f7d5a77bc67b41b5c09aeea7802fe, type: 2}
   _highlightRenderers: []
   _itemData: {fileID: 11400000, guid: 221e34da3002c194cba3e358d6062ce1, type: 2}
   _quantity: 1
@@ -4350,8 +4342,7 @@ MonoBehaviour:
   _canInteract: 1
   _saveId: c5413a0a-c229-412c-9b2f-4dd69be98bc4
   _enableOutline: 1
-  _outlineColor: {r: 1, g: 1, b: 0, a: 1}
-  _outlineWidth: 0.02
+  _outlineMaterial: {fileID: 0}
   _highlightRenderers:
   - {fileID: 1576073096}
   _targetPuzzle: {fileID: 233794413}
@@ -5084,8 +5075,7 @@ MonoBehaviour:
   _canInteract: 1
   _saveId: 79e05239-07e6-4a4b-b1d1-de1c155ee6de
   _enableOutline: 1
-  _outlineColor: {r: 1, g: 1, b: 0, a: 1}
-  _outlineWidth: 0.02
+  _outlineMaterial: {fileID: 0}
   _highlightRenderers:
   - {fileID: 1774444222}
   _targetPuzzle: {fileID: 233794413}
@@ -5238,8 +5228,7 @@ MonoBehaviour:
   _canInteract: 1
   _saveId: clau_mestra
   _enableOutline: 1
-  _outlineColor: {r: 1, g: 1, b: 0, a: 1}
-  _outlineWidth: 0.02
+  _outlineMaterial: {fileID: 2100000, guid: 8c2f7d5a77bc67b41b5c09aeea7802fe, type: 2}
   _highlightRenderers: []
   _requiredItem: {fileID: 11400000, guid: 096bf8f617d7e5e4eb7b04600ae5880f, type: 2}
   _consumeItem: 1
@@ -5777,8 +5766,7 @@ MonoBehaviour:
   _canInteract: 1
   _saveId: 509a28d8-21f7-49ba-824b-82f2794976ba
   _enableOutline: 1
-  _outlineColor: {r: 1, g: 1, b: 0, a: 1}
-  _outlineWidth: 0.02
+  _outlineMaterial: {fileID: 2100000, guid: 8c2f7d5a77bc67b41b5c09aeea7802fe, type: 2}
   _highlightRenderers: []
   _itemData: {fileID: 11400000, guid: 3b869ec77be9b4c4fb80c34f74fe014f, type: 2}
   _quantity: 1
@@ -5798,6 +5786,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 387640815}
+  - {fileID: 1829804878}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &933690351
@@ -5894,8 +5883,7 @@ MonoBehaviour:
   _canInteract: 1
   _saveId: 676e52ba-e4bb-4c6e-83f6-52c890ce792f
   _enableOutline: 1
-  _outlineColor: {r: 1, g: 1, b: 0, a: 1}
-  _outlineWidth: 0.02
+  _outlineMaterial: {fileID: 0}
   _highlightRenderers:
   - {fileID: 247926956}
   _targetPuzzle: {fileID: 233794413}
@@ -6400,8 +6388,7 @@ MonoBehaviour:
   _canInteract: 1
   _saveId: moneda_01
   _enableOutline: 1
-  _outlineColor: {r: 1, g: 1, b: 0, a: 1}
-  _outlineWidth: 0.02
+  _outlineMaterial: {fileID: 2100000, guid: 8c2f7d5a77bc67b41b5c09aeea7802fe, type: 2}
   _highlightRenderers: []
   _itemData: {fileID: 11400000, guid: c8d947a6b4b51c14e821f6d2f6908b0e, type: 2}
   _quantity: 1
@@ -6473,8 +6460,7 @@ MonoBehaviour:
   _canInteract: 1
   _saveId: 6e8f0b3d-c6b1-4caa-bf21-b476d253dbfe
   _enableOutline: 1
-  _outlineColor: {r: 1, g: 1, b: 0, a: 1}
-  _outlineWidth: 0.02
+  _outlineMaterial: {fileID: 0}
   _highlightRenderers:
   - {fileID: 679584184}
   _targetPuzzle: {fileID: 233794413}
@@ -7234,6 +7220,86 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1057602719}
   m_SourcePrefab: {fileID: 100100000, guid: 9357fc6a040e3504fb21c141979fbc3c, type: 3}
+--- !u!1001 &1335634579
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 915730984}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: ef026e668a67bcd458f3178e0926d3b1, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ef026e668a67bcd458f3178e0926d3b1, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ef026e668a67bcd458f3178e0926d3b1, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ef026e668a67bcd458f3178e0926d3b1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.0024145842
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ef026e668a67bcd458f3178e0926d3b1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0006429851
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ef026e668a67bcd458f3178e0926d3b1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.005550742
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ef026e668a67bcd458f3178e0926d3b1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071067
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ef026e668a67bcd458f3178e0926d3b1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ef026e668a67bcd458f3178e0926d3b1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ef026e668a67bcd458f3178e0926d3b1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ef026e668a67bcd458f3178e0926d3b1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ef026e668a67bcd458f3178e0926d3b1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ef026e668a67bcd458f3178e0926d3b1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: ef026e668a67bcd458f3178e0926d3b1, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: ef026e668a67bcd458f3178e0926d3b1, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 8c2f7d5a77bc67b41b5c09aeea7802fe, type: 2}
+    - target: {fileID: 919132149155446097, guid: ef026e668a67bcd458f3178e0926d3b1, type: 3}
+      propertyPath: m_Name
+      value: monkey
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ef026e668a67bcd458f3178e0926d3b1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1829804881}
+  m_SourcePrefab: {fileID: 100100000, guid: ef026e668a67bcd458f3178e0926d3b1, type: 3}
 --- !u!1 &1390260539
 GameObject:
   m_ObjectHideFlags: 0
@@ -7501,8 +7567,7 @@ MonoBehaviour:
   _canInteract: 1
   _saveId: 4d33a3e7-4020-4298-ac1f-d83a5e34aa77
   _enableOutline: 1
-  _outlineColor: {r: 1, g: 1, b: 0, a: 1}
-  _outlineWidth: 0.02
+  _outlineMaterial: {fileID: 2100000, guid: 8c2f7d5a77bc67b41b5c09aeea7802fe, type: 2}
   _highlightRenderers: []
   _content: 'The boss changed the safe code again. It''s the year the company was
     founded: 1984.'
@@ -7808,8 +7873,7 @@ MonoBehaviour:
   _canInteract: 1
   _saveId: ebd93dcc-f272-4fa8-8b6f-27d3a22caac5
   _enableOutline: 1
-  _outlineColor: {r: 1, g: 1, b: 0, a: 1}
-  _outlineWidth: 0.02
+  _outlineMaterial: {fileID: 0}
   _highlightRenderers:
   - {fileID: 515298294}
   _targetPuzzle: {fileID: 233794413}
@@ -8949,8 +9013,7 @@ MonoBehaviour:
   _canInteract: 1
   _saveId: 1719d2e7-1434-47c0-af86-712ae4bce40d
   _enableOutline: 1
-  _outlineColor: {r: 1, g: 1, b: 0, a: 1}
-  _outlineWidth: 0.02
+  _outlineMaterial: {fileID: 2100000, guid: 8c2f7d5a77bc67b41b5c09aeea7802fe, type: 2}
   _highlightRenderers: []
   _isLocked: 1
   _requiredItemId: Green_key_01
@@ -9419,8 +9482,7 @@ MonoBehaviour:
   _canInteract: 1
   _saveId: d8f25b11-3cfe-4d60-b7ee-39e08732a015
   _enableOutline: 1
-  _outlineColor: {r: 1, g: 1, b: 0, a: 1}
-  _outlineWidth: 0.02
+  _outlineMaterial: {fileID: 2100000, guid: 8c2f7d5a77bc67b41b5c09aeea7802fe, type: 2}
   _highlightRenderers: []
   _isLocked: 1
   _requiredItemId: 
@@ -9489,8 +9551,7 @@ MonoBehaviour:
   _canInteract: 1
   _saveId: ff5cd704-e62e-4d75-aaee-63da4acda10e
   _enableOutline: 1
-  _outlineColor: {r: 1, g: 1, b: 0, a: 1}
-  _outlineWidth: 0.02
+  _outlineMaterial: {fileID: 2100000, guid: 8c2f7d5a77bc67b41b5c09aeea7802fe, type: 2}
   _highlightRenderers: []
   _isLocked: 0
   _requiredItemId: 
@@ -9671,8 +9732,7 @@ MonoBehaviour:
   _canInteract: 1
   _saveId: f6c64e09-0e07-48aa-9b04-2307b10586b1
   _enableOutline: 1
-  _outlineColor: {r: 1, g: 1, b: 0, a: 1}
-  _outlineWidth: 0.02
+  _outlineMaterial: {fileID: 2100000, guid: 8c2f7d5a77bc67b41b5c09aeea7802fe, type: 2}
   _highlightRenderers: []
   _content: Me cagon tu madre
   _prompt: Read
@@ -10167,6 +10227,37 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &1829804877 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ef026e668a67bcd458f3178e0926d3b1, type: 3}
+  m_PrefabInstance: {fileID: 1335634579}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1829804878 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ef026e668a67bcd458f3178e0926d3b1, type: 3}
+  m_PrefabInstance: {fileID: 1335634579}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1829804881
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1829804877}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.02734375, y: 0.017031247, z: 0.019687496}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1840282904
 GameObject:
   m_ObjectHideFlags: 0
@@ -10381,8 +10472,7 @@ MonoBehaviour:
   _canInteract: 1
   _saveId: 0d8f5f50-6eeb-4ba3-9c5e-4034e1c93e0f
   _enableOutline: 1
-  _outlineColor: {r: 1, g: 1, b: 0, a: 1}
-  _outlineWidth: 0.02
+  _outlineMaterial: {fileID: 2100000, guid: 8c2f7d5a77bc67b41b5c09aeea7802fe, type: 2}
   _highlightRenderers: []
   _itemData: {fileID: 11400000, guid: 142053ec8620a7947a0fc5c400a498d7, type: 2}
   _quantity: 1
@@ -10522,8 +10612,7 @@ MonoBehaviour:
   _canInteract: 1
   _saveId: 838ed9ce-1fdf-4aef-8ec8-b2f4a531a90b
   _enableOutline: 1
-  _outlineColor: {r: 1, g: 1, b: 0, a: 1}
-  _outlineWidth: 0.02
+  _outlineMaterial: {fileID: 0}
   _highlightRenderers:
   - {fileID: 586982907}
   _targetPuzzle: {fileID: 233794413}
@@ -12024,8 +12113,7 @@ MonoBehaviour:
   _canInteract: 1
   _saveId: 05b68aa7-148c-4d62-a8a0-fd1cf97b17d2
   _enableOutline: 1
-  _outlineColor: {r: 1, g: 1, b: 0, a: 1}
-  _outlineWidth: 0.02
+  _outlineMaterial: {fileID: 2100000, guid: 8c2f7d5a77bc67b41b5c09aeea7802fe, type: 2}
   _highlightRenderers: []
   _itemData: {fileID: 11400000, guid: 096bf8f617d7e5e4eb7b04600ae5880f, type: 2}
   _quantity: 1
@@ -12443,8 +12531,7 @@ MonoBehaviour:
   _canInteract: 1
   _saveId: ad39a944-9305-4de1-8054-fcbbfaa344e9
   _enableOutline: 1
-  _outlineColor: {r: 1, g: 1, b: 0, a: 1}
-  _outlineWidth: 0.02
+  _outlineMaterial: {fileID: 0}
   _highlightRenderers:
   - {fileID: 422462452}
   _targetPuzzle: {fileID: 233794413}
@@ -12683,8 +12770,7 @@ MonoBehaviour:
   _canInteract: 1
   _saveId: ea2f6ac3-b3e0-43a3-bf0f-94e2c38bbe56
   _enableOutline: 1
-  _outlineColor: {r: 1, g: 1, b: 0, a: 1}
-  _outlineWidth: 0.02
+  _outlineMaterial: {fileID: 0}
   _highlightRenderers:
   - {fileID: 1257514948}
   _targetPuzzle: {fileID: 233794413}
