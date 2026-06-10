@@ -217,7 +217,7 @@ namespace EscapeRoomRevolt.EditorTools
             return logicObj;
         }
 
-        [MenuItem("EscapeRoom/Create/Fixed Note", priority = 12)]
+        [MenuItem("EscapeRoom/Create/Note", priority = 12)]
         public static void CreateNote()
         {
             GameObject logicObj = CreateBaseInteractable("NewNote", new Vector3(0.3f, 0.05f, 0.4f), Color.white);
