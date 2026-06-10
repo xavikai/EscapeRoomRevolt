@@ -21,7 +21,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
 
         [Header("Visual Feedback (Outline)")]
         [SerializeField] private bool _enableOutline = true;
-        [Tooltip("Assign the Material you created from the Shader Graph tutorial here.")]
+        [Tooltip("Assign a custom Outline Material here to override the global one. Leave empty to use the Global Outline Material from InteractionManager.")]
         [SerializeField] private Material _outlineMaterial;
         [Tooltip("Specific renderers to outline. If empty, it will auto-find child renderers (can cause issues on complex objects).")]
         [SerializeField] private Renderer[] _highlightRenderers;
@@ -61,7 +61,10 @@ namespace EscapeRoomRevolt.Systems.Interaction
 
         public virtual void OnFocusEnter()
         {
-            if (!_enableOutline || _outlineMaterial == null) return;
+            if (!_enableOutline) return;
+            
+            Material matToApply = _outlineMaterial != null ? _outlineMaterial : InteractionManager.Instance?.GlobalOutlineMaterial;
+            if (matToApply == null) return;
 
             if (_highlightRenderers == null) return;
 
@@ -73,14 +76,17 @@ namespace EscapeRoomRevolt.Systems.Interaction
                 var materials = r.sharedMaterials;
                 var newMaterials = new Material[materials.Length + 1];
                 materials.CopyTo(newMaterials, 0);
-                newMaterials[materials.Length] = _outlineMaterial;
+                newMaterials[materials.Length] = matToApply;
                 r.sharedMaterials = newMaterials;
             }
         }
 
         public virtual void OnFocusExit()
         {
-            if (!_enableOutline || _highlightRenderers == null || _outlineMaterial == null) return;
+            if (!_enableOutline || _highlightRenderers == null) return;
+
+            Material matToRemove = _outlineMaterial != null ? _outlineMaterial : InteractionManager.Instance?.GlobalOutlineMaterial;
+            if (matToRemove == null) return;
 
             foreach (var r in _highlightRenderers)
             {
@@ -92,7 +98,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
                 foreach (var mat in materials)
                 {
                     // Keep all materials EXCEPT our dynamic outline material
-                    if (mat != _outlineMaterial)
+                    if (mat != matToRemove)
                     {
                         newMaterials.Add(mat);
                     }

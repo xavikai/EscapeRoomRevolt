@@ -18,6 +18,7 @@ namespace EscapeRoomRevolt.UI.PC
         [SerializeField] private GameObject _inventoryPanel;
         [SerializeField] private GameObject _pauseMenuPanel;
         [SerializeField] private GameObject _keypadPanel;
+        [SerializeField] private GameObject _itemExaminerPanel;
         
         private KeypadUI _keypadUI;
         
@@ -95,9 +96,32 @@ namespace EscapeRoomRevolt.UI.PC
             RegisterPanelClosed();
         }
 
+        public void ShowItemExaminer(GameObject prefabToExamine)
+        {
+            if (_itemExaminerPanel == null) return;
+
+            var examiner = _itemExaminerPanel.GetComponent<ItemExaminerUI>();
+            if (examiner != null) examiner.Show(prefabToExamine);
+
+            RegisterPanelOpened(_itemExaminerPanel);
+        }
+
+        public void CloseItemExaminer()
+        {
+            if (_itemExaminerPanel == null) return;
+            // The ItemExaminerUI script disables its own gameObject, so we just register the close
+            RegisterPanelClosed();
+        }
+
         public void ToggleInventory()
         {
             if (_inventoryPanel == null) return;
+
+            // Prevent toggling the inventory if another panel (like the Examiner) is currently the active top panel.
+            // This forces the player to press Esc to close the top panel first.
+            if (_panelStack.Count > 0 && _panelStack.Peek() != _inventoryPanel)
+                return;
+
             bool isActive = _inventoryPanel.activeSelf;
             _inventoryPanel.SetActive(!isActive);
 
@@ -139,6 +163,7 @@ namespace EscapeRoomRevolt.UI.PC
             if (_inventoryPanel) _inventoryPanel.SetActive(false);
             if (_pauseMenuPanel) _pauseMenuPanel.SetActive(false);
             if (_keypadPanel) _keypadPanel.SetActive(false);
+            if (_itemExaminerPanel) _itemExaminerPanel.SetActive(false);
             _openPanelsCount = 0;
             _panelStack.Clear();
         }

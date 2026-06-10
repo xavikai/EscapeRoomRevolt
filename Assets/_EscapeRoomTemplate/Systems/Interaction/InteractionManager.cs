@@ -17,12 +17,19 @@ namespace EscapeRoomRevolt.Systems.Interaction
         [SerializeField] private LayerMask _interactableLayer;
         [SerializeField] private KeyCode _interactKey = KeyCode.E;
 
+        [Header("Global Settings")]
+        [Tooltip("Material used for outlining objects when hovered. Assign your Shader Graph outline here once, and all interactables will use it.")]
+        [SerializeField] private Material _globalOutlineMaterial;
+
         [Header("Debug")]
         [SerializeField] private bool _showDebugRay = true;
 
         private IInteractable _currentTarget;
         private Camera _mainCamera;
         private Camera _overrideCamera;
+
+        public static InteractionManager Instance { get; private set; }
+        public Material GlobalOutlineMaterial => _globalOutlineMaterial;
 
         // ── Events ───────────────────────────────────────────────────────────
         /// <summary>Called every frame when the focused interactable changes.</summary>
@@ -31,6 +38,9 @@ namespace EscapeRoomRevolt.Systems.Interaction
         // ── Unity Lifecycle ──────────────────────────────────────────────────
         private void Awake()
         {
+            if (Instance == null) Instance = this;
+            else Destroy(gameObject);
+
             _mainCamera = GetComponent<Camera>();
             if (_mainCamera == null)
                 _mainCamera = Camera.main;

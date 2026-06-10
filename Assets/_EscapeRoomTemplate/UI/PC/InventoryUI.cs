@@ -107,10 +107,14 @@ namespace EscapeRoomRevolt.UI.PC
             if (data == null) return;
 
             // In the future, this could open a context menu (Read, Drop, Use).
-            // For now, if it's a note, directly read it!
             if (data.IsReadable)
             {
                 UIManager.Instance.ShowNoteReader(data.NoteContent);
+            }
+            else if (data.WorldPrefab != null)
+            {
+                // Open 3D examination mode
+                UIManager.Instance.ShowItemExaminer(data.WorldPrefab);
             }
         }
     }
