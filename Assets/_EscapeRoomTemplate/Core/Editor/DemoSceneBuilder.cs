@@ -179,9 +179,9 @@ namespace EscapeRoomRevolt.EditorTools
 
             // 6.5 La Nota amb la Pista
             GameObject noteObj = CreateInteractableObject("ClueNote", new Vector3(0.5f, 1.05f, 3), new Vector3(0.3f, 0.05f, 0.4f), Color.white);
-            var note = noteObj.AddComponent<FixedNote>();
+            var note = noteObj.AddComponent<InteractableNote>();
             SerializedObject soNote = new SerializedObject(note);
-            soNote.FindProperty("_content").stringValue = "The boss changed the safe code again. It's the year the company was founded: 1984.";
+            soNote.FindProperty("NoteContent").stringValue = "The boss changed the safe code again. It's the year the company was founded: 1984.";
             soNote.ApplyModifiedProperties();
 
             // 6.6 La Caixa Forta

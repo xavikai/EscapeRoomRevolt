@@ -220,9 +220,9 @@ namespace EscapeRoomRevolt.EditorTools
         [MenuItem("EscapeRoom/Create/Fixed Note", priority = 12)]
         public static void CreateNote()
         {
-            GameObject logicObj = CreateBaseInteractable("NewFixedNote", new Vector3(0.3f, 0.05f, 0.4f), Color.white);
+            GameObject logicObj = CreateBaseInteractable("NewNote", new Vector3(0.3f, 0.05f, 0.4f), Color.white);
             
-            logicObj.AddComponent<FixedNote>();
+            logicObj.AddComponent<InteractableNote>();
 
             FinalizeCreation(logicObj);
         }
@@ -233,6 +233,16 @@ namespace EscapeRoomRevolt.EditorTools
             GameObject logicObj = CreateBaseInteractable("NewPickableItem", new Vector3(0.2f, 0.2f, 0.2f), Color.yellow);
             
             logicObj.AddComponent<PickableItem>();
+
+            FinalizeCreation(logicObj);
+        }
+
+        [MenuItem("EscapeRoom/Create/Generic Trigger (Button)", priority = 13)]
+        public static void CreateTrigger()
+        {
+            GameObject logicObj = CreateBaseInteractable("NewTrigger", new Vector3(0.2f, 0.2f, 0.2f), Color.red);
+            
+            logicObj.AddComponent<InteractableTrigger>();
 
             FinalizeCreation(logicObj);
         }

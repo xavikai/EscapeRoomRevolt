@@ -63,6 +63,7 @@ namespace EscapeRoomRevolt.UI.PC
                     }
 
                     // Setup Icon if available
+                    UnityEngine.UI.Image finalIcon = null;
                     var images = slotGo.GetComponentsInChildren<UnityEngine.UI.Image>();
                     foreach (var imgComp in images)
                     {
@@ -77,8 +78,14 @@ namespace EscapeRoomRevolt.UI.PC
                             {
                                 imgComp.color = Color.clear; // Hide if no icon
                             }
+                            finalIcon = imgComp;
                         }
                     }
+
+                    // Setup Drag & Drop
+                    var dragHandler = slotGo.GetComponent<InventorySlotDragHandler>();
+                    if (dragHandler == null) dragHandler = slotGo.AddComponent<InventorySlotDragHandler>();
+                    dragHandler.Setup(data, finalIcon);
 
                     // Make it interactive
                     var btn = slotGo.GetComponent<UnityEngine.UI.Button>();

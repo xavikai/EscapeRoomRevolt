@@ -160,6 +160,55 @@ namespace EscapeRoomRevolt.Systems.Inventory
         public bool HasItem(string itemId) =>
             _items.ContainsKey(itemId) && _items[itemId] > 0;
 
+        /// <summary>Attempts to combine two items based on their recipes.</summary>
+        public bool TryCombine(string itemA_Id, string itemB_Id)
+        {
+            if (!HasItem(itemA_Id) || !HasItem(itemB_Id)) return false;
+
+            var dataA = GetItemData(itemA_Id);
+            var dataB = GetItemData(itemB_Id);
+            
+            if (dataA == null || dataB == null) return false;
+
+            // Check A's recipes
+            foreach (var combo in dataA.Combinations)
+            {
+                if (combo.CombineWith != null && combo.CombineWith.ItemId == itemB_Id)
+                {
+                    ExecuteCombination(dataA, dataB, combo);
+                    return true;
+                }
+            }
+
+            // Check B's recipes
+            foreach (var combo in dataB.Combinations)
+            {
+                if (combo.CombineWith != null && combo.CombineWith.ItemId == itemA_Id)
+                {
+                    ExecuteCombination(dataB, dataA, combo);
+                    return true;
+                }
+            }
+
+            Log($"Cannot combine {dataA.DisplayName} with {dataB.DisplayName}");
+            return false;
+        }
+
+        private void ExecuteCombination(InventoryItemData primary, InventoryItemData secondary, ItemCombination combo)
+        {
+            if (combo.DestroyThis) UseItem(primary.ItemId);
+            if (combo.DestroyOther) UseItem(secondary.ItemId);
+
+            if (combo.ResultItem != null)
+            {
+                AddItem(combo.ResultItem, 1);
+            }
+
+            Log($"Successfully combined {primary.DisplayName} and {secondary.DisplayName}");
+            
+            // Note: UseItem and AddItem already publish events, so UI will refresh.
+        }
+
         /// <summary>Returns the quantity of a given item (0 if not in inventory).</summary>
         public int GetQuantity(string itemId) =>
             _items.TryGetValue(itemId, out int qty) ? qty : 0;

@@ -1,7 +1,23 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace EscapeRoomRevolt.Systems.Inventory
 {
+    [System.Serializable]
+    public struct ItemCombination
+    {
+        [Tooltip("The item this should be combined with.")]
+        public InventoryItemData CombineWith;
+        
+        [Tooltip("The resulting item after combination.")]
+        public InventoryItemData ResultItem;
+        
+        [Tooltip("Does this item get destroyed after combination?")]
+        public bool DestroyThis;
+        
+        [Tooltip("Does the other item get destroyed after combination?")]
+        public bool DestroyOther;
+    }
     /// <summary>
     /// ScriptableObject that defines an inventory item's data.
     /// Create assets via: Right Click > Create > EscapeRoom > Inventory Item
@@ -33,6 +49,10 @@ namespace EscapeRoomRevolt.Systems.Inventory
         [TextArea(5, 10)]
         [SerializeField] private string _noteContent = "";
 
+        [Header("Combinations")]
+        [Tooltip("Recipes for combining this item with other items.")]
+        [SerializeField] private List<ItemCombination> _combinations = new List<ItemCombination>();
+
         // ── Public API ───────────────────────────────────────────────────────
         /// <summary>Unique ID used by all systems to reference this item.</summary>
         public string ItemId => string.IsNullOrEmpty(_itemId) ? name : _itemId;
@@ -45,6 +65,7 @@ namespace EscapeRoomRevolt.Systems.Inventory
         public int MaxStack => _maxStack;
         public bool IsReadable => _isReadable;
         public string NoteContent => _noteContent;
+        public IReadOnlyList<ItemCombination> Combinations => _combinations;
 
         private void OnValidate()
         {
