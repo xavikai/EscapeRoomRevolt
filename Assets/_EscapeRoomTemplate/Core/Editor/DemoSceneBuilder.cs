@@ -90,6 +90,7 @@ namespace EscapeRoomRevolt.EditorTools
 
             SerializedObject soUI = new SerializedObject(uiManager);
             soUI.FindProperty("_keypadPanel").objectReferenceValue = keypadPanel;
+            soUI.FindProperty("_crosshairImage").objectReferenceValue = img;
             keypadPanel.SetActive(false);
 
             // Note UI Panel

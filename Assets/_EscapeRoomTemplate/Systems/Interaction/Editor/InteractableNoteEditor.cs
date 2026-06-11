@@ -18,6 +18,7 @@ namespace EscapeRoomRevolt.Systems.Interaction.Editor
         // Base class properties (InteractableBase)
         private SerializedProperty _interactionPrompt;
         private SerializedProperty _canInteract;
+        private SerializedProperty _cursorType;
         private SerializedProperty _saveId;
         private SerializedProperty _enableOutline;
         private SerializedProperty _outlineMaterial;
@@ -37,6 +38,7 @@ namespace EscapeRoomRevolt.Systems.Interaction.Editor
             // Find base class properties
             _interactionPrompt = serializedObject.FindProperty("_interactionPrompt");
             _canInteract = serializedObject.FindProperty("_canInteract");
+            _cursorType = serializedObject.FindProperty("_cursorType");
             _saveId = serializedObject.FindProperty("_saveId");
             _enableOutline = serializedObject.FindProperty("_enableOutline");
             _outlineMaterial = serializedObject.FindProperty("_outlineMaterial");
@@ -51,6 +53,7 @@ namespace EscapeRoomRevolt.Systems.Interaction.Editor
             EditorGUILayout.LabelField("Interaction Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(_interactionPrompt);
             EditorGUILayout.PropertyField(_canInteract);
+            EditorGUILayout.PropertyField(_cursorType);
             if (_saveId != null) EditorGUILayout.PropertyField(_saveId);
             EditorGUILayout.Space(5);
 
