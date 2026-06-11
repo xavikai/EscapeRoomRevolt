@@ -23,6 +23,9 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         [SerializeField] private UnityEvent _onSolved;
         [SerializeField] private UnityEvent _onFailed;
 
+        public UnityEvent OnSolvedEvent => _onSolved;
+        public UnityEvent OnFailedEvent => _onFailed;
+
         [Header("Cinematics")]
         [Tooltip("If assigned, this camera will turn on when the puzzle is solved to show the result (e.g. a door opening).")]
         [SerializeField] private Camera _feedbackCamera;

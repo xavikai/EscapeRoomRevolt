@@ -35,6 +35,19 @@ namespace EscapeRoomRevolt.Systems.Interaction
             _originalLocalPos = transform.localPosition;
         }
 
+        public override string InteractionPrompt
+        {
+            get
+            {
+                var keypad = GetComponentInParent<InteractableKeypad>();
+                if (keypad != null && !keypad.IsFocused)
+                {
+                    return keypad.InteractionPrompt;
+                }
+                return ""; // Don't show prompts for individual buttons when zoomed in
+            }
+        }
+
         protected override void OnInteract()
         {
             var keypad = GetComponentInParent<InteractableKeypad>();
@@ -106,12 +119,23 @@ namespace EscapeRoomRevolt.Systems.Interaction
         public override void OnFocusEnter()
         {
             var keypad = GetComponentInParent<InteractableKeypad>();
-            if (keypad != null && keypad.IsFocused)
+            if (keypad != null && !keypad.IsFocused)
             {
-                // Do not show the yellow outline if we are already zoomed in (focus mode)
+                keypad.OnFocusEnter();
                 return;
             }
             base.OnFocusEnter();
+        }
+
+        public override void OnFocusExit()
+        {
+            var keypad = GetComponentInParent<InteractableKeypad>();
+            if (keypad != null && !keypad.IsFocused)
+            {
+                keypad.OnFocusExit();
+                return;
+            }
+            base.OnFocusExit();
         }
     }
 }

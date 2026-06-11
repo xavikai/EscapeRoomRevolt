@@ -69,7 +69,7 @@ namespace EscapeRoomRevolt.EditorTools
 
             // Room 4: 3D Examination
             CreatePlatform(env, "Room4_Examination", new Vector3(6, 0, 20), new Color(0.4f, 0.4f, 0.3f));
-            // Placeholder for Examine Chamber (Requires Prefab setup later)
+            CreateExaminePuzzle(new Vector3(6, 0, 20));
 
             // Room 5: Code Panel
             CreatePlatform(env, "Room5_Keypad", new Vector3(-6, 0, 25), new Color(0.4f, 0.3f, 0.4f));
@@ -81,7 +81,7 @@ namespace EscapeRoomRevolt.EditorTools
 
             // Room 7: Item Receiver
             CreatePlatform(env, "Room7_Receiver", new Vector3(-6, 0, 35), new Color(0.4f, 0.4f, 0.4f));
-            // Placeholder for Item Receiver (Requires Prefab setup later)
+            CreateItemReceiverPuzzle(new Vector3(-6, 0, 35));
 
             SaveScene(newScene, "Assets/_EscapeRoomTemplate/Scenes/ShowcaseMuseum.unity");
         }
@@ -179,49 +179,87 @@ namespace EscapeRoomRevolt.EditorTools
             table.transform.localScale = new Vector3(2, 1, 1);
             AssignURPMaterial(table, new Color(0.6f, 0.3f, 0.1f));
 
-            GameObject drawer = CreateInteractableObject("Drawer", center + new Vector3(0, 0.8f, -0.5f), new Vector3(0.8f, 0.3f, 0.8f), new Color(0.5f, 0.2f, 0.1f));
-            var doorScript = drawer.AddComponent<Door>();
-            SerializedObject soDoor = new SerializedObject(doorScript);
-            soDoor.FindProperty("_movementType").enumValueIndex = (int)DoorMovementType.Slide;
-            soDoor.FindProperty("_slideOffset").vector3Value = new Vector3(0, 0, -0.5f);
-            soDoor.FindProperty("_interactionPrompt").stringValue = "[E] Open Drawer";
-            soDoor.ApplyModifiedProperties();
+            // Drawer (Slide)
+            GameObject drawer = CreateInteractableObject("Drawer", center + new Vector3(-0.5f, 0.85f, -0.5f), new Vector3(0.8f, 0.2f, 0.8f), new Color(0.5f, 0.2f, 0.1f));
+            var drawerScript = drawer.AddComponent<Door>();
+            SerializedObject soDrawer = new SerializedObject(drawerScript);
+            soDrawer.FindProperty("_movementType").enumValueIndex = (int)DoorMovementType.Slide;
+            soDrawer.FindProperty("_slideOffset").vector3Value = new Vector3(0, 0, -0.5f);
+            soDrawer.FindProperty("_interactionPrompt").stringValue = "[E] Open Drawer";
+            soDrawer.ApplyModifiedProperties();
+
+            // Cabinet (Pivot)
+            GameObject cabinetDoor = CreateInteractableObject("CabinetDoor", center + new Vector3(0.5f, 0.5f, -0.55f), new Vector3(0.8f, 0.8f, 0.1f), new Color(0.4f, 0.2f, 0.05f));
+            GameObject hinge = new GameObject("CabinetHinge");
+            hinge.transform.SetParent(cabinetDoor.transform);
+            hinge.transform.localPosition = new Vector3(0.4f, 0, 0); // Hinge on the right edge
+            
+            var cabScript = cabinetDoor.AddComponent<Door>();
+            SerializedObject soCab = new SerializedObject(cabScript);
+            soCab.FindProperty("_movementType").enumValueIndex = (int)DoorMovementType.Pivot;
+            soCab.FindProperty("_customPivot").objectReferenceValue = hinge.transform;
+            soCab.FindProperty("_openAngle").floatValue = -90f; // Open outwards
+            soCab.FindProperty("_interactionPrompt").stringValue = "[E] Open Cabinet";
+            soCab.ApplyModifiedProperties();
         }
 
         private static void CreateKeyAndLockPuzzle(Vector3 center)
         {
-            // Wall for Door
-            GameObject wallL = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            wallL.transform.position = center + new Vector3(-1.5f, 1.5f, 2);
-            wallL.transform.localScale = new Vector3(1, 3, 0.5f);
+            // Wall for Pivot Door (Left)
+            GameObject wallL1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            wallL1.transform.position = center + new Vector3(-3f, 1.5f, 2);
+            wallL1.transform.localScale = new Vector3(1, 3, 0.5f);
             
-            GameObject wallR = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            wallR.transform.position = center + new Vector3(1.5f, 1.5f, 2);
-            wallR.transform.localScale = new Vector3(1, 3, 0.5f);
+            GameObject wallR1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            wallR1.transform.position = center + new Vector3(0f, 1.5f, 2);
+            wallR1.transform.localScale = new Vector3(1, 3, 0.5f);
 
-            GameObject wallT = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            wallT.transform.position = center + new Vector3(0, 2.75f, 2);
-            wallT.transform.localScale = new Vector3(2, 0.5f, 0.5f);
+            GameObject wallT1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            wallT1.transform.position = center + new Vector3(-1.5f, 2.75f, 2);
+            wallT1.transform.localScale = new Vector3(2, 0.5f, 0.5f);
 
-            // Locked Door
-            GameObject door = CreateInteractableObject("LockedDoor", center + new Vector3(0, 1.25f, 2), new Vector3(1.5f, 2.5f, 0.2f), new Color(0.8f, 0.2f, 0.2f));
+            // Locked Pivot Door
+            GameObject pivotDoor = CreateInteractableObject("LockedPivotDoor", center + new Vector3(-1.5f, 1.25f, 2), new Vector3(1.5f, 2.5f, 0.2f), new Color(0.8f, 0.2f, 0.2f));
             GameObject hinge = new GameObject("CustomPivot");
-            hinge.transform.SetParent(door.transform);
+            hinge.transform.SetParent(pivotDoor.transform);
             hinge.transform.localPosition = new Vector3(-0.75f, 0, 0);
             
-            var doorScript = door.AddComponent<Door>();
-            SerializedObject soDoor = new SerializedObject(doorScript);
-            soDoor.FindProperty("_isLocked").boolValue = true;
-            soDoor.FindProperty("_requiredItemId").stringValue = "key_museum_01";
-            soDoor.FindProperty("_customPivot").objectReferenceValue = hinge.transform;
-            soDoor.FindProperty("_interactionPrompt").stringValue = "[E] Open Door";
-            soDoor.ApplyModifiedProperties();
+            var pDoorScript = pivotDoor.AddComponent<Door>();
+            SerializedObject soPDoor = new SerializedObject(pDoorScript);
+            soPDoor.FindProperty("_isLocked").boolValue = true;
+            soPDoor.FindProperty("_requiredItemId").stringValue = "key_museum_01";
+            soPDoor.FindProperty("_customPivot").objectReferenceValue = hinge.transform;
+            soPDoor.FindProperty("_interactionPrompt").stringValue = "[E] Open Pivot Door";
+            soPDoor.ApplyModifiedProperties();
 
-            // Key
+            // Wall for Sliding Door (Right)
+            GameObject wallR2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            wallR2.transform.position = center + new Vector3(3f, 1.5f, 2);
+            wallR2.transform.localScale = new Vector3(1, 3, 0.5f);
+
+            GameObject wallT2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            wallT2.transform.position = center + new Vector3(1.5f, 2.75f, 2);
+            wallT2.transform.localScale = new Vector3(2, 0.5f, 0.5f);
+
+            // Unlocked Sliding Door
+            GameObject slideDoor = CreateInteractableObject("SlidingDoor", center + new Vector3(1.5f, 1.25f, 2), new Vector3(1.5f, 2.5f, 0.2f), new Color(0.2f, 0.6f, 0.8f));
+            var sDoorScript = slideDoor.AddComponent<Door>();
+            SerializedObject soSDoor = new SerializedObject(sDoorScript);
+            soSDoor.FindProperty("_movementType").enumValueIndex = (int)DoorMovementType.Slide;
+            soSDoor.FindProperty("_slideOffset").vector3Value = new Vector3(1.5f, 0, 0);
+            soSDoor.FindProperty("_interactionPrompt").stringValue = "[E] Open Sliding Door";
+            soSDoor.ApplyModifiedProperties();
+
+            // Key on a small table
+            GameObject table = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            table.name = "Table";
+            table.transform.position = center + new Vector3(-1.5f, 0.4f, 0);
+            table.transform.localScale = new Vector3(1, 0.8f, 1);
+
             InventoryItemData keyData = AssetDatabase.LoadAssetAtPath<InventoryItemData>("Assets/_EscapeRoomTemplate/ScriptableObjects/Items/Key_Office.asset");
             if (keyData != null)
             {
-                GameObject keyObj = CreateInteractableObject("Key_Museum", center + new Vector3(0, 0.2f, 0), new Vector3(0.2f, 0.1f, 0.2f), Color.yellow);
+                GameObject keyObj = CreateInteractableObject("Key_Museum", center + new Vector3(-1.5f, 0.85f, 0), new Vector3(0.2f, 0.1f, 0.2f), Color.yellow);
                 var pickable = keyObj.AddComponent<PickableItem>();
                 SerializedObject soKey = new SerializedObject(pickable);
                 soKey.FindProperty("_itemData").objectReferenceValue = keyData;
@@ -229,38 +267,95 @@ namespace EscapeRoomRevolt.EditorTools
                 soKey.FindProperty("_interactionPrompt").stringValue = "[E] Pick up Key";
                 soKey.ApplyModifiedProperties();
                 
-                // Override required item id to match the office key so it works out of the box
-                soDoor.FindProperty("_requiredItemId").stringValue = keyData.ItemId;
-                soDoor.ApplyModifiedProperties();
+                // Override required item id
+                soPDoor.FindProperty("_requiredItemId").stringValue = keyData.ItemId;
+                soPDoor.ApplyModifiedProperties();
             }
         }
 
         private static void CreateLorePuzzle(Vector3 center)
         {
-            GameObject table = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            table.transform.position = center + new Vector3(0, 0.5f, 0);
-            table.transform.localScale = new Vector3(2, 1, 1);
+            GameObject pedestal = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            pedestal.transform.position = center + new Vector3(0, 0.5f, 0);
+            pedestal.transform.localScale = new Vector3(2, 1, 1);
 
-            GameObject noteObj = CreateInteractableObject("ClueNote", center + new Vector3(0, 1.05f, 0), new Vector3(0.4f, 0.05f, 0.4f), Color.white);
-            var note = noteObj.AddComponent<InteractableNote>();
-            SerializedObject soNote = new SerializedObject(note);
-            soNote.FindProperty("NoteContent").stringValue = "Welcome to the Escape Room Museum!\n\nEach room here tests a different mechanic of the framework.\n\nEnjoy your stay.";
-            soNote.FindProperty("_interactionPrompt").stringValue = "[E] Read Note";
-            soNote.ApplyModifiedProperties();
+            // 1) In-world Readable Note
+            GameObject noteObj1 = CreateInteractableObject("ClueNote_World", center + new Vector3(-0.5f, 1.05f, 0), new Vector3(0.4f, 0.05f, 0.4f), Color.white);
+            var note1 = noteObj1.AddComponent<InteractableNote>();
+            SerializedObject soNote1 = new SerializedObject(note1);
+            soNote1.FindProperty("NoteContent").stringValue = "This note can be read directly in the world.\n\nYou just look at it and press E.";
+            soNote1.FindProperty("_interactionPrompt").stringValue = "[E] Read Note";
+            soNote1.ApplyModifiedProperties();
+
+            // 2) Pickable Note (Inventory)
+            string assetPath = "Assets/_EscapeRoomTemplate/ScriptableObjects/Items/ReadableNote_Demo.asset";
+            InventoryItemData noteData = AssetDatabase.LoadAssetAtPath<InventoryItemData>(assetPath);
+            if (noteData == null)
+            {
+                // Ensure directory exists
+                if (!AssetDatabase.IsValidFolder("Assets/_EscapeRoomTemplate/ScriptableObjects/Items"))
+                    System.IO.Directory.CreateDirectory("Assets/_EscapeRoomTemplate/ScriptableObjects/Items");
+
+                noteData = ScriptableObject.CreateInstance<InventoryItemData>();
+                var soItem = new SerializedObject(noteData);
+                soItem.FindProperty("_itemId").stringValue = "note_demo_01";
+                soItem.FindProperty("_displayName").stringValue = "Mysterious Letter";
+                soItem.FindProperty("_description").stringValue = "A crumpled letter I found.";
+                soItem.FindProperty("_isReadable").boolValue = true;
+                soItem.FindProperty("_noteContent").stringValue = "This is a note you picked up!\n\nYou can read it from your inventory anytime.";
+                soItem.ApplyModifiedProperties();
+
+                AssetDatabase.CreateAsset(noteData, assetPath);
+                AssetDatabase.SaveAssets();
+            }
+
+            GameObject noteObj2 = CreateInteractableObject("ClueNote_Inventory", center + new Vector3(0.5f, 1.05f, 0), new Vector3(0.4f, 0.05f, 0.4f), new Color(0.9f, 0.9f, 0.7f));
+            var pickable = noteObj2.AddComponent<PickableItem>();
+            SerializedObject soPickable = new SerializedObject(pickable);
+            soPickable.FindProperty("_itemData").objectReferenceValue = noteData;
+            soPickable.FindProperty("_destroyOnPickup").boolValue = true;
+            soPickable.FindProperty("_interactionPrompt").stringValue = "[E] Pick up Letter";
+            soPickable.ApplyModifiedProperties();
         }
 
         private static void CreateKeypadPuzzle(Vector3 center)
         {
             GameObject wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
             wall.transform.position = center + new Vector3(0, 1.5f, 2);
-            wall.transform.localScale = new Vector3(3, 3, 0.5f);
+            wall.transform.localScale = new Vector3(4, 3, 0.5f);
+
+            // Add Door
+            EscapeRoomRevolt.EditorTools.InteractableCreator.CreateDoor();
+            GameObject safeDoor = UnityEditor.Selection.activeGameObject;
+            var doorScript = safeDoor.GetComponent<Door>();
+            if (safeDoor != null)
+            {
+                safeDoor.name = "SafeDoor";
+                safeDoor.transform.position = center + new Vector3(-1f, 1.25f, 1.74f); // Standard door height is 2.5, so center Y is 1.25
+                
+                SerializedObject soDoor = new SerializedObject(doorScript);
+                soDoor.FindProperty("_openAngle").floatValue = 90f;
+                soDoor.FindProperty("_interactionPrompt").stringValue = "[E] Open Safe";
+                soDoor.FindProperty("_isLocked").boolValue = true; // Locked initially
+                soDoor.FindProperty("_lockedPrompt").stringValue = "Locked electronically.";
+                soDoor.ApplyModifiedProperties();
+            }
+
+            // Add Cinematic Camera
+            GameObject camObj = new GameObject("FeedbackCamera");
+            camObj.transform.position = center + new Vector3(-1f, 1.5f, 0.5f); // Stand in middle, look at door
+            camObj.transform.LookAt(safeDoor.transform);
+            var cam = camObj.AddComponent<Camera>();
+            camObj.SetActive(false);
+            var cinematicCam = camObj.AddComponent<EscapeRoomRevolt.Systems.Animation.CinematicCamera>();
 
             EscapeRoomRevolt.EditorTools.InteractableCreator.CreateKeypadPanel();
             GameObject keypadObj = UnityEditor.Selection.activeGameObject;
             if (keypadObj != null)
             {
                 keypadObj.name = "Keypad_Safe";
-                keypadObj.transform.position = center + new Vector3(0, 1.5f, 1.74f);
+                keypadObj.transform.position = center + new Vector3(1f, 1.5f, 1.74f); // Placed to the right of the door
+                keypadObj.transform.rotation = Quaternion.Euler(0, 180f, 0); // Flipped to face the room
                 
                 var codePuzzle = keypadObj.GetComponent<CodePanelPuzzle>();
                 if (codePuzzle != null)
@@ -268,8 +363,12 @@ namespace EscapeRoomRevolt.EditorTools
                     SerializedObject soCode = new SerializedObject(codePuzzle);
                     soCode.FindProperty("_correctCode").stringValue = "1234";
                     soCode.FindProperty("_maxCodeLength").intValue = 4;
-                    soCode.FindProperty("_interactionPrompt").stringValue = "[E] Use Keypad";
                     soCode.ApplyModifiedProperties();
+                    
+                    // Hook up events
+                    UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(codePuzzle.OnSolvedEvent, doorScript.Unlock);
+                    UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(codePuzzle.OnSolvedEvent, doorScript.ForceOpen);
+                    UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(codePuzzle.OnSolvedEvent, cinematicCam.PlayCinematic);
                 }
             }
         }
@@ -283,7 +382,162 @@ namespace EscapeRoomRevolt.EditorTools
             collider.size = new Vector3(4, 2, 4);
 
             var triggerScript = triggerArea.AddComponent<NarrativeTrigger>();
-            // Just basic setup.
+            SerializedObject soTrigger = new SerializedObject(triggerScript);
+            
+            soTrigger.FindProperty("_playMode").enumValueIndex = (int)NarrativePlayMode.Once;
+            
+            SerializedProperty sequencesProp = soTrigger.FindProperty("_sequences");
+            sequencesProp.arraySize = 1;
+            SerializedProperty seq = sequencesProp.GetArrayElementAtIndex(0);
+            
+            AudioClip clip = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/_EscapeRoomTemplate/Audio/Voice/audio01.mp3");
+            if (clip != null)
+            {
+                seq.FindPropertyRelative("audioClip").objectReferenceValue = clip;
+            }
+
+            SerializedProperty linesProp = seq.FindPropertyRelative("subtitleLines");
+            linesProp.arraySize = 1;
+            SerializedProperty line1 = linesProp.GetArrayElementAtIndex(0);
+            line1.FindPropertyRelative("text").stringValue = "Ah... you made it. Welcome to the museum. Feel free to look around.";
+            line1.FindPropertyRelative("duration").floatValue = 5f;
+            
+            soTrigger.ApplyModifiedProperties();
+        }
+
+        private static void CreateExaminePuzzle(Vector3 center)
+        {
+            EscapeRoomRevolt.Editor.ExamineChamberSetup.CreateExamineChamber();
+            
+            GameObject pedestal = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            pedestal.transform.position = center + new Vector3(0, 0.5f, 0);
+            pedestal.transform.localScale = new Vector3(1, 1, 1);
+
+            InventoryItemData itemData = AssetDatabase.LoadAssetAtPath<InventoryItemData>("Assets/_EscapeRoomTemplate/ScriptableObjects/Items/Key_Office.asset");
+            if (itemData != null)
+            {
+                // Ensure the item has a 3D model assigned for the Examine Chamber
+                if (itemData.WorldPrefab == null)
+                {
+                    GameObject clauPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_EscapeRoomTemplate/Prefabs/clau.prefab");
+                    if (clauPrefab != null)
+                    {
+                        SerializedObject soItem = new SerializedObject(itemData);
+                        soItem.FindProperty("_worldPrefab").objectReferenceValue = clauPrefab;
+                        soItem.ApplyModifiedProperties();
+                        AssetDatabase.SaveAssets();
+                    }
+                }
+
+                GameObject examineObj = CreateInteractableObject("ExamineObject", center + new Vector3(0, 1.2f, 0), new Vector3(0.3f, 0.3f, 0.3f), Color.cyan);
+                var pickable = examineObj.AddComponent<PickableItem>();
+                SerializedObject soPickable = new SerializedObject(pickable);
+                soPickable.FindProperty("_itemData").objectReferenceValue = itemData;
+                soPickable.FindProperty("_destroyOnPickup").boolValue = true;
+                soPickable.FindProperty("_interactionPrompt").stringValue = "[E] Pick up to Examine";
+                soPickable.ApplyModifiedProperties();
+            }
+        }
+
+        private static void CreateItemReceiverPuzzle(Vector3 center)
+        {
+            GameObject pedestal = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            pedestal.transform.position = center + new Vector3(0, 0.5f, 0);
+            pedestal.transform.localScale = new Vector3(1, 1, 1);
+
+            GameObject receiverObj = CreateInteractableObject("Receiver", center + new Vector3(0, 1.1f, 0), new Vector3(0.5f, 0.2f, 0.5f), Color.grey);
+            var receiver = receiverObj.AddComponent<ItemReceiver>();
+            
+            // Add a locked door instead of a drawer to be more epic
+            EscapeRoomRevolt.EditorTools.InteractableCreator.CreateDoor();
+            GameObject doorObj = UnityEditor.Selection.activeGameObject;
+            var doorScript = doorObj != null ? doorObj.GetComponent<Door>() : null;
+            if (doorObj != null && doorScript != null)
+            {
+                doorObj.name = "SecretDoor";
+                doorObj.transform.position = center + new Vector3(-1.5f, 1.25f, 0);
+                
+                SerializedObject soDoor = new SerializedObject(doorScript);
+                soDoor.FindProperty("_isLocked").boolValue = true;
+                soDoor.FindProperty("_lockedPrompt").stringValue = "It's firmly locked. A mechanism holds it.";
+                soDoor.ApplyModifiedProperties();
+            }
+
+            // Add Cinematic Camera pointing to the door
+            GameObject camObj = new GameObject("ReceiverFeedbackCamera");
+            camObj.transform.position = center + new Vector3(0.5f, 1.5f, -1.5f);
+            if (doorObj != null) camObj.transform.LookAt(doorObj.transform);
+            var cam = camObj.AddComponent<Camera>();
+            camObj.SetActive(false);
+            var cinematicCam = camObj.AddComponent<EscapeRoomRevolt.Systems.Animation.CinematicCamera>();
+
+            InventoryItemData itemData = AssetDatabase.LoadAssetAtPath<InventoryItemData>("Assets/_EscapeRoomTemplate/ScriptableObjects/Items/Key_Office.asset");
+            if (itemData != null)
+            {
+                // Create a pickable key right here so the player doesn't have to walk to room 4
+                GameObject keyTable = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                keyTable.name = "KeyTable";
+                keyTable.transform.position = center + new Vector3(1.5f, 0.5f, 0);
+                keyTable.transform.localScale = new Vector3(0.5f, 1f, 0.5f);
+
+                GameObject keyObj = CreateInteractableObject("PickupKey", center + new Vector3(1.5f, 1.1f, 0), new Vector3(0.2f, 0.2f, 0.2f), Color.cyan);
+                var pickable = keyObj.AddComponent<PickableItem>();
+                SerializedObject soPickable = new SerializedObject(pickable);
+                soPickable.FindProperty("_itemData").objectReferenceValue = itemData;
+                soPickable.FindProperty("_destroyOnPickup").boolValue = true;
+                soPickable.FindProperty("_interactionPrompt").stringValue = "[E] Pick up Key";
+                soPickable.ApplyModifiedProperties();
+
+                // Configure Receiver
+                SerializedObject soReceiver = new SerializedObject(receiver);
+                soReceiver.FindProperty("_requiredItem").objectReferenceValue = itemData;
+                soReceiver.FindProperty("_interactionPrompt").stringValue = "[E] Insert Item";
+                soReceiver.ApplyModifiedProperties();
+
+                if (doorScript != null)
+                {
+                    // Hook up the events
+                    UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(receiver.OnItemAccepted, doorScript.Unlock);
+                    UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(receiver.OnItemAccepted, doorScript.ForceOpen);
+                    UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(receiver.OnItemAccepted, cinematicCam.PlayCinematic);
+                }
+            }
+        }
+
+        private static void CreateLightSwitchPuzzle(Vector3 center)
+        {
+            // Wall for the switch
+            GameObject wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            wall.transform.position = center + new Vector3(0, 1.5f, 2);
+            wall.transform.localScale = new Vector3(4, 3, 0.5f);
+
+            // Light Switch
+            GameObject switchObj = CreateInteractableObject("LightSwitch", center + new Vector3(0, 1.2f, 1.74f), new Vector3(0.2f, 0.3f, 0.05f), Color.white);
+            var trigger = switchObj.AddComponent<InteractableTrigger>();
+            SerializedObject soTrigger = new SerializedObject(trigger);
+            soTrigger.FindProperty("_prompt").stringValue = "[E] Toggle Light";
+            soTrigger.FindProperty("_isToggle").boolValue = true;
+            soTrigger.ApplyModifiedProperties();
+
+            // The Light Object (parent)
+            GameObject lightRoot = new GameObject("Spotlight_Root");
+            lightRoot.transform.position = center + new Vector3(0, 3f, 0); // High up
+            lightRoot.transform.rotation = Quaternion.Euler(90f, 0, 0); // Pointing down
+            
+            // The actual Light Component
+            var lightComp = lightRoot.AddComponent<Light>();
+            lightComp.type = LightType.Spot;
+            lightComp.range = 10f;
+            lightComp.spotAngle = 60f;
+            lightComp.intensity = 50f; // High intensity for URP
+            
+            // Set initial state
+            lightRoot.SetActive(false); 
+
+            // Hook up events to activate/deactivate the GameObject
+            UnityEngine.Events.UnityAction<bool> setActiveAction = new UnityEngine.Events.UnityAction<bool>(lightRoot.SetActive);
+            UnityEditor.Events.UnityEventTools.AddBoolPersistentListener(trigger.OnInteractEvent, setActiveAction, true);
+            UnityEditor.Events.UnityEventTools.AddBoolPersistentListener(trigger.OnInteractOffEvent, setActiveAction, false);
         }
     }
 }
