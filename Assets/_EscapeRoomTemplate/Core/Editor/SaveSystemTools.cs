@@ -6,7 +6,7 @@ namespace EscapeRoomRevolt.EditorTools
 {
     public class SaveSystemTools
     {
-        [MenuItem("EscapeRoom / Fix Missing Save IDs")]
+        [MenuItem("EscapeRoom/4. Utils/Fix Missing Save IDs", priority = 41)]
         public static void FixSaveIds()
         {
             int count = 0;

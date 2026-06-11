@@ -6,7 +6,7 @@ namespace EscapeRoomRevolt.Editor
 {
     public static class ExamineChamberSetup
     {
-        [MenuItem("EscapeRoom/Create Examine Chamber")]
+        [MenuItem("EscapeRoom/1. Setup/Create Examine Chamber", priority = 13)]
         public static void CreateExamineChamber()
         {
             // 1. Check if it already exists

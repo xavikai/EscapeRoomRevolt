@@ -8,7 +8,7 @@ namespace EscapeRoomRevolt.EditorTools
 {
     public static class InteractableCreator
     {
-        [MenuItem("EscapeRoom/Create/Door", priority = 10)]
+        [MenuItem("EscapeRoom/2. Create Interactable/Door", priority = 21)]
         public static void CreateDoor()
         {
             GameObject logicObj = CreateBaseInteractable("NewDoor", new Vector3(1.5f, 2.5f, 0.2f), new Color(0.8f, 0.4f, 0.2f));
@@ -26,7 +26,7 @@ namespace EscapeRoomRevolt.EditorTools
             FinalizeCreation(logicObj);
         }
 
-        [MenuItem("EscapeRoom/Create/Cabinet", priority = 11)]
+        [MenuItem("EscapeRoom/2. Create Interactable/Cabinet", priority = 22)]
         public static void CreateCabinet()
         {
             GameObject logicObj = CreateBaseInteractable("NewCabinet", new Vector3(0.6f, 0.8f, 0.05f), new Color(0.4f, 0.25f, 0.1f));
@@ -44,7 +44,7 @@ namespace EscapeRoomRevolt.EditorTools
             FinalizeCreation(logicObj);
         }
 
-        [MenuItem("EscapeRoom/Create/Drawer", priority = 12)]
+        [MenuItem("EscapeRoom/2. Create Interactable/Drawer", priority = 23)]
         public static void CreateDrawer()
         {
             GameObject logicObj = CreateBaseInteractable("NewDrawer", new Vector3(0.8f, 0.2f, 0.8f), new Color(0.4f, 0.25f, 0.1f));
@@ -58,7 +58,7 @@ namespace EscapeRoomRevolt.EditorTools
             FinalizeCreation(logicObj);
         }
 
-        [MenuItem("EscapeRoom/Create/Keypad Panel", priority = 13)]
+        [MenuItem("EscapeRoom/2. Create Interactable/Keypad Panel", priority = 24)]
         public static void CreateKeypadPanel()
         {
             GameObject logicObj = CreateBaseInteractable("NewKeypad", new Vector3(0.2f, 0.25f, 0.025f), new Color(0.15f, 0.15f, 0.15f));
@@ -217,7 +217,7 @@ namespace EscapeRoomRevolt.EditorTools
             return logicObj;
         }
 
-        [MenuItem("EscapeRoom/Create/Note", priority = 12)]
+        [MenuItem("EscapeRoom/2. Create Interactable/Note", priority = 25)]
         public static void CreateNote()
         {
             GameObject logicObj = CreateBaseInteractable("NewNote", new Vector3(0.3f, 0.05f, 0.4f), Color.white);
@@ -227,7 +227,7 @@ namespace EscapeRoomRevolt.EditorTools
             FinalizeCreation(logicObj);
         }
 
-        [MenuItem("EscapeRoom/Create/Pickable Item", priority = 13)]
+        [MenuItem("EscapeRoom/2. Create Interactable/Pickable Item", priority = 26)]
         public static void CreatePickableItem()
         {
             GameObject logicObj = CreateBaseInteractable("NewPickableItem", new Vector3(0.2f, 0.2f, 0.2f), Color.yellow);
@@ -237,7 +237,7 @@ namespace EscapeRoomRevolt.EditorTools
             FinalizeCreation(logicObj);
         }
 
-        [MenuItem("EscapeRoom/Create/Generic Trigger (Button)", priority = 13)]
+        [MenuItem("EscapeRoom/2. Create Interactable/Generic Trigger (Button)", priority = 27)]
         public static void CreateTrigger()
         {
             GameObject logicObj = CreateBaseInteractable("NewTrigger", new Vector3(0.2f, 0.2f, 0.2f), Color.red);
@@ -247,7 +247,7 @@ namespace EscapeRoomRevolt.EditorTools
             FinalizeCreation(logicObj);
         }
 
-        [MenuItem("EscapeRoom/Create/Item Receiver", priority = 14)]
+        [MenuItem("EscapeRoom/2. Create Interactable/Item Receiver", priority = 28)]
         public static void CreateItemReceiver()
         {
             GameObject logicObj = CreateBaseInteractable("NewItemReceiver", new Vector3(0.5f, 0.5f, 0.5f), Color.gray);
@@ -264,6 +264,24 @@ namespace EscapeRoomRevolt.EditorTools
             UnityEditor.SerializedObject so = new UnityEditor.SerializedObject(receiver);
             so.FindProperty("_spawnLocation").objectReferenceValue = spawnPoint.transform;
             so.ApplyModifiedProperties();
+
+            FinalizeCreation(logicObj);
+        }
+
+        [MenuItem("EscapeRoom/2. Create Interactable/Narrative Audio Trigger", priority = 29)]
+        public static void CreateNarrativeTrigger()
+        {
+            GameObject logicObj = new GameObject("NewNarrativeTrigger");
+            
+            SceneView view = SceneView.lastActiveSceneView;
+            if (view != null) logicObj.transform.position = view.pivot;
+
+            BoxCollider col = logicObj.AddComponent<BoxCollider>();
+            col.isTrigger = true;
+            col.size = new Vector3(2, 2, 2);
+
+            logicObj.AddComponent<AudioSource>();
+            logicObj.AddComponent<NarrativeTrigger>();
 
             FinalizeCreation(logicObj);
         }

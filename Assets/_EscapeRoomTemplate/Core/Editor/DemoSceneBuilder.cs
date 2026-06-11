@@ -14,7 +14,7 @@ namespace EscapeRoomRevolt.EditorTools
 {
     public class DemoSceneBuilder
     {
-        [MenuItem("EscapeRoom / Build Demo Scene (Locked Office)")]
+        [MenuItem("EscapeRoom/3. Demo/Build Locked Office Scene", priority = 31)]
         public static void CreateDemoScene()
         {
             if (!EditorUtility.DisplayDialog("Crear Escena Demo", "Això crearà i sobreescriurà l'escena 'LockedOffice'. Vols continuar?", "Sí", "Cancel·la"))
@@ -184,16 +184,24 @@ namespace EscapeRoomRevolt.EditorTools
             soNote.FindProperty("NoteContent").stringValue = "The boss changed the safe code again. It's the year the company was founded: 1984.";
             soNote.ApplyModifiedProperties();
 
-            // 6.6 La Caixa Forta
-            GameObject safeObj = CreateInteractableObject("Safe", new Vector3(-2, 0.4f, 4), new Vector3(0.8f, 0.8f, 0.8f), Color.black);
-            
-            var codePuzzle = safeObj.AddComponent<CodePanelPuzzle>();
-            SerializedObject soCode = new SerializedObject(codePuzzle);
-            soCode.FindProperty("_correctCode").stringValue = "1984";
-            soCode.FindProperty("_maxCodeLength").intValue = 4;
-            soCode.ApplyModifiedProperties();
-            
-            safeObj.AddComponent<InteractableKeypad>();
+            // 6.6 La Caixa Forta / Keypad
+            EscapeRoomRevolt.EditorTools.InteractableCreator.CreateKeypadPanel();
+            GameObject keypadObj = UnityEditor.Selection.activeGameObject;
+            if (keypadObj != null)
+            {
+                keypadObj.name = "Keypad_Safe_Logic";
+                keypadObj.transform.position = new Vector3(-1.9f, 1.2f, 3.5f); // Posicionat a la paret esquerra
+                keypadObj.transform.rotation = Quaternion.Euler(0, 90f, 0); // Encarant cap al centre
+
+                var codePuzzle = keypadObj.GetComponent<CodePanelPuzzle>();
+                if (codePuzzle != null)
+                {
+                    SerializedObject soCode = new SerializedObject(codePuzzle);
+                    soCode.FindProperty("_correctCode").stringValue = "1984";
+                    soCode.FindProperty("_maxCodeLength").intValue = 4;
+                    soCode.ApplyModifiedProperties();
+                }
+            }
 
             // 7. La Porta Final
             GameObject door = CreateInteractableObject("FinalDoor", new Vector3(0, 1.25f, 4.9f), new Vector3(1.5f, 2.5f, 0.2f), new Color(0.8f, 0.2f, 0.2f));

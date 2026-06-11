@@ -1,5 +1,14 @@
 namespace EscapeRoomRevolt.Systems.Interaction
 {
+    public enum CursorType
+    {
+        Default,
+        Hand,
+        Eye,
+        Puzzle,
+        Exit
+    }
+
     /// <summary>
     /// Contract that every interactable object in the game must implement.
     /// Attach this to doors, items, notes, puzzles, drawers, etc.
@@ -8,6 +17,9 @@ namespace EscapeRoomRevolt.Systems.Interaction
     {
         /// <summary>Display name shown in the interaction UI prompt.</summary>
         string InteractionPrompt { get; }
+
+        /// <summary>The type of crosshair to show when looking at this object.</summary>
+        CursorType InteractionCursor { get; }
 
         /// <summary>Whether the object can currently be interacted with.</summary>
         bool CanInteract { get; }

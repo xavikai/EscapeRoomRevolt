@@ -5,7 +5,7 @@ namespace EscapeRoomRevolt.EditorTools
 {
     public class CleanupTools
     {
-        [MenuItem("EscapeRoom / Remove Missing Scripts")]
+        [MenuItem("EscapeRoom/4. Utils/Remove Missing Scripts", priority = 42)]
         public static void RemoveMissingScripts()
         {
             var gameObjects = GameObject.FindObjectsByType<GameObject>(FindObjectsInactive.Include);

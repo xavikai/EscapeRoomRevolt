@@ -8,7 +8,7 @@ namespace EscapeRoomRevolt.Core.Editor
 {
     public class InventoryUISetup : MonoBehaviour
     {
-        [MenuItem("EscapeRoom/Setup/Auto-Generate Inventory UI")]
+        [MenuItem("EscapeRoom/1. Setup/Auto-Generate Inventory UI", priority = 12)]
         public static void CreateInventoryUI()
         {
             // 1. Find UIManager in the scene
@@ -133,7 +133,7 @@ namespace EscapeRoomRevolt.Core.Editor
             Debug.Log("<color=green><b>Inventari Generat amb èxit!</b></color> Ja tens la pestanya al lateral dret configurada.");
         }
 
-        [MenuItem("EscapeRoom/Setup/Update Slot with Icon")]
+        [MenuItem("EscapeRoom/4. Utils/Update Inventory Slot Icons", priority = 43)]
         public static void UpdateSlotWithIcon()
         {
             string prefabPath = "Assets/_EscapeRoomTemplate/Prefabs/UI/InventorySlot.prefab";

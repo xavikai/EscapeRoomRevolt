@@ -113,6 +113,18 @@ namespace EscapeRoomRevolt.Systems.Interaction
             _currentTarget = newTarget;
             _currentTarget?.OnFocusEnter();
             OnFocusChanged?.Invoke(_currentTarget);
+
+            if (EscapeRoomRevolt.UI.PC.UIManager.Instance != null)
+            {
+                if (_currentTarget != null && _currentTarget.CanInteract)
+                {
+                    EscapeRoomRevolt.UI.PC.UIManager.Instance.SetCrosshair(_currentTarget.InteractionCursor);
+                }
+                else
+                {
+                    EscapeRoomRevolt.UI.PC.UIManager.Instance.SetCrosshair(CursorType.Default);
+                }
+            }
         }
 
         private void TriggerInteraction()

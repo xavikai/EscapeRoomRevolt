@@ -19,6 +19,8 @@ namespace EscapeRoomRevolt.Systems.Interaction
         [SerializeField] private bool _canInteract = true;
         [SerializeField] private string _saveId = "";
 
+        [SerializeField] private CursorType _cursorType = CursorType.Hand;
+
         [Header("Visual Feedback (Outline)")]
         [SerializeField] private bool _enableOutline = true;
         [Tooltip("Assign a custom Outline Material here to override the global one. Leave empty to use the Global Outline Material from InteractionManager.")]
@@ -51,6 +53,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
 
         // ── IInteractable ────────────────────────────────────────────────────
         public virtual string InteractionPrompt => _interactionPrompt;
+        public virtual CursorType InteractionCursor => _cursorType;
         public virtual bool CanInteract => _canInteract && gameObject.activeInHierarchy;
 
         public void Interact()

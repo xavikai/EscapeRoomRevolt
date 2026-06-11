@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 namespace EscapeRoomRevolt.UI.PC
 {
@@ -19,7 +20,16 @@ namespace EscapeRoomRevolt.UI.PC
         [SerializeField] private GameObject _pauseMenuPanel;
         [SerializeField] private GameObject _keypadPanel;
         [SerializeField] private GameObject _itemExaminerPanel;
+        [SerializeField] private GameObject _subtitlePanel;
+        [SerializeField] private TextMeshProUGUI _subtitleText;
         
+        [Header("Crosshair Settings")]
+        [SerializeField] private UnityEngine.UI.Image _crosshairImage;
+        [SerializeField] private Sprite _cursorDefault;
+        [SerializeField] private Sprite _cursorHand;
+        [SerializeField] private Sprite _cursorEye;
+        [SerializeField] private Sprite _cursorPuzzle;
+
         private KeypadUI _keypadUI;
         
         [Header("State")]
@@ -27,6 +37,13 @@ namespace EscapeRoomRevolt.UI.PC
 
         // Stack to know which panel to close when Escape is pressed
         private readonly Stack<GameObject> _panelStack = new();
+
+        // Subtitle Animation State
+        private Coroutine _subtitleAnimCoroutine;
+        private Coroutine _typewriterCoroutine;
+        private float _subtitleVisibleY;
+        private float _subtitleHiddenY;
+        private bool _hasInitializedSubtitleY = false;
 
         private void Awake()
         {
@@ -58,6 +75,55 @@ namespace EscapeRoomRevolt.UI.PC
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+        }
+
+        public void SetCrosshair(EscapeRoomRevolt.Systems.Interaction.CursorType type)
+        {
+            if (_crosshairImage == null) return;
+
+            Sprite targetSprite = null;
+            Color targetColor = Color.white;
+            Vector2 targetSize = new Vector2(5, 5); // Default size
+
+            switch (type)
+            {
+                case EscapeRoomRevolt.Systems.Interaction.CursorType.Hand:
+                    targetSprite = _cursorHand;
+                    targetColor = Color.yellow; // Fallback
+                    targetSize = new Vector2(8, 8);
+                    break;
+                case EscapeRoomRevolt.Systems.Interaction.CursorType.Eye:
+                    targetSprite = _cursorEye;
+                    targetColor = new Color(0.4f, 0.8f, 1f); // Light blue fallback
+                    targetSize = new Vector2(8, 8);
+                    break;
+                case EscapeRoomRevolt.Systems.Interaction.CursorType.Puzzle:
+                    targetSprite = _cursorPuzzle;
+                    targetColor = new Color(1f, 0.4f, 0.4f); // Red fallback
+                    targetSize = new Vector2(8, 8);
+                    break;
+                case EscapeRoomRevolt.Systems.Interaction.CursorType.Default:
+                default:
+                    targetSprite = _cursorDefault;
+                    targetColor = Color.white;
+                    targetSize = new Vector2(5, 5);
+                    break;
+            }
+
+            if (targetSprite != null)
+            {
+                _crosshairImage.sprite = targetSprite;
+                _crosshairImage.color = Color.white; // If we have a sprite, use its normal color
+                // You might want to adjust the size to native sprite size here if desired
+                _crosshairImage.rectTransform.sizeDelta = new Vector2(32, 32); 
+            }
+            else
+            {
+                // Fallback to colored dot
+                _crosshairImage.sprite = null;
+                _crosshairImage.color = targetColor;
+                _crosshairImage.rectTransform.sizeDelta = targetSize;
+            }
         }
 
         // ── Panel Toggles ─────────────────────────────────────────────────
@@ -113,6 +179,72 @@ namespace EscapeRoomRevolt.UI.PC
             RegisterPanelClosed();
         }
 
+        public void ShowSubtitle(string text)
+        {
+            if (_subtitlePanel == null || _subtitleText == null) return;
+            
+            RectTransform rt = _subtitlePanel.GetComponent<RectTransform>();
+            if (rt != null && !_hasInitializedSubtitleY)
+            {
+                _subtitleVisibleY = rt.anchoredPosition.y;
+                _subtitleHiddenY = _subtitleVisibleY - rt.rect.height - 50f;
+                _hasInitializedSubtitleY = true;
+            }
+
+            if (!_subtitlePanel.activeSelf)
+            {
+                if (rt != null) rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, _subtitleHiddenY);
+                _subtitlePanel.SetActive(true);
+                if (_subtitleAnimCoroutine != null) StopCoroutine(_subtitleAnimCoroutine);
+                _subtitleAnimCoroutine = StartCoroutine(SlideSubtitlePanel(true));
+            }
+
+            if (_typewriterCoroutine != null) StopCoroutine(_typewriterCoroutine);
+            _typewriterCoroutine = StartCoroutine(TypewriterEffect(text));
+        }
+
+        public void HideSubtitle()
+        {
+            if (_subtitlePanel == null || !_subtitlePanel.activeSelf) return;
+            
+            if (_subtitleAnimCoroutine != null) StopCoroutine(_subtitleAnimCoroutine);
+            _subtitleAnimCoroutine = StartCoroutine(SlideSubtitlePanel(false));
+        }
+
+        private System.Collections.IEnumerator SlideSubtitlePanel(bool show)
+        {
+            RectTransform rt = _subtitlePanel.GetComponent<RectTransform>();
+            if (rt == null) yield break;
+
+            float duration = 0.3f;
+            float time = 0;
+            float targetY = show ? _subtitleVisibleY : _subtitleHiddenY;
+            float startY = rt.anchoredPosition.y;
+
+            while (time < duration)
+            {
+                time += Time.deltaTime;
+                float t = time / duration;
+                t = t * t * (3f - 2f * t); // Smoothstep
+                rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, Mathf.Lerp(startY, targetY, t));
+                yield return null;
+            }
+
+            rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, targetY);
+            if (!show) _subtitlePanel.SetActive(false);
+        }
+
+        private System.Collections.IEnumerator TypewriterEffect(string fullText)
+        {
+            _subtitleText.text = "";
+            float timePerChar = 0.03f; // Faster typing
+            foreach (char c in fullText)
+            {
+                _subtitleText.text += c;
+                yield return new WaitForSeconds(timePerChar);
+            }
+        }
+
         public void ToggleInventory()
         {
             if (_inventoryPanel == null) return;
@@ -164,6 +296,7 @@ namespace EscapeRoomRevolt.UI.PC
             if (_pauseMenuPanel) _pauseMenuPanel.SetActive(false);
             if (_keypadPanel) _keypadPanel.SetActive(false);
             if (_itemExaminerPanel) _itemExaminerPanel.SetActive(false);
+            if (_subtitlePanel) _subtitlePanel.SetActive(false);
             _openPanelsCount = 0;
             _panelStack.Clear();
         }
