@@ -127,9 +127,17 @@ namespace EscapeRoomRevolt.Systems.Audio
         // ── BGM & AMBIENT ────────────────────────────────────────────────────
 
         /// <summary>
+        /// Crossfades to a new Background Music track with default duration (1.5s). Required for UnityEvents.
+        /// </summary>
+        public void PlayBGM(AudioClip clip)
+        {
+            PlayBGM(clip, 1.5f);
+        }
+
+        /// <summary>
         /// Crossfades to a new Background Music track.
         /// </summary>
-        public void PlayBGM(AudioClip clip, float crossfadeDuration = 1.5f)
+        public void PlayBGM(AudioClip clip, float crossfadeDuration)
         {
             if (clip == null) return;
 
