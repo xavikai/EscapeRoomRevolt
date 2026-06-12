@@ -8,10 +8,11 @@ namespace EscapeRoomRevolt.UI.PC
     /// <summary>
     /// Attach to the Inventory Slot prefab (or added dynamically) to enable Drag and Drop combinations.
     /// </summary>
-    public class InventorySlotDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
+    public class InventorySlotDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IPointerEnterHandler, IPointerExitHandler
     {
         private InventoryItemData _itemData;
         private Image _slotIcon;
+        private Outline _outline;
 
         // Static tracking of what's being dragged
         public static GameObject DraggingIcon;
@@ -23,6 +24,25 @@ namespace EscapeRoomRevolt.UI.PC
             _itemData = data;
             _slotIcon = slotIcon;
             _rootCanvas = GetComponentInParent<Canvas>();
+
+            _outline = GetComponent<Outline>();
+            if (_outline == null)
+            {
+                _outline = gameObject.AddComponent<Outline>();
+            }
+            _outline.effectColor = new Color(1f, 0.8f, 0f, 1f); // Golden yellow
+            _outline.effectDistance = new Vector2(3, -3);
+            _outline.enabled = false;
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            if (_outline != null) _outline.enabled = true;
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            if (_outline != null) _outline.enabled = false;
         }
 
         public void OnBeginDrag(PointerEventData eventData)

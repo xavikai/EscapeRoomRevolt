@@ -286,6 +286,45 @@ namespace EscapeRoomRevolt.EditorTools
             FinalizeCreation(logicObj);
         }
 
+        [MenuItem("EscapeRoom/2. Create Interactable/Lever", priority = 30)]
+        public static void CreateLever()
+        {
+            GameObject logicObj = CreateBaseInteractable("NewLever", new Vector3(0.1f, 0.4f, 0.1f), new Color(0.6f, 0.2f, 0.2f));
+            
+            // The visual part should be offset so it pivots at the base
+            Transform visuals = logicObj.transform.Find("NewLever_Visuals");
+            if (visuals != null)
+            {
+                visuals.localPosition = new Vector3(0, 0.2f, 0); // Offset up so pivot is at base
+            }
+
+            var toggle = logicObj.AddComponent<InteractableToggle>();
+            SerializedObject so = new SerializedObject(toggle);
+            so.FindProperty("_movementType").enumValueIndex = (int)ToggleMovementType.Rotate;
+            so.FindProperty("_offAngles").vector3Value = new Vector3(-45f, 0f, 0f);
+            so.FindProperty("_onAngles").vector3Value = new Vector3(45f, 0f, 0f);
+            so.FindProperty("_visualTransform").objectReferenceValue = logicObj.transform; // Rotate the whole logic object or the base? Better rotate logicObj! Wait, if we rotate LogicObj, the collider rotates. But visually, maybe rotate visuals? If we rotate logic object, the pivot is 0,0,0.
+            so.ApplyModifiedProperties();
+
+            FinalizeCreation(logicObj);
+        }
+
+        [MenuItem("EscapeRoom/2. Create Interactable/Switch", priority = 31)]
+        public static void CreateSwitch()
+        {
+            GameObject logicObj = CreateBaseInteractable("NewSwitch", new Vector3(0.2f, 0.4f, 0.1f), new Color(0.2f, 0.6f, 0.2f));
+            
+            var toggle = logicObj.AddComponent<InteractableToggle>();
+            SerializedObject so = new SerializedObject(toggle);
+            so.FindProperty("_movementType").enumValueIndex = (int)ToggleMovementType.Slide;
+            so.FindProperty("_offPosition").vector3Value = new Vector3(0f, 0f, 0f);
+            so.FindProperty("_onPosition").vector3Value = new Vector3(0f, -0.2f, 0f);
+            so.FindProperty("_visualTransform").objectReferenceValue = logicObj.transform.Find("NewSwitch_Visuals");
+            so.ApplyModifiedProperties();
+
+            FinalizeCreation(logicObj);
+        }
+
         private static GameObject CreateBaseInteractable(string name, Vector3 visualsScale, Color color)
         {
             GameObject logicObj = new GameObject(name + "_Logic");

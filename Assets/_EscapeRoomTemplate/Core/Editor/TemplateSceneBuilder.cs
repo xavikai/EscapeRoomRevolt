@@ -55,33 +55,53 @@ namespace EscapeRoomRevolt.EditorTools
             corridor.transform.position = new Vector3(0, -0.25f, 18);
             AssignURPMaterial(corridor, new Color(0.2f, 0.2f, 0.2f));
 
-            // Room 1: Basic Interaction (Drawers)
-            CreatePlatform(env, "Room1_Interaction", new Vector3(-6, 0, 5), new Color(0.3f, 0.4f, 0.3f));
+            // Room 1: Basic Interaction
+            CreatePlatform(env, "Room1_Button", "1", new Vector3(-6, 0, 5), new Color(0.2f, 0.4f, 0.6f), "Button & Light: Click to toggle state.");
             CreateDrawerPuzzle(new Vector3(-6, 0, 5));
 
-            // Room 2: Keys & Locks
-            CreatePlatform(env, "Room2_Locks", new Vector3(6, 0, 10), new Color(0.4f, 0.3f, 0.3f));
+            // Room 2: Key and Lock
+            CreatePlatform(env, "Room2_KeyLock", "2", new Vector3(6, 0, 10), new Color(0.6f, 0.2f, 0.2f), "Lock & Key: Find and use the correct key.");
             CreateKeyAndLockPuzzle(new Vector3(6, 0, 10));
 
-            // Room 3: Lore & Notes
-            CreatePlatform(env, "Room3_Lore", new Vector3(-6, 0, 15), new Color(0.3f, 0.3f, 0.4f));
+            // Room 3: Note Reading
+            CreatePlatform(env, "Room3_Note", "3", new Vector3(-6, 0, 15), new Color(0.2f, 0.6f, 0.2f), "Note: Read clues and lore.");
             CreateLorePuzzle(new Vector3(-6, 0, 15));
 
             // Room 4: 3D Examination
-            CreatePlatform(env, "Room4_Examination", new Vector3(6, 0, 20), new Color(0.4f, 0.4f, 0.3f));
+            CreatePlatform(env, "Room4_Examine", "4", new Vector3(6, 0, 20), new Color(0.6f, 0.6f, 0.2f), "Examine: Inspect items closely in 3D.");
             CreateExaminePuzzle(new Vector3(6, 0, 20));
 
-            // Room 5: Code Panel
-            CreatePlatform(env, "Room5_Keypad", new Vector3(-6, 0, 25), new Color(0.4f, 0.3f, 0.4f));
+            // Room 5: Numeric Keypad
+            CreatePlatform(env, "Room5_Keypad", "5", new Vector3(-6, 0, 25), new Color(0.2f, 0.2f, 0.6f), "Keypad: Enter a 4-digit code.");
             CreateKeypadPuzzle(new Vector3(-6, 0, 25));
 
-            // Room 6: Narrative Audio
-            CreatePlatform(env, "Room6_Narrative", new Vector3(6, 0, 30), new Color(0.3f, 0.4f, 0.4f));
+            // Room 6: Narrative Trigger
+            CreatePlatform(env, "Room6_Narrative", "6", new Vector3(6, 0, 30), new Color(0.6f, 0.2f, 0.6f), "Trigger: Walk into the invisible box.");
             CreateNarrativePuzzle(new Vector3(6, 0, 30));
 
             // Room 7: Item Receiver
-            CreatePlatform(env, "Room7_Receiver", new Vector3(-6, 0, 35), new Color(0.4f, 0.4f, 0.4f));
+            CreatePlatform(env, "Room7_Receiver", "7", new Vector3(-6, 0, 35), new Color(0.4f, 0.4f, 0.4f), "Receiver: Insert specific item.");
             CreateItemReceiverPuzzle(new Vector3(-6, 0, 35));
+
+            // Room 8: Light Switch
+            CreatePlatform(env, "Room8_LightSwitch", "8", new Vector3(6, 0, 40), new Color(0.5f, 0.5f, 0.3f), "Light Switch: Turn the lights off/on.");
+            CreateLightSwitchPuzzle(new Vector3(6, 0, 40));
+
+            // Room 9: Combination
+            CreatePlatform(env, "Room9_Combination", "9", new Vector3(-6, 0, 45), new Color(0.5f, 0.3f, 0.5f), "Combine: Mix items in inventory.");
+            CreateCombinationPuzzle(new Vector3(-6, 0, 45));
+
+            // Room 10: Sequence
+            CreatePlatform(env, "Room10_Sequence", "10", new Vector3(6, 0, 50), new Color(0.3f, 0.5f, 0.5f), "Sequence: Press buttons in order.");
+            CreateSequencePuzzle(new Vector3(6, 0, 50));
+
+            // Room 11: State (Levers)
+            CreatePlatform(env, "Room11_State", "11", new Vector3(-6, 0, 55), new Color(0.5f, 0.4f, 0.2f), "State: Match levers to correct positions.");
+            CreateStatePuzzle(new Vector3(-6, 0, 55));
+
+            // Extend corridor to accommodate all rooms
+            corridor.transform.localScale = new Vector3(4, 0.5f, 65);
+            corridor.transform.position = new Vector3(0, -0.25f, 30);
 
             SaveScene(newScene, "Assets/_EscapeRoomTemplate/Scenes/ShowcaseMuseum.unity");
         }
@@ -122,7 +142,7 @@ namespace EscapeRoomRevolt.EditorTools
             return null;
         }
 
-        private static void CreatePlatform(GameObject env, string name, Vector3 position, Color color)
+        private static void CreatePlatform(GameObject env, string name, string roomNumber, Vector3 position, Color color, string description = "")
         {
             GameObject platform = GameObject.CreatePrimitive(PrimitiveType.Cube);
             platform.name = name;
@@ -130,6 +150,38 @@ namespace EscapeRoomRevolt.EditorTools
             platform.transform.localScale = new Vector3(8, 0.5f, 8);
             platform.transform.position = new Vector3(position.x, -0.25f, position.z);
             AssignURPMaterial(platform, color);
+
+            // Add big 3D Text number flat on the floor for Top View
+            GameObject textObj = new GameObject("RoomNumberText");
+            textObj.transform.SetParent(env.transform); // Don't parent to the platform to avoid non-uniform scale stretching!
+            
+            // Position it slightly above the floor (0.01f)
+            textObj.transform.position = position + new Vector3(0, 0.01f, 0);
+            textObj.transform.rotation = Quaternion.Euler(90, 0, 0);
+
+            var textMesh = textObj.AddComponent<TextMesh>();
+            textMesh.text = roomNumber;
+            textMesh.fontSize = 200;
+            textMesh.characterSize = 0.1f; // Doubled size for top view
+            textMesh.alignment = TextAlignment.Center;
+            textMesh.anchor = TextAnchor.MiddleCenter;
+            textMesh.color = new Color(1, 1, 1, 0.5f); 
+
+            if (!string.IsNullOrEmpty(description))
+            {
+                GameObject descObj = new GameObject("RoomDescriptionText");
+                descObj.transform.SetParent(env.transform);
+                descObj.transform.position = position + new Vector3(0, 0.01f, -2.5f);
+                descObj.transform.rotation = Quaternion.Euler(90, 0, 0);
+
+                var descMesh = descObj.AddComponent<TextMesh>();
+                descMesh.text = description;
+                descMesh.fontSize = 100;
+                descMesh.characterSize = 0.05f;
+                descMesh.alignment = TextAlignment.Center;
+                descMesh.anchor = TextAnchor.MiddleCenter;
+                descMesh.color = new Color(1, 1, 1, 0.5f); 
+            }
         }
 
         private static void AssignURPMaterial(GameObject obj, Color color)
@@ -405,15 +457,40 @@ namespace EscapeRoomRevolt.EditorTools
             soTrigger.ApplyModifiedProperties();
         }
 
+        private static void EnsureExamineKeyExists()
+        {
+            string pathKey = "Assets/_EscapeRoomTemplate/ScriptableObjects/Items/Key_Examine.asset";
+            var key = AssetDatabase.LoadAssetAtPath<InventoryItemData>(pathKey);
+            if (key == null)
+            {
+                key = ScriptableObject.CreateInstance<InventoryItemData>();
+                AssetDatabase.CreateAsset(key, pathKey);
+                SerializedObject soKey = new SerializedObject(key);
+                soKey.FindProperty("_itemId").stringValue = "key_examine_01";
+                soKey.FindProperty("_displayName").stringValue = "Strange Key";
+                soKey.FindProperty("_description").stringValue = "A very odd looking key.";
+                
+                GameObject clauPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_EscapeRoomTemplate/Prefabs/clau.prefab");
+                if (clauPrefab != null)
+                {
+                    soKey.FindProperty("_worldPrefab").objectReferenceValue = clauPrefab;
+                }
+                
+                soKey.ApplyModifiedProperties();
+                AssetDatabase.SaveAssets();
+            }
+        }
+
         private static void CreateExaminePuzzle(Vector3 center)
         {
+            EnsureExamineKeyExists();
             EscapeRoomRevolt.Editor.ExamineChamberSetup.CreateExamineChamber();
             
             GameObject pedestal = GameObject.CreatePrimitive(PrimitiveType.Cube);
             pedestal.transform.position = center + new Vector3(0, 0.5f, 0);
             pedestal.transform.localScale = new Vector3(1, 1, 1);
 
-            InventoryItemData itemData = AssetDatabase.LoadAssetAtPath<InventoryItemData>("Assets/_EscapeRoomTemplate/ScriptableObjects/Items/Key_Office.asset");
+            InventoryItemData itemData = AssetDatabase.LoadAssetAtPath<InventoryItemData>("Assets/_EscapeRoomTemplate/ScriptableObjects/Items/Key_Examine.asset");
             if (itemData != null)
             {
                 // Ensure the item has a 3D model assigned for the Examine Chamber
@@ -439,8 +516,34 @@ namespace EscapeRoomRevolt.EditorTools
             }
         }
 
+        private static void EnsureSecretRoomKeyExists()
+        {
+            string pathKey = "Assets/_EscapeRoomTemplate/ScriptableObjects/Items/Key_SecretRoom.asset";
+            var key = AssetDatabase.LoadAssetAtPath<InventoryItemData>(pathKey);
+            if (key == null)
+            {
+                key = ScriptableObject.CreateInstance<InventoryItemData>();
+                AssetDatabase.CreateAsset(key, pathKey);
+                SerializedObject soKey = new SerializedObject(key);
+                soKey.FindProperty("_itemId").stringValue = "key_secret_room_01";
+                soKey.FindProperty("_displayName").stringValue = "Golden Key";
+                soKey.FindProperty("_description").stringValue = "A shiny golden key.";
+                
+                GameObject clauPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_EscapeRoomTemplate/Prefabs/clau.prefab");
+                if (clauPrefab != null)
+                {
+                    soKey.FindProperty("_worldPrefab").objectReferenceValue = clauPrefab;
+                }
+                
+                soKey.ApplyModifiedProperties();
+                AssetDatabase.SaveAssets();
+            }
+        }
+
         private static void CreateItemReceiverPuzzle(Vector3 center)
         {
+            EnsureSecretRoomKeyExists();
+
             GameObject pedestal = GameObject.CreatePrimitive(PrimitiveType.Cube);
             pedestal.transform.position = center + new Vector3(0, 0.5f, 0);
             pedestal.transform.localScale = new Vector3(1, 1, 1);
@@ -471,7 +574,7 @@ namespace EscapeRoomRevolt.EditorTools
             camObj.SetActive(false);
             var cinematicCam = camObj.AddComponent<EscapeRoomRevolt.Systems.Animation.CinematicCamera>();
 
-            InventoryItemData itemData = AssetDatabase.LoadAssetAtPath<InventoryItemData>("Assets/_EscapeRoomTemplate/ScriptableObjects/Items/Key_Office.asset");
+            InventoryItemData itemData = AssetDatabase.LoadAssetAtPath<InventoryItemData>("Assets/_EscapeRoomTemplate/ScriptableObjects/Items/Key_SecretRoom.asset");
             if (itemData != null)
             {
                 // Create a pickable key right here so the player doesn't have to walk to room 4
@@ -485,13 +588,13 @@ namespace EscapeRoomRevolt.EditorTools
                 SerializedObject soPickable = new SerializedObject(pickable);
                 soPickable.FindProperty("_itemData").objectReferenceValue = itemData;
                 soPickable.FindProperty("_destroyOnPickup").boolValue = true;
-                soPickable.FindProperty("_interactionPrompt").stringValue = "[E] Pick up Key";
+                soPickable.FindProperty("_interactionPrompt").stringValue = "[E] Pick up Golden Key";
                 soPickable.ApplyModifiedProperties();
 
                 // Configure Receiver
                 SerializedObject soReceiver = new SerializedObject(receiver);
                 soReceiver.FindProperty("_requiredItem").objectReferenceValue = itemData;
-                soReceiver.FindProperty("_interactionPrompt").stringValue = "[E] Insert Item";
+                soReceiver.FindProperty("_interactionPrompt").stringValue = "[E] Insert Golden Key";
                 soReceiver.ApplyModifiedProperties();
 
                 if (doorScript != null)
@@ -538,6 +641,274 @@ namespace EscapeRoomRevolt.EditorTools
             UnityEngine.Events.UnityAction<bool> setActiveAction = new UnityEngine.Events.UnityAction<bool>(lightRoot.SetActive);
             UnityEditor.Events.UnityEventTools.AddBoolPersistentListener(trigger.OnInteractEvent, setActiveAction, true);
             UnityEditor.Events.UnityEventTools.AddBoolPersistentListener(trigger.OnInteractOffEvent, setActiveAction, false);
+        }
+
+        private static void EnsureCombinationItemsExist()
+        {
+            string pathEmpty = "Assets/_EscapeRoomTemplate/ScriptableObjects/Items/Flashlight_Empty.asset";
+            string pathBattery = "Assets/_EscapeRoomTemplate/ScriptableObjects/Items/Batteries.asset";
+            string pathWorking = "Assets/_EscapeRoomTemplate/ScriptableObjects/Items/Flashlight_Working.asset";
+
+            var working = AssetDatabase.LoadAssetAtPath<InventoryItemData>(pathWorking);
+            if (working == null)
+            {
+                working = ScriptableObject.CreateInstance<InventoryItemData>();
+                AssetDatabase.CreateAsset(working, pathWorking);
+                SerializedObject soWorking = new SerializedObject(working);
+                soWorking.FindProperty("_itemId").stringValue = "flashlight_working";
+                soWorking.FindProperty("_displayName").stringValue = "Working Flashlight";
+                soWorking.FindProperty("_description").stringValue = "It has batteries now.";
+                soWorking.ApplyModifiedProperties();
+            }
+
+            var battery = AssetDatabase.LoadAssetAtPath<InventoryItemData>(pathBattery);
+            if (battery == null)
+            {
+                battery = ScriptableObject.CreateInstance<InventoryItemData>();
+                AssetDatabase.CreateAsset(battery, pathBattery);
+                SerializedObject soBattery = new SerializedObject(battery);
+                soBattery.FindProperty("_itemId").stringValue = "batteries";
+                soBattery.FindProperty("_displayName").stringValue = "Batteries";
+                soBattery.FindProperty("_description").stringValue = "A pair of AA batteries.";
+                soBattery.ApplyModifiedProperties();
+            }
+
+            var empty = AssetDatabase.LoadAssetAtPath<InventoryItemData>(pathEmpty);
+            if (empty == null)
+            {
+                empty = ScriptableObject.CreateInstance<InventoryItemData>();
+                AssetDatabase.CreateAsset(empty, pathEmpty);
+                SerializedObject soEmpty = new SerializedObject(empty);
+                soEmpty.FindProperty("_itemId").stringValue = "flashlight_empty";
+                soEmpty.FindProperty("_displayName").stringValue = "Empty Flashlight";
+                soEmpty.FindProperty("_description").stringValue = "Needs batteries to work.";
+                
+                // Add Combination
+                var combos = soEmpty.FindProperty("_combinations");
+                combos.arraySize = 1;
+                var combo = combos.GetArrayElementAtIndex(0);
+                combo.FindPropertyRelative("CombineWith").objectReferenceValue = battery;
+                combo.FindPropertyRelative("ResultItem").objectReferenceValue = working;
+                combo.FindPropertyRelative("DestroyThis").boolValue = true;
+                combo.FindPropertyRelative("DestroyOther").boolValue = true;
+                
+                soEmpty.ApplyModifiedProperties();
+            }
+            
+            AssetDatabase.SaveAssets();
+        }
+
+        private static void CreateCombinationPuzzle(Vector3 center)
+        {
+            EnsureCombinationItemsExist();
+            
+            var empty = AssetDatabase.LoadAssetAtPath<InventoryItemData>("Assets/_EscapeRoomTemplate/ScriptableObjects/Items/Flashlight_Empty.asset");
+            var battery = AssetDatabase.LoadAssetAtPath<InventoryItemData>("Assets/_EscapeRoomTemplate/ScriptableObjects/Items/Batteries.asset");
+            var working = AssetDatabase.LoadAssetAtPath<InventoryItemData>("Assets/_EscapeRoomTemplate/ScriptableObjects/Items/Flashlight_Working.asset");
+
+            // Table
+            GameObject table = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            table.transform.position = center + new Vector3(1.5f, 0.5f, 0);
+            table.transform.localScale = new Vector3(1f, 1f, 0.5f);
+
+            // Pickup Empty Flashlight
+            GameObject emptyObj = CreateInteractableObject("PickupEmpty", center + new Vector3(1.25f, 1.1f, 0), new Vector3(0.2f, 0.2f, 0.2f), Color.red);
+            var pickEmpty = emptyObj.AddComponent<PickableItem>();
+            SerializedObject soEmptyPick = new SerializedObject(pickEmpty);
+            soEmptyPick.FindProperty("_itemData").objectReferenceValue = empty;
+            soEmptyPick.FindProperty("_destroyOnPickup").boolValue = true;
+            soEmptyPick.ApplyModifiedProperties();
+
+            // Pickup Batteries
+            GameObject batteryObj = CreateInteractableObject("PickupBattery", center + new Vector3(1.75f, 1.1f, 0), new Vector3(0.1f, 0.1f, 0.1f), Color.yellow);
+            var pickBattery = batteryObj.AddComponent<PickableItem>();
+            SerializedObject soBatteryPick = new SerializedObject(pickBattery);
+            soBatteryPick.FindProperty("_itemData").objectReferenceValue = battery;
+            soBatteryPick.FindProperty("_destroyOnPickup").boolValue = true;
+            soBatteryPick.ApplyModifiedProperties();
+
+            // Receiver
+            GameObject pedestal = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            pedestal.transform.position = center + new Vector3(-1.5f, 0.5f, 0);
+            
+            GameObject receiverObj = CreateInteractableObject("Receiver", center + new Vector3(-1.5f, 1.1f, 0), new Vector3(0.5f, 0.2f, 0.5f), Color.grey);
+            var receiver = receiverObj.AddComponent<ItemReceiver>();
+            SerializedObject soReceiver = new SerializedObject(receiver);
+            soReceiver.FindProperty("_requiredItem").objectReferenceValue = working;
+            soReceiver.FindProperty("_missingItemMessage").stringValue = "I need a WORKING flashlight to place here.";
+            soReceiver.ApplyModifiedProperties();
+
+            EscapeRoomRevolt.EditorTools.InteractableCreator.CreateDoor();
+            GameObject doorObj = UnityEditor.Selection.activeGameObject;
+
+            // Add Cinematic Camera pointing to the door
+            GameObject camObj = new GameObject("ReceiverFeedbackCamera");
+            camObj.transform.position = center + new Vector3(0.5f, 1.5f, -1.5f);
+            if (doorObj != null) camObj.transform.LookAt(doorObj.transform);
+            var cam = camObj.AddComponent<Camera>();
+            camObj.SetActive(false);
+            var cinematicCam = camObj.AddComponent<EscapeRoomRevolt.Systems.Animation.CinematicCamera>();
+
+            if (doorObj != null)
+            {
+                doorObj.transform.position = center + new Vector3(0, 1.25f, 2);
+                var doorScript = doorObj.GetComponent<Door>();
+                var soDoor = new SerializedObject(doorScript);
+                soDoor.FindProperty("_isLocked").boolValue = true;
+                soDoor.ApplyModifiedProperties();
+
+                UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(receiver.OnItemAccepted, doorScript.Unlock);
+                UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(receiver.OnItemAccepted, doorScript.ForceOpen);
+                UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(receiver.OnItemAccepted, cinematicCam.PlayCinematic);
+            }
+        }
+
+        private static void CreateSequencePuzzle(Vector3 center)
+        {
+            // Controller
+            GameObject puzzleObj = new GameObject("SequencePuzzleController");
+            puzzleObj.transform.position = center;
+            var seqPuzzle = puzzleObj.AddComponent<EscapeRoomRevolt.Systems.Puzzle.SequencePuzzle>();
+            SerializedObject soPuzzle = new SerializedObject(seqPuzzle);
+            var seqProp = soPuzzle.FindProperty("_correctSequence");
+            seqProp.arraySize = 3;
+            seqProp.GetArrayElementAtIndex(0).stringValue = "Red";
+            seqProp.GetArrayElementAtIndex(1).stringValue = "Green";
+            seqProp.GetArrayElementAtIndex(2).stringValue = "Blue";
+            soPuzzle.ApplyModifiedProperties();
+
+            // Door
+            EscapeRoomRevolt.EditorTools.InteractableCreator.CreateDoor();
+            GameObject doorObj = UnityEditor.Selection.activeGameObject;
+            if (doorObj != null)
+            {
+                doorObj.transform.position = center + new Vector3(0, 2.5f, 2);
+                doorObj.transform.localScale = new Vector3(2f, 2f, 2f); // GIANT DOOR
+                var doorScript = doorObj.GetComponent<Door>();
+                var soDoor = new SerializedObject(doorScript);
+                soDoor.FindProperty("_isLocked").boolValue = true;
+                soDoor.FindProperty("_movementType").enumValueIndex = (int)DoorMovementType.Slide;
+                soDoor.FindProperty("_slideOffset").vector3Value = new Vector3(0, 2.5f, 0); // Open upwards like a gate
+                soDoor.ApplyModifiedProperties();
+
+                UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(seqPuzzle.OnSolvedEvent, doorScript.Unlock);
+                UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(seqPuzzle.OnSolvedEvent, doorScript.ForceOpen);
+            }
+
+            // Buttons
+            CreateSequenceButton(center + new Vector3(-1.5f, 1.5f, 1.5f), "Red", Color.red, seqPuzzle);
+            CreateSequenceButton(center + new Vector3(0f, 1.5f, 1.5f), "Green", Color.green, seqPuzzle);
+            CreateSequenceButton(center + new Vector3(1.5f, 1.5f, 1.5f), "Blue", Color.blue, seqPuzzle);
+        }
+
+        private static void CreateSequenceButton(Vector3 pos, string colorId, Color color, EscapeRoomRevolt.Systems.Puzzle.SequencePuzzle puzzle)
+        {
+            GameObject btnObj = CreateInteractableObject(colorId + "Button", pos, new Vector3(0.3f, 0.3f, 0.1f), color);
+            var trigger = btnObj.AddComponent<InteractableTrigger>();
+            var soTrigger = new SerializedObject(trigger);
+            soTrigger.FindProperty("_prompt").stringValue = $"Press {colorId}";
+            soTrigger.ApplyModifiedProperties();
+
+            UnityEngine.Events.UnityAction<string> inputAction = new UnityEngine.Events.UnityAction<string>(puzzle.InputStep);
+            UnityEditor.Events.UnityEventTools.AddStringPersistentListener(trigger.OnInteractEvent, inputAction, colorId);
+
+            var feedback = btnObj.AddComponent<EscapeRoomRevolt.Systems.Feedback.ButtonFeedback>();
+            SerializedObject soFeedback = new SerializedObject(feedback);
+            soFeedback.FindProperty("_visualTransform").objectReferenceValue = btnObj.transform.Find(colorId + "Button_Visuals");
+            soFeedback.ApplyModifiedProperties();
+            
+            UnityEngine.Events.UnityAction feedbackAction = new UnityEngine.Events.UnityAction(feedback.PlayFeedback);
+            UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(trigger.OnInteractEvent, feedbackAction);
+        }
+
+        private static void CreateStatePuzzle(Vector3 center)
+        {
+            // Controller
+            GameObject puzzleObj = new GameObject("StatePuzzleController");
+            puzzleObj.transform.position = center;
+            var statePuzzle = puzzleObj.AddComponent<EscapeRoomRevolt.Systems.Puzzle.StatePuzzle>();
+            
+            // Generate 3 Levers on the left wall
+            GameObject wallL = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            wallL.transform.position = center + new Vector3(-3, 1.5f, 0);
+            wallL.transform.localScale = new Vector3(1, 3, 4);
+
+            EscapeRoomRevolt.EditorTools.InteractableCreator.CreateLever();
+            GameObject lever1 = UnityEditor.Selection.activeGameObject;
+            lever1.transform.position = center + new Vector3(-2.4f, 1.5f, -1f);
+            lever1.transform.SetParent(puzzleObj.transform);
+
+            EscapeRoomRevolt.EditorTools.InteractableCreator.CreateLever();
+            GameObject lever2 = UnityEditor.Selection.activeGameObject;
+            lever2.transform.position = center + new Vector3(-2.4f, 1.5f, 0f);
+            lever2.transform.SetParent(puzzleObj.transform);
+
+            EscapeRoomRevolt.EditorTools.InteractableCreator.CreateLever();
+            GameObject lever3 = UnityEditor.Selection.activeGameObject;
+            lever3.transform.position = center + new Vector3(-2.4f, 1.5f, 1f);
+            lever3.transform.SetParent(puzzleObj.transform);
+
+            // Generate 3 Switches on the right wall
+            GameObject wallR = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            wallR.transform.position = center + new Vector3(3, 1.5f, 0);
+            wallR.transform.localScale = new Vector3(1, 3, 4);
+
+            EscapeRoomRevolt.EditorTools.InteractableCreator.CreateSwitch();
+            GameObject switch1 = UnityEditor.Selection.activeGameObject;
+            switch1.transform.position = center + new Vector3(2.4f, 1.5f, 1f);
+            switch1.transform.SetParent(puzzleObj.transform);
+
+            EscapeRoomRevolt.EditorTools.InteractableCreator.CreateSwitch();
+            GameObject switch2 = UnityEditor.Selection.activeGameObject;
+            switch2.transform.position = center + new Vector3(2.4f, 1.5f, 0f);
+            switch2.transform.SetParent(puzzleObj.transform);
+
+            EscapeRoomRevolt.EditorTools.InteractableCreator.CreateSwitch();
+            GameObject switch3 = UnityEditor.Selection.activeGameObject;
+            switch3.transform.position = center + new Vector3(2.4f, 1.5f, -1f);
+            switch3.transform.SetParent(puzzleObj.transform);
+
+            // Configure State Puzzle to require 6 conditions
+            SerializedObject soPuzzle = new SerializedObject(statePuzzle);
+            var condProp = soPuzzle.FindProperty("_conditions");
+            condProp.arraySize = 6;
+            
+            // Levers: ON, OFF, ON
+            condProp.GetArrayElementAtIndex(0).FindPropertyRelative("Toggle").objectReferenceValue = lever1.GetComponent<EscapeRoomRevolt.Systems.Interaction.InteractableToggle>();
+            condProp.GetArrayElementAtIndex(0).FindPropertyRelative("RequiredState").boolValue = true;
+            
+            condProp.GetArrayElementAtIndex(1).FindPropertyRelative("Toggle").objectReferenceValue = lever2.GetComponent<EscapeRoomRevolt.Systems.Interaction.InteractableToggle>();
+            condProp.GetArrayElementAtIndex(1).FindPropertyRelative("RequiredState").boolValue = false;
+            
+            condProp.GetArrayElementAtIndex(2).FindPropertyRelative("Toggle").objectReferenceValue = lever3.GetComponent<EscapeRoomRevolt.Systems.Interaction.InteractableToggle>();
+            condProp.GetArrayElementAtIndex(2).FindPropertyRelative("RequiredState").boolValue = true;
+
+            // Switches: OFF, ON, OFF
+            condProp.GetArrayElementAtIndex(3).FindPropertyRelative("Toggle").objectReferenceValue = switch1.GetComponent<EscapeRoomRevolt.Systems.Interaction.InteractableToggle>();
+            condProp.GetArrayElementAtIndex(3).FindPropertyRelative("RequiredState").boolValue = false;
+            
+            condProp.GetArrayElementAtIndex(4).FindPropertyRelative("Toggle").objectReferenceValue = switch2.GetComponent<EscapeRoomRevolt.Systems.Interaction.InteractableToggle>();
+            condProp.GetArrayElementAtIndex(4).FindPropertyRelative("RequiredState").boolValue = true;
+            
+            condProp.GetArrayElementAtIndex(5).FindPropertyRelative("Toggle").objectReferenceValue = switch3.GetComponent<EscapeRoomRevolt.Systems.Interaction.InteractableToggle>();
+            condProp.GetArrayElementAtIndex(5).FindPropertyRelative("RequiredState").boolValue = false;
+            
+            soPuzzle.ApplyModifiedProperties();
+
+            // Door
+            EscapeRoomRevolt.EditorTools.InteractableCreator.CreateDoor();
+            GameObject doorObj = UnityEditor.Selection.activeGameObject;
+            if (doorObj != null)
+            {
+                doorObj.transform.position = center + new Vector3(0, 1.25f, 2);
+                var doorScript = doorObj.GetComponent<EscapeRoomRevolt.Systems.Interaction.Door>();
+                var soDoor = new SerializedObject(doorScript);
+                soDoor.FindProperty("_isLocked").boolValue = true;
+                soDoor.ApplyModifiedProperties();
+
+                UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(statePuzzle.OnSolvedEvent, doorScript.Unlock);
+                UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(statePuzzle.OnSolvedEvent, doorScript.ForceOpen);
+            }
         }
     }
 }
