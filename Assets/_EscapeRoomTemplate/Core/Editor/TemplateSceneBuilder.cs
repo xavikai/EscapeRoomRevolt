@@ -115,10 +115,60 @@ namespace EscapeRoomRevolt.EditorTools
 
             InstantiatePrefab("Assets/_EscapeRoomTemplate/Prefabs/GameManager.prefab", Vector3.zero);
             InstantiatePrefab("Assets/_EscapeRoomTemplate/Prefabs/UI_Canvas.prefab", Vector3.zero);
-            
+
+            // Add AudioManager if it doesn't exist
+            if (GameObject.FindObjectOfType<EscapeRoomRevolt.Systems.Audio.AudioManager>() == null)
+            {
+                GameObject amObj = new GameObject("AudioManager");
+                amObj.AddComponent<EscapeRoomRevolt.Systems.Audio.AudioManager>();
+            }
+
+            // Create Required Tags
+            SerializedObject tagManager = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/TagManager.asset")[0]);
+            SerializedProperty tagsProp = tagManager.FindProperty("tags");
+            string[] requiredTags = new string[] { "Wood", "Stone", "Metal", "Carpet" };
+            foreach (string t in requiredTags)
+            {
+                bool found = false;
+                for (int i = 0; i < tagsProp.arraySize; i++)
+                {
+                    if (tagsProp.GetArrayElementAtIndex(i).stringValue.Equals(t)) { found = true; break; }
+                }
+                if (!found)
+                {
+                    tagsProp.InsertArrayElementAtIndex(tagsProp.arraySize);
+                    tagsProp.GetArrayElementAtIndex(tagsProp.arraySize - 1).stringValue = t;
+                }
+            }
+            tagManager.ApplyModifiedProperties();
+
+            // Create Default SurfaceAudioData Asset
+            string audioDataPath = "Assets/_EscapeRoomTemplate/Systems/Audio/DefaultSurfaceAudioData.asset";
+            var surfaceData = AssetDatabase.LoadAssetAtPath<EscapeRoomRevolt.Systems.Audio.SurfaceAudioData>(audioDataPath);
+            if (surfaceData == null)
+            {
+                surfaceData = ScriptableObject.CreateInstance<EscapeRoomRevolt.Systems.Audio.SurfaceAudioData>();
+                
+                // Add default mappings so it's ready to use
+                surfaceData.SurfaceMappings.Add(new EscapeRoomRevolt.Systems.Audio.SurfaceAudioMapping { SurfaceTag = "Wood" });
+                surfaceData.SurfaceMappings.Add(new EscapeRoomRevolt.Systems.Audio.SurfaceAudioMapping { SurfaceTag = "Stone" });
+                surfaceData.SurfaceMappings.Add(new EscapeRoomRevolt.Systems.Audio.SurfaceAudioMapping { SurfaceTag = "Metal" });
+                
+                AssetDatabase.CreateAsset(surfaceData, audioDataPath);
+                AssetDatabase.SaveAssets();
+            }
+
             GameObject player = InstantiatePrefab("Assets/_EscapeRoomTemplate/Prefabs/Player_PC.prefab", new Vector3(0, 0.5f, 0));
             if (player != null)
             {
+                var pm = player.GetComponent<PlayerMovement>();
+                if (pm != null)
+                {
+                    SerializedObject soPM = new SerializedObject(pm);
+                    soPM.FindProperty("_surfaceAudioData").objectReferenceValue = surfaceData;
+                    soPM.ApplyModifiedProperties();
+                }
+
                 var interactionManager = player.GetComponentInChildren<InteractionManager>();
                 if (interactionManager != null)
                 {

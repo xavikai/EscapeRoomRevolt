@@ -22,6 +22,11 @@ namespace EscapeRoomRevolt.Player.PC
         [SerializeField] private float _sprintSpeed  = 6.0f;
         [SerializeField] private float _gravity      = -9.81f;
 
+        [Header("Footsteps")]
+        [SerializeField] private EscapeRoomRevolt.Systems.Audio.SurfaceAudioData _surfaceAudioData;
+        [SerializeField] private float _footstepDistanceWalk = 1.8f;
+        [SerializeField] private float _footstepDistanceSprint = 2.4f;
+
         [Header("Mouse Look")]
         [SerializeField] private Transform _playerCamera;
         [SerializeField] private float _mouseSensitivity = 120f;
@@ -31,6 +36,7 @@ namespace EscapeRoomRevolt.Player.PC
         private CharacterController _cc;
         private float  _verticalVelocity;
         private float  _cameraPitch; // Up/down rotation accumulated
+        private float  _accumulatedDistance;
 
         // ── Unity Lifecycle ──────────────────────────────────────────────────
         private void Awake()
@@ -90,6 +96,24 @@ namespace EscapeRoomRevolt.Player.PC
             Vector3 move = transform.right * h + transform.forward * v;
             move = Vector3.ClampMagnitude(move, 1f); // Prevents diagonal speed boost
 
+            // Calculate horizontal distance moved this frame for footsteps
+            Vector3 horizontalVelocity = move * speed;
+            if (_cc.isGrounded && horizontalVelocity.sqrMagnitude > 0.1f)
+            {
+                _accumulatedDistance += horizontalVelocity.magnitude * Time.deltaTime;
+                float currentStepThreshold = isSprinting ? _footstepDistanceSprint : _footstepDistanceWalk;
+
+                if (_accumulatedDistance >= currentStepThreshold)
+                {
+                    _accumulatedDistance = 0f;
+                    PlayFootstepSound();
+                }
+            }
+            else
+            {
+                _accumulatedDistance = 0f; // Reset if stopped or jumping
+            }
+
             // Gravity
             if (_cc.isGrounded && _verticalVelocity < 0f)
                 _verticalVelocity = -2f; // Small negative to keep grounded
@@ -98,6 +122,26 @@ namespace EscapeRoomRevolt.Player.PC
             move.y = _verticalVelocity;
 
             _cc.Move(move * speed * Time.deltaTime);
+        }
+
+        private void PlayFootstepSound()
+        {
+            if (_surfaceAudioData == null || EscapeRoomRevolt.Systems.Audio.AudioManager.Instance == null) return;
+
+            string currentTag = "Untagged";
+
+            // Raycast down to find floor material
+            if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 2.5f))
+            {
+                currentTag = hit.collider.tag;
+            }
+
+            AudioClip clip = _surfaceAudioData.GetRandomClip(currentTag);
+            if (clip != null)
+            {
+                // Play sound via AudioManager
+                EscapeRoomRevolt.Systems.Audio.AudioManager.Instance.PlaySoundAt(clip, transform.position, 1f, 0.15f);
+            }
         }
 
         // ── Public API ───────────────────────────────────────────────────────

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace EscapeRoomRevolt.Systems.Audio
@@ -7,18 +8,32 @@ namespace EscapeRoomRevolt.Systems.Audio
     {
         public static AudioManager Instance { get; private set; }
 
+        [Header("Global Volumes")]
+        [Range(0f, 1f)] public float MasterVolume = 1f;
+        [Range(0f, 1f)] public float MusicVolume = 0.5f;
+        [Range(0f, 1f)] public float SFXVolume = 1f;
+
         [Header("Pool Settings")]
         [SerializeField] private int _poolSize = 15;
         
         private Queue<AudioSource> _audioSourcePool;
         private GameObject _poolContainer;
 
+        // BGM & Ambient Sources
+        private AudioSource _bgmSourceA;
+        private AudioSource _bgmSourceB;
+        private AudioSource _ambientSource;
+        private bool _isBgmA_Active = true;
+
+        private Coroutine _bgmCrossfadeRoutine;
+
         private void Awake()
         {
             if (Instance == null)
             {
                 Instance = this;
-                InitializePool();
+                DontDestroyOnLoad(gameObject);
+                InitializeSystems();
             }
             else
             {
@@ -26,8 +41,9 @@ namespace EscapeRoomRevolt.Systems.Audio
             }
         }
 
-        private void InitializePool()
+        private void InitializeSystems()
         {
+            // Init SFX Pool
             _audioSourcePool = new Queue<AudioSource>();
             _poolContainer = new GameObject("AudioSourcePool");
             _poolContainer.transform.SetParent(transform);
@@ -36,6 +52,20 @@ namespace EscapeRoomRevolt.Systems.Audio
             {
                 CreateNewAudioSource();
             }
+
+            // Init BGM Sources (2D)
+            _bgmSourceA = gameObject.AddComponent<AudioSource>();
+            _bgmSourceA.loop = true;
+            _bgmSourceA.spatialBlend = 0f;
+
+            _bgmSourceB = gameObject.AddComponent<AudioSource>();
+            _bgmSourceB.loop = true;
+            _bgmSourceB.spatialBlend = 0f;
+
+            // Init Ambient Source (2D)
+            _ambientSource = gameObject.AddComponent<AudioSource>();
+            _ambientSource.loop = true;
+            _ambientSource.spatialBlend = 0f;
         }
 
         private AudioSource CreateNewAudioSource()
@@ -56,50 +86,107 @@ namespace EscapeRoomRevolt.Systems.Audio
             return source;
         }
 
+        // ── SFX ──────────────────────────────────────────────────────────────
+
         /// <summary>
-        /// Plays an AudioClip at a specific world position with optional pitch variation.
+        /// Plays an AudioClip at a specific world position.
         /// </summary>
-        /// <param name="clip">The AudioClip to play.</param>
-        /// <param name="position">The world position of the sound.</param>
-        /// <param name="volume">Volume (0.0 to 1.0).</param>
-        /// <param name="pitchVariance">Amount of random pitch variance (e.g. 0.1 means +/- 10% pitch).</param>
-        public void PlaySoundAt(AudioClip clip, Vector3 position, float volume = 1f, float pitchVariance = 0f)
+        public void PlaySoundAt(AudioClip clip, Vector3 position, float volumeMultiplier = 1f, float pitchVariance = 0f)
         {
             if (clip == null) return;
 
             AudioSource source = GetAvailableSource();
             source.transform.position = position;
             source.clip = clip;
-            source.volume = volume;
+            source.volume = volumeMultiplier * SFXVolume * MasterVolume;
             
-            // Apply pitch variance (e.g., if variance is 0.1, pitch will be between 0.9 and 1.1)
             source.pitch = 1f + Random.Range(-pitchVariance, pitchVariance);
             
             source.gameObject.SetActive(true);
             source.Play();
 
-            // Return to pool after the clip finishes
             StartCoroutine(ReturnToPoolAfterDelay(source, clip.length));
         }
 
         private AudioSource GetAvailableSource()
         {
             if (_audioSourcePool.Count > 0)
-            {
                 return _audioSourcePool.Dequeue();
-            }
             
-            // If pool is empty, expand it
-            Debug.LogWarning("[AudioManager] Expanding audio pool!");
             return CreateNewAudioSource();
         }
 
-        private System.Collections.IEnumerator ReturnToPoolAfterDelay(AudioSource source, float delay)
+        private IEnumerator ReturnToPoolAfterDelay(AudioSource source, float delay)
         {
             yield return new WaitForSeconds(delay);
             source.gameObject.SetActive(false);
             source.clip = null;
             _audioSourcePool.Enqueue(source);
+        }
+
+        // ── BGM & AMBIENT ────────────────────────────────────────────────────
+
+        /// <summary>
+        /// Crossfades to a new Background Music track.
+        /// </summary>
+        public void PlayBGM(AudioClip clip, float crossfadeDuration = 1.5f)
+        {
+            if (clip == null) return;
+
+            AudioSource activeSource = _isBgmA_Active ? _bgmSourceA : _bgmSourceB;
+            if (activeSource.clip == clip) return; // Already playing this track
+
+            if (_bgmCrossfadeRoutine != null) StopCoroutine(_bgmCrossfadeRoutine);
+            _bgmCrossfadeRoutine = StartCoroutine(CrossfadeRoutine(clip, crossfadeDuration));
+        }
+
+        /// <summary>
+        /// Plays an ambient loop (like room tone, wind, or breathing).
+        /// </summary>
+        public void PlayAmbient(AudioClip clip, float volumeMultiplier = 1f)
+        {
+            if (_ambientSource.clip == clip) return;
+            _ambientSource.clip = clip;
+            _ambientSource.volume = volumeMultiplier * SFXVolume * MasterVolume;
+            _ambientSource.Play();
+        }
+
+        private IEnumerator CrossfadeRoutine(AudioClip newClip, float duration)
+        {
+            AudioSource fadeOutSource = _isBgmA_Active ? _bgmSourceA : _bgmSourceB;
+            AudioSource fadeInSource  = _isBgmA_Active ? _bgmSourceB : _bgmSourceA;
+
+            _isBgmA_Active = !_isBgmA_Active;
+
+            fadeInSource.clip = newClip;
+            fadeInSource.volume = 0f;
+            fadeInSource.Play();
+
+            float elapsed = 0f;
+            float startVolumeOut = fadeOutSource.volume;
+            float targetVolumeIn = MusicVolume * MasterVolume;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = elapsed / duration;
+
+                fadeOutSource.volume = Mathf.Lerp(startVolumeOut, 0f, t);
+                fadeInSource.volume  = Mathf.Lerp(0f, targetVolumeIn, t);
+
+                yield return null;
+            }
+
+            fadeOutSource.Stop();
+            fadeOutSource.clip = null;
+        }
+
+        private void Update()
+        {
+            // Real-time volume adjustments (in case they are changed via a Settings Menu)
+            if (_isBgmA_Active && _bgmSourceA.isPlaying) _bgmSourceA.volume = MusicVolume * MasterVolume;
+            if (!_isBgmA_Active && _bgmSourceB.isPlaying) _bgmSourceB.volume = MusicVolume * MasterVolume;
+            if (_ambientSource.isPlaying) _ambientSource.volume = SFXVolume * MasterVolume;
         }
     }
 }
