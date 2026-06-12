@@ -240,11 +240,15 @@ namespace EscapeRoomRevolt.EditorTools
         [MenuItem("EscapeRoom/2. Create Interactable/Generic Trigger (Button)", priority = 27)]
         public static void CreateTrigger()
         {
-            GameObject logicObj = CreateBaseInteractable("NewTrigger", new Vector3(0.2f, 0.2f, 0.2f), Color.red);
-            
-            logicObj.AddComponent<InteractableTrigger>();
-
+            GameObject logicObj = CreateGenericButton();
             FinalizeCreation(logicObj);
+        }
+
+        public static GameObject CreateGenericButton()
+        {
+            GameObject logicObj = CreateBaseInteractable("NewTrigger", new Vector3(0.2f, 0.2f, 0.2f), Color.red);
+            logicObj.AddComponent<InteractableTrigger>();
+            return logicObj;
         }
 
         [MenuItem("EscapeRoom/2. Create Interactable/Item Receiver", priority = 28)]
