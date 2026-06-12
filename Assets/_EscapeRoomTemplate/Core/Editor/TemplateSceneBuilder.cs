@@ -99,9 +99,14 @@ namespace EscapeRoomRevolt.EditorTools
             CreatePlatform(env, "Room11_State", "11", new Vector3(-6, 0, 55), new Color(0.5f, 0.4f, 0.2f), "State: Match levers to correct positions.");
             CreateStatePuzzle(new Vector3(-6, 0, 55));
 
+            // Room 12: Audio Test
+            GameObject room12Platform = CreatePlatform(env, "Room12_Audio", "12", new Vector3(6, 0, 60), new Color(0.7f, 0.4f, 0.6f), "Audio: Wood footsteps & BGM");
+            room12Platform.tag = "Wood";
+            CreateAudioTestPuzzle(new Vector3(6, 0, 60));
+
             // Extend corridor to accommodate all rooms
-            corridor.transform.localScale = new Vector3(4, 0.5f, 65);
-            corridor.transform.position = new Vector3(0, -0.25f, 30);
+            corridor.transform.localScale = new Vector3(4, 0.5f, 75);
+            corridor.transform.position = new Vector3(0, -0.25f, 35);
 
             SaveScene(newScene, "Assets/_EscapeRoomTemplate/Scenes/ShowcaseMuseum.unity");
         }
@@ -192,7 +197,7 @@ namespace EscapeRoomRevolt.EditorTools
             return null;
         }
 
-        private static void CreatePlatform(GameObject env, string name, string roomNumber, Vector3 position, Color color, string description = "")
+        private static GameObject CreatePlatform(GameObject env, string name, string roomNumber, Vector3 position, Color color, string description = "")
         {
             GameObject platform = GameObject.CreatePrimitive(PrimitiveType.Cube);
             platform.name = name;
@@ -232,6 +237,8 @@ namespace EscapeRoomRevolt.EditorTools
                 descMesh.anchor = TextAnchor.MiddleCenter;
                 descMesh.color = new Color(1, 1, 1, 0.5f); 
             }
+
+            return platform;
         }
 
         private static void AssignURPMaterial(GameObject obj, Color color)
@@ -243,6 +250,23 @@ namespace EscapeRoomRevolt.EditorTools
                 mat.color = color;
                 obj.GetComponent<Renderer>().material = mat;
             }
+        }
+
+        private static void CreateAudioTestPuzzle(Vector3 position)
+        {
+            GameObject puzzleObj = new GameObject("Room12_AudioTest");
+            puzzleObj.transform.position = position;
+
+            // Create two buttons for BGM testing
+            GameObject button1 = InteractableCreator.CreateGenericButton();
+            button1.name = "BGM_Button_A";
+            button1.transform.position = position + new Vector3(-1.5f, 1f, 2f);
+            button1.transform.SetParent(puzzleObj.transform);
+
+            GameObject button2 = InteractableCreator.CreateGenericButton();
+            button2.name = "BGM_Button_B";
+            button2.transform.position = position + new Vector3(1.5f, 1f, 2f);
+            button2.transform.SetParent(puzzleObj.transform);
         }
 
         private static GameObject CreateInteractableObject(string name, Vector3 position, Vector3 scale, Color color)
