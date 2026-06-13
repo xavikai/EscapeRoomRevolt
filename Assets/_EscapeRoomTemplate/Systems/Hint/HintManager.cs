@@ -75,11 +75,18 @@ namespace EscapeRoomRevolt.Systems.Hint
         {
             if (_activePuzzleData == null || _currentHintIndex >= _activePuzzleData.hints.Count) return;
 
-            string hintText = _activePuzzleData.hints[_currentHintIndex];
+            HintEntry currentHint = _activePuzzleData.hints[_currentHintIndex];
+            
             // Format as character thoughts (italics)
-            string formattedText = $"<i>{hintText}</i>";
+            string formattedText = $"<i>{currentHint.hintText}</i>";
             
             UIManager.Instance?.ShowSubtitle(formattedText);
+            
+            // Play Audio if it exists
+            if (currentHint.hintAudio != null && EscapeRoomRevolt.Systems.Audio.AudioManager.Instance != null)
+            {
+                EscapeRoomRevolt.Systems.Audio.AudioManager.Instance.PlayVoice(currentHint.hintAudio);
+            }
             
             if (_hideSubtitleCoroutine != null)
                 StopCoroutine(_hideSubtitleCoroutine);

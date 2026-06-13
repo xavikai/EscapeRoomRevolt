@@ -3,6 +3,17 @@ using UnityEngine;
 
 namespace EscapeRoomRevolt.Systems.Hint
 {
+    [System.Serializable]
+    public class HintEntry
+    {
+        [TextArea(2, 5)]
+        [Tooltip("The text to display as a subtitle.")]
+        public string hintText;
+
+        [Tooltip("Optional audio voiceover for the thought.")]
+        public AudioClip hintAudio;
+    }
+
     [CreateAssetMenu(fileName = "NewHintData", menuName = "EscapeRoom/Hint Data", order = 1)]
     public class HintData : ScriptableObject
     {
@@ -13,7 +24,6 @@ namespace EscapeRoomRevolt.Systems.Hint
         public float delayBetweenHints = 60f;
 
         [Tooltip("List of hints to display, ordered from least to most revealing.")]
-        [TextArea(2, 5)]
-        public List<string> hints = new List<string>();
+        public List<HintEntry> hints = new List<HintEntry>();
     }
 }

@@ -100,7 +100,28 @@ namespace EscapeRoomRevolt.Systems.Audio
             source.clip = clip;
             source.volume = volumeMultiplier * SFXVolume * MasterVolume;
             
+            source.spatialBlend = 1f; // Ensure it's 3D
             source.pitch = 1f + Random.Range(-pitchVariance, pitchVariance);
+            
+            source.gameObject.SetActive(true);
+            source.Play();
+
+            StartCoroutine(ReturnToPoolAfterDelay(source, clip.length));
+        }
+
+        /// <summary>
+        /// Plays a 2D voice clip (like internal thoughts or radio).
+        /// </summary>
+        public void PlayVoice(AudioClip clip, float volumeMultiplier = 1f)
+        {
+            if (clip == null) return;
+
+            AudioSource source = GetAvailableSource();
+            source.clip = clip;
+            source.volume = volumeMultiplier * SFXVolume * MasterVolume;
+            
+            source.spatialBlend = 0f; // 2D Sound, no panning/distance attenuation
+            source.pitch = 1f;
             
             source.gameObject.SetActive(true);
             source.Play();

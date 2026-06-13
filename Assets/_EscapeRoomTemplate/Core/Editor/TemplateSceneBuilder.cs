@@ -290,8 +290,8 @@ namespace EscapeRoomRevolt.EditorTools
                     hintData = ScriptableObject.CreateInstance<EscapeRoomRevolt.Systems.Hint.HintData>();
                     hintData.delayBeforeFirstHint = 3f;
                     hintData.delayBetweenHints = 3f;
-                    hintData.hints.Add(hint1);
-                    hintData.hints.Add(hint2);
+                    hintData.hints.Add(new EscapeRoomRevolt.Systems.Hint.HintEntry { hintText = hint1 });
+                    hintData.hints.Add(new EscapeRoomRevolt.Systems.Hint.HintEntry { hintText = hint2 });
                     AssetDatabase.CreateAsset(hintData, assetPath);
                     AssetDatabase.SaveAssets();
                 }
