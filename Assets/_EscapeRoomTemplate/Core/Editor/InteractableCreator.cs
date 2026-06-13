@@ -346,6 +346,35 @@ namespace EscapeRoomRevolt.EditorTools
             FinalizeCreation(logicObj);
         }
 
+        [MenuItem("EscapeRoom/2. Create Interactable/Physics Grabbable Object", priority = 33)]
+        public static void CreatePhysicsGrabbable()
+        {
+            // We use CreateBaseInteractable which creates a Logic parent and Visuals child (with collider).
+            // However, Rigidbody works best when it's on the same object as the collider or at the root.
+            // Since LogicObj is the root, we'll put Rigidbody there, but it needs a collider. 
+            // CreateBaseInteractable puts the Collider on the Visuals child. Rigidbody will compound it, which is fine.
+            GameObject logicObj = CreateBaseInteractable("NewGrabbable", new Vector3(0.5f, 0.5f, 0.5f), new Color(0.3f, 0.5f, 0.8f));
+            
+            Rigidbody rb = logicObj.AddComponent<Rigidbody>();
+            rb.mass = 2f;
+
+            // PhysicsGrabbable requires Rigidbody and Collider. Since collider is on child, we'll move it to root.
+            Transform visual = logicObj.transform.Find("NewGrabbable_Visuals");
+            if (visual != null)
+            {
+                Collider childCol = visual.GetComponent<Collider>();
+                if (childCol != null)
+                {
+                    GameObject.DestroyImmediate(childCol);
+                }
+            }
+            logicObj.AddComponent<BoxCollider>();
+            
+            logicObj.AddComponent<PhysicsGrabbable>();
+
+            FinalizeCreation(logicObj);
+        }
+
         private static GameObject CreateBaseInteractable(string name, Vector3 visualsScale, Color color)
         {
             GameObject logicObj = new GameObject(name + "_Logic");

@@ -10,6 +10,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
     ///
     /// Publishes: OnInteractionPerformed
     /// </summary>
+    [RequireComponent(typeof(PhysicsGrabber))]
     public class InteractionManager : MonoBehaviour
     {
         [Header("Raycast Settings")]
@@ -44,12 +45,24 @@ namespace EscapeRoomRevolt.Systems.Interaction
             _mainCamera = GetComponent<Camera>();
             if (_mainCamera == null)
                 _mainCamera = Camera.main;
+
+            if (GetComponent<PhysicsGrabber>() == null)
+            {
+                gameObject.AddComponent<PhysicsGrabber>();
+            }
         }
 
         private void Update()
         {
             if (EscapeRoomRevolt.UI.PC.UIManager.Instance != null && EscapeRoomRevolt.UI.PC.UIManager.Instance.IsUIBlockingGameplay)
                 return;
+
+            // Block InteractionManager if we are currently holding a physics object
+            if (PhysicsGrabber.Instance != null && PhysicsGrabber.Instance.IsHoldingObject)
+            {
+                if (_currentTarget != null) SwitchFocus(null);
+                return;
+            }
 
             DetectInteractable();
 
