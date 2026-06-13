@@ -32,6 +32,13 @@ namespace EscapeRoomRevolt.Core
                 amObj.AddComponent<EscapeRoomRevolt.Systems.Audio.AudioManager>();
             }
 
+            // Ensure HintManager exists in the scene
+            if (GameObject.FindObjectOfType<EscapeRoomRevolt.Systems.Hint.HintManager>() == null)
+            {
+                GameObject hmObj = new GameObject("HintManager");
+                hmObj.AddComponent<EscapeRoomRevolt.Systems.Hint.HintManager>();
+            }
+
             // Systems will be initialized here as they are implemented.
             // Order matters — add systems in dependency order:
             //
