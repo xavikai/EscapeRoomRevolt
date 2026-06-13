@@ -82,7 +82,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
             }
 
             // Apply velocity to pull it towards the hold point smoothly
-            _heldRigidbody.velocity = directionToPoint * _pullForce * Time.fixedDeltaTime;
+            _heldRigidbody.linearVelocity = directionToPoint * _pullForce * Time.fixedDeltaTime;
         }
 
         private bool _justGrabbedThisFrame = false;
@@ -98,13 +98,13 @@ namespace EscapeRoomRevolt.Systems.Interaction
 
             // Save original state
             _originalUseGravity = _heldRigidbody.useGravity;
-            _originalDrag = _heldRigidbody.drag;
-            _originalAngularDrag = _heldRigidbody.angularDrag;
+            _originalDrag = _heldRigidbody.linearDamping;
+            _originalAngularDrag = _heldRigidbody.angularDamping;
 
             // Apply holding physics
             _heldRigidbody.useGravity = false;
-            _heldRigidbody.drag = 10f; // High drag prevents overshooting and makes it snappy
-            _heldRigidbody.angularDrag = 10f; // Prevent crazy spinning
+            _heldRigidbody.linearDamping = 10f; // High drag prevents overshooting and makes it snappy
+            _heldRigidbody.angularDamping = 10f; // Prevent crazy spinning
             
             _justGrabbedThisFrame = true;
             
@@ -117,10 +117,14 @@ namespace EscapeRoomRevolt.Systems.Interaction
         {
             if (_currentHeldObject == null || _heldRigidbody == null) return;
 
+            // Reset velocity so it drops softly instead of retaining the pull velocity
+            _heldRigidbody.linearVelocity = Vector3.zero;
+            _heldRigidbody.angularVelocity = Vector3.zero;
+
             // Restore original state
             _heldRigidbody.useGravity = _originalUseGravity;
-            _heldRigidbody.drag = _originalDrag;
-            _heldRigidbody.angularDrag = _originalAngularDrag;
+            _heldRigidbody.linearDamping = _originalDrag;
+            _heldRigidbody.angularDamping = _originalAngularDrag;
 
             _currentHeldObject.OnDropped();
             
