@@ -5,39 +5,17 @@ namespace EscapeRoomRevolt.Systems.Interaction
 {
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(Collider))]
-    public class PhysicsGrabbable : MonoBehaviour, IInteractable
+    public class PhysicsGrabbable : InteractableBase
     {
-        [Header("Grabbable Settings")]
-        [Tooltip("The text that appears when looking at this object.")]
-        [SerializeField] private string _promptText = "Agafar / Grab";
-        
-        [Tooltip("Cursor type when hovering.")]
-        [SerializeField] private CursorType _cursor = CursorType.Hand;
-
         private Rigidbody _rb;
-        private Outline _outline;
 
-        public bool CanInteract => true;
-        public CursorType InteractionCursor => _cursor;
-        public string InteractionPrompt => _promptText;
-
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _rb = GetComponent<Rigidbody>();
-            
-            // Ensure we have an outline
-            _outline = GetComponent<Outline>();
-            if (_outline == null)
-            {
-                _outline = gameObject.AddComponent<Outline>();
-                _outline.enabled = false;
-                _outline.OutlineMode = Outline.Mode.OutlineAll;
-                _outline.OutlineColor = Color.white;
-                _outline.OutlineWidth = 3f;
-            }
         }
 
-        public void Interact()
+        protected override void OnInteract()
         {
             if (PhysicsGrabber.Instance != null)
             {
@@ -47,18 +25,6 @@ namespace EscapeRoomRevolt.Systems.Interaction
             {
                 Debug.LogWarning("[PhysicsGrabbable] No PhysicsGrabber found in scene. Make sure the Player has one.");
             }
-        }
-
-        public void OnFocusEnter()
-        {
-            if (_outline != null)
-                _outline.enabled = true;
-        }
-
-        public void OnFocusExit()
-        {
-            if (_outline != null)
-                _outline.enabled = false;
         }
 
         public void OnDropped()
