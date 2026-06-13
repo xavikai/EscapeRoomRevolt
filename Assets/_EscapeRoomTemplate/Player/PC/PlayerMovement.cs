@@ -24,7 +24,7 @@ namespace EscapeRoomRevolt.Player.PC
 
         [Header("Jumping & Crouching")]
         [SerializeField] private bool  _canJump      = true;
-        [SerializeField] private float _jumpHeight   = 1.2f;
+        [SerializeField] private float _jumpHeight   = 0.5f;
         [SerializeField] private bool  _canCrouch    = true;
         [SerializeField] private float _crouchSpeed  = 2.0f;
         [SerializeField] private float _crouchHeight = 1.0f;
