@@ -329,6 +329,23 @@ namespace EscapeRoomRevolt.EditorTools
             FinalizeCreation(logicObj);
         }
 
+        [MenuItem("EscapeRoom/2. Create Interactable/Hint Zone", priority = 32)]
+        public static void CreateHintZone()
+        {
+            GameObject logicObj = new GameObject("NewHintZone");
+            
+            SceneView view = SceneView.lastActiveSceneView;
+            if (view != null) logicObj.transform.position = view.pivot;
+
+            BoxCollider col = logicObj.AddComponent<BoxCollider>();
+            col.isTrigger = true;
+            col.size = new Vector3(3, 3, 3);
+
+            logicObj.AddComponent<EscapeRoomRevolt.Systems.Hint.HintZoneTrigger>();
+
+            FinalizeCreation(logicObj);
+        }
+
         private static GameObject CreateBaseInteractable(string name, Vector3 visualsScale, Color color)
         {
             GameObject logicObj = new GameObject(name + "_Logic");
