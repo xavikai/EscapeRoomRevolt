@@ -22,6 +22,15 @@ namespace EscapeRoomRevolt.Player.PC
         [SerializeField] private float _sprintSpeed  = 6.0f;
         [SerializeField] private float _gravity      = -9.81f;
 
+        [Header("Jumping & Crouching")]
+        [SerializeField] private bool  _canJump      = true;
+        [SerializeField] private float _jumpHeight   = 1.2f;
+        [SerializeField] private bool  _canCrouch    = true;
+        [SerializeField] private float _crouchSpeed  = 2.0f;
+        [SerializeField] private float _crouchHeight = 1.0f;
+        [SerializeField] private float _standingHeight = 2.0f;
+        [SerializeField] private float _crouchTransitionSpeed = 10f;
+
         [Header("Footsteps")]
         [SerializeField] private EscapeRoomRevolt.Systems.Audio.SurfaceAudioData _surfaceAudioData;
         [SerializeField] private float _footstepDistanceWalk = 1.8f;
@@ -37,6 +46,8 @@ namespace EscapeRoomRevolt.Player.PC
         private float  _verticalVelocity;
         private float  _cameraPitch; // Up/down rotation accumulated
         private float  _accumulatedDistance;
+        private bool   _isCrouching;
+        private Vector3 _originalCameraLocalPosition;
 
         // ── Unity Lifecycle ──────────────────────────────────────────────────
         private void Awake()
@@ -49,6 +60,11 @@ namespace EscapeRoomRevolt.Player.PC
                 Camera cam = GetComponentInChildren<Camera>();
                 if (cam != null) _playerCamera = cam.transform;
                 else Debug.LogError("[PlayerMovement] No camera assigned or found as a child!", this);
+            }
+
+            if (_playerCamera != null)
+            {
+                _originalCameraLocalPosition = _playerCamera.localPosition;
             }
 
             SaveManager.Instance?.Register(this);
@@ -86,12 +102,32 @@ namespace EscapeRoomRevolt.Player.PC
 
         private void HandleMovement()
         {
+            // Crouching Input
+            if (_canCrouch)
+            {
+                _isCrouching = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.C);
+            }
+
+            // Smoothly adjust CharacterController height and center
+            float targetHeight = _isCrouching ? _crouchHeight : _standingHeight;
+            _cc.height = Mathf.Lerp(_cc.height, targetHeight, Time.deltaTime * _crouchTransitionSpeed);
+            _cc.center = new Vector3(0, _cc.height / 2f, 0);
+
+            // Smoothly adjust Camera height based on current collider height proportion
+            if (_playerCamera != null)
+            {
+                float heightRatio = _cc.height / _standingHeight;
+                Vector3 targetCamPos = _originalCameraLocalPosition;
+                targetCamPos.y = _originalCameraLocalPosition.y * heightRatio;
+                _playerCamera.localPosition = Vector3.Lerp(_playerCamera.localPosition, targetCamPos, Time.deltaTime * _crouchTransitionSpeed);
+            }
+
             // Horizontal movement
             float h = Input.GetAxis("Horizontal");
             float v = Input.GetAxis("Vertical");
 
-            bool isSprinting = Input.GetKey(KeyCode.LeftShift);
-            float speed = isSprinting ? _sprintSpeed : _walkSpeed;
+            bool isSprinting = Input.GetKey(KeyCode.LeftShift) && !_isCrouching;
+            float speed = _isCrouching ? _crouchSpeed : (isSprinting ? _sprintSpeed : _walkSpeed);
 
             Vector3 move = transform.right * h + transform.forward * v;
             move = Vector3.ClampMagnitude(move, 1f); // Prevents diagonal speed boost
@@ -114,9 +150,14 @@ namespace EscapeRoomRevolt.Player.PC
                 _accumulatedDistance = 0f; // Reset if stopped or jumping
             }
 
-            // Gravity
+            // Gravity & Jumping
             if (_cc.isGrounded && _verticalVelocity < 0f)
                 _verticalVelocity = -2f; // Small negative to keep grounded
+
+            if (_canJump && _cc.isGrounded && Input.GetButtonDown("Jump"))
+            {
+                _verticalVelocity = Mathf.Sqrt(_jumpHeight * -2f * _gravity);
+            }
 
             _verticalVelocity += _gravity * Time.deltaTime;
             move.y = _verticalVelocity;
