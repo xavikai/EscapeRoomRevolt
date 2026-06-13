@@ -10,7 +10,7 @@ namespace EscapeRoomRevolt.Editor
         public static void CreateExamineChamber()
         {
             // 1. Check if it already exists
-            if (Object.FindObjectOfType<ExamineChamber>() != null)
+            if (Object.FindAnyObjectByType<ExamineChamber>() != null)
             {
                 Debug.LogWarning("An Examine Chamber already exists in the scene.");
                 return;

@@ -26,14 +26,14 @@ namespace EscapeRoomRevolt.Core
         private void InitializeSystems()
         {
             // Ensure AudioManager exists in the scene
-            if (GameObject.FindObjectOfType<EscapeRoomRevolt.Systems.Audio.AudioManager>() == null)
+            if (GameObject.FindAnyObjectByType<EscapeRoomRevolt.Systems.Audio.AudioManager>() == null)
             {
                 GameObject amObj = new GameObject("AudioManager");
                 amObj.AddComponent<EscapeRoomRevolt.Systems.Audio.AudioManager>();
             }
 
             // Ensure HintManager exists in the scene
-            if (GameObject.FindObjectOfType<EscapeRoomRevolt.Systems.Hint.HintManager>() == null)
+            if (GameObject.FindAnyObjectByType<EscapeRoomRevolt.Systems.Hint.HintManager>() == null)
             {
                 GameObject hmObj = new GameObject("HintManager");
                 hmObj.AddComponent<EscapeRoomRevolt.Systems.Hint.HintManager>();

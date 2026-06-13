@@ -126,7 +126,7 @@ namespace EscapeRoomRevolt.EditorTools
             InstantiatePrefab("Assets/_EscapeRoomTemplate/Prefabs/UI_Canvas.prefab", Vector3.zero);
 
             // Add AudioManager if it doesn't exist
-            if (GameObject.FindObjectOfType<EscapeRoomRevolt.Systems.Audio.AudioManager>() == null)
+            if (GameObject.FindAnyObjectByType<EscapeRoomRevolt.Systems.Audio.AudioManager>() == null)
             {
                 GameObject amObj = new GameObject("AudioManager");
                 amObj.AddComponent<EscapeRoomRevolt.Systems.Audio.AudioManager>();
