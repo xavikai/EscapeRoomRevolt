@@ -258,12 +258,12 @@ namespace EscapeRoomRevolt.EditorTools
             puzzleObj.transform.position = position;
 
             // Create two buttons for BGM testing
-            GameObject button1 = InteractableCreator.CreateGenericButton();
+            GameObject button1 = EscapeRoomRevolt.EditorTools.InteractableCreator.CreateGenericButton();
             button1.name = "BGM_Button_A";
             button1.transform.position = position + new Vector3(-1.5f, 1f, 2f);
             button1.transform.SetParent(puzzleObj.transform);
 
-            GameObject button2 = InteractableCreator.CreateGenericButton();
+            GameObject button2 = EscapeRoomRevolt.EditorTools.InteractableCreator.CreateGenericButton();
             button2.name = "BGM_Button_B";
             button2.transform.position = position + new Vector3(1.5f, 1f, 2f);
             button2.transform.SetParent(puzzleObj.transform);

@@ -25,10 +25,11 @@ namespace EscapeRoomRevolt.Core
 
         private void InitializeSystems()
         {
-            // Add AudioManager to this GameObject so it persists and is ready for use
-            if (gameObject.GetComponent<EscapeRoomRevolt.Systems.Audio.AudioManager>() == null)
+            // Ensure AudioManager exists in the scene
+            if (GameObject.FindObjectOfType<EscapeRoomRevolt.Systems.Audio.AudioManager>() == null)
             {
-                gameObject.AddComponent<EscapeRoomRevolt.Systems.Audio.AudioManager>();
+                GameObject amObj = new GameObject("AudioManager");
+                amObj.AddComponent<EscapeRoomRevolt.Systems.Audio.AudioManager>();
             }
 
             // Systems will be initialized here as they are implemented.

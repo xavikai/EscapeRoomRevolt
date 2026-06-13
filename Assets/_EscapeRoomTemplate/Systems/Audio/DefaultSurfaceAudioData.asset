@@ -15,7 +15,9 @@ MonoBehaviour:
   DefaultFootsteps: []
   SurfaceMappings:
   - SurfaceTag: Wood
-    FootstepClips: []
+    FootstepClips:
+    - {fileID: 8300000, guid: 0a1b98f9e42c01448b67c66ed65b112f, type: 3}
+    - {fileID: 8300000, guid: c96200f22e56c724db0c7c136ff23bb6, type: 3}
   - SurfaceTag: Stone
     FootstepClips: []
   - SurfaceTag: Metal
