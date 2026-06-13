@@ -278,37 +278,51 @@ namespace EscapeRoomRevolt.EditorTools
             GameObject puzzleObj = new GameObject("Room13_HintTest");
             puzzleObj.transform.position = position;
 
-            string assetPath = "Assets/_EscapeRoomTemplate/ScriptableObjects/Hints/DemoHint.asset";
-            EscapeRoomRevolt.Systems.Hint.HintData hintData = AssetDatabase.LoadAssetAtPath<EscapeRoomRevolt.Systems.Hint.HintData>(assetPath);
-            if (hintData == null)
+            if (!AssetDatabase.IsValidFolder("Assets/_EscapeRoomTemplate/ScriptableObjects/Hints"))
+                System.IO.Directory.CreateDirectory("Assets/_EscapeRoomTemplate/ScriptableObjects/Hints");
+
+            void CreateZone(string zoneName, Vector3 offset, Color color, string hint1, string hint2)
             {
-                if (!AssetDatabase.IsValidFolder("Assets/_EscapeRoomTemplate/ScriptableObjects/Hints"))
-                    System.IO.Directory.CreateDirectory("Assets/_EscapeRoomTemplate/ScriptableObjects/Hints");
+                string assetPath = $"Assets/_EscapeRoomTemplate/ScriptableObjects/Hints/{zoneName}Hint.asset";
+                EscapeRoomRevolt.Systems.Hint.HintData hintData = AssetDatabase.LoadAssetAtPath<EscapeRoomRevolt.Systems.Hint.HintData>(assetPath);
+                if (hintData == null)
+                {
+                    hintData = ScriptableObject.CreateInstance<EscapeRoomRevolt.Systems.Hint.HintData>();
+                    hintData.delayBeforeFirstHint = 3f;
+                    hintData.delayBetweenHints = 3f;
+                    hintData.hints.Add(hint1);
+                    hintData.hints.Add(hint2);
+                    AssetDatabase.CreateAsset(hintData, assetPath);
+                    AssetDatabase.SaveAssets();
+                }
 
-                hintData = ScriptableObject.CreateInstance<EscapeRoomRevolt.Systems.Hint.HintData>();
-                hintData.delayBeforeFirstHint = 5f;
-                hintData.delayBetweenHints = 5f;
-                hintData.hints.Add("Mmm... quina habitació tan estranya.");
-                hintData.hints.Add("Potser m'hauria de quedar una estona aquí per veure què passa.");
+                // Trigger Volume (Invisible)
+                GameObject triggerObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                triggerObj.name = $"HintZone_{zoneName}";
+                triggerObj.transform.position = position + offset + new Vector3(0, 1.5f, 0);
+                triggerObj.transform.localScale = new Vector3(2f, 3f, 4f);
+                triggerObj.transform.SetParent(puzzleObj.transform);
+                if (triggerObj.TryGetComponent(out Renderer rend)) rend.enabled = false;
+                if (triggerObj.TryGetComponent(out BoxCollider col)) col.isTrigger = true;
 
-                AssetDatabase.CreateAsset(hintData, assetPath);
-                AssetDatabase.SaveAssets();
+                // Visual Plate on the floor
+                GameObject visualPlate = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                visualPlate.name = $"Plate_{zoneName}";
+                visualPlate.transform.position = position + offset + new Vector3(0, 0.01f, 0);
+                visualPlate.transform.localScale = new Vector3(2f, 0.02f, 4f);
+                visualPlate.transform.SetParent(puzzleObj.transform);
+                AssignURPMaterial(visualPlate, color);
+
+                var hintTrigger = triggerObj.AddComponent<EscapeRoomRevolt.Systems.Hint.HintZoneTrigger>();
+                SerializedObject soTrigger = new SerializedObject(hintTrigger);
+                soTrigger.FindProperty("_puzzleHintData").objectReferenceValue = hintData;
+                soTrigger.FindProperty("_clearOnExit").boolValue = true;
+                soTrigger.ApplyModifiedProperties();
             }
 
-            GameObject triggerObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            triggerObj.name = "HintZone";
-            triggerObj.transform.position = position + new Vector3(0, 1.5f, 0);
-            triggerObj.transform.localScale = new Vector3(5, 3, 5);
-            triggerObj.transform.SetParent(puzzleObj.transform);
-            
-            if (triggerObj.TryGetComponent(out Renderer rend)) rend.enabled = false;
-            if (triggerObj.TryGetComponent(out BoxCollider col)) col.isTrigger = true;
-
-            var hintTrigger = triggerObj.AddComponent<EscapeRoomRevolt.Systems.Hint.HintZoneTrigger>();
-            SerializedObject soTrigger = new SerializedObject(hintTrigger);
-            soTrigger.FindProperty("_puzzleHintData").objectReferenceValue = hintData;
-            soTrigger.FindProperty("_clearOnExit").boolValue = true;
-            soTrigger.ApplyModifiedProperties();
+            CreateZone("Left", new Vector3(-2.5f, 0, 0), new Color(0.8f, 0.2f, 0.2f), "Estic a la zona vermella.", "Aquesta zona vermella m'inquieta molt.");
+            CreateZone("Center", new Vector3(0f, 0, 0), new Color(0.2f, 0.8f, 0.2f), "La zona verda sembla tranquil·la.", "Aquí s'hi està molt bé, m'hi quedaria a viure.");
+            CreateZone("Right", new Vector3(2.5f, 0, 0), new Color(0.2f, 0.2f, 0.8f), "Tot és blau en aquesta part.", "Tinc fred en aquesta zona blava... hauria de marxar.");
         }
 
         private static GameObject CreateInteractableObject(string name, Vector3 position, Vector3 scale, Color color)
