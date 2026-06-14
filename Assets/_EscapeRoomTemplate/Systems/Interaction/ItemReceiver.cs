@@ -66,7 +66,6 @@ namespace EscapeRoomRevolt.Systems.Interaction
         {
             if (_alreadySolved)
             {
-                // Can't interact again if solved (or you could allow it, depending on design)
                 return;
             }
 
@@ -76,7 +75,8 @@ namespace EscapeRoomRevolt.Systems.Interaction
                 return;
             }
 
-            if (InventoryManager.Instance.HasItem(_requiredItem.ItemId))
+            var activeItem = InventoryManager.Instance.GetActiveItem();
+            if (activeItem != null && activeItem.ItemId == _requiredItem.ItemId)
             {
                 AcceptItem();
             }

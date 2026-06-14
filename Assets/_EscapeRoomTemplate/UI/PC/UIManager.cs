@@ -162,12 +162,12 @@ namespace EscapeRoomRevolt.UI.PC
             RegisterPanelClosed();
         }
 
-        public void ShowItemExaminer(GameObject prefabToExamine)
+        public void ShowItemExaminer(EscapeRoomRevolt.Systems.Inventory.InventoryItemData dataToExamine)
         {
             if (_itemExaminerPanel == null) return;
 
             var examiner = _itemExaminerPanel.GetComponent<ItemExaminerUI>();
-            if (examiner != null) examiner.Show(prefabToExamine);
+            if (examiner != null) examiner.Show(dataToExamine);
 
             RegisterPanelOpened(_itemExaminerPanel);
         }
@@ -247,18 +247,7 @@ namespace EscapeRoomRevolt.UI.PC
 
         public void ToggleInventory()
         {
-            if (_inventoryPanel == null) return;
-
-            // Prevent toggling the inventory if another panel (like the Examiner) is currently the active top panel.
-            // This forces the player to press Esc to close the top panel first.
-            if (_panelStack.Count > 0 && _panelStack.Peek() != _inventoryPanel)
-                return;
-
-            bool isActive = _inventoryPanel.activeSelf;
-            _inventoryPanel.SetActive(!isActive);
-
-            if (!isActive) RegisterPanelOpened(_inventoryPanel);
-            else           RegisterPanelClosed();
+            // Hotbar is always visible, no toggling
         }
 
         public void TogglePauseMenu()
@@ -292,7 +281,7 @@ namespace EscapeRoomRevolt.UI.PC
         {
             if (_interactionPromptPanel) _interactionPromptPanel.SetActive(true); // Usually always active, just text changes
             if (_noteReaderPanel) _noteReaderPanel.SetActive(false);
-            if (_inventoryPanel) _inventoryPanel.SetActive(false);
+            if (_inventoryPanel) _inventoryPanel.SetActive(true);
             if (_pauseMenuPanel) _pauseMenuPanel.SetActive(false);
             if (_keypadPanel) _keypadPanel.SetActive(false);
             if (_itemExaminerPanel) _itemExaminerPanel.SetActive(false);

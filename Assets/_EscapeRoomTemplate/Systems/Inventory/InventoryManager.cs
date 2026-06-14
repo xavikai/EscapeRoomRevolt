@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using EscapeRoomRevolt.Core;
@@ -8,29 +9,48 @@ namespace EscapeRoomRevolt.Systems.Inventory
     [System.Serializable]
     public class InventorySaveState
     {
-        public List<string> itemIds = new List<string>();
-        public List<int> quantities = new List<int>();
+        public List<string> slotItemIds = new List<string>();
+        public List<int> slotQuantities = new List<int>();
+        public int activeSlotIndex = 0;
     }
 
-    /// <summary>
-    /// Manages the player's inventory at runtime.
-    /// Place one instance in the scene (on the Player or a dedicated manager GameObject).
-    ///
-    /// Publishes: OnItemPickedUp, OnItemUsed
-    /// </summary>
+    [System.Serializable]
+    public class InventorySlot
+    {
+        public string ItemId = "";
+        public int Quantity = 0;
+        public InventoryItemData Data = null;
+
+        public bool IsEmpty => string.IsNullOrEmpty(ItemId) || Quantity <= 0;
+
+        public void Clear()
+        {
+            ItemId = "";
+            Quantity = 0;
+            Data = null;
+        }
+    }
+
     public class InventoryManager : MonoBehaviour, ISaveable
     {
-        [Header("Debug")]
-        [SerializeField] private bool _logActions = true;
-
-        // itemId → quantity
-        private readonly Dictionary<string, int> _items = new Dictionary<string, int>();
-        // itemId → data reference
-        private readonly Dictionary<string, InventoryItemData> _itemData =
-            new Dictionary<string, InventoryItemData>();
-
-        // ── Singleton ────────────────────────────────────────────────────────
         public static InventoryManager Instance { get; private set; }
+
+        [Header("Hotbar Settings")]
+        [SerializeField] private int _maxSlots = 6;
+        [SerializeField] private bool _logActions = true;
+        [Tooltip("The transform from where dropped items spawn (usually camera).")]
+        [SerializeField] private Transform _dropOrigin;
+        
+        private InventorySlot[] _slots;
+        private int _activeSlotIndex = 0;
+        
+        public int ActiveSlotIndex => _activeSlotIndex;
+        public int MaxSlots => _maxSlots;
+        public InventorySlot[] Slots => _slots;
+
+        // Events
+        public event Action<int> OnActiveSlotChanged; // Passes new active slot index
+        public event Action OnInventoryChanged; // General refresh
 
         private void Awake()
         {
@@ -40,8 +60,51 @@ namespace EscapeRoomRevolt.Systems.Inventory
                 return;
             }
             Instance = this;
+            
+            _slots = new InventorySlot[_maxSlots];
+            for (int i = 0; i < _maxSlots; i++) _slots[i] = new InventorySlot();
 
             SaveManager.Instance?.Register(this);
+
+            if (_dropOrigin == null && Camera.main != null)
+                _dropOrigin = Camera.main.transform;
+        }
+
+        private void Update()
+        {
+            if (EscapeRoomRevolt.UI.PC.UIManager.Instance != null && EscapeRoomRevolt.UI.PC.UIManager.Instance.IsUIBlockingGameplay)
+                return;
+
+            HandleInput();
+        }
+
+        private void HandleInput()
+        {
+            // Number keys 1-6
+            for (int i = 0; i < _maxSlots; i++)
+            {
+                if (Input.GetKeyDown(KeyCode.Alpha1 + i))
+                {
+                    SetActiveSlot(i);
+                }
+            }
+
+            // Scroll wheel
+            float scroll = Input.mouseScrollDelta.y;
+            if (scroll > 0.1f)
+            {
+                SetActiveSlot(_activeSlotIndex - 1);
+            }
+            else if (scroll < -0.1f)
+            {
+                SetActiveSlot(_activeSlotIndex + 1);
+            }
+
+            // Drop Item
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                DropActiveItem();
+            }
         }
 
         private void OnDestroy()
@@ -50,15 +113,34 @@ namespace EscapeRoomRevolt.Systems.Inventory
             SaveManager.Instance?.Unregister(this);
         }
 
+        public void SetActiveSlot(int index)
+        {
+            if (index < 0) index = _maxSlots - 1;
+            if (index >= _maxSlots) index = 0;
+
+            if (_activeSlotIndex != index)
+            {
+                _activeSlotIndex = index;
+                OnActiveSlotChanged?.Invoke(_activeSlotIndex);
+            }
+        }
+
+        public InventoryItemData GetActiveItem()
+        {
+            return _slots[_activeSlotIndex].Data;
+        }
+
+        // ── Save / Load ──────────────────────────────────────────────────────
         public string SaveId => "InventoryManager";
 
         public string SaveData()
         {
             var state = new InventorySaveState();
-            foreach (var kvp in _items)
+            state.activeSlotIndex = _activeSlotIndex;
+            for (int i = 0; i < _maxSlots; i++)
             {
-                state.itemIds.Add(kvp.Key);
-                state.quantities.Add(kvp.Value);
+                state.slotItemIds.Add(_slots[i].ItemId);
+                state.slotQuantities.Add(_slots[i].Quantity);
             }
             return JsonUtility.ToJson(state);
         }
@@ -68,112 +150,164 @@ namespace EscapeRoomRevolt.Systems.Inventory
             var state = JsonUtility.FromJson<InventorySaveState>(json);
             if (state == null) return;
 
-            Clear(); // Clear existing inventory
+            Clear();
 
-            // Load all available item data from Resources
             InventoryItemData[] allItems = Resources.LoadAll<InventoryItemData>("Items");
             Dictionary<string, InventoryItemData> catalog = new Dictionary<string, InventoryItemData>();
             foreach (var item in allItems)
             {
                 if (item != null && !string.IsNullOrEmpty(item.ItemId))
-                {
                     catalog[item.ItemId] = item;
-                }
             }
 
-            for (int i = 0; i < state.itemIds.Count; i++)
+            int count = Mathf.Min(_maxSlots, state.slotItemIds.Count);
+            for (int i = 0; i < count; i++)
             {
-                string id = state.itemIds[i];
-                int qty = state.quantities[i];
+                string id = state.slotItemIds[i];
+                int qty = state.slotQuantities[i];
 
-                if (catalog.TryGetValue(id, out InventoryItemData data))
+                if (!string.IsNullOrEmpty(id) && qty > 0 && catalog.TryGetValue(id, out InventoryItemData data))
                 {
-                    _items[id] = qty;
-                    _itemData[id] = data;
-
-                    // Publish event so UI can update
-                    EventBus.Publish(new OnItemPickedUp
-                    {
-                        itemId = id,
-                        itemName = data.DisplayName
-                    });
-                }
-                else
-                {
-                    Debug.LogWarning($"[InventoryManager] Could not find item in Resources/Items/ with internal ItemId: {id}");
+                    _slots[i].ItemId = id;
+                    _slots[i].Quantity = qty;
+                    _slots[i].Data = data;
                 }
             }
+
+            SetActiveSlot(state.activeSlotIndex);
+            OnInventoryChanged?.Invoke();
         }
 
         // ── Public API ───────────────────────────────────────────────────────
-
-        /// <summary>Adds an item to the inventory.</summary>
         public bool AddItem(InventoryItemData data, int quantity = 1)
         {
             if (data == null) return false;
 
-            string id = data.ItemId;
-
-            if (_items.ContainsKey(id))
+            // Try to stack first
+            if (data.IsStackable)
             {
-                if (!data.IsStackable) return false;
-                _items[id] = Mathf.Min(_items[id] + quantity, data.MaxStack);
+                for (int i = 0; i < _maxSlots; i++)
+                {
+                    if (_slots[i].ItemId == data.ItemId && _slots[i].Quantity < data.MaxStack)
+                    {
+                        _slots[i].Quantity = Mathf.Min(_slots[i].Quantity + quantity, data.MaxStack);
+                        Log($"Stacked: {data.DisplayName} (x{quantity}) in slot {i}");
+                        OnInventoryChanged?.Invoke();
+                        
+                        EventBus.Publish(new OnItemPickedUp { itemId = data.ItemId, itemName = data.DisplayName });
+                        return true;
+                    }
+                }
+            }
+
+            // Find empty slot
+            for (int i = 0; i < _maxSlots; i++)
+            {
+                if (_slots[i].IsEmpty)
+                {
+                    _slots[i].ItemId = data.ItemId;
+                    _slots[i].Data = data;
+                    _slots[i].Quantity = quantity;
+                    Log($"Added: {data.DisplayName} to slot {i}");
+                    
+                    // If hotbar was empty, maybe set this as active? Not strictly necessary but good UX
+                    if (_slots[_activeSlotIndex].IsEmpty && i != _activeSlotIndex)
+                        SetActiveSlot(i);
+
+                    OnInventoryChanged?.Invoke();
+                    EventBus.Publish(new OnItemPickedUp { itemId = data.ItemId, itemName = data.DisplayName });
+                    return true;
+                }
+            }
+
+            Log("Inventory full!");
+            return false;
+        }
+
+        public bool UseActiveItem()
+        {
+            if (_slots[_activeSlotIndex].IsEmpty) return false;
+            
+            string id = _slots[_activeSlotIndex].ItemId;
+            
+            _slots[_activeSlotIndex].Quantity--;
+            if (_slots[_activeSlotIndex].Quantity <= 0)
+            {
+                _slots[_activeSlotIndex].Clear();
+            }
+
+            Log($"Used active item: {id}");
+            OnInventoryChanged?.Invoke();
+            EventBus.Publish(new OnItemUsed { itemId = id });
+
+            return true;
+        }
+
+        public void DropActiveItem()
+        {
+            if (_slots[_activeSlotIndex].IsEmpty) return;
+
+            InventoryItemData data = _slots[_activeSlotIndex].Data;
+            
+            if (data.WorldPrefab != null && _dropOrigin != null)
+            {
+                GameObject dropped = Instantiate(data.WorldPrefab, _dropOrigin.position + _dropOrigin.forward * 0.5f, _dropOrigin.rotation);
+                
+                // Add tiny physical impulse if possible
+                Rigidbody rb = dropped.GetComponent<Rigidbody>();
+                if (rb != null) rb.AddForce(_dropOrigin.forward * 2f, ForceMode.Impulse);
+                
+                Log($"Dropped {data.DisplayName}");
             }
             else
             {
-                _items[id] = quantity;
-                _itemData[id] = data;
+                Log($"Could not drop {data.DisplayName} because it has no WorldPrefab.");
             }
 
-            Log($"Added: {data.DisplayName} (x{quantity}) — Total: {_items[id]}");
-
-            EventBus.Publish(new OnItemPickedUp
-            {
-                itemId = id,
-                itemName = data.DisplayName
-            });
-
-            return true;
+            UseActiveItem(); // Removes it from inventory
         }
 
-        /// <summary>Removes one unit of an item. Returns true if successful.</summary>
+        // Retro-compatibility methods (might be removed later as puzzles update)
         public bool UseItem(string itemId)
         {
-            if (!HasItem(itemId)) return false;
-
-            _items[itemId]--;
-
-            if (_items[itemId] <= 0)
+            for (int i = 0; i < _maxSlots; i++)
             {
-                _items.Remove(itemId);
-                _itemData.Remove(itemId);
+                if (_slots[i].ItemId == itemId)
+                {
+                    _slots[i].Quantity--;
+                    if (_slots[i].Quantity <= 0) _slots[i].Clear();
+                    
+                    OnInventoryChanged?.Invoke();
+                    EventBus.Publish(new OnItemUsed { itemId = itemId });
+                    return true;
+                }
             }
-
-            Log($"Used item: {itemId}");
-
-            EventBus.Publish(new OnItemUsed { itemId = itemId });
-
-            return true;
+            return false;
         }
 
-        /// <summary>Returns true if the player has at least one of this item.</summary>
-        public bool HasItem(string itemId) =>
-            _items.ContainsKey(itemId) && _items[itemId] > 0;
-
-        /// <summary>Attempts to combine two items based on their recipes.</summary>
-        public bool TryCombine(string itemA_Id, string itemB_Id)
+        public bool HasItem(string itemId)
         {
-            if (!HasItem(itemA_Id) || !HasItem(itemB_Id)) return false;
+            for (int i = 0; i < _maxSlots; i++)
+            {
+                if (!_slots[i].IsEmpty && _slots[i].ItemId == itemId) return true;
+            }
+            return false;
+        }
 
-            var dataA = GetItemData(itemA_Id);
-            var dataB = GetItemData(itemB_Id);
+        // Combines an item in the inventory with the ACTIVE item (used by Option A logic)
+        public bool TryCombineWithActive(string targetItemId)
+        {
+            if (_slots[_activeSlotIndex].IsEmpty) return false;
             
-            if (dataA == null || dataB == null) return false;
+            var dataA = _slots[_activeSlotIndex].Data;
+            var dataB = GetItemData(targetItemId); // The item we clicked or are examining
+
+            if (dataB == null) return false;
 
             // Check A's recipes
             foreach (var combo in dataA.Combinations)
             {
-                if (combo.CombineWith != null && combo.CombineWith.ItemId == itemB_Id)
+                if (combo.CombineWith != null && combo.CombineWith.ItemId == dataB.ItemId)
                 {
                     ExecuteCombination(dataA, dataB, combo);
                     return true;
@@ -183,7 +317,7 @@ namespace EscapeRoomRevolt.Systems.Inventory
             // Check B's recipes
             foreach (var combo in dataB.Combinations)
             {
-                if (combo.CombineWith != null && combo.CombineWith.ItemId == itemA_Id)
+                if (combo.CombineWith != null && combo.CombineWith.ItemId == dataA.ItemId)
                 {
                     ExecuteCombination(dataB, dataA, combo);
                     return true;
@@ -196,6 +330,7 @@ namespace EscapeRoomRevolt.Systems.Inventory
 
         private void ExecuteCombination(InventoryItemData primary, InventoryItemData secondary, ItemCombination combo)
         {
+            // Destroy requirements
             if (combo.DestroyThis) UseItem(primary.ItemId);
             if (combo.DestroyOther) UseItem(secondary.ItemId);
 
@@ -205,27 +340,25 @@ namespace EscapeRoomRevolt.Systems.Inventory
             }
 
             Log($"Successfully combined {primary.DisplayName} and {secondary.DisplayName}");
-            
-            // Note: UseItem and AddItem already publish events, so UI will refresh.
         }
 
-        /// <summary>Returns the quantity of a given item (0 if not in inventory).</summary>
-        public int GetQuantity(string itemId) =>
-            _items.TryGetValue(itemId, out int qty) ? qty : 0;
+        public InventoryItemData GetItemData(string itemId)
+        {
+            InventoryItemData[] allItems = Resources.LoadAll<InventoryItemData>("Items");
+            foreach (var item in allItems)
+            {
+                if (item.ItemId == itemId) return item;
+            }
+            return null;
+        }
 
-        /// <summary>Returns the data for a given item (null if not in inventory).</summary>
-        public InventoryItemData GetItemData(string itemId) =>
-            _itemData.TryGetValue(itemId, out var data) ? data : null;
-
-        /// <summary>Returns all item IDs currently in the inventory.</summary>
-        public IEnumerable<string> GetAllItemIds() => _items.Keys;
-
-        /// <summary>Clears the entire inventory (use on game reset).</summary>
         public void Clear()
         {
-            _items.Clear();
-            _itemData.Clear();
+            for (int i = 0; i < _maxSlots; i++) _slots[i].Clear();
+            _activeSlotIndex = 0;
             Log("Inventory cleared.");
+            OnInventoryChanged?.Invoke();
+            OnActiveSlotChanged?.Invoke(_activeSlotIndex);
         }
 
         private void Log(string message)

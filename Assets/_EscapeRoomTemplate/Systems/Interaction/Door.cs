@@ -86,9 +86,11 @@ namespace EscapeRoomRevolt.Systems.Interaction
             if (_isLocked)
             {
                 var inventory = EscapeRoomRevolt.Systems.Inventory.InventoryManager.Instance;
-                if (!string.IsNullOrEmpty(_requiredItemId) && inventory != null && inventory.HasItem(_requiredItemId))
+                var activeItem = inventory != null ? inventory.GetActiveItem() : null;
+
+                if (!string.IsNullOrEmpty(_requiredItemId) && activeItem != null && activeItem.ItemId == _requiredItemId)
                 {
-                    inventory.UseItem(_requiredItemId);
+                    inventory.UseActiveItem();
                     Unlock();
                 }
                 else
