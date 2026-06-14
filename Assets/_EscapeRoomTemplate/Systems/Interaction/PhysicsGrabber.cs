@@ -8,52 +8,46 @@ namespace EscapeRoomRevolt.Systems.Interaction
 
         [Header("Grab Settings")]
         [SerializeField] private float _holdDistance = 1.25f;
-        [SerializeField] private float _pullForce = 350f;
+        [SerializeField] private float _springForce = 500f;
+        [SerializeField] private float _damper = 50f;
         [SerializeField] private float _throwForce = 15f;
         [SerializeField] private float _autoDropDistance = 3.0f; 
 
         private PhysicsGrabbable _currentHeldObject;
         private Rigidbody _heldRigidbody;
         private Transform _holdPoint;
-
-        // Backup properties
-        private float _originalDrag;
-        private float _originalAngularDrag;
-        private bool _originalUseGravity;
+        private Rigidbody _holdPointRb;
+        private SpringJoint _currentJoint;
 
         private void Awake()
         {
             if (Instance == null) Instance = this;
             else Destroy(gameObject);
 
-            // Create a virtual hold point in front of the camera (assuming this script is on the camera or player)
             _holdPoint = new GameObject("PhysicsHoldPoint").transform;
             _holdPoint.parent = transform;
             _holdPoint.localPosition = new Vector3(0, 0, _holdDistance);
+            
+            _holdPointRb = _holdPoint.gameObject.AddComponent<Rigidbody>();
+            _holdPointRb.isKinematic = true;
         }
 
         private void Update()
         {
             if (_currentHeldObject == null) return;
 
-            // When UI is blocking, drop the object automatically
             if (EscapeRoomRevolt.UI.PC.UIManager.Instance != null && EscapeRoomRevolt.UI.PC.UIManager.Instance.IsUIBlockingGameplay)
             {
                 Drop();
                 return;
             }
 
-            // Right Click to Throw
             if (Input.GetMouseButtonDown(1))
             {
                 Throw();
                 return;
             }
 
-            // E or Left Click to Drop
-            // We use GetKeyDown to avoid immediately dropping if the user just clicked to pick it up (though Interact handles that).
-            // Actually, Interact() is called on GetKeyDown. If we check GetKeyDown here in the same frame, it might drop it immediately.
-            // Better to check GetKeyDown, but if it was just grabbed this frame, ignore.
             if (_justGrabbedThisFrame)
             {
                 _justGrabbedThisFrame = false;
@@ -70,19 +64,12 @@ namespace EscapeRoomRevolt.Systems.Interaction
         {
             if (_heldRigidbody == null) return;
 
-            Vector3 targetPos = _holdPoint.position;
-            Vector3 directionToPoint = targetPos - _heldRigidbody.position;
-            float distanceToPoint = directionToPoint.magnitude;
-
-            // If it gets stuck behind a wall and player walks away, drop it
+            float distanceToPoint = Vector3.Distance(_holdPoint.position, _heldRigidbody.position);
+            
             if (distanceToPoint > _autoDropDistance)
             {
                 Drop();
-                return;
             }
-
-            // Apply velocity to pull it towards the hold point smoothly
-            _heldRigidbody.linearVelocity = directionToPoint * _pullForce * Time.fixedDeltaTime;
         }
 
         private bool _justGrabbedThisFrame = false;
@@ -96,35 +83,27 @@ namespace EscapeRoomRevolt.Systems.Interaction
             
             if (_heldRigidbody == null) return;
 
-            // Save original state
-            _originalUseGravity = _heldRigidbody.useGravity;
-            _originalDrag = _heldRigidbody.linearDamping;
-            _originalAngularDrag = _heldRigidbody.angularDamping;
+            _currentJoint = grabbable.gameObject.AddComponent<SpringJoint>();
+            _currentJoint.connectedBody = _holdPointRb;
+            _currentJoint.spring = _springForce;
+            _currentJoint.damper = _damper;
+            _currentJoint.autoConfigureConnectedAnchor = false;
+            _currentJoint.connectedAnchor = Vector3.zero;
+            _currentJoint.anchor = Vector3.zero;
+            _currentJoint.minDistance = 0f;
+            _currentJoint.maxDistance = 0f;
 
-            // Apply holding physics
-            _heldRigidbody.useGravity = false;
-            _heldRigidbody.linearDamping = 10f; // High drag prevents overshooting and makes it snappy
-            _heldRigidbody.angularDamping = 10f; // Prevent crazy spinning
-            
             _justGrabbedThisFrame = true;
-            
-            // Force disable InteractionManager from trying to interact with it again
-            // while we hold it (it blocks raycasts). 
-            // The fact that we check _justGrabbedThisFrame prevents immediate drop.
         }
 
         public void Drop()
         {
             if (_currentHeldObject == null || _heldRigidbody == null) return;
 
-            // Reset velocity so it drops softly instead of retaining the pull velocity
-            _heldRigidbody.linearVelocity = Vector3.zero;
-            _heldRigidbody.angularVelocity = Vector3.zero;
-
-            // Restore original state
-            _heldRigidbody.useGravity = _originalUseGravity;
-            _heldRigidbody.linearDamping = _originalDrag;
-            _heldRigidbody.angularDamping = _originalAngularDrag;
+            if (_currentJoint != null)
+            {
+                Destroy(_currentJoint);
+            }
 
             _currentHeldObject.OnDropped();
             
@@ -139,8 +118,6 @@ namespace EscapeRoomRevolt.Systems.Interaction
             Rigidbody rb = _heldRigidbody;
             Drop();
             
-            // Add throw impulse
-            // Assume the forward direction of this component (Camera) is where we are looking
             rb.AddForce(transform.forward * _throwForce, ForceMode.Impulse);
         }
 
