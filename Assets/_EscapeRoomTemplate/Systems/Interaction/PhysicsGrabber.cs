@@ -72,6 +72,9 @@ namespace EscapeRoomRevolt.Systems.Interaction
             }
         }
 
+        // State backups
+        private float _originalAngularDamping;
+        private bool _originalUseGravity;
         private bool _justGrabbedThisFrame = false;
 
         public void Grab(PhysicsGrabbable grabbable)
@@ -82,6 +85,13 @@ namespace EscapeRoomRevolt.Systems.Interaction
             _heldRigidbody = grabbable.GetComponent<Rigidbody>();
             
             if (_heldRigidbody == null) return;
+
+            // Backup physics state to prevent spinning and sagging
+            _originalAngularDamping = _heldRigidbody.angularDamping;
+            _originalUseGravity = _heldRigidbody.useGravity;
+
+            _heldRigidbody.angularDamping = 10f; // High angular damping stops crazy spinning
+            _heldRigidbody.useGravity = false; // Disable gravity so it doesn't sag down
 
             _currentJoint = grabbable.gameObject.AddComponent<SpringJoint>();
             _currentJoint.connectedBody = _holdPointRb;
@@ -104,6 +114,10 @@ namespace EscapeRoomRevolt.Systems.Interaction
             {
                 Destroy(_currentJoint);
             }
+
+            // Restore physics state
+            _heldRigidbody.angularDamping = _originalAngularDamping;
+            _heldRigidbody.useGravity = _originalUseGravity;
 
             _currentHeldObject.OnDropped();
             
