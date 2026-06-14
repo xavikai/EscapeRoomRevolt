@@ -10,7 +10,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
     ///
     /// Publishes: OnInteractionPerformed
     /// </summary>
-    [RequireComponent(typeof(PhysicsGrabber))]
+    [RequireComponent(typeof(Camera))]
     public class InteractionManager : MonoBehaviour
     {
         [Header("Raycast Settings")]

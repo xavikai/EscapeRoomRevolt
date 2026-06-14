@@ -79,7 +79,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
             }
 
             // Smoothly move towards point by scaling velocity based on distance
-            _heldRigidbody.velocity = direction * (_pullSpeed * distance);
+            _heldRigidbody.linearVelocity = direction * (_pullSpeed * distance);
         }
 
         public void Grab(PhysicsGrabbable grabbable)
@@ -92,14 +92,14 @@ namespace EscapeRoomRevolt.Systems.Interaction
             if (_heldRigidbody == null) return;
 
             // Backup physics state
-            _originalAngularDamping = _heldRigidbody.angularDrag;
-            _originalLinearDamping = _heldRigidbody.drag;
+            _originalAngularDamping = _heldRigidbody.angularDamping;
+            _originalLinearDamping = _heldRigidbody.linearDamping;
             _originalUseGravity = _heldRigidbody.useGravity;
             _originalCollisionMode = _heldRigidbody.collisionDetectionMode;
 
             // Apply holding physics
-            _heldRigidbody.angularDrag = 10f; // High angular drag stops crazy spinning
-            _heldRigidbody.drag = 5f; // Small drag helps stabilize
+            _heldRigidbody.angularDamping = 10f; // High angular drag stops crazy spinning
+            _heldRigidbody.linearDamping = 5f; // Small drag helps stabilize
             _heldRigidbody.useGravity = false;
             _heldRigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic; // Prevents phasing through walls while held
 
@@ -121,12 +121,12 @@ namespace EscapeRoomRevolt.Systems.Interaction
             if (_currentHeldObject == null || _heldRigidbody == null) return;
 
             // Stop dead to prevent shooting forward!
-            _heldRigidbody.velocity = Vector3.zero;
+            _heldRigidbody.linearVelocity = Vector3.zero;
             _heldRigidbody.angularVelocity = Vector3.zero;
 
             // Restore physics state
-            _heldRigidbody.angularDrag = _originalAngularDamping;
-            _heldRigidbody.drag = _originalLinearDamping;
+            _heldRigidbody.angularDamping = _originalAngularDamping;
+            _heldRigidbody.linearDamping = _originalLinearDamping;
             _heldRigidbody.useGravity = _originalUseGravity;
             _heldRigidbody.collisionDetectionMode = _originalCollisionMode;
 
