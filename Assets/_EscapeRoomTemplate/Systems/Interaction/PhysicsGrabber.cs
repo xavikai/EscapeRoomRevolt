@@ -8,16 +8,21 @@ namespace EscapeRoomRevolt.Systems.Interaction
 
         [Header("Grab Settings")]
         [SerializeField] private float _holdDistance = 1.25f;
-        [SerializeField] private float _springForce = 500f;
-        [SerializeField] private float _damper = 50f;
+        [SerializeField] private float _pullSpeed = 15f;
         [SerializeField] private float _throwForce = 15f;
         [SerializeField] private float _autoDropDistance = 3.0f; 
 
         private PhysicsGrabbable _currentHeldObject;
         private Rigidbody _heldRigidbody;
         private Transform _holdPoint;
-        private Rigidbody _holdPointRb;
-        private SpringJoint _currentJoint;
+        private Collider[] _playerColliders;
+
+        // State backups
+        private float _originalAngularDamping;
+        private float _originalLinearDamping;
+        private bool _originalUseGravity;
+        private CollisionDetectionMode _originalCollisionMode;
+        private bool _justGrabbedThisFrame = false;
 
         private void Awake()
         {
@@ -27,9 +32,9 @@ namespace EscapeRoomRevolt.Systems.Interaction
             _holdPoint = new GameObject("PhysicsHoldPoint").transform;
             _holdPoint.parent = transform;
             _holdPoint.localPosition = new Vector3(0, 0, _holdDistance);
-            
-            _holdPointRb = _holdPoint.gameObject.AddComponent<Rigidbody>();
-            _holdPointRb.isKinematic = true;
+
+            // Fetch player colliders to ignore them when holding objects
+            _playerColliders = transform.root.GetComponentsInChildren<Collider>();
         }
 
         private void Update()
@@ -64,18 +69,18 @@ namespace EscapeRoomRevolt.Systems.Interaction
         {
             if (_heldRigidbody == null) return;
 
-            float distanceToPoint = Vector3.Distance(_holdPoint.position, _heldRigidbody.position);
+            Vector3 direction = _holdPoint.position - _heldRigidbody.position;
+            float distance = direction.magnitude;
             
-            if (distanceToPoint > _autoDropDistance)
+            if (distance > _autoDropDistance)
             {
                 Drop();
+                return;
             }
-        }
 
-        // State backups
-        private float _originalAngularDamping;
-        private bool _originalUseGravity;
-        private bool _justGrabbedThisFrame = false;
+            // Smoothly move towards point by scaling velocity based on distance
+            _heldRigidbody.velocity = direction * (_pullSpeed * distance);
+        }
 
         public void Grab(PhysicsGrabbable grabbable)
         {
@@ -86,22 +91,27 @@ namespace EscapeRoomRevolt.Systems.Interaction
             
             if (_heldRigidbody == null) return;
 
-            // Backup physics state to prevent spinning and sagging
-            _originalAngularDamping = _heldRigidbody.angularDamping;
+            // Backup physics state
+            _originalAngularDamping = _heldRigidbody.angularDrag;
+            _originalLinearDamping = _heldRigidbody.drag;
             _originalUseGravity = _heldRigidbody.useGravity;
+            _originalCollisionMode = _heldRigidbody.collisionDetectionMode;
 
-            _heldRigidbody.angularDamping = 10f; // High angular damping stops crazy spinning
-            _heldRigidbody.useGravity = false; // Disable gravity so it doesn't sag down
+            // Apply holding physics
+            _heldRigidbody.angularDrag = 10f; // High angular drag stops crazy spinning
+            _heldRigidbody.drag = 5f; // Small drag helps stabilize
+            _heldRigidbody.useGravity = false;
+            _heldRigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic; // Prevents phasing through walls while held
 
-            _currentJoint = grabbable.gameObject.AddComponent<SpringJoint>();
-            _currentJoint.connectedBody = _holdPointRb;
-            _currentJoint.spring = _springForce;
-            _currentJoint.damper = _damper;
-            _currentJoint.autoConfigureConnectedAnchor = false;
-            _currentJoint.connectedAnchor = Vector3.zero;
-            _currentJoint.anchor = Vector3.zero;
-            _currentJoint.minDistance = 0f;
-            _currentJoint.maxDistance = 0f;
+            // Ignore Player collision
+            Collider heldCol = grabbable.GetComponent<Collider>();
+            if (heldCol != null && _playerColliders != null)
+            {
+                foreach (Collider pc in _playerColliders)
+                {
+                    Physics.IgnoreCollision(heldCol, pc, true);
+                }
+            }
 
             _justGrabbedThisFrame = true;
         }
@@ -110,14 +120,25 @@ namespace EscapeRoomRevolt.Systems.Interaction
         {
             if (_currentHeldObject == null || _heldRigidbody == null) return;
 
-            if (_currentJoint != null)
-            {
-                Destroy(_currentJoint);
-            }
+            // Stop dead to prevent shooting forward!
+            _heldRigidbody.velocity = Vector3.zero;
+            _heldRigidbody.angularVelocity = Vector3.zero;
 
             // Restore physics state
-            _heldRigidbody.angularDamping = _originalAngularDamping;
+            _heldRigidbody.angularDrag = _originalAngularDamping;
+            _heldRigidbody.drag = _originalLinearDamping;
             _heldRigidbody.useGravity = _originalUseGravity;
+            _heldRigidbody.collisionDetectionMode = _originalCollisionMode;
+
+            // Restore Player collision
+            Collider heldCol = _currentHeldObject.GetComponent<Collider>();
+            if (heldCol != null && _playerColliders != null)
+            {
+                foreach (Collider pc in _playerColliders)
+                {
+                    Physics.IgnoreCollision(heldCol, pc, false);
+                }
+            }
 
             _currentHeldObject.OnDropped();
             
