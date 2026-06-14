@@ -35,81 +35,6 @@ namespace EscapeRoomRevolt.EditorTools
             SaveScene(newScene, "Assets/_EscapeRoomTemplate/Scenes/MinimalRoom.unity");
         }
 
-        [MenuItem("EscapeRoom/3. Demo/Build Physics Playground Scene", priority = 33)]
-        public static void CreatePhysicsPlaygroundScene()
-        {
-            if (!EditorUtility.DisplayDialog("Crear Physics Playground", "Això crearà l'escena 'PhysicsPlayground'. Vols continuar?", "Sí", "Cancel·la"))
-                return;
-
-            Scene newScene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
-            SetupCorePrefabs();
-
-            GameObject env = new GameObject("Environment");
-
-            // Floor
-            GameObject floor = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            floor.name = "Floor";
-            floor.transform.SetParent(env.transform);
-            floor.transform.localScale = new Vector3(20, 0.5f, 20);
-            floor.transform.position = new Vector3(0, -0.25f, 0);
-            AssignURPMaterial(floor, new Color(0.2f, 0.2f, 0.2f));
-
-            // Walls
-            for(int i=0; i<4; i++) {
-                GameObject wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                wall.name = "Wall_" + i;
-                wall.transform.SetParent(env.transform);
-                if(i%2==0) {
-                    wall.transform.localScale = new Vector3(20, 4, 1);
-                    wall.transform.position = new Vector3(0, 2, i==0 ? 10 : -10);
-                } else {
-                    wall.transform.localScale = new Vector3(1, 4, 20);
-                    wall.transform.position = new Vector3(i==1 ? 10 : -10, 2, 0);
-                }
-                AssignURPMaterial(wall, new Color(0.3f, 0.3f, 0.3f));
-            }
-
-            // Tables
-            GameObject table1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            table1.name = "Table1";
-            table1.transform.SetParent(env.transform);
-            table1.transform.localScale = new Vector3(3, 1, 2);
-            table1.transform.position = new Vector3(0, 0.5f, 4);
-            AssignURPMaterial(table1, new Color(0.4f, 0.2f, 0.1f));
-
-            // Create lots of grabbable objects
-            int objCount = 0;
-            for(int x = -2; x <= 2; x+=2)
-            {
-                for(int z = 3; z <= 5; z+=2)
-                {
-                    objCount++;
-                    GameObject grabObj = GameObject.CreatePrimitive(objCount % 2 == 0 ? PrimitiveType.Cube : PrimitiveType.Sphere);
-                    grabObj.name = "Grabbable_" + objCount;
-                    grabObj.transform.position = new Vector3(x, 2f + objCount*0.2f, z);
-                    grabObj.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
-                    
-                    Rigidbody rb = grabObj.AddComponent<Rigidbody>();
-                    rb.mass = 1f;
-                    
-                    grabObj.AddComponent<PhysicsGrabbable>();
-                    AssignURPMaterial(grabObj, Random.ColorHSV());
-                }
-            }
-
-            // A big heavy box on the floor
-            GameObject heavyBox = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            heavyBox.name = "HeavyBox";
-            heavyBox.transform.position = new Vector3(4, 1, 4);
-            heavyBox.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-            Rigidbody heavyRb = heavyBox.AddComponent<Rigidbody>();
-            heavyRb.mass = 10f; // Can be grabbed but behaves heavily
-            heavyBox.AddComponent<PhysicsGrabbable>();
-            AssignURPMaterial(heavyBox, Color.yellow);
-
-            SaveScene(newScene, "Assets/_EscapeRoomTemplate/Scenes/PhysicsPlayground.unity");
-        }
-
         [MenuItem("EscapeRoom/3. Demo/Build Showcase Museum Scene", priority = 34)]
         public static void CreateMuseumScene()
         {
@@ -183,9 +108,13 @@ namespace EscapeRoomRevolt.EditorTools
             GameObject room13Platform = CreatePlatform(env, "Room13_Hints", "13", new Vector3(-6, 0, 65), new Color(0.2f, 0.6f, 0.4f), "Hints: Character thoughts over time");
             CreateHintTestPuzzle(new Vector3(-6, 0, 65));
 
+            // Room 14: Physics System Test
+            GameObject room14Platform = CreatePlatform(env, "Room14_Physics", "14", new Vector3(6, 0, 70), new Color(0.8f, 0.4f, 0.2f), "Physics: Stack and throw items");
+            CreatePhysicsPuzzle(new Vector3(6, 0, 70));
+
             // Extend corridor to accommodate all rooms
-            corridor.transform.localScale = new Vector3(4, 0.5f, 85);
-            corridor.transform.position = new Vector3(0, -0.25f, 40);
+            corridor.transform.localScale = new Vector3(4, 0.5f, 95);
+            corridor.transform.position = new Vector3(0, -0.25f, 45);
 
             SaveScene(newScene, "Assets/_EscapeRoomTemplate/Scenes/ShowcaseMuseum.unity");
         }
@@ -1114,6 +1043,52 @@ namespace EscapeRoomRevolt.EditorTools
                 UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(statePuzzle.OnSolvedEvent, doorScript.Unlock);
                 UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(statePuzzle.OnSolvedEvent, doorScript.ForceOpen);
             }
+        }
+
+        private static void CreatePhysicsPuzzle(Vector3 center)
+        {
+            GameObject puzzleObj = new GameObject("PhysicsPuzzle_Logic");
+            puzzleObj.transform.position = center;
+
+            // Table
+            GameObject table1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            table1.name = "PhysicsTable";
+            table1.transform.SetParent(puzzleObj.transform);
+            table1.transform.localScale = new Vector3(3, 1, 2);
+            table1.transform.position = center + new Vector3(0, 0.5f, 1.5f);
+            AssignURPMaterial(table1, new Color(0.4f, 0.2f, 0.1f));
+
+            // Create lots of grabbable objects
+            int objCount = 0;
+            for(float x = -1f; x <= 1f; x+=1f)
+            {
+                for(float z = 1f; z <= 2f; z+=1f)
+                {
+                    objCount++;
+                    GameObject grabObj = GameObject.CreatePrimitive(objCount % 2 == 0 ? PrimitiveType.Cube : PrimitiveType.Sphere);
+                    grabObj.name = "Grabbable_" + objCount;
+                    grabObj.transform.SetParent(puzzleObj.transform);
+                    grabObj.transform.position = center + new Vector3(x, 1.5f + objCount*0.2f, z);
+                    grabObj.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
+                    
+                    Rigidbody rb = grabObj.AddComponent<Rigidbody>();
+                    rb.mass = 1f;
+                    
+                    grabObj.AddComponent<EscapeRoomRevolt.Systems.Interaction.PhysicsGrabbable>();
+                    AssignURPMaterial(grabObj, Random.ColorHSV());
+                }
+            }
+
+            // A big heavy box on the floor
+            GameObject heavyBox = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            heavyBox.name = "HeavyBox";
+            heavyBox.transform.SetParent(puzzleObj.transform);
+            heavyBox.transform.position = center + new Vector3(3, 0.5f, 0);
+            heavyBox.transform.localScale = new Vector3(1, 1, 1);
+            Rigidbody hr = heavyBox.AddComponent<Rigidbody>();
+            hr.mass = 10f;
+            heavyBox.AddComponent<EscapeRoomRevolt.Systems.Interaction.PhysicsGrabbable>();
+            AssignURPMaterial(heavyBox, Color.red);
         }
     }
 }
