@@ -243,6 +243,35 @@ namespace EscapeRoomRevolt.Systems.Inventory
             return true;
         }
 
+        public void PullOutActiveItem()
+        {
+            if (_slots[_activeSlotIndex].IsEmpty) return;
+            if (EscapeRoomRevolt.Systems.Interaction.PhysicsGrabber.Instance != null && 
+                EscapeRoomRevolt.Systems.Interaction.PhysicsGrabber.Instance.IsHoldingObject) return;
+
+            InventoryItemData data = _slots[_activeSlotIndex].Data;
+            
+            if (data.IsReadable)
+            {
+                EscapeRoomRevolt.UI.PC.UIManager.Instance.ShowNoteReader(data.NoteContent);
+            }
+            else if (data.WorldPrefab != null && _dropOrigin != null)
+            {
+                GameObject spawned = Instantiate(data.WorldPrefab, _dropOrigin.position + _dropOrigin.forward * 0.5f, _dropOrigin.rotation);
+                var grabbable = spawned.GetComponent<EscapeRoomRevolt.Systems.Interaction.PhysicsGrabbable>();
+                if (grabbable != null)
+                {
+                    EscapeRoomRevolt.Systems.Interaction.PhysicsGrabber.Instance.Grab(grabbable);
+                    UseActiveItem(); // Removes from inventory
+                }
+                else
+                {
+                    Destroy(spawned);
+                    Log($"Could not pull out {data.DisplayName} because its prefab lacks PhysicsGrabbable.");
+                }
+            }
+        }
+
         public void DropActiveItem()
         {
             if (_slots[_activeSlotIndex].IsEmpty) return;

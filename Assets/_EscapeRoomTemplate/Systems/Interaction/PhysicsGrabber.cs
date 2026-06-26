@@ -5,8 +5,8 @@ namespace EscapeRoomRevolt.Systems.Interaction
     public class PhysicsGrabber : MonoBehaviour
     {
         public static PhysicsGrabber Instance { get; private set; }
-
-        [Header("Grab Settings")]
+        public bool IsHoldingObject => _currentHeldObject != null;
+        public PhysicsGrabbable CurrentHeldObject => _currentHeldObject;
         [SerializeField] private float _holdDistance = 1.25f;
         [SerializeField] private float _pullSpeed = 15f;
         [SerializeField] private float _throwForce = 15f;
@@ -47,7 +47,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
                 return;
             }
 
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButtonDown(0))
             {
                 Throw();
                 return;
@@ -59,9 +59,40 @@ namespace EscapeRoomRevolt.Systems.Interaction
                 return;
             }
 
-            if (Input.GetKeyDown(KeyCode.E) || Input.GetMouseButtonDown(0))
+            if (Input.GetKeyDown(KeyCode.Q))
             {
                 Drop();
+                return;
+            }
+
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                var pickable = _currentHeldObject.GetComponent<EscapeRoomRevolt.Systems.Inventory.PickableItem>();
+                if (pickable != null)
+                {
+                    Drop();
+                    pickable.Interact();
+                }
+                return;
+            }
+
+            var playerMovement = transform.root.GetComponentInChildren<EscapeRoomRevolt.Player.PC.PlayerMovement>();
+            if (Input.GetMouseButton(1))
+            {
+                if (playerMovement != null) playerMovement.IsMouseLookFrozen = true;
+
+                float mouseX = Input.GetAxis("Mouse X") * 5f;
+                float mouseY = Input.GetAxis("Mouse Y") * 5f;
+
+                if (Camera.main != null)
+                {
+                    _heldRigidbody.transform.Rotate(Camera.main.transform.up, -mouseX, Space.World);
+                    _heldRigidbody.transform.Rotate(Camera.main.transform.right, mouseY, Space.World);
+                }
+            }
+            else
+            {
+                if (playerMovement != null) playerMovement.IsMouseLookFrozen = false;
             }
         }
 
@@ -140,6 +171,9 @@ namespace EscapeRoomRevolt.Systems.Interaction
                 }
             }
 
+            var playerMovement = transform.root.GetComponentInChildren<EscapeRoomRevolt.Player.PC.PlayerMovement>();
+            if (playerMovement != null) playerMovement.IsMouseLookFrozen = false;
+
             _currentHeldObject.OnDropped();
             
             _currentHeldObject = null;
@@ -155,7 +189,5 @@ namespace EscapeRoomRevolt.Systems.Interaction
             
             rb.AddForce(transform.forward * _throwForce, ForceMode.Impulse);
         }
-
-        public bool IsHoldingObject => _currentHeldObject != null;
     }
 }

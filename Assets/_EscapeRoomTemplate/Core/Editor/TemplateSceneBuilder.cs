@@ -67,54 +67,54 @@ namespace EscapeRoomRevolt.EditorTools
             CreatePlatform(env, "Room3_Note", "3", new Vector3(-6, 0, 15), new Color(0.2f, 0.6f, 0.2f), "Note: Read clues and lore.");
             CreateLorePuzzle(new Vector3(-6, 0, 15));
 
-            // Room 4: 3D Examination
-            CreatePlatform(env, "Room4_Examine", "4", new Vector3(6, 0, 20), new Color(0.6f, 0.6f, 0.2f), "Examine: Inspect items closely in 3D.");
-            CreateExaminePuzzle(new Vector3(6, 0, 20));
+            // Room 4: 3D Examination (DEPRECATED - Replaced by Physics Grabber)
+            // CreatePlatform(env, "Room4_Examine", "4", new Vector3(6, 0, 20), new Color(0.6f, 0.6f, 0.2f), "Examine: Inspect items closely in 3D.");
+            // CreateExaminePuzzle(new Vector3(6, 0, 20));
 
-            // Room 5: Numeric Keypad
-            CreatePlatform(env, "Room5_Keypad", "5", new Vector3(-6, 0, 25), new Color(0.2f, 0.2f, 0.6f), "Keypad: Enter a 4-digit code.");
-            CreateKeypadPuzzle(new Vector3(-6, 0, 25));
+            // Room 4 (Formerly 5): Numeric Keypad
+            CreatePlatform(env, "Room4_Keypad", "4", new Vector3(6, 0, 20), new Color(0.2f, 0.2f, 0.6f), "Keypad: Enter a 4-digit code.");
+            CreateKeypadPuzzle(new Vector3(6, 0, 20));
 
-            // Room 6: Narrative Trigger
-            CreatePlatform(env, "Room6_Narrative", "6", new Vector3(6, 0, 30), new Color(0.6f, 0.2f, 0.6f), "Trigger: Walk into the invisible box.");
-            CreateNarrativePuzzle(new Vector3(6, 0, 30));
+            // Room 5 (Formerly 6): Narrative Trigger
+            CreatePlatform(env, "Room5_Narrative", "5", new Vector3(-6, 0, 25), new Color(0.6f, 0.2f, 0.6f), "Trigger: Walk into the invisible box.");
+            CreateNarrativePuzzle(new Vector3(-6, 0, 25));
 
-            // Room 7: Item Receiver
-            CreatePlatform(env, "Room7_Receiver", "7", new Vector3(-6, 0, 35), new Color(0.4f, 0.4f, 0.4f), "Receiver: Insert specific item.");
-            CreateItemReceiverPuzzle(new Vector3(-6, 0, 35));
+            // Room 6 (Formerly 7): Item Receiver (PhysicsSocket)
+            CreatePlatform(env, "Room6_Receiver", "6", new Vector3(6, 0, 30), new Color(0.4f, 0.4f, 0.4f), "Receiver: Drop specific item.");
+            CreateItemReceiverPuzzle(new Vector3(6, 0, 30));
 
-            // Room 8: Light Switch
-            CreatePlatform(env, "Room8_LightSwitch", "8", new Vector3(6, 0, 40), new Color(0.5f, 0.5f, 0.3f), "Light Switch: Turn the lights off/on.");
-            CreateLightSwitchPuzzle(new Vector3(6, 0, 40));
+            // Room 7 (Formerly 8): Light Switch
+            CreatePlatform(env, "Room7_LightSwitch", "7", new Vector3(-6, 0, 35), new Color(0.5f, 0.5f, 0.3f), "Light Switch: Turn the lights off/on.");
+            CreateLightSwitchPuzzle(new Vector3(-6, 0, 35));
 
-            // Room 9: Combination
-            CreatePlatform(env, "Room9_Combination", "9", new Vector3(-6, 0, 45), new Color(0.5f, 0.3f, 0.5f), "Combine: Mix items in inventory.");
-            CreateCombinationPuzzle(new Vector3(-6, 0, 45));
+            // Room 8 (Formerly 9): Combination (PhysicsSocket)
+            CreatePlatform(env, "Room8_Combination", "8", new Vector3(6, 0, 40), new Color(0.5f, 0.3f, 0.5f), "Combine: Drop battery on flashlight.");
+            CreateCombinationPuzzle(new Vector3(6, 0, 40));
 
-            // Room 10: Sequence
-            CreatePlatform(env, "Room10_Sequence", "10", new Vector3(6, 0, 50), new Color(0.3f, 0.5f, 0.5f), "Sequence: Press buttons in order.");
-            CreateSequencePuzzle(new Vector3(6, 0, 50));
+            // Room 9 (Formerly 10): Sequence
+            CreatePlatform(env, "Room9_Sequence", "9", new Vector3(-6, 0, 45), new Color(0.3f, 0.5f, 0.5f), "Sequence: Press buttons in order.");
+            CreateSequencePuzzle(new Vector3(-6, 0, 45));
 
-            // Room 11: State (Levers)
-            CreatePlatform(env, "Room11_State", "11", new Vector3(-6, 0, 55), new Color(0.5f, 0.4f, 0.2f), "State: Match levers to correct positions.");
-            CreateStatePuzzle(new Vector3(-6, 0, 55));
+            // Room 10 (Formerly 11): State (Levers)
+            CreatePlatform(env, "Room10_State", "10", new Vector3(6, 0, 50), new Color(0.5f, 0.4f, 0.2f), "State: Match levers to correct positions.");
+            CreateStatePuzzle(new Vector3(6, 0, 50));
 
-            // Room 12: Audio Test
-            GameObject room12Platform = CreatePlatform(env, "Room12_Audio", "12", new Vector3(6, 0, 60), new Color(0.7f, 0.4f, 0.6f), "Audio: Wood footsteps & BGM");
-            room12Platform.tag = "Wood";
-            CreateAudioTestPuzzle(new Vector3(6, 0, 60));
+            // Room 11 (Formerly 12): Audio Test
+            GameObject room11Platform = CreatePlatform(env, "Room11_Audio", "11", new Vector3(-6, 0, 55), new Color(0.7f, 0.4f, 0.6f), "Audio: Wood footsteps & BGM");
+            room11Platform.tag = "Wood";
+            CreateAudioTestPuzzle(new Vector3(-6, 0, 55));
 
-            // Room 13: Hint System Test
-            GameObject room13Platform = CreatePlatform(env, "Room13_Hints", "13", new Vector3(-6, 0, 65), new Color(0.2f, 0.6f, 0.4f), "Hints: Character thoughts over time");
-            CreateHintTestPuzzle(new Vector3(-6, 0, 65));
+            // Room 12 (Formerly 13): Hint System Test
+            GameObject room12Platform = CreatePlatform(env, "Room12_Hints", "12", new Vector3(6, 0, 60), new Color(0.2f, 0.6f, 0.4f), "Hints: Character thoughts over time");
+            CreateHintTestPuzzle(new Vector3(6, 0, 60));
 
-            // Room 14: Physics System Test
-            GameObject room14Platform = CreatePlatform(env, "Room14_Physics", "14", new Vector3(6, 0, 70), new Color(0.8f, 0.4f, 0.2f), "Physics: Stack and throw items");
-            CreatePhysicsPuzzle(new Vector3(6, 0, 70));
+            // Room 13 (Formerly 14): Physics System Test
+            GameObject room13Platform = CreatePlatform(env, "Room13_Physics", "13", new Vector3(-6, 0, 65), new Color(0.8f, 0.4f, 0.2f), "Physics: Stack and throw items");
+            CreatePhysicsPuzzle(new Vector3(-6, 0, 65));
 
             // Extend corridor to accommodate all rooms
-            corridor.transform.localScale = new Vector3(4, 0.5f, 95);
-            corridor.transform.position = new Vector3(0, -0.25f, 45);
+            corridor.transform.localScale = new Vector3(4, 0.5f, 90);
+            corridor.transform.position = new Vector3(0, -0.25f, 42.5f);
 
             SaveScene(newScene, "Assets/_EscapeRoomTemplate/Scenes/ShowcaseMuseum.unity");
         }
@@ -683,7 +683,11 @@ namespace EscapeRoomRevolt.EditorTools
             pedestal.transform.localScale = new Vector3(1, 1, 1);
 
             GameObject receiverObj = CreateInteractableObject("Receiver", center + new Vector3(0, 1.1f, 0), new Vector3(0.5f, 0.2f, 0.5f), Color.grey);
-            var receiver = receiverObj.AddComponent<ItemReceiver>();
+            var triggerCol = receiverObj.AddComponent<BoxCollider>();
+            triggerCol.isTrigger = true;
+            triggerCol.size = new Vector3(2f, 2f, 2f); // Big drop zone
+            
+            var receiver = receiverObj.AddComponent<EscapeRoomRevolt.Systems.Interaction.PhysicsSocket>();
             
             // Add a locked door instead of a drawer to be more epic
             EscapeRoomRevolt.EditorTools.InteractableCreator.CreateDoor();
@@ -719,6 +723,8 @@ namespace EscapeRoomRevolt.EditorTools
 
                 GameObject keyObj = CreateInteractableObject("PickupKey", center + new Vector3(1.5f, 1.1f, 0), new Vector3(0.2f, 0.2f, 0.2f), Color.cyan);
                 var pickable = keyObj.AddComponent<PickableItem>();
+                keyObj.AddComponent<EscapeRoomRevolt.Systems.Interaction.PhysicsGrabbable>(); // Make it physically grabbable
+                
                 SerializedObject soPickable = new SerializedObject(pickable);
                 soPickable.FindProperty("_itemData").objectReferenceValue = itemData;
                 soPickable.FindProperty("_destroyOnPickup").boolValue = true;
@@ -727,16 +733,15 @@ namespace EscapeRoomRevolt.EditorTools
 
                 // Configure Receiver
                 SerializedObject soReceiver = new SerializedObject(receiver);
-                soReceiver.FindProperty("_requiredItem").objectReferenceValue = itemData;
-                soReceiver.FindProperty("_interactionPrompt").stringValue = "[E] Insert Golden Key";
+                soReceiver.FindProperty("_requiredItemId").stringValue = itemData.ItemId;
                 soReceiver.ApplyModifiedProperties();
 
                 if (doorScript != null)
                 {
                     // Hook up the events
-                    UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(receiver.OnItemAccepted, doorScript.Unlock);
-                    UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(receiver.OnItemAccepted, doorScript.ForceOpen);
-                    UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(receiver.OnItemAccepted, cinematicCam.PlayCinematic);
+                    UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(receiver.OnItemSnapped, doorScript.Unlock);
+                    UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(receiver.OnItemSnapped, doorScript.ForceOpen);
+                    UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(receiver.OnItemSnapped, cinematicCam.PlayCinematic);
                 }
             }
         }
@@ -838,39 +843,42 @@ namespace EscapeRoomRevolt.EditorTools
             
             var empty = AssetDatabase.LoadAssetAtPath<InventoryItemData>("Assets/_EscapeRoomTemplate/ScriptableObjects/Items/Flashlight_Empty.asset");
             var battery = AssetDatabase.LoadAssetAtPath<InventoryItemData>("Assets/_EscapeRoomTemplate/ScriptableObjects/Items/Batteries.asset");
-            var working = AssetDatabase.LoadAssetAtPath<InventoryItemData>("Assets/_EscapeRoomTemplate/ScriptableObjects/Items/Flashlight_Working.asset");
 
             // Table
             GameObject table = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            table.transform.position = center + new Vector3(1.5f, 0.5f, 0);
-            table.transform.localScale = new Vector3(1f, 1f, 0.5f);
+            table.transform.position = center + new Vector3(0f, 0.5f, 0);
+            table.transform.localScale = new Vector3(3f, 1f, 1f);
 
             // Pickup Empty Flashlight
-            GameObject emptyObj = CreateInteractableObject("PickupEmpty", center + new Vector3(1.25f, 1.1f, 0), new Vector3(0.2f, 0.2f, 0.2f), Color.red);
+            GameObject emptyObj = CreateInteractableObject("PickupEmpty", center + new Vector3(-1f, 1.1f, 0), new Vector3(0.2f, 0.2f, 0.2f), Color.red);
             var pickEmpty = emptyObj.AddComponent<PickableItem>();
+            emptyObj.AddComponent<EscapeRoomRevolt.Systems.Interaction.PhysicsGrabbable>();
+            
+            // Turn the Flashlight into a PhysicsSocket!
+            var triggerCol = emptyObj.AddComponent<SphereCollider>();
+            triggerCol.isTrigger = true;
+            triggerCol.radius = 1.0f;
+            var socket = emptyObj.AddComponent<EscapeRoomRevolt.Systems.Interaction.PhysicsSocket>();
+            
             SerializedObject soEmptyPick = new SerializedObject(pickEmpty);
             soEmptyPick.FindProperty("_itemData").objectReferenceValue = empty;
             soEmptyPick.FindProperty("_destroyOnPickup").boolValue = true;
             soEmptyPick.ApplyModifiedProperties();
 
             // Pickup Batteries
-            GameObject batteryObj = CreateInteractableObject("PickupBattery", center + new Vector3(1.75f, 1.1f, 0), new Vector3(0.1f, 0.1f, 0.1f), Color.yellow);
+            GameObject batteryObj = CreateInteractableObject("PickupBattery", center + new Vector3(1f, 1.1f, 0), new Vector3(0.1f, 0.1f, 0.1f), Color.yellow);
             var pickBattery = batteryObj.AddComponent<PickableItem>();
+            batteryObj.AddComponent<EscapeRoomRevolt.Systems.Interaction.PhysicsGrabbable>();
+            
             SerializedObject soBatteryPick = new SerializedObject(pickBattery);
             soBatteryPick.FindProperty("_itemData").objectReferenceValue = battery;
             soBatteryPick.FindProperty("_destroyOnPickup").boolValue = true;
             soBatteryPick.ApplyModifiedProperties();
 
-            // Receiver
-            GameObject pedestal = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            pedestal.transform.position = center + new Vector3(-1.5f, 0.5f, 0);
-            
-            GameObject receiverObj = CreateInteractableObject("Receiver", center + new Vector3(-1.5f, 1.1f, 0), new Vector3(0.5f, 0.2f, 0.5f), Color.grey);
-            var receiver = receiverObj.AddComponent<ItemReceiver>();
-            SerializedObject soReceiver = new SerializedObject(receiver);
-            soReceiver.FindProperty("_requiredItem").objectReferenceValue = working;
-            soReceiver.FindProperty("_missingItemMessage").stringValue = "I need a WORKING flashlight to place here.";
-            soReceiver.ApplyModifiedProperties();
+            // Configure Socket on Flashlight
+            SerializedObject soSocket = new SerializedObject(socket);
+            soSocket.FindProperty("_requiredItemId").stringValue = battery.ItemId;
+            soSocket.ApplyModifiedProperties();
 
             EscapeRoomRevolt.EditorTools.InteractableCreator.CreateDoor();
             GameObject doorObj = UnityEditor.Selection.activeGameObject;
@@ -891,9 +899,10 @@ namespace EscapeRoomRevolt.EditorTools
                 soDoor.FindProperty("_isLocked").boolValue = true;
                 soDoor.ApplyModifiedProperties();
 
-                UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(receiver.OnItemAccepted, doorScript.Unlock);
-                UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(receiver.OnItemAccepted, doorScript.ForceOpen);
-                UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(receiver.OnItemAccepted, cinematicCam.PlayCinematic);
+                // When battery snaps into flashlight, unlock door!
+                UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(socket.OnItemSnapped, doorScript.Unlock);
+                UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(socket.OnItemSnapped, doorScript.ForceOpen);
+                UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(socket.OnItemSnapped, cinematicCam.PlayCinematic);
             }
         }
 

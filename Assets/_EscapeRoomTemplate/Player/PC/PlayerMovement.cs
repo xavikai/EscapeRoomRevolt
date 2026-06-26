@@ -85,9 +85,13 @@ namespace EscapeRoomRevolt.Player.PC
             HandleMovement();
         }
 
+        public bool IsMouseLookFrozen { get; set; } = false;
+
         // ── Private Methods ──────────────────────────────────────────────────
         private void HandleMouseLook()
         {
+            if (IsMouseLookFrozen) return;
+
             float mouseX = Input.GetAxis("Mouse X") * _mouseSensitivity * Time.deltaTime;
             float mouseY = Input.GetAxis("Mouse Y") * _mouseSensitivity * Time.deltaTime;
 

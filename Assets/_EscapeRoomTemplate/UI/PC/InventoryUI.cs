@@ -276,14 +276,7 @@ namespace EscapeRoomRevolt.UI.PC
             // If clicking the currently active slot, try to inspect it
             if (InventoryManager.Instance.ActiveSlotIndex == index)
             {
-                var data = InventoryManager.Instance.GetActiveItem();
-                if (data != null)
-                {
-                    if (data.IsReadable)
-                        UIManager.Instance.ShowNoteReader(data.NoteContent);
-                    else if (data.WorldPrefab != null)
-                        UIManager.Instance.ShowItemExaminer(data);
-                }
+                InventoryManager.Instance.PullOutActiveItem();
             }
             else
             {

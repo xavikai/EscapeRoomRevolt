@@ -52,6 +52,19 @@ namespace EscapeRoomRevolt.UI.PC
 
         private void Update()
         {
+            if (PhysicsGrabber.Instance != null && PhysicsGrabber.Instance.IsHoldingObject)
+            {
+                if (_promptContainer != null && !_promptContainer.activeSelf) _promptContainer.SetActive(true);
+                
+                if (_promptText != null)
+                {
+                    bool canKeep = PhysicsGrabber.Instance.CurrentHeldObject.GetComponent<EscapeRoomRevolt.Systems.Inventory.PickableItem>() != null;
+                    string keepText = canKeep ? "  [E] Guardar" : "";
+                    _promptText.text = $"[Clic Esq] Llençar  [Mantenir Dret] Rotar  [Q] Deixar" + keepText;
+                }
+                return;
+            }
+
             bool isFocusMode = Cursor.lockState == CursorLockMode.None || Cursor.visible;
 
             if (isFocusMode || _currentTarget == null || !_currentTarget.CanInteract)

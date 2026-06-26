@@ -16,6 +16,8 @@ namespace EscapeRoomRevolt.Systems.Inventory
         [SerializeField] private InventoryItemData _itemData;
         [SerializeField] private int _quantity = 1;
 
+        public InventoryItemData Data => _itemData;
+
         [Header("On Pick Up")]
         [SerializeField] private bool _destroyOnPickup = false;
         [SerializeField] private AudioClip _pickupSound;

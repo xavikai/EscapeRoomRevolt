@@ -22,7 +22,7 @@ namespace EscapeRoomRevolt.Player.PC
             if (UIManager.Instance == null) return;
 
             if (Input.GetKeyDown(_inventoryKey))
-                UIManager.Instance.ToggleInventory();
+                EscapeRoomRevolt.Systems.Inventory.InventoryManager.Instance.PullOutActiveItem();
 
             if (Input.GetKeyDown(_pauseKey))
                 HandlePause();
