@@ -6,7 +6,7 @@ namespace EscapeRoomRevolt.Editor
 {
     public static class ExamineChamberSetup
     {
-        [MenuItem("EscapeRoom/1. Setup/Create Examine Chamber", priority = 13)]
+        // Legacy scene rig. GameplayUIController now owns a runtime examine rig for PC and VR presenters.
         public static void CreateExamineChamber()
         {
             // 1. Check if it already exists

@@ -1,6 +1,8 @@
 using UnityEngine;
 using EscapeRoomRevolt.UI.PC;
 using EscapeRoomRevolt.Core.Save;
+using EscapeRoomRevolt.Core.Settings;
+using EscapeRoomRevolt.Systems.Survival;
 
 namespace EscapeRoomRevolt.Player.PC
 {
@@ -47,12 +49,24 @@ namespace EscapeRoomRevolt.Player.PC
         private float  _cameraPitch; // Up/down rotation accumulated
         private float  _accumulatedDistance;
         private bool   _isCrouching;
+        private bool   _forcedCrouch;
+        private bool   _evasionCrouch;
         private Vector3 _originalCameraLocalPosition;
+        private PlayerVitals _vitals;
+        private readonly Collider[] _stanceOverlaps = new Collider[16];
+
+        public bool IsMovementFrozen { get; set; }
+        public bool IsMouseLookFrozen { get; set; }
+        public bool IsSprinting { get; private set; }
+        public bool IsCrouching => _isCrouching;
+        public Transform ViewTransform => _playerCamera;
+        public float CameraPitch => _cameraPitch;
 
         // ── Unity Lifecycle ──────────────────────────────────────────────────
         private void Awake()
         {
             _cc = GetComponent<CharacterController>();
+            _vitals = GetComponent<PlayerVitals>();
 
             if (_playerCamera == null)
             {
@@ -78,22 +92,35 @@ namespace EscapeRoomRevolt.Player.PC
         private void Update()
         {
             // Block all input when a UI panel is open
-            bool uiBlocking = UIManager.Instance != null && UIManager.Instance.IsUIBlockingGameplay;
-            if (uiBlocking) return;
+            bool uiBlocking = (UIManager.Instance != null && UIManager.Instance.IsUIBlockingGameplay)
+                || (EscapeRoomRevolt.UI.Toolkit.UIToolkitMenuController.Instance != null
+                    && EscapeRoomRevolt.UI.Toolkit.UIToolkitMenuController.Instance.IsBlockingGameplay);
+            if (uiBlocking)
+            {
+                IsSprinting = false;
+                _vitals?.SetSprinting(false);
+                return;
+            }
 
             HandleMouseLook();
+            if (IsMovementFrozen)
+            {
+                IsSprinting = false;
+                _vitals?.SetSprinting(false);
+                return;
+            }
             HandleMovement();
         }
-
-        public bool IsMouseLookFrozen { get; set; } = false;
 
         // ── Private Methods ──────────────────────────────────────────────────
         private void HandleMouseLook()
         {
             if (IsMouseLookFrozen) return;
 
-            float mouseX = Input.GetAxis("Mouse X") * _mouseSensitivity * Time.deltaTime;
-            float mouseY = Input.GetAxis("Mouse Y") * _mouseSensitivity * Time.deltaTime;
+            var input = EscapeRoomRevolt.Core.Input.InputRouter.Instance;
+            Vector2 look = input != null ? input.Look * 0.05f : Vector2.zero;
+            float mouseX = look.x * _mouseSensitivity * Time.deltaTime;
+            float mouseY = look.y * _mouseSensitivity * Time.deltaTime;
 
             // Horizontal rotation — rotates the whole player body
             transform.Rotate(Vector3.up * mouseX);
@@ -106,32 +133,29 @@ namespace EscapeRoomRevolt.Player.PC
 
         private void HandleMovement()
         {
+            var input = EscapeRoomRevolt.Core.Input.InputRouter.Instance;
             // Crouching Input
             if (_canCrouch)
             {
-                _isCrouching = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.C);
+                bool wantsCrouch = _forcedCrouch || _evasionCrouch || (input != null && input.CrouchHeld);
+                if (!wantsCrouch && _isCrouching && !CanStand()) wantsCrouch = true;
+                _isCrouching = wantsCrouch;
             }
 
             // Smoothly adjust CharacterController height and center
             float targetHeight = _isCrouching ? _crouchHeight : _standingHeight;
-            _cc.height = Mathf.Lerp(_cc.height, targetHeight, Time.deltaTime * _crouchTransitionSpeed);
-            _cc.center = new Vector3(0, _cc.height / 2f, 0);
-
-            // Smoothly adjust Camera height based on current collider height proportion
-            if (_playerCamera != null)
-            {
-                float heightRatio = _cc.height / _standingHeight;
-                Vector3 targetCamPos = _originalCameraLocalPosition;
-                targetCamPos.y = _originalCameraLocalPosition.y * heightRatio;
-                _playerCamera.localPosition = Vector3.Lerp(_playerCamera.localPosition, targetCamPos, Time.deltaTime * _crouchTransitionSpeed);
-            }
+            ApplyStance(targetHeight, false);
 
             // Horizontal movement
-            float h = Input.GetAxis("Horizontal");
-            float v = Input.GetAxis("Vertical");
+            Vector2 moveInput = input != null ? input.Move : Vector2.zero;
+            float h = moveInput.x;
+            float v = moveInput.y;
+            if (GameFeatures.IsEnabled(OptionalGameFeature.AdvancedEvasion)
+                && input != null && input.LeanModifierHeld) h = 0f;
 
-            bool isSprinting = Input.GetKey(KeyCode.LeftShift) && !_isCrouching;
-            float speed = _isCrouching ? _crouchSpeed : (isSprinting ? _sprintSpeed : _walkSpeed);
+            IsSprinting = input != null && input.SprintHeld && !_isCrouching && (_vitals == null || _vitals.CanSprint) && moveInput.sqrMagnitude > .01f;
+            _vitals?.SetSprinting(IsSprinting);
+            float speed = _isCrouching ? _crouchSpeed : (IsSprinting ? _sprintSpeed : _walkSpeed);
 
             Vector3 move = transform.right * h + transform.forward * v;
             move = Vector3.ClampMagnitude(move, 1f); // Prevents diagonal speed boost
@@ -141,12 +165,15 @@ namespace EscapeRoomRevolt.Player.PC
             if (_cc.isGrounded && horizontalVelocity.sqrMagnitude > 0.1f)
             {
                 _accumulatedDistance += horizontalVelocity.magnitude * Time.deltaTime;
-                float currentStepThreshold = isSprinting ? _footstepDistanceSprint : _footstepDistanceWalk;
+                float currentStepThreshold = IsSprinting ? _footstepDistanceSprint : _footstepDistanceWalk;
 
                 if (_accumulatedDistance >= currentStepThreshold)
                 {
                     _accumulatedDistance = 0f;
                     PlayFootstepSound();
+                    float noiseRadius = _isCrouching ? 2.5f : IsSprinting ? 10f : 5f;
+                    GameplayNoise.Emit(transform.position, noiseRadius,
+                        IsSprinting ? GameplayNoiseType.Sprint : GameplayNoiseType.Footstep, gameObject);
                 }
             }
             else
@@ -158,15 +185,69 @@ namespace EscapeRoomRevolt.Player.PC
             if (_cc.isGrounded && _verticalVelocity < 0f)
                 _verticalVelocity = -2f; // Small negative to keep grounded
 
-            if (_canJump && _cc.isGrounded && Input.GetButtonDown("Jump"))
+            if (_canJump && _cc.isGrounded && input != null && input.JumpPressed)
             {
                 _verticalVelocity = Mathf.Sqrt(_jumpHeight * -2f * _gravity);
             }
 
             _verticalVelocity += _gravity * Time.deltaTime;
-            move.y = _verticalVelocity;
+            Vector3 finalVelocity = move * speed + Vector3.up * _verticalVelocity;
+            _cc.Move(finalVelocity * Time.deltaTime);
+        }
 
-            _cc.Move(move * speed * Time.deltaTime);
+        public void SetForcedCrouch(bool value)
+        {
+            _forcedCrouch = value;
+            RefreshImmediateStance();
+        }
+
+        /// <summary>Temporary crouch ownership used by slide/evasion without interfering with hiding spots.</summary>
+        public void SetEvasionCrouch(bool value)
+        {
+            _evasionCrouch = value;
+            RefreshImmediateStance();
+        }
+
+        /// <summary>Returns false while world geometry blocks the full standing capsule.</summary>
+        public bool CanStand()
+        {
+            if (_cc == null || !_cc.enabled) return true;
+            float radius = Mathf.Max(.01f, _cc.radius - .015f);
+            float halfSegment = Mathf.Max(0f, (_standingHeight * .5f) - radius);
+            Vector3 center = transform.TransformPoint(new Vector3(0f, _standingHeight * .5f, 0f));
+            Vector3 up = transform.up;
+            int count = Physics.OverlapCapsuleNonAlloc(center - up * halfSegment, center + up * halfSegment,
+                radius, _stanceOverlaps, ~0, QueryTriggerInteraction.Ignore);
+            for (int index = 0; index < count; index++)
+            {
+                Collider candidate = _stanceOverlaps[index];
+                if (candidate != null && !candidate.transform.IsChildOf(transform)) return false;
+            }
+            return true;
+        }
+
+        private void RefreshImmediateStance()
+        {
+            EscapeRoomRevolt.Core.Input.InputRouter input = EscapeRoomRevolt.Core.Input.InputRouter.Instance;
+            bool wantsCrouch = _forcedCrouch || _evasionCrouch || (input != null && input.CrouchHeld);
+            if (!wantsCrouch && _isCrouching && !CanStand()) wantsCrouch = true;
+            _isCrouching = wantsCrouch;
+            ApplyStance(_isCrouching ? _crouchHeight : _standingHeight, true);
+        }
+
+        private void ApplyStance(float targetHeight, bool immediate)
+        {
+            _cc.height = immediate
+                ? targetHeight
+                : Mathf.Lerp(_cc.height, targetHeight, Time.deltaTime * _crouchTransitionSpeed);
+            _cc.center = new Vector3(0f, _cc.height / 2f, 0f);
+            if (_playerCamera == null) return;
+            float heightRatio = _cc.height / _standingHeight;
+            Vector3 targetCamPos = _originalCameraLocalPosition;
+            targetCamPos.y = _originalCameraLocalPosition.y * heightRatio;
+            _playerCamera.localPosition = immediate
+                ? targetCamPos
+                : Vector3.Lerp(_playerCamera.localPosition, targetCamPos, Time.deltaTime * _crouchTransitionSpeed);
         }
 
         private void PlayFootstepSound()
@@ -228,6 +309,7 @@ namespace EscapeRoomRevolt.Player.PC
             if (_cc != null) _cc.enabled = true;
 
             _cameraPitch = state.cameraPitch;
+            _evasionCrouch = false;
             if (_playerCamera != null)
             {
                 _playerCamera.localRotation = Quaternion.Euler(_cameraPitch, 0f, 0f);

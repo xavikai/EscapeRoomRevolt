@@ -60,6 +60,28 @@ namespace EscapeRoomRevolt.Core
         public float completionTimeSeconds;
     }
 
+    /// <summary>Fired when the camcorder completes a recordable evidence subject.</summary>
+    public struct OnEvidenceRecorded
+    {
+        public string evidenceId;
+        public string title;
+    }
+
+    /// <summary>Fired whenever the global game flow changes state.</summary>
+    public struct OnGameFlowStateChanged
+    {
+        public EscapeRoomRevolt.Core.Flow.GameFlowState state;
+    }
+
+    /// <summary>Fired once when a victory or defeat condition ends the game.</summary>
+    public struct OnGameEnded
+    {
+        public EscapeRoomRevolt.Core.Flow.GameOutcome outcome;
+        public string endingId;
+        public string title;
+        public string message;
+    }
+
     /// <summary>Fired when the game is saved.</summary>
     public struct OnGameSaved
     {

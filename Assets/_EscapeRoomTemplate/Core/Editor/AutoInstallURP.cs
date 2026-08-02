@@ -1,37 +1,22 @@
 using UnityEditor;
-using UnityEditor.PackageManager;
-using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 
 namespace EscapeRoomRevolt.EditorTools
 {
-    [InitializeOnLoad]
-    public class AutoInstallURP
+    /// <summary>Dependency check only. Commercial packages must never modify Package Manager on domain reload.</summary>
+    public static class AutoInstallURP
     {
-        static AddRequest Request;
-        
-        static AutoInstallURP()
+        [MenuItem("Escape Room Framework/Validation/Check Render Pipeline Dependency", priority = 704)]
+        public static void CheckDependency()
         {
-            // Evitar que s'instal·li múltiples vegades cada cop que Unity compila
-            if (SessionState.GetBool("URP_Installed", false)) return;
-            
-            Debug.Log("[IA] Començant instal·lació automàtica de URP...");
-            Request = Client.Add("com.unity.render-pipelines.universal");
-            EditorApplication.update += Progress;
-        }
-
-        static void Progress()
-        {
-            if (Request.IsCompleted)
+            Shader shader = Shader.Find("Universal Render Pipeline/Lit");
+            if (shader == null)
             {
-                if (Request.Status == StatusCode.Success)
-                    Debug.Log("[IA] ✅ URP Instal·lat correctament de forma automàtica!");
-                else if (Request.Status >= StatusCode.Failure)
-                    Debug.Log("[IA] ❌ Error instal·lant URP: " + Request.Error.message);
-
-                EditorApplication.update -= Progress;
-                SessionState.SetBool("URP_Installed", true);
+                Debug.LogWarning("[Escape Room Framework] URP is not available. Install and configure it manually through Package Manager before using the supplied renderer features.");
+                return;
             }
+
+            Debug.Log("[Escape Room Framework] URP dependency is available. No project settings were modified.");
         }
     }
 }

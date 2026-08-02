@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections.Generic;
 using EscapeRoomRevolt.Core.Save;
 
 namespace EscapeRoomRevolt.Systems.Interaction
@@ -21,27 +20,21 @@ namespace EscapeRoomRevolt.Systems.Interaction
 
         [SerializeField] private CursorType _cursorType = CursorType.Hand;
 
-        [Header("Visual Feedback (Outline)")]
+        [Header("Visual Feedback")]
         [SerializeField] private bool _enableOutline = true;
-        [Tooltip("Assign a custom Outline Material here to override the global one. Leave empty to use the Global Outline Material from InteractionManager.")]
-        [SerializeField] private Material _outlineMaterial;
-        [Tooltip("Specific renderers to outline. If empty, it will auto-find child renderers (can cause issues on complex objects).")]
-        [SerializeField] private Renderer[] _highlightRenderers;
+        private SelectionOutlineTarget _outlineTarget;
 
         // ── Unity Lifecycle ──────────────────────────────────────────────────
         protected virtual void Awake()
         {
-            if (_highlightRenderers == null || _highlightRenderers.Length == 0)
-            {
-                // Auto-fetch if not specified, but this is dangerous for compound objects like keypads!
-                _highlightRenderers = GetComponentsInChildren<Renderer>();
-            }
+            _outlineTarget = GetComponent<SelectionOutlineTarget>();
+            if (_outlineTarget == null) _outlineTarget = gameObject.AddComponent<SelectionOutlineTarget>();
         }
 
         protected virtual void Start()
         {
-            // Set layer to 'Interactable' (Layer 6 by default)
-            gameObject.layer = 6;
+            int interactableLayer = LayerMask.NameToLayer("Interactable");
+            if (interactableLayer >= 0) gameObject.layer = interactableLayer;
             
             SaveManager.Instance?.Register(this);
         }
@@ -54,7 +47,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
         // ── IInteractable ────────────────────────────────────────────────────
         public virtual string InteractionPrompt => _interactionPrompt;
         public virtual CursorType InteractionCursor => _cursorType;
-        public virtual bool CanInteract => _canInteract && gameObject.activeInHierarchy;
+        public virtual bool CanInteract => this != null && _canInteract && gameObject.activeInHierarchy;
 
         public void Interact()
         {
@@ -64,51 +57,12 @@ namespace EscapeRoomRevolt.Systems.Interaction
 
         public virtual void OnFocusEnter()
         {
-            if (!_enableOutline) return;
-            
-            Material matToApply = _outlineMaterial != null ? _outlineMaterial : InteractionManager.Instance?.GlobalOutlineMaterial;
-            if (matToApply == null) return;
-
-            if (_highlightRenderers == null) return;
-
-            foreach (var r in _highlightRenderers)
-            {
-                if (r == null) continue;
-                
-                // Add outline material to the end of the array using sharedMaterials to prevent instancing leaks
-                var materials = r.sharedMaterials;
-                var newMaterials = new Material[materials.Length + 1];
-                materials.CopyTo(newMaterials, 0);
-                newMaterials[materials.Length] = matToApply;
-                r.sharedMaterials = newMaterials;
-            }
+            if (_enableOutline) _outlineTarget?.SetHighlighted(true);
         }
 
         public virtual void OnFocusExit()
         {
-            if (!_enableOutline || _highlightRenderers == null) return;
-
-            Material matToRemove = _outlineMaterial != null ? _outlineMaterial : InteractionManager.Instance?.GlobalOutlineMaterial;
-            if (matToRemove == null) return;
-
-            foreach (var r in _highlightRenderers)
-            {
-                if (r == null) continue;
-
-                var materials = r.sharedMaterials;
-                var newMaterials = new List<Material>();
-                
-                foreach (var mat in materials)
-                {
-                    // Keep all materials EXCEPT our dynamic outline material
-                    if (mat != matToRemove)
-                    {
-                        newMaterials.Add(mat);
-                    }
-                }
-                
-                r.sharedMaterials = newMaterials.ToArray();
-            }
+            if (_enableOutline) _outlineTarget?.SetHighlighted(false);
         }
 
         // ── Abstract / Virtual ───────────────────────────────────────────────

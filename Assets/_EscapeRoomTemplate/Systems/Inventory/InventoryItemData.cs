@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace EscapeRoomRevolt.Systems.Inventory
 {
+    public enum InventoryItemCategory { KeyItem, Tool, Document, Consumable, Equipment, Miscellaneous }
+    public enum InventoryPrimaryAction { Automatic, Read, EquipOrHold, Consume, None }
+
     [System.Serializable]
     public struct ItemCombination
     {
@@ -20,11 +23,11 @@ namespace EscapeRoomRevolt.Systems.Inventory
     }
     /// <summary>
     /// ScriptableObject that defines an inventory item's data.
-    /// Create assets via: Right Click > Create > EscapeRoom > Inventory Item
+    /// Create assets via: Right Click > Create > Escape Room Framework > Inventory > Item
     /// </summary>
     [CreateAssetMenu(
         fileName = "New Item",
-        menuName = "EscapeRoom/Inventory Item",
+        menuName = "Escape Room Framework/Inventory/Item",
         order = 0)]
     public class InventoryItemData : ScriptableObject
     {
@@ -39,9 +42,13 @@ namespace EscapeRoomRevolt.Systems.Inventory
         [SerializeField] private GameObject _worldPrefab;
 
         [Header("Behaviour")]
+        [SerializeField] private InventoryItemCategory _category = InventoryItemCategory.KeyItem;
+        [SerializeField] private InventoryPrimaryAction _primaryAction = InventoryPrimaryAction.Automatic;
         [SerializeField] private bool _isConsumable = true;
         [SerializeField] private bool _isStackable = false;
         [SerializeField] private int _maxStack = 1;
+        [SerializeField] private bool _canDrop = true;
+        [SerializeField] private bool _canExamine = true;
         
         [Header("Readable Note")]
         [Tooltip("If true, this item can be read from the inventory like a piece of paper.")]
@@ -60,9 +67,14 @@ namespace EscapeRoomRevolt.Systems.Inventory
         public string Description => _description;
         public Sprite Icon => _icon;
         public GameObject WorldPrefab => _worldPrefab;
+        public InventoryItemCategory Category => _category;
+        public InventoryPrimaryAction PrimaryAction => _primaryAction;
         public bool IsConsumable => _isConsumable;
         public bool IsStackable => _isStackable;
         public int MaxStack => _maxStack;
+        public bool CanDrop => _canDrop && _worldPrefab != null;
+        public bool CanExamine => _canExamine && _worldPrefab != null;
+        public bool CanCombine => _combinations != null && _combinations.Count > 0;
         public bool IsReadable => _isReadable;
         public string NoteContent => _noteContent;
         public IReadOnlyList<ItemCombination> Combinations => _combinations;
@@ -72,6 +84,7 @@ namespace EscapeRoomRevolt.Systems.Inventory
             // Auto-fill itemId from asset name if empty
             if (string.IsNullOrEmpty(_itemId))
                 _itemId = name.ToLower().Replace(" ", "_");
+            _maxStack = _isStackable ? Mathf.Max(1, _maxStack) : 1;
         }
     }
 }

@@ -8,7 +8,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
     /// An interactable that requires a specific item from the inventory.
     /// E.g. A keyhole requiring a key, a pedestal requiring an idol.
     /// </summary>
-    public class ItemReceiver : InteractableBase
+    public class ItemReceiver : InteractableBase, IInventoryItemTarget
     {
         [Header("Requirement")]
         [Tooltip("The item required to interact successfully.")]
@@ -16,6 +16,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
         
         [Tooltip("If true, the item is removed from the inventory when used.")]
         [SerializeField] private bool _consumeItem = true;
+        [SerializeField] private ItemUsePolicy _itemUsePolicy = ItemUsePolicy.OfferCompatible;
 
         [Header("Feedback")]
         [Tooltip("Optional: Where should the item's 3D model appear? If empty, it appears exactly on this object.")]
@@ -75,24 +76,25 @@ namespace EscapeRoomRevolt.Systems.Interaction
                 return;
             }
 
-            var activeItem = InventoryManager.Instance.GetActiveItem();
-            if (activeItem != null && activeItem.ItemId == _requiredItem.ItemId)
-            {
-                AcceptItem();
-            }
-            else
-            {
-                RejectItem();
-            }
+            InventoryManager inventory = InventoryManager.Instance;
+            ItemUseResult result = inventory != null ? inventory.RequestUseOnTarget(this) : ItemUseResult.NoCompatibleItem;
+            if (result == ItemUseResult.NoCompatibleItem || result == ItemUseResult.Rejected) RejectItem();
+        }
+
+        public ItemUsePolicy UsePolicy => _itemUsePolicy;
+        public bool ConsumeItemOnUse => _consumeItem;
+        public bool AcceptsItem(InventoryItemData item) => !_alreadySolved && item != null && _requiredItem != null
+            && item.ItemId == _requiredItem.ItemId;
+
+        public bool TryUseItem(InventoryItemData item)
+        {
+            if (!AcceptsItem(item)) return false;
+            AcceptItem();
+            return true;
         }
 
         private void AcceptItem()
         {
-            if (_consumeItem)
-            {
-                InventoryManager.Instance.UseItem(_requiredItem.ItemId);
-            }
-
             _alreadySolved = true;
             
             // Auto-spawn the 3D model if it has one

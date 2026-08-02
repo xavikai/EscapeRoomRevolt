@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d3378d072f9b7a458d287a5c45a3c55, type: 3}
+  m_Name: Difficulty_Nightmare
+  m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Survival.SurvivalDifficultyProfile
+  _difficultyId: nightmare
+  _displayName: Nightmare
+  _incomingDamageMultiplier: 1.2
+  _staminaDrainMultiplier: 1.25
+  _staminaRecoveryMultiplier: 0.75
+  _checkpointHealthRestore: 0.5
+  _enemySpeedMultiplier: 1.15
+  _enemySightMultiplier: 1.2
+  _enemyHearingMultiplier: 1.25
+  _enemyDamageMultiplier: 1.15
+  _enemyAttackCooldownMultiplier: 0.75
+  _hidingInspectionDelayMultiplier: 0.65
+  _resourceConsumptionMultiplier: 1.4
+  _allowCheckpoints: 0
+  _allowManualSaving: 0

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Flashlight_Empty
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Inventory.InventoryItemData
   _itemId: flashlight_empty
-  _displayName: Empty Flashlight
-  _description: Needs batteries to work.
+  _displayName: Linterna sin pilas
+  _description: El cuerpo está intacto, pero necesita pilas. Combínala con unas desde el inventario.
   _icon: {fileID: 0}
   _worldPrefab: {fileID: 0}
   _isConsumable: 1

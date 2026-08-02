@@ -13,7 +13,7 @@ namespace EscapeRoomRevolt.EditorTools
 {
     public class TemplateSceneBuilder
     {
-        [MenuItem("EscapeRoom/3. Demo/Build Minimal Template Scene", priority = 32)]
+        // Legacy destructive generator retained only for migration/reference.
         public static void CreateMinimalScene()
         {
             if (!EditorUtility.DisplayDialog("Crear Minimal Scene", "Això crearà i sobreescriurà l'escena 'MinimalRoom'. Vols continuar?", "Sí", "Cancel·la"))
@@ -35,7 +35,7 @@ namespace EscapeRoomRevolt.EditorTools
             SaveScene(newScene, "Assets/_EscapeRoomTemplate/Scenes/MinimalRoom.unity");
         }
 
-        [MenuItem("EscapeRoom/3. Demo/Build Showcase Museum Scene", priority = 34)]
+        // Legacy destructive generator retained only for migration/reference.
         public static void CreateMuseumScene()
         {
             if (!EditorUtility.DisplayDialog("Crear Museum Scene", "Això crearà i sobreescriurà l'escena 'ShowcaseMuseum'. Vols continuar?", "Sí", "Cancel·la"))
@@ -127,7 +127,7 @@ namespace EscapeRoomRevolt.EditorTools
                 GameObject.DestroyImmediate(defaultCam);
 
             InstantiatePrefab("Assets/_EscapeRoomTemplate/Prefabs/GameManager.prefab", Vector3.zero);
-            InstantiatePrefab("Assets/_EscapeRoomTemplate/Prefabs/UI_Canvas.prefab", Vector3.zero);
+            // GameManager now owns both UI Toolkit documents (gameplay HUD and menus).
 
             // Add AudioManager if it doesn't exist
             if (GameObject.FindAnyObjectByType<EscapeRoomRevolt.Systems.Audio.AudioManager>() == null)

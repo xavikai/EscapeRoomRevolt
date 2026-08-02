@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d072b96ed0744ebbb17a5cdffc6e8886, type: 3}
+  m_Name: Objective_RecordEvidence
+  m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Core.Flow.ObjectiveDefinition
+  _objectiveId: record_anomaly
+  _title: Grava l'anomalia
+  _description: "Equipa la c\xE0mera i mant\xE9n el subjecte enquadrat fins que l'evid\xE8ncia
+    quedi arxivada."
+  _hiddenUntilAvailable: 1
+  _trigger: 5
+  _targetId: anomaly_subject
+  _prerequisites:
+  - {fileID: 11400000, guid: 6397fda9e7689f34db2df89ab71714d9, type: 2}

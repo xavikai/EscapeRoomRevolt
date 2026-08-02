@@ -5,7 +5,7 @@ namespace EscapeRoomRevolt.EditorTools
 {
     public class CleanupTools
     {
-        [MenuItem("EscapeRoom/4. Utils/Remove Missing Scripts", priority = 42)]
+        // Invoked only through the guarded maintenance command in FrameworkMenu.
         public static void RemoveMissingScripts()
         {
             var gameObjects = GameObject.FindObjectsByType<GameObject>(FindObjectsInactive.Include);

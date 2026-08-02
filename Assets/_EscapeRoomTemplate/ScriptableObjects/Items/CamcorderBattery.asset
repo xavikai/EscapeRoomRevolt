@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7e91f1c516575448ba0cfdd157f476f, type: 3}
+  m_Name: CamcorderBattery
+  m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Inventory.InventoryItemData
+  _itemId: camcorder_battery
+  _displayName: "Bateria de c\xE0mera"
+  _description: "Bateria espec\xEDfica per a la visi\xF3 nocturna de la c\xE0mera."
+  _icon: {fileID: 0}
+  _worldPrefab: {fileID: 0}
+  _category: 3
+  _primaryAction: 4
+  _isConsumable: 1
+  _isStackable: 1
+  _maxStack: 8
+  _canDrop: 0
+  _canExamine: 0
+  _isReadable: 0
+  _noteContent: 
+  _combinations: []

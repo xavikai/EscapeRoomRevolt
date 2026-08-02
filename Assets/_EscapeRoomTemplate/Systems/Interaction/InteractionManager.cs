@@ -16,7 +16,6 @@ namespace EscapeRoomRevolt.Systems.Interaction
         [Header("Raycast Settings")]
         [SerializeField] private float _interactionRange = 2.5f;
         [SerializeField] private LayerMask _interactableLayer;
-        [SerializeField] private KeyCode _interactKey = KeyCode.E;
 
         [Header("Global Settings")]
         [Tooltip("Material used for outlining objects when hovered. Assign your Shader Graph outline here once, and all interactables will use it.")]
@@ -54,39 +53,31 @@ namespace EscapeRoomRevolt.Systems.Interaction
 
         private void Update()
         {
-            if (EscapeRoomRevolt.UI.PC.UIManager.Instance != null && EscapeRoomRevolt.UI.PC.UIManager.Instance.IsUIBlockingGameplay)
+            if (!_currentTarget.IsAlive() && _currentTarget != null)
+                SwitchFocus(null);
+
+            if ((EscapeRoomRevolt.UI.PC.UIManager.Instance != null && EscapeRoomRevolt.UI.PC.UIManager.Instance.IsUIBlockingGameplay)
+                || (EscapeRoomRevolt.UI.Toolkit.UIToolkitMenuController.Instance != null
+                    && EscapeRoomRevolt.UI.Toolkit.UIToolkitMenuController.Instance.IsBlockingGameplay))
                 return;
 
             // Block InteractionManager if we are currently holding a physics object
             if (PhysicsGrabber.Instance != null && PhysicsGrabber.Instance.IsHoldingObject)
             {
-                if (_currentTarget != null) SwitchFocus(null);
+                if (_currentTarget.IsAlive()) SwitchFocus(null);
                 return;
             }
 
             DetectInteractable();
 
-            // Support either 'E' key or Left Mouse Click for interaction
-            if (_currentTarget != null && _currentTarget.CanInteract)
+            // Interaction remains available regardless of cursor lock state. UI panels
+            // that must consume input are already filtered by IsUIBlockingGameplay above.
+            if (_currentTarget.IsAlive() && _currentTarget.CanInteract)
             {
-                bool isMouseFree = Cursor.lockState == CursorLockMode.None || Cursor.visible;
-
-                if (isMouseFree)
-                {
-                    // In Focus Mode, only allow mouse clicks
-                    if (Input.GetMouseButtonDown(0))
-                    {
-                        TriggerInteraction();
-                    }
-                }
-                else
-                {
-                    // In FPS Mode, allow Interaction Key or mouse clicks
-                    if (Input.GetKeyDown(_interactKey) || Input.GetMouseButtonDown(0))
-                    {
-                        TriggerInteraction();
-                    }
-                }
+                bool routedInput = EscapeRoomRevolt.Core.Input.InputRouter.Instance != null
+                    && EscapeRoomRevolt.Core.Input.InputRouter.Instance.InteractPressed;
+                if (routedInput)
+                    TriggerInteraction();
             }
         }
 
@@ -116,20 +107,22 @@ namespace EscapeRoomRevolt.Systems.Interaction
             if (Physics.Raycast(ray, out RaycastHit hit, _interactionRange, _interactableLayer))
                 detected = hit.collider.GetComponentInParent<IInteractable>();
 
+            if (!detected.IsAlive()) detected = null;
+
             if (detected != _currentTarget)
                 SwitchFocus(detected);
         }
 
         private void SwitchFocus(IInteractable newTarget)
         {
-            _currentTarget?.OnFocusExit();
-            _currentTarget = newTarget;
-            _currentTarget?.OnFocusEnter();
+            if (_currentTarget.IsAlive()) _currentTarget.OnFocusExit();
+            _currentTarget = newTarget.IsAlive() ? newTarget : null;
+            if (_currentTarget.IsAlive()) _currentTarget.OnFocusEnter();
             OnFocusChanged?.Invoke(_currentTarget);
 
             if (EscapeRoomRevolt.UI.PC.UIManager.Instance != null)
             {
-                if (_currentTarget != null && _currentTarget.CanInteract)
+                if (_currentTarget.IsAlive() && _currentTarget.CanInteract)
                 {
                     EscapeRoomRevolt.UI.PC.UIManager.Instance.SetCrosshair(_currentTarget.InteractionCursor);
                 }
@@ -142,21 +135,26 @@ namespace EscapeRoomRevolt.Systems.Interaction
 
         private void TriggerInteraction()
         {
-            _currentTarget.Interact();
-
-            EventBus.Publish(new OnInteractionPerformed
+            IInteractable target = _currentTarget;
+            if (!target.IsAlive())
             {
-                interactableId = (_currentTarget as MonoBehaviour)?.name ?? "Unknown",
-                target = (_currentTarget as MonoBehaviour)?.gameObject
-            });
+                SwitchFocus(null);
+                return;
+            }
+
+            InteractionDispatcher.TryPerform(target);
+
+            // Pickups commonly disable or destroy themselves. Releasing focus here avoids
+            // retaining a dead interface reference until the next raycast frame.
+            SwitchFocus(null);
         }
 
         // ── Public API ───────────────────────────────────────────────────────
         /// <summary>The object currently in the player's crosshair (can be null).</summary>
-        public IInteractable CurrentTarget => _currentTarget;
+        public IInteractable CurrentTarget => _currentTarget.IsAlive() ? _currentTarget : null;
 
         /// <summary>Whether the player is currently looking at something interactable.</summary>
-        public bool HasTarget => _currentTarget != null && _currentTarget.CanInteract;
+        public bool HasTarget => _currentTarget.IsAlive() && _currentTarget.CanInteract;
 
         /// <summary>Forces the interaction manager to raycast from a specific camera (useful for puzzle zoom).</summary>
         public void SetOverrideCamera(Camera cam) => _overrideCamera = cam;

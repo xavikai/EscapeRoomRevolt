@@ -1,99 +1,98 @@
-# 📖 Manual d'Usuari: Escape Room Template
+# Manual de usuario - Escape Room Framework
 
-Benvingut/da al **Escape Room Framework**. Aquesta guia està pensada per a Artistes i Dissenyadors de Nivells. El sistema està dissenyat perquè **no hagis de programar ni una línia de codi**. Tot funciona connectant blocs des de la interfície de Unity!
+Esta guía cubre el flujo de trabajo para diseñadores. La arquitectura y las APIs están documentadas en [PROGRAMMING_GUIDE.md](PROGRAMMING_GUIDE.md). La referencia exhaustiva, con tutoriales, ejemplos y resolución de problemas, está en [DOCUMENTACIO_COMPLETA.md](DOCUMENTACIO_COMPLETA.md).
 
----
+## 1. Menú del framework
 
-## 1. 🏗️ Preparar l'Escena Base (Nivell Nou)
+Todas las herramientas soportadas están en `Escape Room Framework`:
 
-Quan obris una escena 3D completament buida, només necessites un parell de passos per convertir-la en un Escape Room funcional:
+- `Configuration`: selecciona el perfil Escape Room, Survival Horror o una combinación personalizada.
+- `Setup`: instala instancias seguras del Game Manager o jugador y genera las escenas/prefabs de plataforma.
+- `Create`: crea interactuables, puzles, triggers y componentes de flujo sin modificar otros objetos.
+- `Demo`: abre las escenas de ejemplo tras ofrecer guardar los cambios actuales.
+- `Validation`: comprueba IDs, dependencias, escena activa y preparación comercial.
+- `Maintenance`: previsualiza problemas antes de permitir una reparación con Undo.
+- `Documentation`: abre este manual, la guía de programación, la documentación completa o localiza el HUD de UI Toolkit.
 
-1. A la barra superior de Unity, vés a **`EscapeRoom > Build Player Prefab`**.
-   - Això col·locarà el jugador automàticament a l'escena, amb la seva càmera, creueta, menú d'inventari i sistema de moviment.
-   - *Nota: Si la teva escena ja tenia una `Main Camera` per defecte, esborra-la per evitar conflictes.*
-2. Afegeix un `GameObject` buit anomenat **GameManager**, i posa-li l'script `Bootstrapper.cs`. Aquest script despertarà tots els sistemes (Inventari, Puzles, Audio, etc.) en prémer Play.
-3. Per poder llegir subtítols, crea un **Subtitle Panel** al teu Canvas amb un **Text**, i assigna'ls a l'script `UIManager`.
+Los antiguos generadores destructivos y la instalación automática de paquetes ya no forman parte del menú.
 
-> [!TIP]
-> **Vols una habitació ja muntada per provar coses?** Vés a `EscapeRoom > Build Demo Scene (Locked Office)` i el motor construirà una habitació de parets grises amb taules, portes, una caixa forta i claus en un sol clic.
+### Elegir el género del proyecto
 
----
+- `Configuration/Use Escape Room Profile`: mantiene interacción, inventario, puzles, pistas, objetivos, finales, Save/Load, PC y VR. Desactiva y oculta linterna, batería, estabilidad/cordura y eventos de terror.
+- `Configuration/Use Survival Horror Profile`: activa todas las mecánicas comunes y también linterna, cordura y eventos de terror.
+- `Configuration/Use Custom Hybrid Profile`: permite escoger por separado `Flashlight`, `Sanity` y `Horror Events` en `GenreFeatureSettings.asset`.
 
-## 2. 🪄 Crear Objectes Interactuables (L'Eina d'Artistes)
+El cambio se aplica al iniciar Play de nuevo. Los componentes opcionales pueden seguir presentes en escenas y prefabs: el perfil evita que se ejecuten o aparezcan en la UI cuando no corresponden.
 
-Vés al menú superior **`EscapeRoom > Create`** per generar objectes a l'instant, just davant d'on estigui mirant la teva càmera d'editor:
+## 2. Escena jugable
 
-### A. Portes, Calaixos i Armaris
-- **`Door`:** Porta batent estàndard. Pots definir la velocitat de gir. Té l'opció `Is Locked` per demanar una clau (ex: `clau_or`).
-- **`Drawer`:** Calaix que llisca cap endavant (`Slide`). Pots posar ítems a dins (com a fills visuals) i es mouran amb ell.
-- **`Cabinet`:** Porta de moble petit, gira sobre un pivot costat.
-- *Tip: A qualsevol d'ells pots moure l'objecte fill `CustomPivot` per decidir sobre quin eix gira o llisca.*
+1. Abre o crea una escena.
+2. Usa `Setup/Instantiate Game Manager`.
+3. Usa `Setup/Instantiate PC Player` o coloca `Player_VR`.
+4. Crea interactuables desde `Create/Interactables` y configura sus campos en el Inspector.
+5. Ejecuta `Validation/Validate Current Scene`.
 
-### B. Notes i Pistes
-- **`Readable Note`:** Un tros de paper que el jugador pot llegir a pantalla completa. Pots escriure la teva pista directament al camp `Content` de l'Inspector.
+El modelo visual de los prefabs reemplazables vive bajo un `ModelSocket`. Sustituye únicamente sus hijos visuales para conservar colliders, IDs, eventos y programación.
 
-### C. Teclats Numèrics i Caixes Fortes
-- **`Keypad Panel`:** Genera un teclat 3D interactiu (botó a botó).
-- Defineix el codi a `Correct Code` (ex: `1984`).
-- Utilitza l'esdeveniment `On Solved ()` per obrir una porta o encendre un llum en encertar-ho, arrossegant-hi l'objecte destí. Sense programar!
+## 3. Menú inicial y fin del juego
 
-### D. Botons i Interruptors Genèrics
-- **`Generic Trigger (Button)`:** Genera un petit botó vermell. Funciona com un interruptor (On/Off). Als seus esdeveniments `On Turned On` i `On Turned Off` hi pots penjar canvis de color, llums, etc.
+Usa `Setup/Create or Update Main Menu Scene` para generar el menú inicial y añadirlo primero a Build Settings.
 
----
+Para terminar una partida puedes:
 
-## 3. 🎒 Inventari i Recol·lecció d'Objectes
+- crear un `Objective Set` y asignarlo a un `ObjectiveManager`;
+- crear `Create/Flow/Game End Trigger` y conectarlo a un puzle o volumen;
+- llamar a `GameFlowManager.CompleteGame` o `FailGame` desde código.
 
-### A. Creació d'Ítems
-Utilitza **`EscapeRoom > Create > Pickable Item`** per fer un objecte que es pugui guardar a la motxilla.
-- Crea l'arxiu de dades (`Clic Dret > Create > EscapeRoom > Inventory Item`). Posa-li una icona i un `Id`. Arrossega'l a l'Ítem.
+La pantalla final permite reintentar, volver al menú principal o salir.
 
-### B. Combinació d'Objectes (Drag & Drop)
-El jugador pot arrossegar un objecte sobre un altre dins l'inventari per combinar-los (ex: Cinta + Clau Trencada = Clau Reparada).
-1. Selecciona el teu fitxer de dades (ScriptableObject) de l'Ítem 1.
-2. A sota de tot, a **Combinations**, afegeix una recepta:
-   - **Combine With:** Ítem 2
-   - **Result Item:** L'ítem que resultarà d'ajuntar-los
-   - **Destroy This / Destroy Other:** Marca'ls si es consumeixen en combinar-se.
+## 4. Inventario
 
-### C. Receptors d'Objectes
-**`EscapeRoom > Create > Item Receiver`**: Crea una zona on el jugador ha d'usar un objecte de l'inventari en concret (ex: un panell elèctric que demana un fusible). Si l'encerta, disparem un esdeveniment `On Item Received()`.
+El inventario se abre con `I` en PC. El almacenamiento ya no está limitado por la barra rápida.
 
----
+- Selecciona un objeto para ver solo las acciones válidas: leer, sostener/equipar, consumir, examinar, combinar o soltar.
+- `ACCESO RÁPIDO N` asigna el objeto a la posición rápida activa.
+- Las teclas `1-4`, la rueda del ratón o los hombros del mando cambian el acceso rápido.
+- Al interactuar con una cerradura en modo `Offer Compatible`, la interfaz muestra únicamente objetos válidos. No utiliza ninguno sin confirmación.
 
-## 4. 🔍 Visor 3D d'Objectes (Item Examiner)
+Cada puerta o receptor puede cambiar su política a `Selected Only` o `Auto Use Single` desde el Inspector.
 
-El jugador pot fer **Clic Dret** sobre qualsevol objecte de l'inventari per veure'l en 3D flotant a la pantalla i girar-lo amb el ratolí per buscar pistes amagades per darrere.
+## 5. Controles PC predeterminados
 
-**Instal·lació:**
-1. Vés a **`EscapeRoom > Create Examine Chamber`**.
-2. Això generarà una "Habitació Invisible" al cel amb una càmera dedicada que projecta a una RenderTexture.
-3. El `UIManager` ja s'encarrega d'aparèixer l'objecte màgicament i girar-lo segons el moviment del ratolí!
+- WASD: movimiento.
+- Ratón: mirar.
+- Shift izquierdo: correr.
+- Ctrl izquierdo: agacharse.
+- E: interactuar o guardar un objeto físico sostenido.
+- I: inventario.
+- F: encender/apagar la linterna equipada.
+- R: recargar la linterna.
+- Q: soltar un objeto físico sostenido.
+- G: soltar equipamiento.
+- H: solicitar pista.
+- Alt izquierdo + A/D: inclinarse en Survival Horror.
+- X: mirar atrás en Survival Horror.
+- V mientras corres hacia delante: slide en Survival Horror.
+- Esc: cerrar el panel actual o pausar.
+- F5/F9: guardado/carga rápida.
 
----
+Los controles principales se pueden reasignar durante el juego desde `Ajustes > Controles`; los cambios se guardan fuera de las partidas. Para modificar bindings de mando o XR, edita `Resources/Input/EscapeRoomInputActions.inputactions`.
 
-## 5. 🔊 Narrativa: Subtítols i Veus (Triggers)
+## 6. Preparación VR
 
-**`EscapeRoom > Create > Narrative Audio Trigger`**
-Genera una zona invisible verda. Quan el jugador la travessi, s'activarà el diàleg.
-- Pots triar si sona `Once` (un sol cop) o `ProgressiveHints` (cada cop que ho trepitgi dirà la següent línia del diàleg).
-- S'hi poden afegir clips d'àudio.
-- S'hi pot escriure text amb temps (ex: 3 segons). El text apareixerà com una màquina d'escriure de forma fluida a la part baixa de la pantalla i desapareixerà suaument en acabar.
+1. Espera a que Package Manager termine de importar OpenXR, XR Plug-in Management y XRI.
+2. Configura OpenXR para los destinos deseados en Project Settings.
+3. Ejecuta `Setup/Create or Update VR Player Prefab`.
+4. Ejecuta `Setup/Prepare Current Scene Interactables for VR` en cada escena.
+5. Ejecuta las comprobaciones de Project Validation de OpenXR/XRI.
 
----
+El prefab VR lo genera la versión instalada de XRI e incorpora adaptadores de manos, hápticos y UI Toolkit 3D. Los modelos de mando/mano se sustituyen bajo sus `ModelSocket`.
 
-## 6. 💾 Sistema de Guardat (Save / Load)
+## 7. Publicación
 
-El joc recorda de forma persistent la posició del jugador, què hi ha a l'inventari, quines portes estan obertes, i quins puzles s'han resolt. Funciona sol de forma transparent, basat en el component `ISaveable`.
+Antes de distribuir el asset:
 
-- En l'actual mode de proves: **Prem F5 per Guardar**, i **F9 per Carregar**.
-
----
-
-## 7. ✨ Feedback Visual (Outline)
-
-Tots els objectes hereten el sistema d'Interacció automàtic. En mirar-los de prop, veuràs que apareix una vora groga al seu voltant (Outline).
-A l'Inspector, apartat **Visual Feedback (Outline)**, pots desactivar-ho, canviar-ne el color (vermell per errors, verd per lliure) o l'amplada segons les teves preferències estètiques.
-
-> [!IMPORTANT]
-> **Estructura d'Escales (Scale):** Recorda sempre aplicar l'escala dels teus models 3D als objectes FILLS (`_Visuals`). Mantingues sempre el Pare (`_Logic`) a Escala `(1,1,1)` perquè el sistema de física i les rotacions no es trenquin.
+1. Ejecuta `Validation/Run Framework Smoke Tests`.
+2. Ejecuta `Validation/Validate Save IDs` en cada escena.
+3. Comprueba PC y VR por separado.
+4. No cambies `SaveId` ni `ItemId` en una actualización publicada sin añadir una migración.

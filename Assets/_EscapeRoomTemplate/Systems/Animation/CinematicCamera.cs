@@ -13,12 +13,15 @@ namespace EscapeRoomRevolt.Systems.Animation
         [SerializeField] private float _duration = 2f;
 
         private Camera _cam;
+        private Coroutine _routine;
+        private float _originalDepth;
 
         private void Awake()
         {
             _cam = GetComponent<Camera>();
-            // Make sure it's disabled at the start of the game
-            _cam.gameObject.SetActive(false);
+            _originalDepth = _cam.depth;
+            // Keep the behaviour active so UnityEvents can always reach it; only disable rendering.
+            _cam.enabled = false;
         }
 
         /// <summary>
@@ -26,28 +29,39 @@ namespace EscapeRoomRevolt.Systems.Animation
         /// </summary>
         public void PlayCinematic()
         {
-            // Unity coroutines can only run if the object is active!
-            gameObject.SetActive(true);
-
             if (!gameObject.activeInHierarchy)
             {
-                Debug.LogWarning("[CinematicCamera] Cannot play cinematic because a parent object is disabled. Unparenting camera temporarely...");
-                transform.SetParent(null);
-                gameObject.SetActive(true);
+                Debug.LogWarning($"[CinematicCamera] '{name}' is under an inactive parent and cannot play.", this);
+                return;
             }
 
-            StartCoroutine(CinematicRoutine());
+            if (_routine != null)
+                StopCoroutine(_routine);
+
+            _routine = StartCoroutine(CinematicRoutine());
         }
 
         private IEnumerator CinematicRoutine()
         {
-            // Ensure the camera component itself is also active
             _cam.enabled = true;
-            _cam.depth = 10; // Ensure it renders on top of the player camera
+            _cam.depth = 10;
             
-            yield return new WaitForSeconds(_duration);
+            yield return new WaitForSecondsRealtime(_duration);
             
-            _cam.gameObject.SetActive(false);
+            _cam.enabled = false;
+            _cam.depth = _originalDepth;
+            _routine = null;
+        }
+
+        private void OnDisable()
+        {
+            if (_cam != null)
+            {
+                _cam.enabled = false;
+                _cam.depth = _originalDepth;
+            }
+
+            _routine = null;
         }
     }
 }

@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71fe8759835e9384ba0b7c3fcbb8d8e5, type: 3}
+  m_Name: DefaultItemCatalog
+  m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Inventory.ItemCatalog
+  _items:
+  - {fileID: 11400000, guid: 3b869ec77be9b4c4fb80c34f74fe014f, type: 2}
+  - {fileID: 11400000, guid: e5a41ef0ddfffa6469a896a0ff936460, type: 2}
+  - {fileID: 11400000, guid: 9f392448d2b666849a5050512a97595f, type: 2}
+  - {fileID: 11400000, guid: 096bf8f617d7e5e4eb7b04600ae5880f, type: 2}
+  - {fileID: 11400000, guid: 9fe4d70c9355f04458b37b1183000fa0, type: 2}
+  - {fileID: 11400000, guid: d25725e9eb70d3041b18a2742daed175, type: 2}
+  - {fileID: 11400000, guid: 3f80893f584fa884489d52ccd29055fd, type: 2}
+  - {fileID: 11400000, guid: 76ae1fd9e0e5d9846a796aa014be889d, type: 2}
+  - {fileID: 11400000, guid: 92bec6e8f749ae346a76f945d3222036, type: 2}
+  - {fileID: 11400000, guid: eee1eb858761e5c419cf16f1bb69e2c5, type: 2}
+  - {fileID: 11400000, guid: b8857a8adcbd92a4a8419ebba24fcaa9, type: 2}
+  - {fileID: 11400000, guid: ba2891e99eb6b8947abcd21fa47635c5, type: 2}
+  - {fileID: 11400000, guid: c8d947a6b4b51c14e821f6d2f6908b0e, type: 2}
+  - {fileID: 11400000, guid: 221e34da3002c194cba3e358d6062ce1, type: 2}
+  - {fileID: 11400000, guid: 9c38a8e71b09fb745954b3230961680b, type: 2}
+  - {fileID: 11400000, guid: de0d4b4f3a5ace04fadae148bec8951b, type: 2}

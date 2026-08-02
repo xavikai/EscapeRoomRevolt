@@ -13,28 +13,41 @@ namespace EscapeRoomRevolt.Player.PC
     /// </summary>
     public class PlayerInputHandler : MonoBehaviour
     {
-        [Header("Key Bindings")]
-        [SerializeField] private KeyCode _inventoryKey = KeyCode.I;
-        [SerializeField] private KeyCode _pauseKey     = KeyCode.Escape;
-
         private void Update()
         {
             if (UIManager.Instance == null) return;
 
-            if (Input.GetKeyDown(_inventoryKey))
-                EscapeRoomRevolt.Systems.Inventory.InventoryManager.Instance.PullOutActiveItem();
+            var input = EscapeRoomRevolt.Core.Input.InputRouter.Instance;
+            if (input == null) return;
 
-            if (Input.GetKeyDown(_pauseKey))
+            if (input.InventoryPressed)
+                UIManager.Instance.ToggleInventory();
+
+            if (input.PausePressed)
                 HandlePause();
+
+            EscapeRoomRevolt.Systems.Inventory.InventoryManager inventory = EscapeRoomRevolt.Systems.Inventory.InventoryManager.Instance;
+            if (inventory != null && !UIManager.Instance.IsUIBlockingGameplay)
+            {
+                if (input.TryGetQuickSlotPressed(out int slot)) inventory.SetActiveQuickSlot(slot);
+                if (input.QuickNavigatePerformed && Mathf.Abs(input.QuickNavigate) > .01f)
+                    inventory.NavigateQuickAccess(input.QuickNavigate > 0f ? -1 : 1);
+            }
         }
 
         // ── Private Methods ──────────────────────────────────────────────────
         private void HandlePause()
         {
-            // If a secondary UI panel is open (note reader, puzzle), close it first
+            // Gameplay overlays own Escape before the pause document does.
             if (UIManager.Instance.IsUIBlockingGameplay)
             {
                 UIManager.Instance.CloseTopPanel();
+                return;
+            }
+
+            if (EscapeRoomRevolt.UI.Toolkit.UIToolkitMenuController.Instance != null)
+            {
+                EscapeRoomRevolt.UI.Toolkit.UIToolkitMenuController.Instance.TogglePause();
                 return;
             }
 

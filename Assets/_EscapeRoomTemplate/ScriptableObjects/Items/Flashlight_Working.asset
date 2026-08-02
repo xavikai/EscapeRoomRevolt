@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7e91f1c516575448ba0cfdd157f476f, type: 3}
   m_Name: Flashlight_Working
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Inventory.InventoryItemData
-  _itemId: 
-  _displayName: New Item
-  _description: 
+  _itemId: flashlight_working
+  _displayName: Linterna operativa
+  _description: Una linterna modular lista para usar. Equípala y pulsa F para encenderla; pulsa R para consumir unas pilas y recargarla.
   _icon: {fileID: 0}
-  _worldPrefab: {fileID: 0}
-  _isConsumable: 1
+  _worldPrefab: {fileID: 2709283103502204016, guid: 5455c721e7e2be84bab3f447d065d0a1, type: 3}
+  _isConsumable: 0
   _isStackable: 0
   _maxStack: 1
   _isReadable: 0

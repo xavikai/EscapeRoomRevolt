@@ -1,3 +1,5 @@
+using EscapeRoomRevolt.Core.Input;
+using EscapeRoomRevolt.Player;
 using UnityEngine;
 
 namespace EscapeRoomRevolt.Systems.Interaction
@@ -41,15 +43,11 @@ namespace EscapeRoomRevolt.Systems.Interaction
         {
             if (_currentHeldObject == null) return;
 
-            if (EscapeRoomRevolt.UI.PC.UIManager.Instance != null && EscapeRoomRevolt.UI.PC.UIManager.Instance.IsUIBlockingGameplay)
+            if ((EscapeRoomRevolt.UI.PC.UIManager.Instance != null && EscapeRoomRevolt.UI.PC.UIManager.Instance.IsUIBlockingGameplay)
+                || (EscapeRoomRevolt.UI.Toolkit.UIToolkitMenuController.Instance != null
+                    && EscapeRoomRevolt.UI.Toolkit.UIToolkitMenuController.Instance.IsBlockingGameplay))
             {
                 Drop();
-                return;
-            }
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                Throw();
                 return;
             }
 
@@ -59,13 +57,22 @@ namespace EscapeRoomRevolt.Systems.Interaction
                 return;
             }
 
-            if (Input.GetKeyDown(KeyCode.Q))
+            InputRouter input = InputRouter.Instance;
+            if (input == null) return;
+
+            if (input.PrimaryActionPressed)
+            {
+                Throw();
+                return;
+            }
+
+            if (input.DropHeldPressed)
             {
                 Drop();
                 return;
             }
 
-            if (Input.GetKeyDown(KeyCode.E))
+            if (input.InteractPressed)
             {
                 var pickable = _currentHeldObject.GetComponent<EscapeRoomRevolt.Systems.Inventory.PickableItem>();
                 if (pickable != null)
@@ -77,17 +84,17 @@ namespace EscapeRoomRevolt.Systems.Interaction
             }
 
             var playerMovement = transform.root.GetComponentInChildren<EscapeRoomRevolt.Player.PC.PlayerMovement>();
-            if (Input.GetMouseButton(1))
+            if (input.SecondaryActionHeld)
             {
                 if (playerMovement != null) playerMovement.IsMouseLookFrozen = true;
 
-                float mouseX = Input.GetAxis("Mouse X") * 5f;
-                float mouseY = Input.GetAxis("Mouse Y") * 5f;
+                Vector2 look = input.Look * 5f;
+                Transform head = PlayerPlatformRegistry.Current?.Head;
 
-                if (Camera.main != null)
+                if (head != null)
                 {
-                    _heldRigidbody.transform.Rotate(Camera.main.transform.up, -mouseX, Space.World);
-                    _heldRigidbody.transform.Rotate(Camera.main.transform.right, mouseY, Space.World);
+                    _heldRigidbody.transform.Rotate(head.up, -look.x, Space.World);
+                    _heldRigidbody.transform.Rotate(head.right, look.y, Space.World);
                 }
             }
             else
@@ -185,9 +192,11 @@ namespace EscapeRoomRevolt.Systems.Interaction
             if (_currentHeldObject == null || _heldRigidbody == null) return;
 
             Rigidbody rb = _heldRigidbody;
+            PhysicsGrabbable thrown = _currentHeldObject;
             Drop();
             
             rb.AddForce(transform.forward * _throwForce, ForceMode.Impulse);
+            thrown?.OnThrown();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace EscapeRoomRevolt.Systems.Audio
         public AudioClip[] FootstepClips;
     }
 
-    [CreateAssetMenu(fileName = "NewSurfaceAudioData", menuName = "EscapeRoom/Audio/Surface Data", order = 1)]
+    [CreateAssetMenu(fileName = "NewSurfaceAudioData", menuName = "Escape Room Framework/Audio/Surface Data", order = 1)]
     public class SurfaceAudioData : ScriptableObject
     {
         [Header("Default Sound (if no tag matches)")]

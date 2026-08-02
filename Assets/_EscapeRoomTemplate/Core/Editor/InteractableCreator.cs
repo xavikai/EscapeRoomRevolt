@@ -8,7 +8,7 @@ namespace EscapeRoomRevolt.EditorTools
 {
     public static class InteractableCreator
     {
-        [MenuItem("EscapeRoom/2. Create Interactable/Door", priority = 21)]
+        [MenuItem("Escape Room Framework/Create/Interactables/Door", priority = 101)]
         public static void CreateDoor()
         {
             GameObject logicObj = CreateBaseInteractable("NewDoor", new Vector3(1.5f, 2.5f, 0.2f), new Color(0.8f, 0.4f, 0.2f));
@@ -26,7 +26,7 @@ namespace EscapeRoomRevolt.EditorTools
             FinalizeCreation(logicObj);
         }
 
-        [MenuItem("EscapeRoom/2. Create Interactable/Cabinet", priority = 22)]
+        [MenuItem("Escape Room Framework/Create/Interactables/Cabinet", priority = 102)]
         public static void CreateCabinet()
         {
             GameObject logicObj = CreateBaseInteractable("NewCabinet", new Vector3(0.6f, 0.8f, 0.05f), new Color(0.4f, 0.25f, 0.1f));
@@ -44,7 +44,7 @@ namespace EscapeRoomRevolt.EditorTools
             FinalizeCreation(logicObj);
         }
 
-        [MenuItem("EscapeRoom/2. Create Interactable/Drawer", priority = 23)]
+        [MenuItem("Escape Room Framework/Create/Interactables/Drawer", priority = 103)]
         public static void CreateDrawer()
         {
             GameObject logicObj = CreateBaseInteractable("NewDrawer", new Vector3(0.8f, 0.2f, 0.8f), new Color(0.4f, 0.25f, 0.1f));
@@ -58,7 +58,7 @@ namespace EscapeRoomRevolt.EditorTools
             FinalizeCreation(logicObj);
         }
 
-        [MenuItem("EscapeRoom/2. Create Interactable/Keypad Panel", priority = 24)]
+        [MenuItem("Escape Room Framework/Create/Puzzles/Keypad Panel", priority = 201)]
         public static void CreateKeypadPanel()
         {
             GameObject logicObj = CreateBaseInteractable("NewKeypad", new Vector3(0.2f, 0.25f, 0.025f), new Color(0.15f, 0.15f, 0.15f));
@@ -217,7 +217,7 @@ namespace EscapeRoomRevolt.EditorTools
             return logicObj;
         }
 
-        [MenuItem("EscapeRoom/2. Create Interactable/Note", priority = 25)]
+        [MenuItem("Escape Room Framework/Create/Interactables/Note", priority = 104)]
         public static void CreateNote()
         {
             GameObject logicObj = CreateBaseInteractable("NewNote", new Vector3(0.3f, 0.05f, 0.4f), Color.white);
@@ -227,7 +227,7 @@ namespace EscapeRoomRevolt.EditorTools
             FinalizeCreation(logicObj);
         }
 
-        [MenuItem("EscapeRoom/2. Create Interactable/Pickable Item", priority = 26)]
+        [MenuItem("Escape Room Framework/Create/Interactables/Pickable Item", priority = 105)]
         public static void CreatePickableItem()
         {
             GameObject logicObj = CreateBaseInteractable("NewPickableItem", new Vector3(0.2f, 0.2f, 0.2f), Color.yellow);
@@ -237,7 +237,7 @@ namespace EscapeRoomRevolt.EditorTools
             FinalizeCreation(logicObj);
         }
 
-        [MenuItem("EscapeRoom/2. Create Interactable/Generic Trigger (Button)", priority = 27)]
+        [MenuItem("Escape Room Framework/Create/Interactables/Generic Trigger", priority = 106)]
         public static void CreateTrigger()
         {
             GameObject logicObj = CreateGenericButton();
@@ -251,7 +251,7 @@ namespace EscapeRoomRevolt.EditorTools
             return logicObj;
         }
 
-        [MenuItem("EscapeRoom/2. Create Interactable/Item Receiver", priority = 28)]
+        [MenuItem("Escape Room Framework/Create/Interactables/Item Receiver", priority = 107)]
         public static void CreateItemReceiver()
         {
             GameObject logicObj = CreateBaseInteractable("NewItemReceiver", new Vector3(0.5f, 0.5f, 0.5f), Color.gray);
@@ -272,7 +272,7 @@ namespace EscapeRoomRevolt.EditorTools
             FinalizeCreation(logicObj);
         }
 
-        [MenuItem("EscapeRoom/2. Create Interactable/Narrative Audio Trigger", priority = 29)]
+        [MenuItem("Escape Room Framework/Create/Triggers/Narrative Trigger", priority = 301)]
         public static void CreateNarrativeTrigger()
         {
             GameObject logicObj = new GameObject("NewNarrativeTrigger");
@@ -290,7 +290,7 @@ namespace EscapeRoomRevolt.EditorTools
             FinalizeCreation(logicObj);
         }
 
-        [MenuItem("EscapeRoom/2. Create Interactable/Lever", priority = 30)]
+        [MenuItem("Escape Room Framework/Create/Interactables/Lever", priority = 108)]
         public static void CreateLever()
         {
             GameObject logicObj = CreateBaseInteractable("NewLever", new Vector3(0.1f, 0.4f, 0.1f), new Color(0.6f, 0.2f, 0.2f));
@@ -313,7 +313,7 @@ namespace EscapeRoomRevolt.EditorTools
             FinalizeCreation(logicObj);
         }
 
-        [MenuItem("EscapeRoom/2. Create Interactable/Switch", priority = 31)]
+        [MenuItem("Escape Room Framework/Create/Interactables/Switch", priority = 109)]
         public static void CreateSwitch()
         {
             GameObject logicObj = CreateBaseInteractable("NewSwitch", new Vector3(0.2f, 0.4f, 0.1f), new Color(0.2f, 0.6f, 0.2f));
@@ -329,7 +329,7 @@ namespace EscapeRoomRevolt.EditorTools
             FinalizeCreation(logicObj);
         }
 
-        [MenuItem("EscapeRoom/2. Create Interactable/Hint Zone", priority = 32)]
+        [MenuItem("Escape Room Framework/Create/Triggers/Hint Zone", priority = 302)]
         public static void CreateHintZone()
         {
             GameObject logicObj = new GameObject("NewHintZone");
@@ -346,7 +346,7 @@ namespace EscapeRoomRevolt.EditorTools
             FinalizeCreation(logicObj);
         }
 
-        [MenuItem("EscapeRoom/2. Create Interactable/Physics Grabbable Object", priority = 33)]
+        [MenuItem("Escape Room Framework/Create/Interactables/Physics Grabbable", priority = 110)]
         public static void CreatePhysicsGrabbable()
         {
             // We use CreateBaseInteractable which creates a Logic parent and Visuals child (with collider).

@@ -1,0 +1,113 @@
+{
+  "name": "EscapeRoomInputActions",
+  "maps": [
+    {
+      "name": "Gameplay",
+      "id": "0a5015b4-0000-4000-9000-000000000001",
+      "actions": [
+        { "name": "Move", "type": "Value", "id": "0a5015b4-0000-4000-9000-000000000002", "expectedControlType": "Vector2" },
+        { "name": "Look", "type": "Value", "id": "0a5015b4-0000-4000-9000-000000000003", "expectedControlType": "Vector2" },
+        { "name": "Interact", "type": "Button", "id": "0a5015b4-0000-4000-9000-000000000004" },
+        { "name": "Sprint", "type": "Button", "id": "0a5015b4-0000-4000-9000-000000000005" },
+        { "name": "Crouch", "type": "Button", "id": "0a5015b4-0000-4000-9000-000000000006" },
+        { "name": "Jump", "type": "Button", "id": "0a5015b4-0000-4000-9000-000000000007" },
+        { "name": "Pause", "type": "Button", "id": "0a5015b4-0000-4000-9000-000000000008" },
+        { "name": "Inventory", "type": "Button", "id": "0a5015b4-0000-4000-9000-000000000009" },
+        { "name": "QuickNavigate", "type": "Value", "id": "c25015b4-0000-4000-9000-000000000001", "expectedControlType": "Axis" },
+        { "name": "QuickSlot1", "type": "Button", "id": "c25015b4-0000-4000-9000-000000000002" },
+        { "name": "QuickSlot2", "type": "Button", "id": "c25015b4-0000-4000-9000-000000000003" },
+        { "name": "QuickSlot3", "type": "Button", "id": "c25015b4-0000-4000-9000-000000000004" },
+        { "name": "QuickSlot4", "type": "Button", "id": "c25015b4-0000-4000-9000-000000000005" },
+        { "name": "ToggleFlashlight", "type": "Button", "id": "b15015b4-0000-4000-9000-000000000001" },
+        { "name": "Reload", "type": "Button", "id": "b15015b4-0000-4000-9000-000000000002" },
+        { "name": "DropEquipped", "type": "Button", "id": "b15015b4-0000-4000-9000-000000000003" }
+        ,{ "name": "PrimaryAction", "type": "Button", "id": "d35015b4-0000-4000-9000-000000000001" }
+        ,{ "name": "SecondaryAction", "type": "Button", "id": "d35015b4-0000-4000-9000-000000000002" }
+        ,{ "name": "DropHeld", "type": "Button", "id": "d35015b4-0000-4000-9000-000000000003" }
+        ,{ "name": "Hint", "type": "Button", "id": "d35015b4-0000-4000-9000-000000000004" }
+        ,{ "name": "QuickSave", "type": "Button", "id": "d35015b4-0000-4000-9000-000000000005" }
+        ,{ "name": "QuickLoad", "type": "Button", "id": "d35015b4-0000-4000-9000-000000000006" }
+        ,{ "name": "ToggleCamcorder", "type": "Button", "id": "f65015b4-0000-4000-9000-000000000001" }
+        ,{ "name": "ToggleNightVision", "type": "Button", "id": "f65015b4-0000-4000-9000-000000000002" }
+        ,{ "name": "ReloadCamcorder", "type": "Button", "id": "f65015b4-0000-4000-9000-000000000003" }
+        ,{ "name": "RecordEvidence", "type": "Button", "id": "f65015b4-0000-4000-9000-000000000004" }
+        ,{ "name": "CamcorderZoom", "type": "Button", "id": "f65015b4-0000-4000-9000-000000000005" }
+        ,{ "name": "LeanModifier", "type": "Button", "id": "a75015b4-0000-4000-9000-000000000001" }
+        ,{ "name": "LookBack", "type": "Button", "id": "a75015b4-0000-4000-9000-000000000002" }
+        ,{ "name": "Slide", "type": "Button", "id": "a75015b4-0000-4000-9000-000000000003" }
+        ,{ "name": "CarefulInteractModifier", "type": "Button", "id": "a75015b4-0000-4000-9000-000000000004" }
+      ],
+      "bindings": [
+        { "name": "2D Vector", "id": "0a5015b4-0000-4000-9000-000000000010", "path": "2DVector", "action": "Move", "isComposite": true },
+        { "name": "up", "id": "0a5015b4-0000-4000-9000-000000000011", "path": "<Keyboard>/w", "action": "Move", "isPartOfComposite": true },
+        { "name": "down", "id": "0a5015b4-0000-4000-9000-000000000012", "path": "<Keyboard>/s", "action": "Move", "isPartOfComposite": true },
+        { "name": "left", "id": "0a5015b4-0000-4000-9000-000000000013", "path": "<Keyboard>/a", "action": "Move", "isPartOfComposite": true },
+        { "name": "right", "id": "0a5015b4-0000-4000-9000-000000000014", "path": "<Keyboard>/d", "action": "Move", "isPartOfComposite": true },
+        { "id": "0a5015b4-0000-4000-9000-000000000015", "path": "<Gamepad>/leftStick", "action": "Move" },
+        { "id": "0a5015b4-0000-4000-9000-000000000016", "path": "<Mouse>/delta", "action": "Look" },
+        { "id": "0a5015b4-0000-4000-9000-000000000017", "path": "<Gamepad>/rightStick", "action": "Look" },
+        { "id": "0a5015b4-0000-4000-9000-000000000018", "path": "<Keyboard>/e", "action": "Interact" },
+        { "id": "0a5015b4-0000-4000-9000-000000000019", "path": "<Gamepad>/buttonWest", "action": "Interact" },
+        { "id": "e45015b4-0000-4000-9000-000000000001", "path": "<XRController>{LeftHand}/primaryButton", "action": "Interact" },
+        { "id": "e45015b4-0000-4000-9000-000000000002", "path": "<XRController>{RightHand}/primaryButton", "action": "Interact" },
+        { "id": "0a5015b4-0000-4000-9000-000000000020", "path": "<Keyboard>/leftShift", "action": "Sprint" },
+        { "id": "0a5015b4-0000-4000-9000-000000000021", "path": "<Keyboard>/leftCtrl", "action": "Crouch" },
+        { "id": "0a5015b4-0000-4000-9000-000000000022", "path": "<Gamepad>/buttonEast", "action": "Crouch" },
+        { "id": "0a5015b4-0000-4000-9000-000000000023", "path": "<Keyboard>/space", "action": "Jump" },
+        { "id": "0a5015b4-0000-4000-9000-000000000024", "path": "<Gamepad>/buttonSouth", "action": "Jump" },
+        { "id": "0a5015b4-0000-4000-9000-000000000025", "path": "<Keyboard>/escape", "action": "Pause" },
+        { "id": "0a5015b4-0000-4000-9000-000000000026", "path": "<Gamepad>/start", "action": "Pause" },
+        { "id": "e45015b4-0000-4000-9000-000000000006", "path": "<XRController>{RightHand}/menuButton", "action": "Pause" },
+        { "id": "0a5015b4-0000-4000-9000-000000000027", "path": "<Keyboard>/i", "action": "Inventory" },
+        { "id": "0a5015b4-0000-4000-9000-000000000028", "path": "<Gamepad>/dpad/up", "action": "Inventory" },
+        { "id": "e45015b4-0000-4000-9000-000000000003", "path": "<XRController>{LeftHand}/menuButton", "action": "Inventory" },
+        { "id": "c25015b4-0000-4000-9000-000000000010", "path": "<Mouse>/scroll/y", "processors": "scale(factor=0.01)", "action": "QuickNavigate" },
+        { "name": "1D Axis", "id": "c25015b4-0000-4000-9000-000000000011", "path": "1DAxis", "action": "QuickNavigate", "isComposite": true },
+        { "name": "negative", "id": "c25015b4-0000-4000-9000-000000000012", "path": "<Gamepad>/leftShoulder", "action": "QuickNavigate", "isPartOfComposite": true },
+        { "name": "positive", "id": "c25015b4-0000-4000-9000-000000000013", "path": "<Gamepad>/rightShoulder", "action": "QuickNavigate", "isPartOfComposite": true },
+        { "id": "c25015b4-0000-4000-9000-000000000014", "path": "<Keyboard>/1", "action": "QuickSlot1" },
+        { "id": "c25015b4-0000-4000-9000-000000000015", "path": "<Keyboard>/2", "action": "QuickSlot2" },
+        { "id": "c25015b4-0000-4000-9000-000000000016", "path": "<Keyboard>/3", "action": "QuickSlot3" },
+        { "id": "c25015b4-0000-4000-9000-000000000017", "path": "<Keyboard>/4", "action": "QuickSlot4" },
+        { "id": "b15015b4-0000-4000-9000-000000000004", "path": "<Keyboard>/f", "action": "ToggleFlashlight" },
+        { "id": "b15015b4-0000-4000-9000-000000000005", "path": "<Gamepad>/dpad/down", "action": "ToggleFlashlight" },
+        { "id": "e45015b4-0000-4000-9000-000000000004", "path": "<XRController>{RightHand}/secondaryButton", "action": "ToggleFlashlight" },
+        { "id": "b15015b4-0000-4000-9000-000000000006", "path": "<Keyboard>/r", "action": "Reload" },
+        { "id": "b15015b4-0000-4000-9000-000000000007", "path": "<Gamepad>/buttonNorth", "action": "Reload" },
+        { "id": "b15015b4-0000-4000-9000-000000000008", "path": "<Keyboard>/g", "action": "DropEquipped" },
+        { "id": "b15015b4-0000-4000-9000-000000000009", "path": "<Gamepad>/rightStickPress", "action": "DropEquipped" },
+        { "id": "d35015b4-0000-4000-9000-000000000010", "path": "<Mouse>/leftButton", "action": "PrimaryAction" },
+        { "id": "d35015b4-0000-4000-9000-000000000011", "path": "<Gamepad>/rightTrigger", "action": "PrimaryAction" },
+        { "id": "e45015b4-0000-4000-9000-000000000005", "path": "<XRController>{RightHand}/triggerPressed", "action": "PrimaryAction" },
+        { "id": "d35015b4-0000-4000-9000-000000000012", "path": "<Mouse>/rightButton", "action": "SecondaryAction" },
+        { "id": "d35015b4-0000-4000-9000-000000000013", "path": "<Gamepad>/leftTrigger", "action": "SecondaryAction" },
+        { "id": "d35015b4-0000-4000-9000-000000000014", "path": "<Keyboard>/q", "action": "DropHeld" },
+        { "id": "d35015b4-0000-4000-9000-000000000015", "path": "<Keyboard>/h", "action": "Hint" },
+        { "id": "d35015b4-0000-4000-9000-000000000016", "path": "<Keyboard>/f5", "action": "QuickSave" },
+        { "id": "d35015b4-0000-4000-9000-000000000017", "path": "<Keyboard>/f9", "action": "QuickLoad" },
+        { "id": "f65015b4-0000-4000-9000-000000000010", "path": "<Keyboard>/c", "action": "ToggleCamcorder" },
+        { "id": "f65015b4-0000-4000-9000-000000000013", "path": "<XRController>{LeftHand}/secondaryButton", "action": "ToggleCamcorder" },
+        { "id": "f65015b4-0000-4000-9000-000000000011", "path": "<Keyboard>/n", "action": "ToggleNightVision" },
+        { "id": "f65015b4-0000-4000-9000-000000000014", "path": "<XRController>{RightHand}/primary2DAxisClick", "action": "ToggleNightVision" },
+        { "id": "f65015b4-0000-4000-9000-000000000012", "path": "<Keyboard>/b", "action": "ReloadCamcorder" },
+        { "id": "f65015b4-0000-4000-9000-000000000015", "path": "<XRController>{LeftHand}/primary2DAxisClick", "action": "ReloadCamcorder" },
+        { "id": "f65015b4-0000-4000-9000-000000000016", "path": "<Mouse>/leftButton", "action": "RecordEvidence" },
+        { "id": "f65015b4-0000-4000-9000-000000000017", "path": "<Gamepad>/rightTrigger", "action": "RecordEvidence" },
+        { "id": "f65015b4-0000-4000-9000-000000000018", "path": "<XRController>{RightHand}/triggerPressed", "action": "RecordEvidence" },
+        { "id": "f65015b4-0000-4000-9000-000000000019", "path": "<Mouse>/rightButton", "action": "CamcorderZoom" },
+        { "id": "f65015b4-0000-4000-9000-000000000020", "path": "<Gamepad>/leftTrigger", "action": "CamcorderZoom" },
+        { "id": "f65015b4-0000-4000-9000-000000000021", "path": "<XRController>{LeftHand}/triggerPressed", "action": "CamcorderZoom" },
+        { "id": "a75015b4-0000-4000-9000-000000000010", "path": "<Keyboard>/leftAlt", "action": "LeanModifier" },
+        { "id": "a75015b4-0000-4000-9000-000000000011", "path": "<Keyboard>/x", "action": "LookBack" },
+        { "id": "a75015b4-0000-4000-9000-000000000012", "path": "<Gamepad>/leftStickPress", "action": "LookBack" },
+        { "id": "a75015b4-0000-4000-9000-000000000013", "path": "<Keyboard>/v", "action": "Slide" },
+        { "id": "a75015b4-0000-4000-9000-000000000014", "path": "<Gamepad>/buttonEast", "action": "Slide" },
+        { "id": "a75015b4-0000-4000-9000-000000000015", "path": "<Keyboard>/leftAlt", "action": "CarefulInteractModifier" },
+        { "id": "a75015b4-0000-4000-9000-000000000016", "path": "<Gamepad>/leftTrigger", "action": "CarefulInteractModifier" },
+        { "id": "a75015b4-0000-4000-9000-000000000017", "path": "<XRController>{LeftHand}/gripPressed", "action": "CarefulInteractModifier" }
+      ]
+    },
+    { "name": "UI", "id": "0a5015b4-0000-4000-9000-000000000029", "actions": [], "bindings": [] }
+  ],
+  "controlSchemes": []
+}

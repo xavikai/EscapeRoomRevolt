@@ -2,6 +2,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using EscapeRoomRevolt.Core;
 using EscapeRoomRevolt.Core.Save;
+using EscapeRoomRevolt.Core.Settings;
+using EscapeRoomRevolt.Systems.Hint;
+using EscapeRoomRevolt.Systems.Survival;
 
 namespace EscapeRoomRevolt.Systems.Puzzle
 {
@@ -16,6 +19,7 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         public enum PuzzleState { Unsolved, InProgress, Solved }
 
         [Header("Puzzle Identity")]
+        [SerializeField] private PuzzleDefinition _definition;
         [SerializeField] private string _puzzleId = "";
         [SerializeField] private string _puzzleName = "New Puzzle";
 
@@ -42,7 +46,11 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         // ── Public API ───────────────────────────────────────────────────────
         public PuzzleState State => _state;
         public bool IsSolved => _state == PuzzleState.Solved;
-        public string PuzzleId => string.IsNullOrEmpty(_puzzleId) ? name : _puzzleId;
+        public string PuzzleId => _definition != null && !string.IsNullOrWhiteSpace(_definition.PersistentId)
+            ? _definition.PersistentId
+            : (string.IsNullOrEmpty(_puzzleId) ? name : _puzzleId);
+        public string DisplayName => _definition != null ? _definition.DisplayName : _puzzleName;
+        public PuzzleDefinition Definition => _definition;
 
         protected virtual void Awake()
         {
@@ -99,6 +107,8 @@ namespace EscapeRoomRevolt.Systems.Puzzle
 
             EventBus.Publish(new OnPuzzleSolved { puzzleId = PuzzleId });
             _onSolved?.Invoke();
+            if (_definition != null && _definition.Hints != null)
+                HintManager.Instance?.ClearActivePuzzle(_definition.Hints);
 
             if (_feedbackCamera != null)
             {
@@ -131,11 +141,19 @@ namespace EscapeRoomRevolt.Systems.Puzzle
 
             EventBus.Publish(new OnPuzzleFailed { puzzleId = PuzzleId, reason = reason });
             _onFailed?.Invoke();
+            if (GameFeatures.IsEnabled(OptionalGameFeature.Sanity)
+                && _definition != null && _definition.SanityPenalty > 0f)
+                SanityController.Instance?.ApplyStress(_definition.SanityPenalty);
 
             OnPuzzleFailed(reason);
         }
 
-        protected void SetInProgress() => _state = PuzzleState.InProgress;
+        protected void SetInProgress()
+        {
+            if (_state == PuzzleState.Unsolved && _definition != null && _definition.Hints != null)
+                HintManager.Instance?.SetActivePuzzle(_definition.Hints);
+            _state = PuzzleState.InProgress;
+        }
 
         /// <summary>Override to react when the puzzle is solved (animations, doors, etc.)</summary>
         protected virtual void OnPuzzleCompleted() { }
@@ -145,7 +163,7 @@ namespace EscapeRoomRevolt.Systems.Puzzle
 
         private void Log(string msg)
         {
-            if (_logState) Debug.Log($"[Puzzle:{_puzzleName}] {msg}");
+            if (_logState) Debug.Log($"[Puzzle:{DisplayName}] {msg}");
         }
     }
 }

@@ -18,6 +18,13 @@ namespace EscapeRoomRevolt.Core
 
         public static bool IsInitialized { get; private set; }
 
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetStatics()
+        {
+            IsInitialized = false;
+            EventBus.Clear();
+        }
+
         /// <summary>
         /// Called by the Bootstrapper once all systems are ready.
         /// </summary>
@@ -30,11 +37,11 @@ namespace EscapeRoomRevolt.Core
         /// <summary>
         /// Resets context on scene unload / game restart.
         /// </summary>
-        internal static void Reset()
+        internal static void ResetForNewSession()
         {
             IsInitialized = false;
             EventBus.Clear();
-            Debug.Log("[GameContext] Reset complete.");
+            Debug.Log("[GameContext] New session state cleared.");
         }
     }
 }

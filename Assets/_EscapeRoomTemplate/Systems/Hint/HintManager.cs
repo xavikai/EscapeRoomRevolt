@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using EscapeRoomRevolt.UI.PC;
+using System;
+using EscapeRoomRevolt.Core.Input;
 
 namespace EscapeRoomRevolt.Systems.Hint
 {
@@ -15,9 +17,8 @@ namespace EscapeRoomRevolt.Systems.Hint
         private HintData _activePuzzleData;
         private float _timeInActivePuzzle;
         private int _currentHintIndex;
-        private bool _isHintRoutineRunning;
-
         private Coroutine _hideSubtitleCoroutine;
+        public event Action<HintEntry, int> HintShown;
 
         private void Awake()
         {
@@ -34,6 +35,7 @@ namespace EscapeRoomRevolt.Systems.Hint
 
         private void Update()
         {
+            if (InputRouter.Instance != null && InputRouter.Instance.HintPressed) RequestNextHint();
             if (_activePuzzleData == null) return;
             if (_currentHintIndex >= _activePuzzleData.hints.Count) return;
 
@@ -71,11 +73,25 @@ namespace EscapeRoomRevolt.Systems.Hint
             UIManager.Instance?.HideSubtitle();
         }
 
+        public void ClearActivePuzzle(HintData puzzleData)
+        {
+            if (_activePuzzleData == puzzleData) ClearActivePuzzle();
+        }
+
+        public bool RequestNextHint()
+        {
+            if (_activePuzzleData == null || _currentHintIndex >= _activePuzzleData.hints.Count) return false;
+            ShowNextHint();
+            _timeInActivePuzzle = 0f;
+            return true;
+        }
+
         private void ShowNextHint()
         {
             if (_activePuzzleData == null || _currentHintIndex >= _activePuzzleData.hints.Count) return;
 
             HintEntry currentHint = _activePuzzleData.hints[_currentHintIndex];
+            int shownIndex = _currentHintIndex;
             
             // Format as character thoughts (italics)
             string formattedText = $"<i>{currentHint.hintText}</i>";
@@ -94,11 +110,12 @@ namespace EscapeRoomRevolt.Systems.Hint
             _hideSubtitleCoroutine = StartCoroutine(HideSubtitleAfterDelay(5f));
 
             _currentHintIndex++;
+            HintShown?.Invoke(currentHint, shownIndex);
         }
 
         private IEnumerator HideSubtitleAfterDelay(float delay)
         {
-            yield return new WaitForSeconds(delay);
+            yield return new WaitForSecondsRealtime(delay);
             UIManager.Instance?.HideSubtitle();
         }
     }

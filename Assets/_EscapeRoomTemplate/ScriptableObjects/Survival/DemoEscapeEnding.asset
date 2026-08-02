@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66025e9c9314442588b3be38558cdc6b, type: 3}
+  m_Name: DemoEscapeEnding
+  m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Core.Flow.EndingDefinition
+  _endingId: survival_demo_escape
+  _outcome: 0
+  _title: "Has escapat de la instal\xB7laci\xF3"
+  _message: "La sortida \xE9s oberta, per\xF2 la investigaci\xF3 nom\xE9s acaba de
+    comen\xE7ar."

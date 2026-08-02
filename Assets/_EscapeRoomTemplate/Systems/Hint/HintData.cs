@@ -14,7 +14,7 @@ namespace EscapeRoomRevolt.Systems.Hint
         public AudioClip hintAudio;
     }
 
-    [CreateAssetMenu(fileName = "NewHintData", menuName = "EscapeRoom/Hint Data", order = 1)]
+    [CreateAssetMenu(fileName = "NewHintData", menuName = "Escape Room Framework/Hints/Hint Data", order = 1)]
     public class HintData : ScriptableObject
     {
         [Tooltip("Time in seconds before the first hint is shown.")]

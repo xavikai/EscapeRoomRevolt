@@ -1,0 +1,106 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:Style src="project://database/Assets/_EscapeRoomTemplate/UI/Toolkit/GameplayHUD.uss" />
+    <ui:VisualElement name="gameplay-root" class="gameplay-root">
+        <ui:VisualElement name="hud-layer" class="hud-layer" picking-mode="Ignore">
+            <ui:VisualElement name="crosshair" class="crosshair crosshair--default" picking-mode="Ignore" />
+            <ui:Label name="interaction-prompt" class="interaction-prompt" picking-mode="Ignore" />
+            <ui:Label name="objective-text" class="objective-text" picking-mode="Ignore" />
+
+            <ui:VisualElement name="flashlight-hud" class="flashlight-hud" picking-mode="Ignore">
+                <ui:VisualElement class="instrument-header">
+                    <ui:Label text="LINTERNA // BAT-01" class="instrument-title" />
+                    <ui:Label name="flashlight-state" text="ESPERA" class="instrument-state" />
+                </ui:VisualElement>
+                <ui:VisualElement class="battery-row">
+                    <ui:VisualElement class="battery-shell">
+                        <ui:VisualElement name="flashlight-fill" class="battery-fill" />
+                    </ui:VisualElement>
+                    <ui:Label name="flashlight-percent" text="100%" class="battery-percent" />
+                </ui:VisualElement>
+                <ui:Label text="[F] LUZ   [R] BATERÍA   [G] SOLTAR" class="instrument-help" />
+            </ui:VisualElement>
+
+            <ui:VisualElement name="sanity-hud" class="sanity-hud" picking-mode="Ignore">
+                <ui:VisualElement class="instrument-header">
+                    <ui:Label text="ESTABILIDAD // PSI-02" class="instrument-title" />
+                    <ui:Label name="sanity-state" text="ESTABLE" class="instrument-state" />
+                </ui:VisualElement>
+                <ui:VisualElement class="sanity-track">
+                    <ui:VisualElement name="sanity-fill" class="sanity-fill" />
+                </ui:VisualElement>
+                <ui:Label name="sanity-percent" text="100%" class="sanity-percent" />
+            </ui:VisualElement>
+
+            <ui:VisualElement name="vitals-hud" class="vitals-hud" picking-mode="Ignore">
+                <ui:Label text="ESTAT FÍSIC // SURV-01" class="instrument-title" />
+                <ui:VisualElement class="vitals-row"><ui:Label text="SALUT" class="vitals-label" /><ui:VisualElement class="vitals-track"><ui:VisualElement name="health-fill" class="vitals-fill health-fill" /></ui:VisualElement><ui:Label name="health-percent" text="100%" class="vitals-percent" /></ui:VisualElement>
+                <ui:VisualElement class="vitals-row"><ui:Label text="RESIST." class="vitals-label" /><ui:VisualElement class="vitals-track"><ui:VisualElement name="stamina-fill" class="vitals-fill stamina-fill" /></ui:VisualElement><ui:Label name="stamina-percent" text="100%" class="vitals-percent" /></ui:VisualElement>
+            </ui:VisualElement>
+
+            <ui:VisualElement name="camcorder-hud" class="camcorder-hud" picking-mode="Ignore">
+                <ui:VisualElement class="instrument-header"><ui:Label text="CÀMERA // NV-03" class="instrument-title" /><ui:Label name="camcorder-state" text="BAIXADA" class="instrument-state" /></ui:VisualElement>
+                <ui:VisualElement class="battery-row"><ui:VisualElement class="battery-shell"><ui:VisualElement name="nightvision-fill" class="battery-fill nightvision-fill" /></ui:VisualElement><ui:Label name="nightvision-percent" text="100%" class="battery-percent" /></ui:VisualElement>
+                <ui:Label name="recording-target" text="SUBJECTE // CAP" class="recording-target" />
+                <ui:VisualElement class="recording-track"><ui:VisualElement name="recording-fill" class="recording-fill" /></ui:VisualElement>
+                <ui:Label text="[C] CÀMERA  [N] NV  [B] BATERIA  [RMB] ZOOM  [LMB] GRAVAR" class="instrument-help" />
+            </ui:VisualElement>
+
+            <ui:VisualElement name="hotbar" class="hotbar" picking-mode="Position" />
+            <ui:Label name="subtitle" class="subtitle" picking-mode="Ignore" />
+        </ui:VisualElement>
+
+        <ui:VisualElement name="modal-layer" class="modal-layer">
+            <ui:VisualElement name="inventory-panel" class="modal-card inventory-panel">
+                <ui:VisualElement class="modal-heading">
+                    <ui:Label text="INVENTARIO DE EVIDENCIAS" class="modal-title" />
+                    <ui:Button name="inventory-close" text="CERRAR  [ESC]" class="text-button" />
+                </ui:VisualElement>
+                <ui:VisualElement class="inventory-body">
+                    <ui:VisualElement name="inventory-grid" class="inventory-grid" />
+                    <ui:VisualElement class="item-detail">
+                        <ui:Image name="inventory-detail-icon" class="detail-icon" />
+                        <ui:Label name="inventory-detail-name" text="SIN SELECCIÓN" class="detail-name" />
+                        <ui:Label name="inventory-detail-description" class="detail-description" />
+                        <ui:VisualElement class="detail-actions">
+                            <ui:Button name="inventory-use" text="USAR / EQUIPAR" class="primary-button" />
+                            <ui:Button name="inventory-quick-assign" text="ACCESO RÁPIDO" class="secondary-button" />
+                            <ui:Button name="inventory-examine" text="EXAMINAR" class="secondary-button" />
+                            <ui:Button name="inventory-combine" text="COMBINAR" class="secondary-button" />
+                            <ui:Button name="inventory-drop" text="SOLTAR" class="danger-button" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <ui:VisualElement name="note-panel" class="modal-card note-panel">
+                <ui:VisualElement class="modal-heading">
+                    <ui:Label text="DOCUMENTO RECUPERADO" class="modal-title" />
+                    <ui:Button name="note-close" text="CERRAR  [ESC]" class="text-button" />
+                </ui:VisualElement>
+                <ui:ScrollView class="note-scroll">
+                    <ui:Label name="note-content" class="note-content" />
+                </ui:ScrollView>
+            </ui:VisualElement>
+
+            <ui:VisualElement name="keypad-panel" class="modal-card keypad-panel">
+                <ui:Label text="CONTROL DE ACCESO" class="modal-title centered" />
+                <ui:Label name="keypad-display" text="----" class="keypad-display" />
+                <ui:VisualElement name="keypad-grid" class="keypad-grid" />
+                <ui:Button name="keypad-close" text="CANCELAR  [ESC]" class="text-button" />
+            </ui:VisualElement>
+
+            <ui:VisualElement name="examiner-panel" class="modal-card examiner-panel">
+                <ui:VisualElement class="modal-heading">
+                    <ui:Label name="examiner-title" text="ANÁLISIS DE OBJETO" class="modal-title" />
+                    <ui:Button name="examiner-close" text="CERRAR  [ESC]" class="text-button" />
+                </ui:VisualElement>
+                <ui:Image name="examiner-image" class="examiner-image" />
+                <ui:Label name="examiner-description" class="examiner-description" />
+                <ui:VisualElement class="examiner-footer">
+                    <ui:Label text="ARRASTRAR: ROTAR  //  RUEDA: ZOOM" class="instrument-help" />
+                    <ui:Button name="examiner-combine" text="COMBINAR CON OBJETO ACTIVO" class="primary-button" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

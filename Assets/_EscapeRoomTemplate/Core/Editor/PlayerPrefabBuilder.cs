@@ -8,7 +8,8 @@ namespace EscapeRoomRevolt.EditorTools
 {
     public class PlayerPrefabBuilder
     {
-        [MenuItem("EscapeRoom/1. Setup/Build Player Prefab", priority = 11)]
+        // Kept as an internal legacy migration helper. It must not appear in the menu because
+        // it overwrites the production prefab with an incomplete PC-only hierarchy.
         public static void CreatePlayerPrefab()
         {
             // 1. Creem l'objecte arrel
@@ -55,7 +56,7 @@ namespace EscapeRoomRevolt.EditorTools
             Debug.Log($"[EscapeRoom] Prefab 'Player_PC' generat correctament a: {path}");
         }
 
-        [MenuItem("EscapeRoom/3. Demo/Generate Demo Items", priority = 32)]
+        // Legacy demo generator. The commercial sample assets are versioned and must not be recreated in place.
         public static void GenerateItems()
         {
             string folderPath = "Assets/_EscapeRoomTemplate/ScriptableObjects/Items";

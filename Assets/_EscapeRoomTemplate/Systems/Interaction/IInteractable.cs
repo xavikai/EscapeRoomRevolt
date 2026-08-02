@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace EscapeRoomRevolt.Systems.Interaction
 {
     public enum CursorType
@@ -32,5 +34,18 @@ namespace EscapeRoomRevolt.Systems.Interaction
 
         /// <summary>Called when the player's crosshair leaves this object's range.</summary>
         void OnFocusExit();
+    }
+
+    /// <summary>
+    /// Unity's destroyed-object null check is lost when a Component is stored as an
+    /// interface. Keep that check in one place for every interaction consumer.
+    /// </summary>
+    public static class InteractableUtility
+    {
+        public static bool IsAlive(this IInteractable target)
+        {
+            if (target == null) return false;
+            return target is not Object unityObject || unityObject != null;
+        }
     }
 }

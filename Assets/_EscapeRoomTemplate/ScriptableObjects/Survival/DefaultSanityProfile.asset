@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3720258c28b1b34aadcc8f2e166fa81, type: 3}
+  m_Name: DefaultSanityProfile
+  m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Survival.SanityProfile
+  _maximum: 100
+  _passiveRecoveryPerSecond: 0.25
+  _uneasyThreshold: 0.65
+  _distressedThreshold: 0.35
+  _criticalThreshold: 0.15

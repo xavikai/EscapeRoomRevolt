@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 9018007836875087119}
   - component: {fileID: 3190983203998187319}
   - component: {fileID: 636710764735553953}
+  - component: {fileID: 2833290222939753478}
   m_Layer: 0
   m_Name: Player_PC
   m_TagString: Player
@@ -75,6 +76,16 @@ MonoBehaviour:
   _walkSpeed: 3.5
   _sprintSpeed: 6
   _gravity: -9.81
+  _canJump: 1
+  _jumpHeight: 0.5
+  _canCrouch: 1
+  _crouchSpeed: 2
+  _crouchHeight: 1
+  _standingHeight: 2
+  _crouchTransitionSpeed: 10
+  _surfaceAudioData: {fileID: 0}
+  _footstepDistanceWalk: 1.8
+  _footstepDistanceSprint: 2.4
   _playerCamera: {fileID: 6843779865661257744}
   _mouseSensitivity: 120
   _maxLookAngle: 85
@@ -92,6 +103,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Player.PC.PlayerInputHandler
   _inventoryKey: 105
   _pauseKey: 27
+--- !u!114 &2833290222939753478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3169349456629175711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f330fb3ed477c424885b0931520725de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Equipment.EquipmentController
+  _equipmentSocket: {fileID: 0}
+  _dropEquippedKey: 103
+  _dropDistance: 0.65
+  _dropImpulse: 1.25
 --- !u!1 &5019737088988269260
 GameObject:
   m_ObjectHideFlags: 0
@@ -124,7 +151,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 1.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 843314966738299506}
   m_Father: {fileID: 6839280717277190749}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &3284935125835934147
@@ -249,3 +277,34 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!1 &8852949795560482325
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 843314966738299506}
+  m_Layer: 0
+  m_Name: EquipmentSocket
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &843314966738299506
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8852949795560482325}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.28, y: -0.24, z: 0.55}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6843779865661257744}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -22,21 +22,25 @@ namespace EscapeRoomRevolt.Systems.Interaction
             _puzzle = GetComponent<CodePanelPuzzle>();
         }
 
-        private void Update()
+        public override string InteractionPrompt
         {
-            if (_isFocused)
+            get
             {
-                if (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1))
-                {
-                    ExitFocusMode();
-                }
+                if (_puzzle == null) _puzzle = GetComponent<CodePanelPuzzle>();
+                return _puzzle != null && _puzzle.IsSolved ? "Solved" : "Use Keypad";
             }
         }
 
-        public override string InteractionPrompt => _puzzle.IsSolved ? "Solved" : "Use Keypad";
-
         protected override void OnInteract()
         {
+            if (_puzzle == null) _puzzle = GetComponent<CodePanelPuzzle>();
+            if (_puzzle == null) return;
+            if (UIManager.Instance != null)
+            {
+                UIManager.Instance.ShowKeypad(_puzzle);
+                return;
+            }
+
             EnterFocusMode();
         }
 

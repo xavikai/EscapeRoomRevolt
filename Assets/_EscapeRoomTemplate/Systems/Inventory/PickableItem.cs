@@ -1,5 +1,7 @@
 using UnityEngine;
 using EscapeRoomRevolt.Systems.Interaction;
+using EscapeRoomRevolt.Core.Settings;
+using EscapeRoomRevolt.Systems.Survival;
 
 namespace EscapeRoomRevolt.Systems.Inventory
 {
@@ -24,6 +26,13 @@ namespace EscapeRoomRevolt.Systems.Inventory
 
         public override string InteractionPrompt =>
             _itemData != null ? $"Pick up {_itemData.DisplayName}" : "Pick up";
+
+        protected override void Awake()
+        {
+            base.Awake();
+            if (GameFeatures.IsEnabled(OptionalGameFeature.Checkpoints) && GetComponent<CheckpointEntity>() == null)
+                gameObject.AddComponent<CheckpointEntity>();
+        }
 
         protected override void OnInteract()
         {
@@ -56,7 +65,10 @@ namespace EscapeRoomRevolt.Systems.Inventory
             EscapeRoomRevolt.Core.Save.SaveManager.Instance?.MarkAsDestroyed(SaveId);
 
             // Remove from world
-            if (_destroyOnPickup)
+            CheckpointEntity checkpointEntity = GetComponent<CheckpointEntity>();
+            if (checkpointEntity != null && CheckpointManager.Instance != null)
+                checkpointEntity.RemoveFromWorld();
+            else if (_destroyOnPickup)
                 Destroy(gameObject);
             else
                 gameObject.SetActive(false);

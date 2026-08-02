@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d072b96ed0744ebbb17a5cdffc6e8886, type: 3}
+  m_Name: Objective_RestorePower
+  m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Core.Flow.ObjectiveDefinition
+  _objectiveId: restore_power
+  _title: "Restableix l'energia d'emerg\xE8ncia"
+  _description: "Localitza el generador de la ruta lateral i activa'l sense alertar
+    la pres\xE8ncia."
+  _hiddenUntilAvailable: 1
+  _trigger: 4
+  _targetId: EmergencyGenerator
+  _prerequisites:
+  - {fileID: 11400000, guid: 512bcdb526ddbcb4faf87c0b87a13580, type: 2}
