@@ -75,6 +75,7 @@ GameObject:
   - component: {fileID: 2745574321024458051}
   - component: {fileID: 4305177526641518480}
   - component: {fileID: 7309862058031899623}
+  - component: {fileID: 1798521589795318352}
   m_Layer: 0
   m_Name: HorrorEnemy_Modular
   m_TagString: Untagged
@@ -159,6 +160,28 @@ MonoBehaviour:
   _modelPrefab: {fileID: 0}
   _modelSocket: {fileID: 6339400878801982778}
   _placeholderVisual: {fileID: 8197377871781443265}
+--- !u!114 &1798521589795318352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7579085008729740625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8509e47e9a701be4e883b411a6039a7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Survival.HorrorEnemyFeedbackController
+  _suspiciousClip: {fileID: 0}
+  _investigateClip: {fileID: 0}
+  _searchClip: {fileID: 0}
+  _chaseClip: {fileID: 0}
+  _standDownClip: {fileID: 0}
+  _volume: 1
+  _pitchVariance: 0.05
+  _onStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8197377871781443265
 GameObject:
   m_ObjectHideFlags: 0

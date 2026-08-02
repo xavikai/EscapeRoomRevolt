@@ -99,6 +99,10 @@ namespace EscapeRoomRevolt.Core
                 sanityObject.AddComponent<EscapeRoomRevolt.Systems.Survival.SanityController>();
             }
 
+            if (playerRoot != null && Settings.GameFeatures.IsEnabled(Settings.OptionalGameFeature.Sanity)
+                && playerRoot.GetComponent<EscapeRoomRevolt.Systems.Survival.SanityFeedbackController>() == null)
+                playerRoot.AddComponent<EscapeRoomRevolt.Systems.Survival.SanityFeedbackController>();
+
             // Ensure AudioManager exists in the scene
             if (GameObject.FindAnyObjectByType<EscapeRoomRevolt.Systems.Audio.AudioManager>() == null)
             {
