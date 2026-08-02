@@ -127,6 +127,7 @@ GameObject:
   - component: {fileID: 2513463064445808302}
   - component: {fileID: 285604649781072725}
   - component: {fileID: 6828498457778362435}
+  - component: {fileID: 3702741459994409810}
   m_Layer: 0
   m_Name: Camcorder_Modular
   m_TagString: Untagged
@@ -313,6 +314,24 @@ MonoBehaviour:
   _modelPrefab: {fileID: 0}
   _modelSocket: {fileID: 3211268633012850335}
   _placeholderVisual: {fileID: 6939582736713609262}
+--- !u!114 &3702741459994409810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2080715112697932187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f666d53e5c6bb74ea2c92231b155ca5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Survival.NightVisionFeedbackController
+  _tint: {r: 0.3, g: 1.2, b: 0.35, a: 1}
+  _postExposure: 3.5
+  _saturation: -60
+  _grainIntensity: 0.35
+  _vignetteIntensity: 1
+  _fadeSpeed: 4
 --- !u!1 &3148519679065656303
 GameObject:
   m_ObjectHideFlags: 0
