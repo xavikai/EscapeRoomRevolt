@@ -145,7 +145,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
         {
             if (_camcorderState == null || _nightVision == null) return;
             SetVisible(_camcorderHud, _nightVision.IsEquipped);
-            _camcorderState.text = !_nightVision.IsCamcorderRaised ? "BAIXADA"
+            _camcorderState.text = !_nightVision.IsCamcorderRaised ? "BAJADA"
                 : _recorder != null && _recorder.IsRecording ? "REC"
                 : _nightVision.IsNightVisionEnabled ? "NV ACTIVA"
                 : _nightVision.IsZoomed ? "ZOOM" : "PREPARADA";
@@ -170,9 +170,9 @@ namespace EscapeRoomRevolt.UI.Toolkit
         private void UpdateRecordingTarget(RecordableEvidence target)
         {
             if (_recordingTarget == null) return;
-            if (target == null) _recordingTarget.text = "SUBJECTE // CAP";
-            else if (target.IsRecorded) _recordingTarget.text = $"ARXIVADA // {target.Definition.Title.ToUpperInvariant()}";
-            else _recordingTarget.text = $"SUBJECTE // {target.Definition.Title.ToUpperInvariant()}";
+            if (target == null) _recordingTarget.text = "SUJETO // NINGUNO";
+            else if (target.IsRecorded) _recordingTarget.text = $"ARCHIVADA // {target.Definition.Title.ToUpperInvariant()}";
+            else _recordingTarget.text = $"SUJETO // {target.Definition.Title.ToUpperInvariant()}";
         }
 
         private void UpdateRecordingProgress(float value) => SetWidth(_recordingFill, value);
@@ -192,7 +192,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
                 break;
             }
             SetVisible(_objectiveText, current != null);
-            if (current != null) _objectiveText.text = $"OBJECTIU // {current.Title.ToUpperInvariant()}";
+            if (current != null) _objectiveText.text = $"OBJETIVO // {current.Title.ToUpperInvariant()}";
         }
 
         private static void SetWidth(VisualElement element, float value)

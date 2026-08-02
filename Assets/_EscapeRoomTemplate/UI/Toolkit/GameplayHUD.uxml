@@ -32,17 +32,17 @@
             </ui:VisualElement>
 
             <ui:VisualElement name="vitals-hud" class="vitals-hud" picking-mode="Ignore">
-                <ui:Label text="ESTAT FÍSIC // SURV-01" class="instrument-title" />
-                <ui:VisualElement class="vitals-row"><ui:Label text="SALUT" class="vitals-label" /><ui:VisualElement class="vitals-track"><ui:VisualElement name="health-fill" class="vitals-fill health-fill" /></ui:VisualElement><ui:Label name="health-percent" text="100%" class="vitals-percent" /></ui:VisualElement>
+                <ui:Label text="ESTADO FÍSICO // SURV-01" class="instrument-title" />
+                <ui:VisualElement class="vitals-row"><ui:Label text="SALUD" class="vitals-label" /><ui:VisualElement class="vitals-track"><ui:VisualElement name="health-fill" class="vitals-fill health-fill" /></ui:VisualElement><ui:Label name="health-percent" text="100%" class="vitals-percent" /></ui:VisualElement>
                 <ui:VisualElement class="vitals-row"><ui:Label text="RESIST." class="vitals-label" /><ui:VisualElement class="vitals-track"><ui:VisualElement name="stamina-fill" class="vitals-fill stamina-fill" /></ui:VisualElement><ui:Label name="stamina-percent" text="100%" class="vitals-percent" /></ui:VisualElement>
             </ui:VisualElement>
 
             <ui:VisualElement name="camcorder-hud" class="camcorder-hud" picking-mode="Ignore">
-                <ui:VisualElement class="instrument-header"><ui:Label text="CÀMERA // NV-03" class="instrument-title" /><ui:Label name="camcorder-state" text="BAIXADA" class="instrument-state" /></ui:VisualElement>
+                <ui:VisualElement class="instrument-header"><ui:Label text="CÁMARA // NV-03" class="instrument-title" /><ui:Label name="camcorder-state" text="BAJADA" class="instrument-state" /></ui:VisualElement>
                 <ui:VisualElement class="battery-row"><ui:VisualElement class="battery-shell"><ui:VisualElement name="nightvision-fill" class="battery-fill nightvision-fill" /></ui:VisualElement><ui:Label name="nightvision-percent" text="100%" class="battery-percent" /></ui:VisualElement>
-                <ui:Label name="recording-target" text="SUBJECTE // CAP" class="recording-target" />
+                <ui:Label name="recording-target" text="SUJETO // NINGUNO" class="recording-target" />
                 <ui:VisualElement class="recording-track"><ui:VisualElement name="recording-fill" class="recording-fill" /></ui:VisualElement>
-                <ui:Label text="[C] CÀMERA  [N] NV  [B] BATERIA  [RMB] ZOOM  [LMB] GRAVAR" class="instrument-help" />
+                <ui:Label text="[C] CÁMARA  [N] NV  [B] BATERÍA  [RMB] ZOOM  [LMB] GRABAR" class="instrument-help" />
             </ui:VisualElement>
 
             <ui:VisualElement name="hotbar" class="hotbar" picking-mode="Position" />
