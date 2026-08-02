@@ -18,8 +18,8 @@ namespace EscapeRoomRevolt.Systems.Survival
         [SerializeField] private Color _tint = new Color(.3f, 1.2f, .35f);
         [SerializeField, Range(0f, 6f)] private float _postExposure = 3.5f;
         [SerializeField, Range(-100f, 0f)] private float _saturation = -60f;
-        [SerializeField, Range(0f, 1f)] private float _grainIntensity = .35f;
-        [SerializeField, Range(0f, 1f)] private float _vignetteIntensity = 1f;
+        [SerializeField, Range(0f, 1f)] private float _grainIntensity = .5f;
+        [SerializeField, Range(0f, 1f)] private float _vignetteIntensity = .35f;
         [SerializeField, Min(0f)] private float _fadeSpeed = 4f;
 
         private NightVisionController _camcorder;
@@ -79,7 +79,7 @@ namespace EscapeRoomRevolt.Systems.Survival
             Vignette vignette = profile.Add<Vignette>(true);
             vignette.color.Override(Color.black);
             vignette.intensity.Override(_vignetteIntensity);
-            vignette.smoothness.Override(.2f);
+            vignette.smoothness.Override(.85f);
             vignette.rounded.Override(true);
 
             var volumeObject = new GameObject("NightVisionVolume");

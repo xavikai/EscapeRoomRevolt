@@ -6,6 +6,17 @@
             <ui:Label name="interaction-prompt" class="interaction-prompt" picking-mode="Ignore" />
             <ui:Label name="objective-text" class="objective-text" picking-mode="Ignore" />
 
+            <ui:VisualElement name="viewfinder-frame" class="viewfinder-frame" picking-mode="Ignore">
+                <ui:VisualElement class="viewfinder-corner viewfinder-corner--tl" />
+                <ui:VisualElement class="viewfinder-corner viewfinder-corner--tr" />
+                <ui:VisualElement class="viewfinder-corner viewfinder-corner--bl" />
+                <ui:VisualElement class="viewfinder-corner viewfinder-corner--br" />
+                <ui:VisualElement name="viewfinder-rec" class="viewfinder-rec" picking-mode="Ignore">
+                    <ui:VisualElement name="viewfinder-rec-dot" class="viewfinder-rec-dot" />
+                    <ui:Label text="REC" class="viewfinder-rec-label" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+
             <ui:VisualElement name="flashlight-hud" class="flashlight-hud" picking-mode="Ignore">
                 <ui:VisualElement class="instrument-header">
                     <ui:Label text="LINTERNA // BAT-01" class="instrument-title" />

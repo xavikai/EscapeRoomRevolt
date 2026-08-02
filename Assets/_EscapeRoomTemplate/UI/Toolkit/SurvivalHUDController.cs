@@ -20,6 +20,9 @@ namespace EscapeRoomRevolt.UI.Toolkit
         private Label _nightVisionPercent;
         private Label _recordingTarget;
         private VisualElement _recordingFill;
+        private VisualElement _viewfinderFrame;
+        private VisualElement _viewfinderRec;
+        private IVisualElementScheduledItem _recBlink;
         private PlayerVitals _vitals;
         private NightVisionController _nightVision;
         private CamcorderEvidenceRecorder _recorder;
@@ -40,6 +43,8 @@ namespace EscapeRoomRevolt.UI.Toolkit
             _nightVisionPercent = root.Q<Label>("nightvision-percent");
             _recordingTarget = root.Q<Label>("recording-target");
             _recordingFill = root.Q("recording-fill");
+            _viewfinderFrame = root.Q("viewfinder-frame");
+            _viewfinderRec = root.Q("viewfinder-rec");
             _objectiveText = root.Q<Label>("objective-text");
             Invoke(nameof(BindRuntimeSystems), 0f);
         }
@@ -53,6 +58,8 @@ namespace EscapeRoomRevolt.UI.Toolkit
             bool cameraEnabled = GameFeatures.IsEnabled(OptionalGameFeature.NightVision);
             SetVisible(_vitalsHud, vitalsEnabled);
             SetVisible(_camcorderHud, false);
+            SetVisible(_viewfinderFrame, false);
+            SetVisible(_viewfinderRec, false);
 
             if (vitalsEnabled)
             {
@@ -145,6 +152,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
         {
             if (_camcorderState == null || _nightVision == null) return;
             SetVisible(_camcorderHud, _nightVision.IsEquipped);
+            SetVisible(_viewfinderFrame, _nightVision.IsCamcorderRaised);
             _camcorderState.text = !_nightVision.IsCamcorderRaised ? "BAJADA"
                 : _recorder != null && _recorder.IsRecording ? "REC"
                 : _nightVision.IsNightVisionEnabled ? "NV ACTIVA"
@@ -177,7 +185,16 @@ namespace EscapeRoomRevolt.UI.Toolkit
 
         private void UpdateRecordingProgress(float value) => SetWidth(_recordingFill, value);
 
-        private void HandleRecordingState(bool _) => UpdateCamera();
+        private void HandleRecordingState(bool recording)
+        {
+            UpdateCamera();
+            SetVisible(_viewfinderRec, recording);
+            _recBlink?.Pause();
+            if (recording && _viewfinderRec != null)
+                _recBlink = _viewfinderRec.schedule.Execute(() =>
+                    _viewfinderRec.style.opacity = _viewfinderRec.resolvedStyle.opacity > .5f ? .15f : 1f).Every(500);
+            else if (_viewfinderRec != null) _viewfinderRec.style.opacity = 1f;
+        }
 
         private void HandleObjectiveCompleted(ObjectiveDefinition _) => UpdateObjective();
 
