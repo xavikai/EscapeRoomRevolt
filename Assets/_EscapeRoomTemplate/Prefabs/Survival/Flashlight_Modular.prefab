@@ -413,8 +413,6 @@ MonoBehaviour:
   _charge: 1
   _drainPerSecond: 0.006
   _batteryItemId: batteries
-  _toggleKey: 102
-  _reloadKey: 114
   _startEnabled: 0
 --- !u!114 &5957048991582714538
 MonoBehaviour:
@@ -827,7 +825,7 @@ Light:
   m_GameObject: {fileID: 7198844203248110483}
   m_Enabled: 1
   serializedVersion: 13
-  m_Type: 1
+  m_Type: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_Range: 10
