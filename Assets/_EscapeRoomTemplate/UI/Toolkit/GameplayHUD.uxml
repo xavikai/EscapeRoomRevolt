@@ -7,14 +7,24 @@
             <ui:Label name="objective-text" class="objective-text" picking-mode="Ignore" />
 
             <ui:VisualElement name="viewfinder-frame" class="viewfinder-frame" picking-mode="Ignore">
-                <ui:VisualElement class="viewfinder-corner viewfinder-corner--tl" />
-                <ui:VisualElement class="viewfinder-corner viewfinder-corner--tr" />
-                <ui:VisualElement class="viewfinder-corner viewfinder-corner--bl" />
-                <ui:VisualElement class="viewfinder-corner viewfinder-corner--br" />
+                <ui:VisualElement class="viewfinder-bar viewfinder-bar--top" />
+                <ui:VisualElement class="viewfinder-bar viewfinder-bar--bottom" />
                 <ui:VisualElement name="viewfinder-rec" class="viewfinder-rec" picking-mode="Ignore">
                     <ui:VisualElement name="viewfinder-rec-dot" class="viewfinder-rec-dot" />
                     <ui:Label text="REC" class="viewfinder-rec-label" />
+                    <ui:Label name="viewfinder-timecode" text="00:00:00" class="viewfinder-timecode" />
                 </ui:VisualElement>
+                <ui:VisualElement class="viewfinder-zoom" picking-mode="Ignore">
+                    <ui:Label text="W" class="viewfinder-zoom-label" />
+                    <ui:VisualElement class="viewfinder-zoom-track">
+                        <ui:VisualElement name="viewfinder-zoom-marker" class="viewfinder-zoom-marker" />
+                    </ui:VisualElement>
+                    <ui:Label text="T" class="viewfinder-zoom-label" />
+                </ui:VisualElement>
+                <ui:Label text="HD" class="viewfinder-chip viewfinder-chip--hd" />
+                <ui:Label text="AUTO" class="viewfinder-chip viewfinder-chip--auto" />
+                <ui:Label text="F2.4" class="viewfinder-chip viewfinder-chip--fstop" />
+                <ui:Label text="1.280 x 720" class="viewfinder-chip viewfinder-chip--res" />
             </ui:VisualElement>
 
             <ui:VisualElement name="flashlight-hud" class="flashlight-hud" picking-mode="Ignore">

@@ -329,8 +329,8 @@ MonoBehaviour:
   _tint: {r: 0.3, g: 1.2, b: 0.35, a: 1}
   _postExposure: 3.5
   _saturation: -60
-  _grainIntensity: 0.35
-  _vignetteIntensity: 1
+  _grainIntensity: 0.5
+  _vignetteIntensity: 0.35
   _fadeSpeed: 4
 --- !u!1 &3148519679065656303
 GameObject:

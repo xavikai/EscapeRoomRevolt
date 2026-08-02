@@ -37,19 +37,40 @@
 }
 
 .viewfinder-frame {
-    position: absolute; left: 44px; right: 44px; top: 44px; bottom: 90px; display: none;
+    position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: none;
 }
-.viewfinder-corner { position: absolute; width: 26px; height: 26px; border-color: var(--green); }
-.viewfinder-corner--tl { left: 0; top: 0; border-left-width: 2px; border-top-width: 2px; }
-.viewfinder-corner--tr { right: 0; top: 0; border-right-width: 2px; border-top-width: 2px; }
-.viewfinder-corner--bl { left: 0; bottom: 0; border-left-width: 2px; border-bottom-width: 2px; }
-.viewfinder-corner--br { right: 0; bottom: 0; border-right-width: 2px; border-bottom-width: 2px; }
+.viewfinder-bar {
+    position: absolute; left: 0; right: 0; height: 68px; background-color: rgb(0, 0, 0);
+}
+.viewfinder-bar--top { top: 0; }
+.viewfinder-bar--bottom { bottom: 0; }
+
 .viewfinder-rec {
-    position: absolute; left: 50%; top: -8px; translate: -50% 0;
+    position: absolute; left: 18px; top: 12px;
     flex-direction: row; align-items: center; display: none;
 }
-.viewfinder-rec-dot { width: 10px; height: 10px; border-radius: 5px; background-color: rgb(197, 51, 43); margin-right: 6px; }
-.viewfinder-rec-label { color: rgb(224, 96, 86); font-size: 12px; letter-spacing: 2px; -unity-font-style: bold; }
+.viewfinder-rec-dot { width: 9px; height: 9px; border-radius: 5px; background-color: rgb(197, 51, 43); margin-right: 6px; }
+.viewfinder-rec-label { color: rgb(224, 96, 86); font-size: 13px; letter-spacing: 2px; -unity-font-style: bold; margin-right: 10px; }
+.viewfinder-timecode { color: var(--green); font-size: 13px; letter-spacing: 1px; }
+
+.viewfinder-zoom {
+    position: absolute; left: 50%; top: 14px; translate: -50% 0; width: 160px;
+    flex-direction: row; align-items: center;
+}
+.viewfinder-zoom-label { color: var(--green); font-size: 11px; -unity-font-style: bold; }
+.viewfinder-zoom-track {
+    flex-grow: 1; height: 3px; margin: 0 8px; background-color: rgba(105, 213, 115, 0.25);
+}
+.viewfinder-zoom-marker {
+    position: absolute; top: -3px; width: 3px; height: 9px; background-color: var(--green);
+    left: 8%; transition-property: left; transition-duration: 0.2s;
+}
+
+.viewfinder-chip { position: absolute; color: var(--green); font-size: 11px; letter-spacing: 1px; -unity-font-style: bold; }
+.viewfinder-chip--hd { left: 18px; bottom: 46px; }
+.viewfinder-chip--auto { left: 18px; bottom: 30px; color: rgb(200, 224, 202); -unity-font-style: normal; }
+.viewfinder-chip--fstop { left: 18px; bottom: 14px; color: rgb(200, 224, 202); -unity-font-style: normal; }
+.viewfinder-chip--res { right: 18px; bottom: 14px; color: rgb(200, 224, 202); -unity-font-style: normal; }
 
 .flashlight-hud {
     position: absolute; right: 32px; bottom: 34px; width: 300px;

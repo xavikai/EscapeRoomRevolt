@@ -22,6 +22,8 @@ namespace EscapeRoomRevolt.UI.Toolkit
         private VisualElement _recordingFill;
         private VisualElement _viewfinderFrame;
         private VisualElement _viewfinderRec;
+        private Label _viewfinderTimecode;
+        private VisualElement _viewfinderZoomMarker;
         private IVisualElementScheduledItem _recBlink;
         private PlayerVitals _vitals;
         private NightVisionController _nightVision;
@@ -45,6 +47,8 @@ namespace EscapeRoomRevolt.UI.Toolkit
             _recordingFill = root.Q("recording-fill");
             _viewfinderFrame = root.Q("viewfinder-frame");
             _viewfinderRec = root.Q("viewfinder-rec");
+            _viewfinderTimecode = root.Q<Label>("viewfinder-timecode");
+            _viewfinderZoomMarker = root.Q("viewfinder-zoom-marker");
             _objectiveText = root.Q<Label>("objective-text");
             Invoke(nameof(BindRuntimeSystems), 0f);
         }
@@ -153,6 +157,8 @@ namespace EscapeRoomRevolt.UI.Toolkit
             if (_camcorderState == null || _nightVision == null) return;
             SetVisible(_camcorderHud, _nightVision.IsEquipped);
             SetVisible(_viewfinderFrame, _nightVision.IsCamcorderRaised);
+            if (_viewfinderZoomMarker != null)
+                _viewfinderZoomMarker.style.left = Length.Percent(_nightVision.IsZoomed ? 88f : 8f);
             _camcorderState.text = !_nightVision.IsCamcorderRaised ? "BAJADA"
                 : _recorder != null && _recorder.IsRecording ? "REC"
                 : _nightVision.IsNightVisionEnabled ? "NV ACTIVA"
@@ -183,7 +189,15 @@ namespace EscapeRoomRevolt.UI.Toolkit
             else _recordingTarget.text = $"SUJETO // {target.Definition.Title.ToUpperInvariant()}";
         }
 
-        private void UpdateRecordingProgress(float value) => SetWidth(_recordingFill, value);
+        private void UpdateRecordingProgress(float value)
+        {
+            SetWidth(_recordingFill, value);
+            if (_viewfinderTimecode == null) return;
+            float totalSeconds = _recorder != null && _recorder.CurrentDefinition != null
+                ? value * _recorder.CurrentDefinition.RecordingSeconds : 0f;
+            System.TimeSpan elapsed = System.TimeSpan.FromSeconds(totalSeconds);
+            _viewfinderTimecode.text = $"{(int)elapsed.TotalMinutes:00}:{elapsed.Seconds:00}:{elapsed.Milliseconds / 10:00}";
+        }
 
         private void HandleRecordingState(bool recording)
         {
