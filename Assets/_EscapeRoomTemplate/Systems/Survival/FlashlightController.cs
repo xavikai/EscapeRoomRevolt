@@ -48,7 +48,7 @@ namespace EscapeRoomRevolt.Systems.Survival
                 if (reloadPressed) TryReload();
             }
             if (!IsOn) return;
-            _charge = Mathf.Max(0f, _charge - _drainPerSecond * SurvivalDifficultyService.ResourceConsumption * Time.deltaTime);
+            _charge = Mathf.Max(0f, _charge - _drainPerSecond * SurvivalDifficultyService.FlashlightConsumption * Time.deltaTime);
             if (_charge <= 0f) { _requestedOn = false; Apply(); }
             ChargeChanged?.Invoke(_charge);
         }

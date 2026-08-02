@@ -24,6 +24,7 @@ MonoBehaviour:
   _enemyDamageMultiplier: 1
   _enemyAttackCooldownMultiplier: 1
   _hidingInspectionDelayMultiplier: 1
-  _resourceConsumptionMultiplier: 1
+  _flashlightConsumptionMultiplier: 1
+  _camcorderConsumptionMultiplier: 1
   _allowCheckpoints: 1
   _allowManualSaving: 1

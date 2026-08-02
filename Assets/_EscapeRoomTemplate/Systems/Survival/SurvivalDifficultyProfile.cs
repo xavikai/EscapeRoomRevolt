@@ -20,7 +20,8 @@ namespace EscapeRoomRevolt.Systems.Survival
         [SerializeField, Min(.1f)] private float _enemyAttackCooldownMultiplier = 1f;
         [SerializeField, Min(.1f)] private float _hidingInspectionDelayMultiplier = 1f;
         [Header("Resources and saves")]
-        [SerializeField, Min(.1f)] private float _resourceConsumptionMultiplier = 1f;
+        [SerializeField, Min(.1f)] private float _flashlightConsumptionMultiplier = 1f;
+        [SerializeField, Min(.1f)] private float _camcorderConsumptionMultiplier = 1f;
         [SerializeField] private bool _allowCheckpoints = true;
         [SerializeField] private bool _allowManualSaving = true;
 
@@ -36,7 +37,8 @@ namespace EscapeRoomRevolt.Systems.Survival
         public float EnemyDamageMultiplier => _enemyDamageMultiplier;
         public float EnemyAttackCooldownMultiplier => _enemyAttackCooldownMultiplier;
         public float HidingInspectionDelayMultiplier => _hidingInspectionDelayMultiplier;
-        public float ResourceConsumptionMultiplier => _resourceConsumptionMultiplier;
+        public float FlashlightConsumptionMultiplier => _flashlightConsumptionMultiplier;
+        public float CamcorderConsumptionMultiplier => _camcorderConsumptionMultiplier;
         public bool AllowCheckpoints => _allowCheckpoints;
         public bool AllowManualSaving => _allowManualSaving;
 
@@ -44,7 +46,7 @@ namespace EscapeRoomRevolt.Systems.Survival
         public void Configure(string id, string displayName, float damage, float staminaDrain,
             float staminaRecovery, float checkpointHealth, float enemySpeed, float enemySight,
             float enemyHearing, float enemyDamage, float attackCooldown, float hidingInspection,
-            float resourceConsumption, bool checkpoints, bool manualSaving)
+            float flashlightConsumption, float camcorderConsumption, bool checkpoints, bool manualSaving)
         {
             _difficultyId = id;
             _displayName = displayName;
@@ -58,7 +60,8 @@ namespace EscapeRoomRevolt.Systems.Survival
             _enemyDamageMultiplier = enemyDamage;
             _enemyAttackCooldownMultiplier = attackCooldown;
             _hidingInspectionDelayMultiplier = hidingInspection;
-            _resourceConsumptionMultiplier = resourceConsumption;
+            _flashlightConsumptionMultiplier = flashlightConsumption;
+            _camcorderConsumptionMultiplier = camcorderConsumption;
             _allowCheckpoints = checkpoints;
             _allowManualSaving = manualSaving;
         }

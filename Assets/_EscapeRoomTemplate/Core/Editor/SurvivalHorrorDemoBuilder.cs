@@ -58,11 +58,11 @@ namespace EscapeRoomRevolt.Core.Editor
         private static void EnsureDifficultyPresets()
         {
             SurvivalDifficultyProfile easy = EnsureAsset<SurvivalDifficultyProfile>(ProfileFolder + "/Difficulty_Easy.asset");
-            easy.Configure("easy", "Accessible", .75f, .8f, 1.25f, 1f, .9f, .85f, .85f, .85f, 1.15f, 1.25f, .75f, true, true);
+            easy.Configure("easy", "Accessible", .75f, .8f, 1.25f, 1f, .9f, .85f, .85f, .85f, 1.15f, 1.25f, .7f, .8f, true, true);
             SurvivalDifficultyProfile standard = EnsureAsset<SurvivalDifficultyProfile>(ProfileFolder + "/Difficulty_Standard.asset");
-            standard.Configure("standard", "Standard", 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, true, true);
+            standard.Configure("standard", "Standard", 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, true, true);
             SurvivalDifficultyProfile nightmare = EnsureAsset<SurvivalDifficultyProfile>(ProfileFolder + "/Difficulty_Nightmare.asset");
-            nightmare.Configure("nightmare", "Nightmare", 1.2f, 1.25f, .75f, .5f, 1.15f, 1.2f, 1.25f, 1.15f, .75f, .65f, 1.4f, false, false);
+            nightmare.Configure("nightmare", "Nightmare", 1.2f, 1.25f, .75f, .5f, 1.15f, 1.2f, 1.25f, 1.15f, .75f, .65f, 1.2f, 1.6f, false, false);
             EditorUtility.SetDirty(easy);
             EditorUtility.SetDirty(standard);
             EditorUtility.SetDirty(nightmare);

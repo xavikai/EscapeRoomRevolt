@@ -76,7 +76,8 @@ namespace EscapeRoomRevolt.Systems.Survival
         public static float EnemyDamage => Profile != null ? Profile.EnemyDamageMultiplier : 1f;
         public static float EnemyAttackCooldown => Profile != null ? Profile.EnemyAttackCooldownMultiplier : 1f;
         public static float HidingInspectionDelay => Profile != null ? Profile.HidingInspectionDelayMultiplier : 1f;
-        public static float ResourceConsumption => Profile != null ? Profile.ResourceConsumptionMultiplier : 1f;
+        public static float FlashlightConsumption => Profile != null ? Profile.FlashlightConsumptionMultiplier : 1f;
+        public static float CamcorderConsumption => Profile != null ? Profile.CamcorderConsumptionMultiplier : 1f;
         public static bool AllowsCheckpoints => Profile == null || Profile.AllowCheckpoints;
         public static bool AllowsManualSaving => Profile == null || Profile.AllowManualSaving;
     }

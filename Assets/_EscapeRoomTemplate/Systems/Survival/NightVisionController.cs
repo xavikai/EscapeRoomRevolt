@@ -115,7 +115,7 @@ namespace EscapeRoomRevolt.Systems.Survival
 
             UpdateZoom();
             if (!IsNightVisionEnabled) return;
-            SetCharge(_charge - _drainPerSecond * SurvivalDifficultyService.ResourceConsumption * Time.deltaTime);
+            SetCharge(_charge - _drainPerSecond * SurvivalDifficultyService.CamcorderConsumption * Time.deltaTime);
             if (_charge <= 0f) SetNightVisionEnabled(false);
         }
 
