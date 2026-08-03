@@ -16,6 +16,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using UnityEngine.XR.Interaction.Toolkit.Locomotion.Comfort;
 using UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation;
 using UnityEngine.XR.Interaction.Toolkit.UI;
 using UnityEngine.XR.Management;
@@ -32,6 +33,8 @@ namespace EscapeRoomRevolt.EditorTools
             "Assets/Samples/XR Interaction Toolkit/3.3.0/Starter Assets/Prefabs/XR Origin (XR Rig).prefab";
         private const string SimulatorPath =
             "Assets/Samples/XR Interaction Toolkit/3.3.0/XR Interaction Simulator/XR Interaction Simulator.prefab";
+        private const string VignettePrefabPath =
+            "Assets/Samples/XR Interaction Toolkit/3.3.0/Starter Assets/TunnelingVignette/TunnelingVignette.prefab";
         private const string VrPrefabPath = "Assets/_EscapeRoomTemplate/Prefabs/Player_VR.prefab";
         private const string VrScenePath = "Assets/_EscapeRoomTemplate/Scenes/VRTemplate.unity";
         private const string ComfortAssetPath = "Assets/_EscapeRoomTemplate/Resources/VRComfortSettings.asset";
@@ -94,8 +97,11 @@ namespace EscapeRoomRevolt.EditorTools
             GetOrAdd<VRUIToolkitPresenter>(rig);
             VRComfortController comfortController = GetOrAdd<VRComfortController>(rig);
             SetObjectReference(comfortController, "_settings", comfort);
+            SetObjectReference(comfortController, "_vignette", CreateComfortVignette(origin));
             EquipmentController equipment = GetOrAdd<EquipmentController>(rig);
             SetObjectReference(equipment, "_equipmentSocket", rightSocket != null ? rightSocket : leftSocket);
+            if (rightSocket != null && leftSocket != null)
+                SetObjectReference(equipment, "_leftEquipmentSocket", leftSocket);
             GetOrAdd<PlayerInputHandler>(rig);
 
             PrefabUtility.SaveAsPrefabAsset(rig, VrPrefabPath);
@@ -238,6 +244,25 @@ namespace EscapeRoomRevolt.EditorTools
                 EditorUtility.SetDirty(feature);
             }
             EditorUtility.SetDirty(settings);
+        }
+
+        /// <summary>Drops the XRI sample's tunneling vignette in front of the headset camera so continuous move/turn ease the FOV down instead of risking motion sickness.</summary>
+        private static TunnelingVignetteController CreateComfortVignette(XROrigin origin)
+        {
+            if (origin == null || origin.Camera == null) return null;
+
+            GameObject vignettePrefab = AssetDatabase.LoadAssetAtPath<GameObject>(VignettePrefabPath);
+            if (vignettePrefab == null)
+            {
+                Debug.LogWarning("[VR Setup] Tunneling Vignette sample not found; comfort vignette will stay disabled. Import the Starter Assets sample for XR Interaction Toolkit 3.3.0.");
+                return null;
+            }
+
+            GameObject instance = PrefabUtility.InstantiatePrefab(vignettePrefab) as GameObject;
+            if (instance == null) return null;
+
+            instance.transform.SetParent(origin.Camera.transform, false);
+            return instance.GetComponent<TunnelingVignetteController>();
         }
 
         private static VRComfortSettings EnsureComfortAsset()

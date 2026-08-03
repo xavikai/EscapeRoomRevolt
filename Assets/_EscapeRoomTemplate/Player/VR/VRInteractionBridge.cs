@@ -12,10 +12,14 @@ namespace EscapeRoomRevolt.Player.VR
     public sealed class VRInteractionBridge : MonoBehaviour
     {
         [SerializeField] private MonoBehaviour _interactableSource;
+        [Tooltip("Fallback used only until a real XR interactor triggers hover/select, which then overrides this per-event.")]
         [SerializeField] private PlayerHand _hand = PlayerHand.Right;
         [SerializeField] private bool _interactOnSelect = true;
         private IInteractable _interactable;
         private XRBaseInteractable _xrInteractable;
+
+        /// <summary>True while an XR interactor currently holds/selects this object — the VR-side equivalent of PhysicsGrabber.IsHoldingObject, for code (like PhysicsSocket) that needs to know "is this specific object currently in the player's hand" regardless of platform.</summary>
+        public bool IsSelected => _xrInteractable != null && _xrInteractable.isSelected;
 
         private void Awake()
         {
@@ -75,8 +79,35 @@ namespace EscapeRoomRevolt.Player.VR
             }
         }
 
-        private void HandleHoverEntered(HoverEnterEventArgs _) => BeginFocus();
+        private void HandleHoverEntered(HoverEnterEventArgs args)
+        {
+            _hand = ResolveHand(args.interactorObject, _hand);
+            BeginFocus();
+        }
+
         private void HandleHoverExited(HoverExitEventArgs _) => EndFocus();
-        private void HandleSelectEntered(SelectEnterEventArgs _) { if (_interactOnSelect) Select(); }
+
+        private void HandleSelectEntered(SelectEnterEventArgs args)
+        {
+            _hand = ResolveHand(args.interactorObject, _hand);
+            if (_interactOnSelect) Select();
+        }
+
+        /// <summary>
+        /// Reads which physical controller triggered the event so haptics and hand-specific gameplay
+        /// fire on the correct side, instead of always trusting the serialized default hand.
+        /// </summary>
+        private static PlayerHand ResolveHand(object interactor, PlayerHand fallback)
+        {
+            Transform cursor = (interactor as Component)?.transform;
+            while (cursor != null)
+            {
+                string lower = cursor.name.ToLowerInvariant();
+                if (lower.Contains("left")) return PlayerHand.Left;
+                if (lower.Contains("right")) return PlayerHand.Right;
+                cursor = cursor.parent;
+            }
+            return fallback;
+        }
     }
 }

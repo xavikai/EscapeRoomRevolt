@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit.Locomotion.Comfort;
 using UnityEngine.XR.Interaction.Toolkit.Locomotion.Movement;
 using UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation;
 using UnityEngine.XR.Interaction.Toolkit.Locomotion.Turning;
@@ -9,11 +11,14 @@ namespace EscapeRoomRevolt.Player.VR
     public sealed class VRComfortController : MonoBehaviour
     {
         [SerializeField] private VRComfortSettings _settings;
+        [Tooltip("Optional. Wires continuous move/turn into XRI's built-in tunneling vignette so those motions don't cause motion sickness. Assigned automatically by VR Setup Tools when the TunnelingVignette sample is imported.")]
+        [SerializeField] private TunnelingVignetteController _vignette;
         private ContinuousMoveProvider _continuousMove;
         private TeleportationProvider _teleportation;
         private SnapTurnProvider _snapTurn;
         private ContinuousTurnProvider _continuousTurn;
         private bool _movementBlocked;
+        private bool _vignetteConfigured;
 
         public VRComfortSettings Settings => _settings;
 
@@ -21,6 +26,7 @@ namespace EscapeRoomRevolt.Player.VR
         {
             if (_settings == null) _settings = Resources.Load<VRComfortSettings>("VRComfortSettings");
             ResolveProviders();
+            ConfigureVignette();
             Apply();
         }
 
@@ -62,6 +68,18 @@ namespace EscapeRoomRevolt.Player.VR
             if (_teleportation == null) _teleportation = GetComponentInChildren<TeleportationProvider>(true);
             if (_snapTurn == null) _snapTurn = GetComponentInChildren<SnapTurnProvider>(true);
             if (_continuousTurn == null) _continuousTurn = GetComponentInChildren<ContinuousTurnProvider>(true);
+        }
+
+        /// <summary>Registers every continuous locomotion provider with the vignette once, so it eases in/out on move and turn (teleport and snap turn stay instant, no vignette needed).</summary>
+        private void ConfigureVignette()
+        {
+            if (_vignette == null || _vignetteConfigured) return;
+            _vignetteConfigured = true;
+
+            var providers = new List<LocomotionVignetteProvider>();
+            if (_continuousMove != null) providers.Add(new LocomotionVignetteProvider { locomotionProvider = _continuousMove, enabled = true });
+            if (_continuousTurn != null) providers.Add(new LocomotionVignetteProvider { locomotionProvider = _continuousTurn, enabled = true });
+            _vignette.locomotionVignetteProviders = providers;
         }
     }
 }

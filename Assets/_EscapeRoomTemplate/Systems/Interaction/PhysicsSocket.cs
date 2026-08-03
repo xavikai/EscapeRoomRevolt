@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using EscapeRoomRevolt.Systems.Inventory;
+using EscapeRoomRevolt.Player.VR;
 using System.Collections;
 
 namespace EscapeRoomRevolt.Systems.Interaction
@@ -45,14 +46,14 @@ namespace EscapeRoomRevolt.Systems.Interaction
         {
             if (_isSolved) return;
 
-            // If the player is still holding an object, we just wait. We only snap when they drop it!
-            if (PhysicsGrabber.Instance != null && PhysicsGrabber.Instance.IsHoldingObject)
-            {
-                return;
-            }
-
             var grabbable = other.GetComponentInParent<PhysicsGrabbable>();
             if (grabbable == null) return;
+
+            // If the player is still holding this specific object — on PC via PhysicsGrabber, or in
+            // VR via an XRGrabInteractable — wait. We only snap once it's actually let go, on either
+            // platform. Checking the specific object (not just "holding something") also means a
+            // different item held in-hand no longer blocks a nearby dropped match from snapping.
+            if (IsCurrentlyHeld(grabbable)) return;
 
             var pickable = grabbable.GetComponent<PickableItem>();
             if (pickable == null || pickable.Data == null) return;
@@ -62,6 +63,13 @@ namespace EscapeRoomRevolt.Systems.Interaction
                 // IT'S A MATCH! AND IT'S DROPPED! Snap it!
                 StartCoroutine(SnapRoutine(grabbable));
             }
+        }
+
+        private static bool IsCurrentlyHeld(PhysicsGrabbable grabbable)
+        {
+            if (PhysicsGrabber.Instance != null && PhysicsGrabber.Instance.CurrentHeldObject == grabbable) return true;
+            VRInteractionBridge bridge = grabbable.GetComponent<VRInteractionBridge>();
+            return bridge != null && bridge.IsSelected;
         }
 
         private IEnumerator SnapRoutine(PhysicsGrabbable grabbable)

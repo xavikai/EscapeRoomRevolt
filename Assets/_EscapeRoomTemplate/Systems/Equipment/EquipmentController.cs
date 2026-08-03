@@ -1,6 +1,7 @@
 using System;
 using EscapeRoomRevolt.Core.Input;
 using EscapeRoomRevolt.Core.Save;
+using EscapeRoomRevolt.Systems.Interaction;
 using UnityEngine;
 using EscapeRoomRevolt.Player;
 
@@ -19,6 +20,8 @@ namespace EscapeRoomRevolt.Systems.Equipment
         public static EquipmentController Instance { get; private set; }
 
         [SerializeField] private Transform _equipmentSocket;
+        [Tooltip("Optional. When assigned (VR only — Setup wires this to the left ModelSocket), equipping with the left hand attaches here instead of the primary socket above.")]
+        [SerializeField] private Transform _leftEquipmentSocket;
         [SerializeField] private float _dropDistance = .65f;
         [SerializeField] private float _dropImpulse = 1.25f;
 
@@ -55,7 +58,10 @@ namespace EscapeRoomRevolt.Systems.Equipment
 
         public bool TryEquip(EquippableItem item)
         {
-            if (item == null || item == CurrentItem || _equipmentSocket == null) return false;
+            Transform targetSocket = InteractionDispatcher.LastHand == PlayerHand.Left && _leftEquipmentSocket != null
+                ? _leftEquipmentSocket
+                : _equipmentSocket;
+            if (item == null || item == CurrentItem || targetSocket == null) return false;
 
             if (EscapeRoomRevolt.Systems.Interaction.PhysicsGrabber.Instance != null
                 && EscapeRoomRevolt.Systems.Interaction.PhysicsGrabber.Instance.IsHoldingObject)
@@ -64,7 +70,7 @@ namespace EscapeRoomRevolt.Systems.Equipment
             if (CurrentItem != null) DropCurrent();
 
             CurrentItem = item;
-            CurrentItem.AttachTo(_equipmentSocket);
+            CurrentItem.AttachTo(targetSocket);
             EquipmentChanged?.Invoke(CurrentItem);
             return true;
         }
