@@ -85,6 +85,9 @@ namespace EscapeRoomRevolt.UI.Toolkit
         private float _examinedZoom = 1f;
         private bool _examinerDragging;
         private Vector2 _lastPointerPosition;
+        private Vector2 _pointerDownPosition;
+        private string _examinerBaseDescription;
+        private ExamineHotspot _hoveredHotspot;
 
         public bool IsBlockingGameplay => _modal != GameplayModal.None;
         public GameplayModal CurrentModal => _modal;
@@ -677,7 +680,9 @@ namespace EscapeRoomRevolt.UI.Toolkit
             _examinedData = data;
             OpenModal(GameplayModal.Examiner, _examinerPanel);
             _examinerTitle.text = data.DisplayName.ToUpperInvariant();
-            _examinerDescription.text = data.Description;
+            _examinerBaseDescription = data.Description;
+            _examinerDescription.text = _examinerBaseDescription;
+            _hoveredHotspot = null;
             CreateExaminedModel(data);
         }
 
@@ -733,8 +738,10 @@ namespace EscapeRoomRevolt.UI.Toolkit
             EnsureExamineRig();
             _examineCamera.enabled = true;
             _examinedModel = Instantiate(data.WorldPrefab, _examineSpawn.position, Quaternion.identity, _examineSpawn);
-            foreach (MonoBehaviour behaviour in _examinedModel.GetComponentsInChildren<MonoBehaviour>(true)) behaviour.enabled = false;
-            foreach (Collider itemCollider in _examinedModel.GetComponentsInChildren<Collider>(true)) itemCollider.enabled = false;
+            foreach (MonoBehaviour behaviour in _examinedModel.GetComponentsInChildren<MonoBehaviour>(true))
+                behaviour.enabled = behaviour is ExamineHotspot;
+            foreach (Collider itemCollider in _examinedModel.GetComponentsInChildren<Collider>(true))
+                itemCollider.enabled = itemCollider.GetComponent<ExamineHotspot>() != null;
             Rigidbody body = _examinedModel.GetComponent<Rigidbody>(); if (body != null) body.isKinematic = true;
             SetLayerRecursively(_examinedModel, LayerMask.NameToLayer("Examine"));
 
@@ -764,22 +771,105 @@ namespace EscapeRoomRevolt.UI.Toolkit
         private void OnExaminerPointerDown(PointerDownEvent evt)
         {
             if (evt.button != 0) return;
-            _examinerDragging = true; _lastPointerPosition = new Vector2(evt.position.x, evt.position.y); _examinerImage.CapturePointer(evt.pointerId); evt.StopPropagation();
+            _examinerDragging = true;
+            _pointerDownPosition = new Vector2(evt.position.x, evt.position.y);
+            _lastPointerPosition = _pointerDownPosition;
+            _examinerImage.CapturePointer(evt.pointerId); evt.StopPropagation();
         }
 
         private void OnExaminerPointerMove(PointerMoveEvent evt)
         {
-            if (!_examinerDragging || _examinedModel == null) return;
+            if (_examinedModel == null) return;
             Vector2 pointerPosition = new Vector2(evt.position.x, evt.position.y);
-            Vector2 delta = pointerPosition - _lastPointerPosition; _lastPointerPosition = pointerPosition;
-            _examinedModel.transform.Rotate(Vector3.up, -delta.x * _examineRotationSpeed, Space.World);
-            _examinedModel.transform.Rotate(Vector3.right, delta.y * _examineRotationSpeed, Space.World);
+
+            if (_examinerDragging)
+            {
+                Vector2 delta = pointerPosition - _lastPointerPosition; _lastPointerPosition = pointerPosition;
+                _examinedModel.transform.Rotate(Vector3.up, -delta.x * _examineRotationSpeed, Space.World);
+                _examinedModel.transform.Rotate(Vector3.right, delta.y * _examineRotationSpeed, Space.World);
+                return;
+            }
+
+            UpdateHoveredHotspot(pointerPosition);
         }
 
         private void OnExaminerPointerUp(PointerUpEvent evt)
         {
             if (evt.button != 0) return;
-            _examinerDragging = false; if (_examinerImage.HasPointerCapture(evt.pointerId)) _examinerImage.ReleasePointer(evt.pointerId);
+            _examinerDragging = false;
+            if (_examinerImage.HasPointerCapture(evt.pointerId)) _examinerImage.ReleasePointer(evt.pointerId);
+
+            Vector2 pointerPosition = new Vector2(evt.position.x, evt.position.y);
+            const float clickTolerance = 6f;
+            if ((pointerPosition - _pointerDownPosition).sqrMagnitude <= clickTolerance * clickTolerance)
+                HandleExaminerClick(pointerPosition);
+        }
+
+        /// <summary>Updates which ExamineHotspot (if any) is under the cursor and previews its prompt, without revealing it yet.</summary>
+        private void UpdateHoveredHotspot(Vector2 pointerPosition)
+        {
+            TryRaycastHotspot(pointerPosition, out ExamineHotspot hotspot);
+            if (hotspot == _hoveredHotspot) return;
+            _hoveredHotspot = hotspot;
+
+            if (hotspot == null) { _examinerDescription.text = _examinerBaseDescription; return; }
+            _examinerDescription.text = hotspot.IsRevealed(_examinedData.ItemId)
+                ? hotspot.RevealedDescription
+                : hotspot.UnrevealedPrompt;
+        }
+
+        private void HandleExaminerClick(Vector2 pointerPosition)
+        {
+            if (!TryRaycastHotspot(pointerPosition, out ExamineHotspot hotspot) || _examinedData == null) return;
+            hotspot.Reveal(_examinedData.ItemId);
+            _examinerDescription.text = hotspot.RevealedDescription;
+        }
+
+        private bool TryRaycastHotspot(Vector2 pointerPosition, out ExamineHotspot hotspot)
+        {
+            hotspot = null;
+            if (_examineCamera == null || !TryGetExaminerViewportPoint(pointerPosition, out Vector2 viewportPoint)) return false;
+
+            Ray ray = _examineCamera.ViewportPointToRay(new Vector3(viewportPoint.x, viewportPoint.y, 0f));
+            int examineLayer = LayerMask.NameToLayer("Examine");
+            if (examineLayer < 0) examineLayer = 31;
+            if (Physics.Raycast(ray, out RaycastHit hit, 50f, 1 << examineLayer, QueryTriggerInteraction.Collide))
+                hotspot = hit.collider.GetComponentInParent<ExamineHotspot>();
+            return hotspot != null;
+        }
+
+        /// <summary>Converts a pointer position (panel space) into a 0-1 viewport point on the examine camera, accounting for the image's scale-to-fit letterboxing. Returns false for clicks landing in the letterbox margin.</summary>
+        private bool TryGetExaminerViewportPoint(Vector2 pointerPosition, out Vector2 viewportPoint)
+        {
+            viewportPoint = Vector2.zero;
+            Rect rect = _examinerImage.contentRect;
+            if (_examineTexture == null || rect.width <= 0f || rect.height <= 0f) return false;
+
+            Vector2 local = _examinerImage.WorldToLocal(pointerPosition);
+            float textureAspect = (float)_examineTexture.width / _examineTexture.height;
+            float rectAspect = rect.width / rect.height;
+
+            float displayWidth = rect.width;
+            float displayHeight = rect.height;
+            float offsetX = 0f;
+            float offsetY = 0f;
+            if (rectAspect > textureAspect)
+            {
+                displayWidth = rect.height * textureAspect;
+                offsetX = (rect.width - displayWidth) * .5f;
+            }
+            else
+            {
+                displayHeight = rect.width / textureAspect;
+                offsetY = (rect.height - displayHeight) * .5f;
+            }
+
+            float localX = local.x - offsetX;
+            float localY = local.y - offsetY;
+            if (localX < 0f || localY < 0f || localX > displayWidth || localY > displayHeight) return false;
+
+            viewportPoint = new Vector2(localX / displayWidth, 1f - localY / displayHeight);
+            return true;
         }
 
         private void OnExaminerWheel(WheelEvent evt)
@@ -805,6 +895,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
 
         public void ShowSubtitle(string text)
         {
+            if (GameSettingsService.Instance != null && !GameSettingsService.Instance.Data.subtitles) return;
             if (_subtitleRoutine != null) StopCoroutine(_subtitleRoutine);
             _subtitleRoutine = StartCoroutine(TypeSubtitle(text ?? string.Empty));
         }
