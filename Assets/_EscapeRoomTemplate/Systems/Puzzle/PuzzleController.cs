@@ -161,6 +161,32 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         /// <summary>Override to react on failure (shake animation, sound, etc.)</summary>
         protected virtual void OnPuzzleFailed(string reason) { }
 
+        /// <summary>
+        /// Safely returns the puzzle to Unsolved and clears its hint tracking, then lets the
+        /// subclass clear its own transient attempt state via OnPuzzleReset(). Safe to call at any
+        /// state, including Solved — useful for a "reset this puzzle" trigger without reloading the
+        /// scene. Does not publish OnPuzzleSolved/Failed or re-apply their side effects.
+        /// </summary>
+        public void ResetPuzzle()
+        {
+            _state = PuzzleState.Unsolved;
+            if (_definition != null && _definition.Hints != null)
+                HintManager.Instance?.ClearActivePuzzle(_definition.Hints);
+            OnPuzzleReset();
+        }
+
+        /// <summary>Override to clear subclass-specific transient state (current input, connections, stage index, etc.) when ResetPuzzle() is called.</summary>
+        protected virtual void OnPuzzleReset() { }
+
+        /// <summary>
+        /// Deterministic per-puzzle, per-playthrough seed for optional randomized variants (a
+        /// shuffled sequence, a rerolled code, a scrambled wiring). Combines SaveManager.RunSeed
+        /// with this puzzle's own SaveId, so every puzzle in a scene gets a different roll, but the
+        /// same puzzle rolls the same result every time within one playthrough.
+        /// </summary>
+        protected int ResolveVariantSeed() =>
+            (SaveManager.Instance != null ? SaveManager.Instance.RunSeed : 0) ^ SaveId.GetHashCode();
+
         private void Log(string msg)
         {
             if (_logState) Debug.Log($"[Puzzle:{DisplayName}] {msg}");

@@ -12,8 +12,25 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         [Header("Sequence Settings")]
         [Tooltip("The correct sequence of IDs that the player must input")]
         [SerializeField] private List<string> _correctSequence;
-        
+        [Tooltip("Shuffles the order of the steps above each playthrough (same steps, seeded from SaveManager.RunSeed), instead of always requiring the authored order.")]
+        [SerializeField] private bool _randomizeOrder;
+
         private List<string> _currentSequence = new List<string>();
+
+        protected override void Awake()
+        {
+            base.Awake();
+            if (_randomizeOrder) ShuffleSequence(new System.Random(ResolveVariantSeed()));
+        }
+
+        private void ShuffleSequence(System.Random random)
+        {
+            for (int i = _correctSequence.Count - 1; i > 0; i--)
+            {
+                int swapIndex = random.Next(i + 1);
+                (_correctSequence[i], _correctSequence[swapIndex]) = (_correctSequence[swapIndex], _correctSequence[i]);
+            }
+        }
 
         /// <summary>Registers an input step into the current sequence.</summary>
         public void InputStep(string stepId)
@@ -44,6 +61,27 @@ namespace EscapeRoomRevolt.Systems.Puzzle
             {
                 Solve();
             }
+        }
+
+        protected override void OnPuzzleReset() => _currentSequence.Clear();
+
+        [System.Serializable]
+        private sealed class SequenceSaveData
+        {
+            public int stateIndex;
+            public List<string> chosenOrder;
+        }
+
+        public override string SaveData()
+        {
+            return JsonUtility.ToJson(new SequenceSaveData { stateIndex = (int)State, chosenOrder = _correctSequence });
+        }
+
+        public override void LoadData(string json)
+        {
+            base.LoadData(json);
+            SequenceSaveData data = JsonUtility.FromJson<SequenceSaveData>(json);
+            if (data?.chosenOrder != null && data.chosenOrder.Count > 0) _correctSequence = data.chosenOrder;
         }
     }
 }

@@ -217,6 +217,97 @@ namespace EscapeRoomRevolt.EditorTools
             return logicObj;
         }
 
+        [MenuItem("Escape Room Framework/Create/Inventory/Examine Hotspot", priority = 151)]
+        public static void CreateExamineHotspot()
+        {
+            GameObject hotspotObj = new GameObject("ExamineHotspot");
+            GameObject parent = Selection.activeGameObject;
+            if (parent != null)
+            {
+                hotspotObj.transform.SetParent(parent.transform, false);
+            }
+            else
+            {
+                SceneView view = SceneView.lastActiveSceneView;
+                if (view != null) hotspotObj.transform.position = view.pivot;
+            }
+
+            SphereCollider collider = hotspotObj.AddComponent<SphereCollider>();
+            collider.isTrigger = true;
+            collider.radius = .15f;
+            hotspotObj.AddComponent<ExamineHotspot>();
+
+            FinalizeCreation(hotspotObj);
+            Debug.Log("[Escape Room Framework] Examine Hotspot created" + (parent != null ? $" under '{parent.name}'." : ".")
+                + " Place it as a child of an item's WorldPrefab, sized to cover the area players should click while examining.");
+        }
+
+        [MenuItem("Escape Room Framework/Create/Puzzles/Wire Puzzle", priority = 202)]
+        public static void CreateWirePuzzle()
+        {
+            GameObject logicObj = new GameObject("NewWirePuzzle");
+            SceneView view = SceneView.lastActiveSceneView;
+            if (view != null) logicObj.transform.position = view.pivot;
+
+            WirePuzzle puzzle = logicObj.AddComponent<WirePuzzle>();
+            SerializedObject so = new SerializedObject(puzzle);
+            SerializedProperty rules = so.FindProperty("_rules");
+            rules.arraySize = 2;
+            rules.GetArrayElementAtIndex(0).FindPropertyRelative("wireId").stringValue = "wire_a";
+            rules.GetArrayElementAtIndex(0).FindPropertyRelative("correctSocketId").stringValue = "socket_a";
+            rules.GetArrayElementAtIndex(1).FindPropertyRelative("wireId").stringValue = "wire_b";
+            rules.GetArrayElementAtIndex(1).FindPropertyRelative("correctSocketId").stringValue = "socket_b";
+            so.ApplyModifiedProperties();
+
+            FinalizeCreation(logicObj);
+            Debug.Log("[Escape Room Framework] Wire Puzzle created with two example rules (wire_a→socket_a, wire_b→socket_b). "
+                + "Call Connect(wireId, socketId) from whatever interactable represents each wire/socket pair in your scene.");
+        }
+
+        [MenuItem("Escape Room Framework/Create/Puzzles/Sliding Puzzle", priority = 204)]
+        public static void CreateSlidingPuzzle()
+        {
+            GameObject logicObj = new GameObject("NewSlidingPuzzle");
+            SceneView view = SceneView.lastActiveSceneView;
+            if (view != null) logicObj.transform.position = view.pivot;
+
+            SlidingPuzzle puzzle = logicObj.AddComponent<SlidingPuzzle>();
+            SerializedObject so = new SerializedObject(puzzle);
+            so.FindProperty("_columns").intValue = 3;
+            so.FindProperty("_rows").intValue = 2;
+            SerializedProperty target = so.FindProperty("_targetOrder");
+            string[] example = { "1", "2", "3", "4", "5", "" };
+            target.arraySize = example.Length;
+            for (int i = 0; i < example.Length; i++) target.GetArrayElementAtIndex(i).stringValue = example[i];
+            so.ApplyModifiedProperties();
+
+            FinalizeCreation(logicObj);
+            Debug.Log("[Escape Room Framework] Sliding Puzzle created as a 3x2 example (5 tiles + 1 empty slot). "
+                + "Call TryMoveTile(tileId) from whatever interactable represents each tile in your scene.");
+        }
+
+        [MenuItem("Escape Room Framework/Create/Puzzles/Multi-Stage Puzzle", priority = 203)]
+        public static void CreateMultiStagePuzzle()
+        {
+            GameObject logicObj = new GameObject("NewMultiStagePuzzle");
+            SceneView view = SceneView.lastActiveSceneView;
+            if (view != null) logicObj.transform.position = view.pivot;
+
+            MultiStagePuzzle puzzle = logicObj.AddComponent<MultiStagePuzzle>();
+            SerializedObject so = new SerializedObject(puzzle);
+            SerializedProperty stages = so.FindProperty("_stages");
+            stages.arraySize = 2;
+            stages.GetArrayElementAtIndex(0).FindPropertyRelative("id").stringValue = "stage_1";
+            stages.GetArrayElementAtIndex(0).FindPropertyRelative("isSolvedStage").boolValue = false;
+            stages.GetArrayElementAtIndex(1).FindPropertyRelative("id").stringValue = "stage_2_solved";
+            stages.GetArrayElementAtIndex(1).FindPropertyRelative("isSolvedStage").boolValue = true;
+            so.ApplyModifiedProperties();
+
+            FinalizeCreation(logicObj);
+            Debug.Log("[Escape Room Framework] Multi-Stage Puzzle created with two example stages. "
+                + "Call AdvanceStage() for linear progress or AdvanceToStage(id) to branch; reaching 'stage_2_solved' solves it automatically.");
+        }
+
         [MenuItem("Escape Room Framework/Create/Interactables/Note", priority = 104)]
         public static void CreateNote()
         {
