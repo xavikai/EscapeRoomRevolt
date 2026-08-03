@@ -265,6 +265,41 @@ namespace EscapeRoomRevolt.EditorTools
                 + "Call Connect(wireId, socketId) from whatever interactable represents each wire/socket pair in your scene.");
         }
 
+        [MenuItem("Escape Room Framework/Create/Puzzles/Pipe Puzzle", priority = 205)]
+        public static void CreatePipePuzzle()
+        {
+            GameObject logicObj = new GameObject("NewPipePuzzle");
+            SceneView view = SceneView.lastActiveSceneView;
+            if (view != null) logicObj.transform.position = view.pivot;
+
+            PipePuzzle puzzle = logicObj.AddComponent<PipePuzzle>();
+            SerializedObject so = new SerializedObject(puzzle);
+            SerializedProperty tiles = so.FindProperty("_tiles");
+            tiles.arraySize = 2;
+
+            SerializedProperty tileA = tiles.GetArrayElementAtIndex(0);
+            tileA.FindPropertyRelative("tileId").stringValue = "pipe_a";
+            tileA.FindPropertyRelative("row").intValue = 0;
+            tileA.FindPropertyRelative("column").intValue = 0;
+            tileA.FindPropertyRelative("openSides").intValue = (int)PipeSide.East;
+            tileA.FindPropertyRelative("startingRotationSteps").intValue = 2;
+
+            SerializedProperty tileB = tiles.GetArrayElementAtIndex(1);
+            tileB.FindPropertyRelative("tileId").stringValue = "pipe_b";
+            tileB.FindPropertyRelative("row").intValue = 0;
+            tileB.FindPropertyRelative("column").intValue = 1;
+            tileB.FindPropertyRelative("openSides").intValue = (int)PipeSide.West;
+            tileB.FindPropertyRelative("startingRotationSteps").intValue = 2;
+
+            so.FindProperty("_sourceTileId").stringValue = "pipe_a";
+            so.FindProperty("_sinkTileId").stringValue = "pipe_b";
+            so.ApplyModifiedProperties();
+
+            FinalizeCreation(logicObj);
+            Debug.Log("[Escape Room Framework] Pipe Puzzle created with two example segments, both rotated 180° away from solved. "
+                + "Call RotateTile(tileId) from whatever interactable represents each segment in your scene; rotate each one twice to connect pipe_a to pipe_b.");
+        }
+
         [MenuItem("Escape Room Framework/Create/Puzzles/Sliding Puzzle", priority = 204)]
         public static void CreateSlidingPuzzle()
         {
