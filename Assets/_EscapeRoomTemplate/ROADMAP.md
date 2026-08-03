@@ -94,6 +94,7 @@ Unity Test Framework detecta les suites EditMode i PlayMode, però totes dues co
 - `PuzzleDefinition`, pistes progressives i penalització opcional.
 - Objectius amb prerequisits i esdeveniments de final de partida.
 - Menú principal, pausa, resultats, crèdits, Save/Load i ajustos amb UI Toolkit.
+- Personalització visual del menú sense tocar codi ni USS: `MenuThemeSettings` (asset `ScriptableObject`) amb color de fons, accent, títol, botons, dues fonts i un logo, assignable des de l'Inspector al camp `_theme` d'`UIToolkitMenuController`. Sense assignar-lo (per defecte) el menú es renderitza exactament com el `EscapeRoomMenu.uss` autoria't. `EscapeRoomMenu.uss` també incorpora variables (`--color-accent`, `--color-text`...) per als colors realment repetits, per si algú prefereix editar el fitxer a mà. Pendent (fora d'abast d'aquesta passada): recolorir etiquetes individuals (metadades de ranura, etiquetes de reassignació) que encara defineixen el seu propi color via USS i no hereten del tema.
 - Tres ranures manuals, quick save/load, metadades, captures i persistència d'entitats destruïdes.
 - Escriptura de partida atòmica (`File.Replace`) amb còpia de seguretat `.bak` recuperable automàticament si el fitxer principal es corromp.
 - Perfil central `EscapeRoom`, `SurvivalHorror` o `CustomHybrid`.
