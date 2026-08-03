@@ -22,6 +22,9 @@ namespace EscapeRoomRevolt.UI.Toolkit
         public static UIToolkitMenuController Instance { get; private set; }
         public bool IsBlockingGameplay => _screen != MenuScreen.Hidden;
 
+        [Tooltip("Optional re-skin (colors, fonts, logo). Leave empty to use EscapeRoomMenu.uss as authored.")]
+        [SerializeField] private MenuThemeSettings _theme;
+
         private UIDocument _document;
         private VisualElement _root;
         private VisualElement _content;
@@ -45,6 +48,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
             _root = _document.rootVisualElement;
             _title = _root.Q<Label>("title");
             _content = _root.Q<VisualElement>("screen-content");
+            ApplyStructuralTheme();
             GameFlowManager flow = GameFlowManager.EnsureInstance();
             flow.StateChanged += HandleFlowStateChanged;
             flow.GameEnded += ShowResults;
@@ -238,8 +242,62 @@ namespace EscapeRoomRevolt.UI.Toolkit
             var button = new Button(clicked) { text = text };
             foreach (string className in classes.Split(' '))
                 if (!string.IsNullOrWhiteSpace(className)) button.AddToClassList(className);
+            ApplyButtonTheme(button);
             _content.Add(button);
             return button;
+        }
+
+        /// <summary>
+        /// Applies MenuThemeSettings (if assigned) to the panel frame, title, logo and body font.
+        /// Called once per document since none of those elements are rebuilt between screens.
+        /// Buttons are themed individually as they're created — see ApplyButtonTheme.
+        /// </summary>
+        private void ApplyStructuralTheme()
+        {
+            if (_theme == null) return;
+
+            VisualElement frame = _root.Q<VisualElement>("document-frame");
+            if (frame != null)
+            {
+                frame.style.backgroundColor = _theme.panelBackground;
+                frame.style.borderTopColor = _theme.accent;
+                frame.style.borderBottomColor = _theme.accent;
+                frame.style.borderLeftColor = _theme.accent;
+                frame.style.borderRightColor = _theme.accent;
+            }
+
+            if (_title != null)
+            {
+                _title.style.color = _theme.titleText;
+                if (_theme.titleFont != null)
+                    _title.style.unityFontDefinition = new StyleFontDefinition(FontDefinition.FromFont(_theme.titleFont));
+            }
+
+            if (_theme.bodyFont != null && _content != null)
+                _content.style.unityFontDefinition = new StyleFontDefinition(FontDefinition.FromFont(_theme.bodyFont));
+
+            Image logo = _root.Q<Image>("logo");
+            if (logo != null)
+            {
+                logo.style.display = _theme.logo != null ? DisplayStyle.Flex : DisplayStyle.None;
+                logo.sprite = _theme.logo;
+            }
+        }
+
+        /// <summary>
+        /// Inline styles beat USS regardless of pseudo-class, so once a themed background is
+        /// applied the ".menu-button:hover" rule can no longer show through — restore the hover
+        /// swap manually here so a themed menu still has hover feedback.
+        /// </summary>
+        private void ApplyButtonTheme(Button button)
+        {
+            if (_theme == null) return;
+            button.style.backgroundColor = _theme.buttonBackground;
+            button.style.color = _theme.buttonText;
+            if (_theme.bodyFont != null)
+                button.style.unityFontDefinition = new StyleFontDefinition(FontDefinition.FromFont(_theme.bodyFont));
+            button.RegisterCallback<MouseEnterEvent>(_ => button.style.backgroundColor = _theme.buttonBackgroundHover);
+            button.RegisterCallback<MouseLeaveEvent>(_ => button.style.backgroundColor = _theme.buttonBackground);
         }
 
         private void BuildSlots(bool saveMode)
@@ -349,11 +407,12 @@ namespace EscapeRoomRevolt.UI.Toolkit
             return label;
         }
 
-        private static Button CreateActionButton(string text, Action clicked, bool danger)
+        private Button CreateActionButton(string text, Action clicked, bool danger)
         {
             var button = new Button(clicked) { text = text };
             button.AddToClassList("slot-action");
             if (danger) button.AddToClassList("slot-action--danger");
+            ApplyButtonTheme(button);
             return button;
         }
 
