@@ -95,6 +95,7 @@ Unity Test Framework detecta les suites EditMode i PlayMode, però totes dues co
 - Objectius amb prerequisits i esdeveniments de final de partida.
 - Menú principal, pausa, resultats, crèdits, Save/Load i ajustos amb UI Toolkit.
 - Personalització visual del menú sense tocar codi ni USS: `MenuThemeSettings` (asset `ScriptableObject`) amb color de fons, accent, títol, botons, dues fonts i un logo, assignable des de l'Inspector al camp `_theme` d'`UIToolkitMenuController`. Sense assignar-lo (per defecte) el menú es renderitza exactament com el `EscapeRoomMenu.uss` autoria't. `EscapeRoomMenu.uss` també incorpora variables (`--color-accent`, `--color-text`...) per als colors realment repetits, per si algú prefereix editar el fitxer a mà. Pendent (fora d'abast d'aquesta passada): recolorir etiquetes individuals (metadades de ranura, etiquetes de reassignació) que encara defineixen el seu propi color via USS i no hereten del tema.
+- Mode d'alt contrast (`ER-008b`) al menú: toggle a Ajustes (`GameSettingsData.highContrastMode`) que força una paleta negre/blanc/groc fixa a totes les pantalles, sempre per sobre de qualsevol `MenuThemeSettings` assignat (l'accessibilitat guanya a la marca). Nota d'autoria: si mai s'afegeix un puzle cronometrat, el seu temps haurà de ser ampliable — cap puzle actual ho és, així que no aplica encara.
 - Tres ranures manuals, quick save/load, metadades, captures i persistència d'entitats destruïdes.
 - Escriptura de partida atòmica (`File.Replace`) amb còpia de seguretat `.bak` recuperable automàticament si el fitxer principal es corromp.
 - Perfil central `EscapeRoom`, `SurvivalHorror` o `CustomHybrid`.
@@ -289,7 +290,6 @@ Matriu objectiu:
 | ER-001 | Graf de puzles | Crear una vista d'autor de dependències i estat. | Mostra prerequisits, sortides, cicles, bloquejos i objectius; valida que una sala tingui almenys una ruta de solució. |
 | ER-004 | Quadern | Crear un casebook amb notes, evidències, objectius i pistes. | Cerca/filtre, novetats, estat persistent i integració amb documents i evidències gravades. |
 | ER-007 | Multi-room | Crear un graf de sales i transicions. | Portes/portals poden carregar additivament o canviar escena preservant estat, spawn point i objectius. |
-| ER-008b | Accessibilitat | Modes de contrast (barreja UI/art, abast gran) i temps ampliable (no aplica encara: cap puzle actual és cronometrat). Reset segur, no dependència exclusiva de color i pistes graduables ja fets. | Mode d'alt contrast disponible al menú; si s'afegeix algun puzle cronometrat, el seu temps ha de ser ampliable. |
 
 ### P2 — VR funcional i publicable
 
@@ -319,7 +319,7 @@ Matriu objectiu:
 
 1. `P0-001`, `P0-003b` a `P0-008`: impedir que el deute creixi mentre s'afegeixen mecàniques (`P0-002` ja fet).
 2. `SH-015` i `SH-016`: tancar presentació/QA de hardware (`SH-020b`, head bob, ja fet).
-3. `ER-001`, `ER-004`, `ER-007` i `ER-008b`: ampliar varietat i qualitat d'autor per Escape Room (`ER-002c`, `ER-003`, `ER-005` i `ER-006` ja fets).
+3. `ER-001`, `ER-004` i `ER-007`: ampliar varietat i qualitat d'autor per Escape Room (`ER-002c`, `ER-003`, `ER-005`, `ER-006` i `ER-008b` ja fets).
 4. `VR-004`, `VR-005c`, `VR-006` i `VR-007`: completar dual-grab, feature gating i QA de hardware sobre el rig funcional (mà, vinyeta, hàptics, paritat de socket i equipament per mà ja resolts).
 5. `ARC-001` a `ARC-010`: es poden intercalar, però han d'estar resolts abans de publicar la versió comercial final.
 
