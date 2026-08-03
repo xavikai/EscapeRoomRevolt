@@ -106,6 +106,10 @@ namespace EscapeRoomRevolt.Core
             if (playerRoot != null && playerRoot.GetComponent<EscapeRoomRevolt.Systems.Survival.CameraShakeController>() == null)
                 playerRoot.AddComponent<EscapeRoomRevolt.Systems.Survival.CameraShakeController>();
 
+            if (playerRoot != null && Settings.GameFeatures.IsEnabled(Settings.OptionalGameFeature.Hiding)
+                && playerRoot.GetComponent<EscapeRoomRevolt.Systems.Survival.HidingViewFeedback>() == null)
+                playerRoot.AddComponent<EscapeRoomRevolt.Systems.Survival.HidingViewFeedback>();
+
             // PC-only: VR players already have real physical head movement, so this never runs there.
             if (pcPlayer != null && pcPlayer.GetComponent<EscapeRoomRevolt.Player.PC.HeadBobController>() == null)
                 pcPlayer.gameObject.AddComponent<EscapeRoomRevolt.Player.PC.HeadBobController>();
