@@ -57,14 +57,21 @@ namespace EscapeRoomRevolt.Systems.Survival
 
         private float PatrolSpeed => (_profile != null ? _profile.patrolSpeed : 1.8f) * SurvivalDifficultyService.EnemySpeed;
         private float InvestigateSpeed => (_profile != null ? _profile.investigateSpeed : 2.7f) * SurvivalDifficultyService.EnemySpeed;
-        private float ChaseSpeed => (_profile != null ? _profile.chaseSpeed : 4.8f) * SurvivalDifficultyService.EnemySpeed;
+        private float ChaseSpeed => (_profile != null ? _profile.chaseSpeed : 4.8f) * SurvivalDifficultyService.EnemySpeed * ChaseAssistanceSpeedMultiplier;
         private float SightRange => (_profile != null ? _profile.sightRange : 14f) * SurvivalDifficultyService.EnemySight;
         private float SightAngle => _profile != null ? _profile.sightAngle : 85f;
         private float Hearing => (_profile != null ? _profile.hearingMultiplier : 1f) * SurvivalDifficultyService.EnemyHearing;
         private float PerceptionInterval => _profile != null ? _profile.perceptionInterval : .12f;
         private float DetectionSeconds => _profile != null ? _profile.detectionSeconds : .35f;
         private float AwarenessDecay => _profile != null ? _profile.awarenessDecayPerSecond : .7f;
-        private float ChaseMemory => _profile != null ? _profile.chaseMemory : 4f;
+        private float ChaseMemory => (_profile != null ? _profile.chaseMemory : 4f) * ChaseAssistanceMemoryMultiplier;
+
+        /// <summary>Accessibility option, independent of difficulty: makes the enemy a little slower to catch up.</summary>
+        private static float ChaseAssistanceSpeedMultiplier => IsChaseAssistanceEnabled ? .85f : 1f;
+        /// <summary>Accessibility option, independent of difficulty: the enemy gives up the chase sooner once out of sight.</summary>
+        private static float ChaseAssistanceMemoryMultiplier => IsChaseAssistanceEnabled ? .7f : 1f;
+        private static bool IsChaseAssistanceEnabled =>
+            GameSettingsService.Instance != null && GameSettingsService.Instance.Data.chaseAssistance;
         private float SearchDuration => _profile != null ? _profile.searchDuration : 7f;
         private float AttackRange => _profile != null ? _profile.attackRange : 1.45f;
         private float AttackDamage => (_profile != null ? _profile.attackDamage : 45f) * SurvivalDifficultyService.EnemyDamage;

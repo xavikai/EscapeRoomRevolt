@@ -60,13 +60,17 @@ namespace EscapeRoomRevolt.Systems.Survival
             if (_definition.OnlyOnce && _hasTriggered) return false;
             if (Time.unscaledTime - _lastTriggeredAt < _definition.Cooldown) return false;
             if (SanityController.Instance != null && SanityController.Instance.Normalized > _definition.MaximumSanity) return false;
+            if (!(TensionDirector.Instance?.RequestPermission(_definition) ?? true)) return false;
 
             _hasTriggered = true;
             _lastTriggeredAt = Time.unscaledTime;
             SanityController.Instance?.ApplyStress(_definition.StressApplied);
             if (!string.IsNullOrWhiteSpace(_definition.Subtitle)) UIManager.Instance?.ShowSubtitle(_definition.Subtitle);
             if (_definition.Audio != null && EscapeRoomRevolt.Systems.Audio.AudioManager.Instance != null)
-                EscapeRoomRevolt.Systems.Audio.AudioManager.Instance.PlaySoundAt(_definition.Audio, transform.position);
+            {
+                bool reduceLoudSounds = GameSettingsService.Instance != null && GameSettingsService.Instance.Data.reduceLoudSounds;
+                EscapeRoomRevolt.Systems.Audio.AudioManager.Instance.PlaySoundAt(_definition.Audio, transform.position, reduceLoudSounds ? .5f : 1f);
+            }
             _onTriggered?.Invoke();
             return true;
         }

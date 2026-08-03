@@ -103,6 +103,13 @@ namespace EscapeRoomRevolt.Core
                 && playerRoot.GetComponent<EscapeRoomRevolt.Systems.Survival.SanityFeedbackController>() == null)
                 playerRoot.AddComponent<EscapeRoomRevolt.Systems.Survival.SanityFeedbackController>();
 
+            if (playerRoot != null && playerRoot.GetComponent<EscapeRoomRevolt.Systems.Survival.CameraShakeController>() == null)
+                playerRoot.AddComponent<EscapeRoomRevolt.Systems.Survival.CameraShakeController>();
+
+            // PC-only: VR players already have real physical head movement, so this never runs there.
+            if (pcPlayer != null && pcPlayer.GetComponent<EscapeRoomRevolt.Player.PC.HeadBobController>() == null)
+                pcPlayer.gameObject.AddComponent<EscapeRoomRevolt.Player.PC.HeadBobController>();
+
             // Ensure AudioManager exists in the scene
             if (GameObject.FindAnyObjectByType<EscapeRoomRevolt.Systems.Audio.AudioManager>() == null)
             {
@@ -115,6 +122,12 @@ namespace EscapeRoomRevolt.Core
             {
                 GameObject hmObj = new GameObject("HintManager");
                 hmObj.AddComponent<EscapeRoomRevolt.Systems.Hint.HintManager>();
+            }
+
+            if (GameObject.FindAnyObjectByType<EscapeRoomRevolt.Systems.Inventory.ExamineHotspotRegistry>() == null)
+            {
+                GameObject hotspotObj = new GameObject("ExamineHotspotRegistry");
+                hotspotObj.AddComponent<EscapeRoomRevolt.Systems.Inventory.ExamineHotspotRegistry>();
             }
 
             EscapeRoomRevolt.UI.Toolkit.GameplayUIController gameplayUI =

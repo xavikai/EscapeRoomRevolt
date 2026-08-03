@@ -1,5 +1,6 @@
 using System;
 using EscapeRoomRevolt.Core.Settings;
+using EscapeRoomRevolt.Player;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Rendering;
@@ -91,13 +92,34 @@ private void Start()
                 case SanityStage.Critical:
                     _targetVignette = Mathf.Min(_criticalVignette, cap);
                     _targetCutoff = _criticalCutoffHz;
+                    CameraShakeController.Instance?.Shake(.35f);
                     break;
                 default:
                     _targetVignette = 0f;
                     _targetCutoff = _stableCutoffHz;
                     break;
             }
+            SendHapticForStage(stage);
             _onStageChanged?.Invoke(stage);
+        }
+
+        /// <summary>Gives VR players a physical "heartbeat" cue when sanity worsens, reusing the same stage event that already drives the vignette/audio. No-ops on platforms without haptics.</summary>
+        private static void SendHapticForStage(SanityStage stage)
+        {
+            IPlayerPlatformAdapter platform = PlayerPlatformRegistry.Current;
+            if (platform == null || !platform.SupportsHaptics) return;
+
+            float amplitude = stage switch
+            {
+                SanityStage.Uneasy => .15f,
+                SanityStage.Distressed => .3f,
+                SanityStage.Critical => .5f,
+                _ => 0f
+            };
+            if (amplitude <= 0f) return;
+
+            platform.SendHaptic(PlayerHand.Left, amplitude, .2f);
+            platform.SendHaptic(PlayerHand.Right, amplitude, .2f);
         }
 
         private void BuildVolume()

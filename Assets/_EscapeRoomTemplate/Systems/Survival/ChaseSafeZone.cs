@@ -16,6 +16,7 @@ namespace EscapeRoomRevolt.Systems.Survival
             if ((_oneShot && _used) || !other.CompareTag("Player")) return;
             _used = true;
             ChaseDirector.Instance?.EndAllChases(_detectionSuppression);
+            TensionDirector.Instance?.SuppressFor(_detectionSuppression);
         }
     }
 }

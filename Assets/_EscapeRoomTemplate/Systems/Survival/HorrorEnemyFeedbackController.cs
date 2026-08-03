@@ -1,4 +1,6 @@
 using System;
+using EscapeRoomRevolt.Core.Settings;
+using EscapeRoomRevolt.Player;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -62,9 +64,34 @@ namespace EscapeRoomRevolt.Systems.Survival
             };
 
             if (clip != null && EscapeRoomRevolt.Systems.Audio.AudioManager.Instance != null)
-                EscapeRoomRevolt.Systems.Audio.AudioManager.Instance.PlaySoundAt(clip, transform.position, _volume, _pitchVariance);
+            {
+                bool reduceLoudSounds = GameSettingsService.Instance != null && GameSettingsService.Instance.Data.reduceLoudSounds;
+                EscapeRoomRevolt.Systems.Audio.AudioManager.Instance.PlaySoundAt(clip, transform.position, reduceLoudSounds ? _volume * .5f : _volume, _pitchVariance);
+            }
 
+            if (state == HorrorEnemyState.Chase) CameraShakeController.Instance?.Shake(.5f);
+            SendHapticForState(state);
             _onStateChanged?.Invoke(state);
+        }
+
+        /// <summary>Gives VR players a physical tension cue as this enemy escalates, reusing the same state event that already drives its audio tells. No-ops on platforms without haptics.</summary>
+        private static void SendHapticForState(HorrorEnemyState state)
+        {
+            IPlayerPlatformAdapter platform = PlayerPlatformRegistry.Current;
+            if (platform == null || !platform.SupportsHaptics) return;
+
+            float amplitude = state switch
+            {
+                HorrorEnemyState.Suspicious => .2f,
+                HorrorEnemyState.Investigate => .3f,
+                HorrorEnemyState.Search => .35f,
+                HorrorEnemyState.Chase => .6f,
+                _ => 0f
+            };
+            if (amplitude <= 0f) return;
+
+            platform.SendHaptic(PlayerHand.Left, amplitude, .15f);
+            platform.SendHaptic(PlayerHand.Right, amplitude, .15f);
         }
     }
 }
