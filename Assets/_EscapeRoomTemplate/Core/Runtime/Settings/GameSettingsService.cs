@@ -25,6 +25,8 @@ namespace EscapeRoomRevolt.Core.Settings
         public bool chaseAssistance;
         [Tooltip("Caps the intensity of the PC camera head bob while walking/running.")]
         public bool reduceHeadBob;
+        [Tooltip("Forces the menu to a fixed high-contrast palette (black/white/yellow), overriding any assigned MenuThemeSettings so accessibility always wins over branding.")]
+        public bool highContrastMode;
         [TextArea] public string bindingOverridesJson = string.Empty;
     }
 

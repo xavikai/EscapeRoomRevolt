@@ -25,6 +25,15 @@ namespace EscapeRoomRevolt.UI.Toolkit
         [Tooltip("Optional re-skin (colors, fonts, logo). Leave empty to use EscapeRoomMenu.uss as authored.")]
         [SerializeField] private MenuThemeSettings _theme;
 
+        private static readonly Color HighContrastBackground = Color.black;
+        private static readonly Color HighContrastAccent = new Color(1f, 0.86f, 0f);
+        private static readonly Color HighContrastText = Color.white;
+        private static readonly Color HighContrastButtonBackground = Color.black;
+        private static readonly Color HighContrastButtonBackgroundHover = new Color(0.18f, 0.18f, 0.18f);
+
+        private bool IsHighContrastEnabled =>
+            GameSettingsService.Instance != null && GameSettingsService.Instance.Data.highContrastMode;
+
         private UIDocument _document;
         private VisualElement _root;
         private VisualElement _content;
@@ -149,6 +158,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
             AddToggle("Reducir sonidos fuertes", settings.reduceLoudSounds, value => { settings.reduceLoudSounds = value; SaveSettings(settings); });
             AddToggle("Reducir gore", settings.reduceGore, value => { settings.reduceGore = value; SaveSettings(settings); });
             AddToggle("Reducir balanceo de cámara", settings.reduceHeadBob, value => { settings.reduceHeadBob = value; SaveSettings(settings); });
+            AddToggle("Modo de alto contraste", settings.highContrastMode, value => { settings.highContrastMode = value; SaveSettings(settings); ShowSettings(); });
             if (GameFeatures.IsEnabled(OptionalGameFeature.EnemyAI))
                 AddToggle("Asistencia en persecuciones", settings.chaseAssistance, value => { settings.chaseAssistance = value; SaveSettings(settings); });
             if (GameFeatures.IsEnabled(OptionalGameFeature.PlayerVitals)) AddDifficultySelector();
@@ -231,6 +241,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
             _screen = screen;
             _root.style.display = DisplayStyle.Flex;
             _title.text = title;
+            ApplyStructuralTheme();
             ReleasePreviews();
             _content.Clear();
             UnityEngine.Cursor.lockState = CursorLockMode.None;
@@ -252,35 +263,49 @@ namespace EscapeRoomRevolt.UI.Toolkit
         /// Called once per document since none of those elements are rebuilt between screens.
         /// Buttons are themed individually as they're created — see ApplyButtonTheme.
         /// </summary>
+        /// <summary>
+        /// Applies the active theme — a fixed high-contrast palette if the player enabled it in
+        /// Settings, else the optional MenuThemeSettings asset, else neither (USS defaults stand).
+        /// High contrast always wins over MenuThemeSettings: accessibility overrides branding.
+        /// Safe to call with _theme == null as long as highContrast is true whenever it is, which
+        /// the early-out below guarantees — the ternaries then never evaluate the _theme branch.
+        /// </summary>
         private void ApplyStructuralTheme()
         {
-            if (_theme == null) return;
+            bool highContrast = IsHighContrastEnabled;
+            if (_theme == null && !highContrast) return;
 
             VisualElement frame = _root.Q<VisualElement>("document-frame");
             if (frame != null)
             {
-                frame.style.backgroundColor = _theme.panelBackground;
-                frame.style.borderTopColor = _theme.accent;
-                frame.style.borderBottomColor = _theme.accent;
-                frame.style.borderLeftColor = _theme.accent;
-                frame.style.borderRightColor = _theme.accent;
+                Color background = highContrast ? HighContrastBackground : _theme.panelBackground;
+                Color accent = highContrast ? HighContrastAccent : _theme.accent;
+                frame.style.backgroundColor = background;
+                frame.style.borderTopColor = accent;
+                frame.style.borderBottomColor = accent;
+                frame.style.borderLeftColor = accent;
+                frame.style.borderRightColor = accent;
             }
 
             if (_title != null)
             {
-                _title.style.color = _theme.titleText;
-                if (_theme.titleFont != null)
-                    _title.style.unityFontDefinition = new StyleFontDefinition(FontDefinition.FromFont(_theme.titleFont));
+                _title.style.color = highContrast ? HighContrastText : _theme.titleText;
+                Font titleFont = highContrast ? null : _theme.titleFont;
+                if (titleFont != null)
+                    _title.style.unityFontDefinition = new StyleFontDefinition(FontDefinition.FromFont(titleFont));
             }
 
-            if (_theme.bodyFont != null && _content != null)
-                _content.style.unityFontDefinition = new StyleFontDefinition(FontDefinition.FromFont(_theme.bodyFont));
+            Font bodyFont = highContrast ? null : _theme?.bodyFont;
+            if (bodyFont != null && _content != null)
+                _content.style.unityFontDefinition = new StyleFontDefinition(FontDefinition.FromFont(bodyFont));
 
+            // Decorative branding competes with legibility, so high contrast hides the logo.
             Image logo = _root.Q<Image>("logo");
             if (logo != null)
             {
-                logo.style.display = _theme.logo != null ? DisplayStyle.Flex : DisplayStyle.None;
-                logo.sprite = _theme.logo;
+                Sprite sprite = highContrast ? null : _theme?.logo;
+                logo.style.display = sprite != null ? DisplayStyle.Flex : DisplayStyle.None;
+                logo.sprite = sprite;
             }
         }
 
@@ -291,13 +316,23 @@ namespace EscapeRoomRevolt.UI.Toolkit
         /// </summary>
         private void ApplyButtonTheme(Button button)
         {
-            if (_theme == null) return;
-            button.style.backgroundColor = _theme.buttonBackground;
-            button.style.color = _theme.buttonText;
-            if (_theme.bodyFont != null)
-                button.style.unityFontDefinition = new StyleFontDefinition(FontDefinition.FromFont(_theme.bodyFont));
-            button.RegisterCallback<MouseEnterEvent>(_ => button.style.backgroundColor = _theme.buttonBackgroundHover);
-            button.RegisterCallback<MouseLeaveEvent>(_ => button.style.backgroundColor = _theme.buttonBackground);
+            bool highContrast = IsHighContrastEnabled;
+            if (_theme == null && !highContrast) return;
+
+            Color background = highContrast ? HighContrastButtonBackground : _theme.buttonBackground;
+            Color hoverBackground = highContrast ? HighContrastButtonBackgroundHover : _theme.buttonBackgroundHover;
+            button.style.backgroundColor = background;
+            button.style.color = highContrast ? HighContrastText : _theme.buttonText;
+            Font font = highContrast ? null : _theme?.bodyFont;
+            if (font != null)
+                button.style.unityFontDefinition = new StyleFontDefinition(FontDefinition.FromFont(font));
+            if (highContrast)
+            {
+                button.style.borderLeftColor = HighContrastAccent;
+                button.style.borderLeftWidth = 3;
+            }
+            button.RegisterCallback<MouseEnterEvent>(_ => button.style.backgroundColor = hoverBackground);
+            button.RegisterCallback<MouseLeaveEvent>(_ => button.style.backgroundColor = background);
         }
 
         private void BuildSlots(bool saveMode)
