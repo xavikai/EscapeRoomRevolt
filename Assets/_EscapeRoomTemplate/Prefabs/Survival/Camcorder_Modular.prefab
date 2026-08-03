@@ -237,7 +237,7 @@ MonoBehaviour:
   _visualRoot: {fileID: 3148519679065656303}
   _maxCharge: 100
   _startingCharge01: 1
-  _drainPerSecond: 6
+  _drainPerSecond: 2.5
   _batteryItemId: camcorder_battery
   _lowThreshold: 0.25
   _criticalThreshold: 0.1
@@ -329,7 +329,7 @@ MonoBehaviour:
   _tint: {r: 0.3, g: 1.2, b: 0.35, a: 1}
   _postExposure: 3.5
   _saturation: -60
-  _grainIntensity: 0.5
+  _grainIntensity: 0.7
   _vignetteIntensity: 0.35
   _fadeSpeed: 4
 --- !u!1 &3148519679065656303

@@ -32,7 +32,7 @@ namespace EscapeRoomRevolt.Systems.Survival
         [Header("Battery")]
         [SerializeField, Min(1f)] private float _maxCharge = 100f;
         [SerializeField, Range(0f, 1f)] private float _startingCharge01 = 1f;
-        [SerializeField, Min(0f)] private float _drainPerSecond = 6f;
+        [SerializeField, Min(0f)] private float _drainPerSecond = 2.5f;
         [SerializeField] private string _batteryItemId = "camcorder_battery";
         [SerializeField, Range(0f, 1f)] private float _lowThreshold = .25f;
         [SerializeField, Range(0f, 1f)] private float _criticalThreshold = .1f;
