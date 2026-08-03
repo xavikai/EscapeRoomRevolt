@@ -1,44 +1,28 @@
 # Escape Room / Survival Horror Framework — Commercial Readiness
 
-## Arquitectura entregada
-
-- UI Toolkit unificado: menú principal, HUD, interacción, inventario, examinador, notas, keypad, subtítulos, pausa, ajustes, rebinding de controles y Save/Load.
-- Persistencia versionada por `ISaveable`, con tres ranuras manuales, metadatos, miniaturas y escritura atómica.
-- Puzles configurables con `PuzzleDefinition` y lógica especializada en componentes reutilizables.
-- Inventario con cantidades, hotbar, examen 3D, equipamiento y combinación guiada.
-- Supervivencia mediante linterna, batería, cordura y eventos de terror configurables.
-- Pistas progresivas mediante `HintData`, activación automática y solicitud manual con `H`.
-- Outline URP mediante Renderer Feature y rendering layers.
+For what's built and what's pending, see the living document: **[ROADMAP.md](ROADMAP.md)**. This file stays a short, stable pre-publish checklist and authoring workflow — it doesn't track day-to-day status.
 
 ## Flujo recomendado para crear un nivel
 
-1. Instanciar `GameManager.prefab` y `Player_PC.prefab`.
-2. Crear `InventoryItemData`, `PuzzleDefinition`, `HintData` y perfiles de Survival necesarios.
-3. Mantener la lógica en el objeto raíz y sustituir únicamente el hijo visual o `World Prefab`.
-4. Asignar identificadores persistentes únicos.
-5. Ejecutar **Escape Room Framework > Validation > Validate Current Scene**.
+1. Instanciar `GameManager.prefab` y `Player_PC.prefab` (o `Player_VR.prefab` tras `Setup > Create or Update VR Player Prefab`).
+2. Crear `InventoryItemData`, `PuzzleDefinition`, `HintData` y perfiles de Survival necesarios desde `Escape Room Framework > Create`.
+3. Mantener la lógica en el objeto raíz y sustituir únicamente el hijo visual o `World Prefab` (vía `ReplaceableModelSlot`).
+4. Asignar identificadores persistentes únicos (`SaveId`, `ItemId`, `PersistentId` se generan solos al crear desde el menú del framework).
+5. Ejecutar **Escape Room Framework > Validation > Run Framework Smoke Tests** y **Validate Current Scene**.
 6. Probar guardar, cerrar el juego y cargar cada escena incluida en Build Settings.
 
 ## Checklist de publicación
 
-- [x] La consola está limpia en Edit Mode y Play Mode.
-- [x] No existen Canvas heredados ni referencias rotas.
-- [x] Todas las escenas contienen cámara, iluminación, GameManager y jugador.
+- [x] La consola está limpia en Edit Mode y Play Mode (verificado en `ShowcaseMuseum`, `LockedOffice` y `SurvivalHorrorDemo`).
+- [x] No existen Canvas heredados ni referencias rotas — UI Toolkit en todas las pantallas.
+- [x] Todas las escenas jugables contienen cámara, iluminación, GameManager y jugador.
 - [x] Todos los puzles tienen `PuzzleDefinition` y `HintData` apropiados.
 - [x] Los `SaveId`, `ItemId` y `PersistentId` son únicos.
-- [x] Los modelos pueden sustituirse sin modificar scripts ni colliders lógicos.
-- [ ] Las miniaturas, iconos, audios y fuentes tienen licencia redistribuible.
-- [x] La escena Showcase demuestra interacción, combinación, puzles, guardado, linterna, cordura y un evento ambiental.
+- [x] Los modelos pueden sustituirse sin modificar scripts ni colliders lógicos (`ReplaceableModelSlot`).
+- [x] La escena `SurvivalHorrorDemo` es una vertical slice completa y verificada: objetivos encadenados, enemigo, escondites, evidencias, checkpoints y final.
+- [ ] **Sin tests automatizados** — bloqueado en separar el runtime en `asmdef` (`P0-001`/`ARC-001`).
+- [ ] **Sin `ThirdPartyNotices.md`** — falta inventariar el origen/licencia de los audios de `Assets/_EscapeRoomTemplate/Audio` y confirmar que son redistribuibles (`P0-005`).
+- [ ] **Sin localización** — los textos de UI y gameplay están escritos directamente en castellano en el código C# (`P0-007`).
+- [ ] VR es funcionalmente completo pero no ha pasado QA en hardware real (`VR-007`/`SH-016`).
 
-## QA verificada — 02/08/2026
-
-- `MainMenu`, `ShowcaseMuseum` y `LockedOffice`: 0 errores de compilación; las escenas jugables no contienen Canvas heredados.
-- Build Profile: `MainMenu` primero, seguido de las dos escenas jugables.
-- Recorrido automatizado: tres puzles resueltos, puerta con llave, evento de terror y restauración Save/Load completa.
-- Linterna: recarga con `batteries`, consumo de una unidad y carga restaurada al 100 %.
-- UI: 0 Canvas; HUD y menús servidos por UI Toolkit.
-- Inventario: combinación guiada y selector contextual `OfferCompatible` verificados en Play Mode.
-- VR: `Player_VR.prefab` generado con XRI; 47 interactuables preparados en Showcase y 26 en LockedOffice sin colliders registrados por duplicado.
-- Controles: rebinding de teclado, persistencia y restauración de valores predeterminados verificados en Play Mode.
-- Validadores comerciales, Save IDs y smoke tests: PASS sin advertencias en ambas escenas jugables.
-- Pendiente antes de publicar: sustituir arte temporal y confirmar licencias redistribuibles de iconos, fuentes, audio y modelos finales.
+Última revisión de esta checklist: sesión de verificación en vivo dentro del Editor (Play Mode + validadores), no solo compilación.

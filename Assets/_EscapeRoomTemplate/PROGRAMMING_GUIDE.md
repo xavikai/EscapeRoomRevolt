@@ -96,14 +96,33 @@ Keep `SaveId` and `ItemId` stable after publication. Run `Validation/Validate Sa
 
 ## Newer puzzle types
 
-`WirePuzzle` connects wire ids to socket ids; a socket only ever holds one wire, so plugging in a new one unplugs whatever was there. `MultiStagePuzzle` chains ordered or branching `PuzzleStage` entries.
+`WirePuzzle` connects wire ids to socket ids; a socket only ever holds one wire, so plugging in a new one unplugs whatever was there. `MultiStagePuzzle` chains ordered or branching `PuzzleStage` entries. `SlidingPuzzle` is a classic 15-puzzle that always starts pre-shuffled into a solvable state. `PipePuzzle` is a grid of rotatable segments, solved when a breadth-first search finds a continuous path of matching openings between a source and a sink tile.
 
 ```csharp
 wirePuzzle.Connect("wire_a", "socket_a");
 multiStagePuzzle.AdvanceToStage("secret_branch");
+slidingPuzzle.TryMoveTile("3");
+pipePuzzle.RotateTile("pipe_a");
 ```
 
-Both create from `Escape Room Framework > Create > Puzzles` with example data pre-filled, and both save/load from any state like every other `PuzzleController`.
+All four create from `Escape Room Framework > Create > Puzzles` with example data pre-filled, and all save/load from any state like every other `PuzzleController`. `PuzzleController.ResetPuzzle()` returns any of the eight puzzle types to `Unsolved` without reloading the scene. `CodePanelPuzzle`, `SequencePuzzle`, `WirePuzzle` and `PipePuzzle` can optionally randomize their content once per playthrough (seeded from `SaveManager.RunSeed`, so reloading never re-rolls an already-solved puzzle).
+
+## Hiding spots
+
+`HidingSpot` (`Escape Room Framework > Create > Survival > Hiding Spot`) covers lockers, beds, containers and custom hideouts from one component — pick the `Kind` in the Inspector. It handles entry/exit, movement lock on both platforms, a breathing signal that intensifies during a chase, and AI inspection: `HorrorEnemyController` can walk to the spot's inspection anchor and call `ForceExpose()`, which ejects the player and applies exposure damage.
+
+```csharp
+hidingSpot.Entered += spot => Debug.Log($"Player hid in {spot.Kind}");
+float breathing = hidingSpot.BreathingIntensity; // 0-1, drives audio/haptics
+```
+
+`HidingViewFeedback` (added automatically to the player when `OptionalGameFeature.Hiding` is active) turns that breathing signal into a screen vignette while hidden, using a higher `Volume` priority than `SanityFeedbackController` so it overlays the sanity vignette instead of permanently overriding it — the sanity vignette reappears correctly once the player exits.
+
+## Menu theming and accessibility
+
+`MenuThemeSettings` (`Escape Room Framework` asset menu, or `Create > ScriptableObjects`) is an optional re-skin for `UIToolkitMenuController`: panel background, accent border, title/button colors and text, two `Font` fields and a logo `Sprite`. Assign it on the controller's `_theme` field — leaving it empty renders `EscapeRoomMenu.uss` exactly as authored. `EscapeRoomMenu.uss` also exposes its most-repeated colors as USS custom properties (`--color-accent`, `--color-text`, `--color-title`, `--color-button-bg`, `--color-button-bg-hover`) on `.menu-root` for anyone who'd rather hand-edit the stylesheet.
+
+`GameSettingsData.highContrastMode` (exposed as a toggle in the Settings screen) forces a fixed black/white/yellow palette across every menu screen, and always wins over an assigned `MenuThemeSettings` — accessibility overrides branding, not the other way around.
 
 ## Tension pacing and accessibility
 
