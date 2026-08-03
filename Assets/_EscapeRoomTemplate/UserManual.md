@@ -8,7 +8,7 @@ Todas las herramientas soportadas están en `Escape Room Framework`:
 
 - `Configuration`: selecciona el perfil Escape Room, Survival Horror o una combinación personalizada.
 - `Setup`: instala instancias seguras del Game Manager o jugador y genera las escenas/prefabs de plataforma.
-- `Create`: crea interactuables, puzles, triggers y componentes de flujo sin modificar otros objetos.
+- `Create`: crea interactuables, puzles (incluidos cables y multi-fase), hotspots de examen, triggers y componentes de flujo sin modificar otros objetos.
 - `Demo`: abre las escenas de ejemplo tras ofrecer guardar los cambios actuales.
 - `Validation`: comprueba IDs, dependencias, escena activa y preparación comercial.
 - `Maintenance`: previsualiza problemas antes de permitir una reparación con Undo.
@@ -88,7 +88,19 @@ Los controles principales se pueden reasignar durante el juego desde `Ajustes > 
 
 El prefab VR lo genera la versión instalada de XRI e incorpora adaptadores de manos, hápticos y UI Toolkit 3D. Los modelos de mando/mano se sustituyen bajo sus `ModelSocket`.
 
-## 7. Publicación
+## 7. Accesibilidad y ritmo de terror
+
+Desde el menú de ajustes del propio juego (no del Editor), el jugador puede activar:
+
+- reducir destellos, tremor de cámara y sonidos fuertes;
+- asistencia en persecuciones (el enemigo va algo más lento y olvida antes);
+- reducción de gore, disponible como opción aunque la plantilla base no incluya contenido de gore todavía.
+
+Ninguna de estas opciones sustituye a la dificultad: son independientes, así que un jugador puede combinar `Nightmare` con `chaseAssistance` si lo necesita.
+
+Si añades un `TensionDirector` a la escena, limita cuántos eventos de terror pueden dispararse seguidos (cooldown global y presupuesto por ventana de tiempo), por encima del cooldown propio de cada evento. Es opcional: sin él, todo funciona igual que antes.
+
+## 8. Publicación
 
 Antes de distribuir el asset:
 

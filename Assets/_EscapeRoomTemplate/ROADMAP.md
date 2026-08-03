@@ -80,6 +80,7 @@ Unity Test Framework detecta les suites EditMode i PlayMode, però totes dues co
 - Bootstrap de serveis persistents i flux de canvi d'escena.
 - Entrada centralitzada amb Input System i rebinding de teclat.
 - Moviment FPS amb caminar, córrer, saltar, ajupir-se i passes segons superfície.
+- Head bob de càmera (PC) additiu i reduïble per accessibilitat, sense competir amb el crouch/mouse-look pel transform de la càmera.
 - Interacció per raycast amb focus, prompt i outline URP.
 - Dispatcher compartit entre interacció PC i ponts VR.
 - Portes rotatòries o lliscants, panys, calaixos, interruptors i triggers.
@@ -94,11 +95,24 @@ Unity Test Framework detecta les suites EditMode i PlayMode, però totes dues co
 - Objectius amb prerequisits i esdeveniments de final de partida.
 - Menú principal, pausa, resultats, crèdits, Save/Load i ajustos amb UI Toolkit.
 - Tres ranures manuals, quick save/load, metadades, captures i persistència d'entitats destruïdes.
+- Escriptura de partida atòmica (`File.Replace`) amb còpia de seguretat `.bak` recuperable automàticament si el fitxer principal es corromp.
 - Perfil central `EscapeRoom`, `SurvivalHorror` o `CustomHybrid`.
 
 ### 3.2 Escape Room
 
 El perfil Escape Room és el més complet actualment. Permet construir un recorregut jugable amb exploració, recollida de pistes, combinació d'objectes, panys, puzles, pistes progressives i final de sala. Les dues escenes jugables no tenen Canvas ni scripts perduts i els IDs persistents són únics.
+
+A més dels quatre tipus de puzle existents (codi, seqüència, estat i socket), ara hi ha `MultiStagePuzzle`: puzles per fases ordenades o ramificades (`AdvanceStage`/`AdvanceToStage(id)`), amb feedback `UnityEvent` propi d'entrada/sortida per fase, rollback opcional a la fase anterior i Save/Load des de qualsevol fase.
+
+L'examen 3D (`GameplayUIController`) ara admet `ExamineHotspot`: punts clicables sobre el model examinat que canvien el text de descripció en fer-hi hover (prompt no revelat) i en clicar-hi (descripció revelada), poden concedir un item d'inventari i persisteixen entre partides via `ExamineHotspotRegistry`. Funciona igual a PC i VR perquè reutilitza els mateixos events de punter de UI Toolkit que ja s'usaven per rotar/fer zoom.
+
+Sisè tipus de puzle: `SlidingPuzzle` (menú `Create > Puzzles > Sliding Puzzle`), un 15-puzzle clàssic — graella amb un forat, `TryMoveTile(tileId)` només mou la peça adjacent al forat. Comença sempre pre-barrejat amb moviments legals aleatoris des de la posició resolta (garanteix que sempre és resoluble, a diferència d'una permutació purament aleatòria), seedejat igual que la resta de variants i amb Save/Load de l'estat actual complet (no només si està resolt).
+
+Cinquè tipus de puzle: `WirePuzzle`, connectar cables a sockets (`Connect(wireId, socketId)`/`Disconnect(wireId)`), amb exclusivitat de socket (endollar-hi un cable en desendolla qualsevol altre que hi hagués), verificació automàtica en omplir totes les connexions i Save/Load de l'estat de cablejat. Els kits de dials/safe i símbols ja estaven coberts per `CodePanelPuzzle` (accepta qualsevol token de text, no només xifres).
+
+`PuzzleController` ara exposa `ResetPuzzle()`: torna qualsevol puzle (dels cinc tipus) a `Unsolved` de manera segura, netejant pistes i l'estat transitori propi (codi introduït, seqüència, connexions o fase actual) via el nou hook `OnPuzzleReset()`. Útil per a un "torna-ho a provar" sense recarregar l'escena. `CodePanelPuzzle` també guanya un LED que batega mentre no està resolt (no només un color fix vermell/verd), perquè no depengui exclusivament del color per llegir l'estat.
+
+`SaveManager` ara guarda un `RunSeed` estable per partida (es renova a `StartNewGame`, es restaura en carregar). `PuzzleController.ResolveVariantSeed()` el combina amb el `SaveId` de cada puzle perquè cadascun tingui la seva pròpia variant determinista. Tres dels cinc tipus ja ho aprofiten amb un toggle opcional (desactivat per defecte, sense canviar res del contingut ja autoria't): `CodePanelPuzzle` (`_randomizeCode`, codi diferent cada partida), `SequencePuzzle` (`_randomizeOrder`, mateixos passos en ordre barrejat) i `WirePuzzle` (`_randomizeMapping`, mateixos cables/sockets amb aparellament barrejat). Els tres desen la variant triada dins l'estat propi del puzle perquè carregar una partida mai la torni a sortejar per sota d'un puzle ja resolt o d'una pista ja llegida.
 
 ### 3.3 Survival Horror disponible ara
 
@@ -112,8 +126,12 @@ El perfil Escape Room és el més complet actualment. Permet construir un recorr
 - Soroll de gameplay per passes, sprint, portes, accions i impactes físics, amb gizmos de depuració.
 - Percepció enemiga amb FOV, distància, oclusió, visibilitat contextual, memòria i investigació.
 - Director de persecució amb events d'inici/final, període de gràcia i zones segures.
+- Director de tensió opcional que limita la freqüència global d'esdeveniments de terror (cooldown entre qualsevol parell d'esdeveniments, pressupost per finestra mòbil i zones segures per checkpoint/zona de persecució), sense substituir l'autor de nivell ni el cooldown propi de cada esdeveniment.
+- Camera shake additiu basat en trauma i hàptics de tensió lligats a cordura crítica i entrada en persecució; el shake es desactiva automàticament en VR per evitar mareig.
+- Accessibilitat horror ampliada: reducció real de sorolls forts (esdeveniments i tells d'IA) i assistència en persecucions (enemic més lent i amb menys memòria) ja aplicades i disponibles al menú; reducció de tremolor de càmera també aplicada. Reducció de gore queda exposada com a toggle/hook per a quan hi hagi contingut de gore.
 - Amagatalls inspeccionables per la IA i anchors separats d'entrada, sortida i inspecció.
 - Portes operables per la IA segons perfil, amb bloqueig NavMesh alliberat en obrir-se.
+- Portes amb obertura per fases (peek), mode curós i slam, cadascun amb soroll i durada diferenciats, compatible amb la interacció d'IA existent.
 - Checkpoints amb snapshot independent de les ranures manuals i restauració de l'estat `ISaveable`.
 - Dany tipificat, fonts ambientals reutilitzables, finestra d'invulnerabilitat, retard de mort i events per feedback extern.
 - Derrota sense checkpoint o respawn fiable amb recuperació definida pel preset actiu.
@@ -126,6 +144,7 @@ El perfil Escape Room és el més complet actualment. Permet construir un recorr
 - Càmera modular equipable, independent de la llanterna, amb pujar/baixar, zoom, visió nocturna, bateria específica i controls PC/XR rebindables.
 - Evidències gravables per temps d'enquadrament, diari persistent i integració directa amb objectius data-driven.
 - Evasió opcional amb lean, mirada enrere i slide, col·lisions de càmera, postura segura i controls rebindables; en Quest el lean/look-back és físic i el slide artificial està desactivat per defecte.
+- Bridge d'interacció VR que detecta la mà real de l'interactor (esquerra/dreta) a hover/select, en lloc d'assumir sempre la dreta; vinyeta de confort (tunneling) oficial d'XRI connectada al moviment i gir continus.
 
 Aquests sistemes ja constitueixen un bucle tècnic complet, però la demo encara necessita profunditat, dificultats, feedback i QA per assolir qualitat comercial.
 
@@ -138,16 +157,13 @@ Aquests sistemes ja constitueixen un bucle tècnic complet, però la demo encara
 3. El README descriu una arquitectura i un roadmap antics, inclou carpetes que no existeixen i diu que els sistemes actuals encara estan pendents.
 4. La promesa de VR és superior al que ofereix el prefab actual.
 5. No hi ha localització: molts textos d'UI i missatges estan escrits directament en castellà dins del codi.
-6. L'escriptura de Save/Load utilitza `Delete + Move`; no és atòmica si hi ha una fallada entre les dues operacions i no conserva una còpia de seguretat.
+6. No hi ha migrador per versió del format global de `SaveGameData` (el camp `version` existeix però `LoadGame` no en fa cap ús); és un problema teòric fins que existeixi una segona versió real del format. L'escriptura ja és atòmica amb `File.Replace` i backup recuperable (vegeu `P0-003`).
 
 ### 4.2 Ajustos que existeixen però no estan connectats completament
 
-- `mouseSensitivity` es desa, però `GameSettingsService` no l'aplica al `PlayerMovement`.
-- `musicVolume` i `sfxVolume` existeixen a les dades, però no se sincronitzen amb `AudioManager`.
-- `subtitles` es desa, però no impedeix mostrar subtítols.
-- `reduceFlashes` es desa, però cap esdeveniment de terror consulta aquesta preferència.
-- `qualityLevel` existeix, però la UI actual no l'exposa. La configuració artística final queda fora d'aquest roadmap, però el contracte de programació sí que s'ha de completar.
-- No hi ha tractament d'errors en llegir o escriure `settings.json`.
+- `reduceGore` es desa i té toggle al menú, però no hi ha cap contingut de gore al projecte que el consulti; és un punt d'integració intencionat (vegeu secció 9), no un bug.
+
+`mouseSensitivity`, `musicVolume`, `sfxVolume`, `subtitles`, `reduceFlashes` i `qualityLevel` ja s'apliquen de veritat (`PlayerMovement`, `AudioManager`, `GameplayUIController` i `QualitySettings` els llegeixen en viu de `GameSettingsService`), tenen sliders/toggles/dropdown al menú, i un `settings.json` corrupte o il·legible ja no trenca l'arrencada (es registra un avís i es carreguen els valors per defecte).
 
 ### 4.3 Deute d'arquitectura
 
@@ -165,15 +181,19 @@ Aquests sistemes ja constitueixen un bucle tècnic complet, però la demo encara
 
 - El delta del ratolí es multiplica per `Time.deltaTime`; això pot fer que la sensibilitat depengui del framerate segons el dispositiu d'entrada.
 - L'ajupiment no comprova si hi ha sostre abans de tornar a l'alçada normal.
-- No hi ha stamina, cansament, dany per caiguda, inclinació, mirar enrere, head bob configurable ni feedback respiratori.
+- No hi ha stamina, cansament, dany per caiguda ni feedback respiratori. Inclinació i mirar enrere ja existeixen (evasió avançada). Head bob configurable ja existeix (`HeadBobController`, PC-only, additiu sobre `PlayerMovement` sense competir pel transform).
 - Les passes només reprodueixen àudio: no publiquen un estímul de soroll reutilitzable per a IA.
 - El `SaveId` del jugador és fix (`Player`), fet que limita multijugador o rigs simultanis.
 
 ### 4.5 Deute VR restant
 
-`VRInteractionBridge` ja funciona amb callbacks XRI de hover/select i no fa polling ni reflexió a `Update`. La locomoció utilitza l'asset d'accions oficial d'XRI i l'entrada de gameplay compartida incorpora botons XR per interacció, pausa, inventari, llanterna i camcorder.
+`VRInteractionBridge` ja funciona amb callbacks XRI de hover/select i no fa polling ni reflexió a `Update`; a més, ara resol la mà real (esquerra/dreta) de l'interactor en cada event en lloc d'assumir sempre la dreta, així que els hàptics i qualsevol lògica de gameplay per mà ja disparen al costat correcte. La locomoció utilitza l'asset d'accions oficial d'XRI, l'entrada de gameplay compartida incorpora botons XR per interacció, pausa, inventari, llanterna i camcorder, i la vinyeta de confort (tunneling) oficial d'XRI ja està connectada al moviment i gir continus per reduir el mareig.
 
-Encara queda separar físicament la capa XR de les escenes exclusivament PC, validar tots els controls de UI Toolkit amb ambdues mans, provar Save/Load d'objectes agafats i executar QA en almenys un visor PCVR i un visor standalone.
+`PhysicsSocket` ja detecta correctament si l'objecte concret que hi ha al trigger encara s'està sostenint (via `PhysicsGrabber` en PC o `VRInteractionBridge.IsSelected` en VR) abans d'encaixar-lo — abans, en VR (on `PhysicsGrabber.Instance` és sempre `null`), un objecte agafat físicament podia ser arrencat de la mà del jugador i encaixat sol en entrar en un trigger de socket.
+
+L'equipament ja es pot posar a la mà esquerra: `InteractionDispatcher` exposa quina mà ha disparat cada interacció (`LastHand`) i `EquipmentController` l'usa per triar entre el seu socket principal i un `_leftEquipmentSocket` opcional (que `Setup > Create or Update VR Player Prefab` ja connecta sol quan hi ha dues mans).
+
+Encara queda separar físicament la capa XR de les escenes exclusivament PC, validar tots els controls de UI Toolkit amb ambdues mans, permetre el dual-grab opcional, provar Save/Load d'objectes agafats/equipats i executar QA en almenys un visor PCVR i un visor standalone.
 
 ### 4.6 Robustesa i authoring
 
@@ -243,9 +263,8 @@ Matriu objectiu:
 
 | ID | Àrea | Implementació pendent | Criteri d'acceptació |
 |---|---|---|---|
-| P0-001 | QA | Crear assemblies i suites de tests reals. | Mínim 20 EditMode i 10 PlayMode cobrint inventari, combinació, puzles, IDs, perfils, Save/Load, flux de menú i UI crítica; Test Runner amb tests reals i zero errors. |
-| P0-002 | Ajustos | Connectar completament `GameSettingsData`. | Sensibilitat, master/music/SFX, subtítols, reducció de destells i bindings s'apliquen, es desen, es carreguen i tenen tests; errors de fitxer no trenquen l'arrencada. |
-| P0-003 | Save/Load | Fer l'escriptura realment atòmica i versionada. | Fitxer temporal, backup recuperable, `File.Replace` o equivalent segur, migrador per versió, detecció de corrupció i test d'interrupció d'escriptura. |
+| P0-001 | QA | Crear assemblies i suites de tests reals. | Mínim 20 EditMode i 10 PlayMode cobrint inventari, combinació, puzles, IDs, perfils, Save/Load, flux de menú i UI crítica; Test Runner amb tests reals i zero errors. **Nota important**: no és independent d'`ARC-001`. Un asmdef de tests no pot referenciar `Assembly-CSharp` (ordre de compilació de Unity), així que cal extreure com a mínim els sistemes provats a un `asmdef` Runtime propi abans d'escriure cap test real — per això la suite continua a 0 tot i tenir el Test Framework instal·lat. |
+| P0-003b | Save/Load | Crear un migrador real per versió de `SaveGameData` quan aparegui una segona versió del format global (escriptura atòmica, backup i detecció de corrupció ja fets). | Un save antic es carrega igual després de canviar el format; test de migració entre versions. |
 | P0-004 | VR | Corregir la promesa comercial de VR. | Fins que el pack VR sigui complet, documentar-lo i etiquetar-lo com a experimental; no afirmar paritat completa PC/VR. |
 | P0-005 | Llicències | Crear `ThirdPartyNotices.md` i inventari d'assets. | Cada font, icona, àudio, textura, model i package té origen, autor, llicència i permís de redistribució; qualsevol asset dubtós queda substituït. |
 | P0-006 | Documentació | Actualitzar README i unificar l'estat del projecte. | README, UserManual, Programming Guide, documentació completa i roadmap descriuen la mateixa arquitectura, requisits i estat real. |
@@ -265,29 +284,23 @@ Matriu objectiu:
 |---|---|---|---|
 | SH-015 | Presentació NV | Connectar l'art final de visió nocturna als hooks existents. | Perfil URP, soroll/degradació i feedback visual respecten reducció de destells; la lògica de consum, estats, fallback i events ja està implementada. |
 | SH-016 | Traversal | Tancar QA de traversal en Meta Quest. | Les quatre variants, els dos modes de confort i la cancel·lació es verifiquen en visor; sense mareig greu, clipping ni pèrdua de tracking origin. |
-| SH-018 | Portes | Afegir obertura lenta, peek i slam. | Interacció analògica o per fases, soroll diferent, compatibilitat amb portes actuals i ús per IA. |
-| SH-019 | Director de tensió | Crear un director opcional de ritme. | Cooldowns, pressupost d'esdeveniments, zones segures i hooks; evita repetir ensurts i no substitueix l'autor de nivell. |
-| SH-020 | Accessibilitat horror | Crear controls d'intensitat. | Reducció de flaixos, tremolor, sorolls forts, gore, head bob i chase assistance aplicats realment. |
 
 ### P2 — Profunditat específica d'Escape Room
 
 | ID | Sistema | Implementació pendent | Criteri d'acceptació |
 |---|---|---|---|
 | ER-001 | Graf de puzles | Crear una vista d'autor de dependències i estat. | Mostra prerequisits, sortides, cicles, bloquejos i objectius; valida que una sala tingui almenys una ruta de solució. |
-| ER-002 | Kits de puzle | Afegir dials/safe, cables, canonades, símbols i lliscant. | Cada kit és data-driven, té prefab de primitives, Save/Load, pistes, reset i exemple documentat. |
-| ER-003 | Examen | Afegir hotspots i secrets a l'examen 3D. | Punts clicables, canvi de prompt, revelació d'informació o item i persistència; PC/VR. |
+| ER-002c | Kits de puzle | Afegir canonades (validació de camí continu; dials/safe, símbols, cables i lliscant ja coberts). | Cada kit és data-driven, té prefab de primitives, Save/Load, pistes, reset i exemple documentat. |
 | ER-004 | Quadern | Crear un casebook amb notes, evidències, objectius i pistes. | Cerca/filtre, novetats, estat persistent i integració amb documents i evidències gravades. |
-| ER-005 | Variants | Permetre solucions aleatòries amb seed persistent. | Codi, seqüència o distribució poden variar per partida sense crear estats impossibles; seed al save. |
-| ER-006 | Multi-stage | Crear un controlador de puzle per fases. | Fases ordenades o ramificades, feedback per fase, rollback opcional i Save/Load en qualsevol punt. |
 | ER-007 | Multi-room | Crear un graf de sales i transicions. | Portes/portals poden carregar additivament o canviar escena preservant estat, spawn point i objectius. |
-| ER-008 | Accessibilitat | Afegir alternatives de puzle i ajuda contextual. | Modes de contrast, no dependència exclusiva del color/so, temps ampliable, pistes graduables i reset segur. |
+| ER-008b | Accessibilitat | Modes de contrast (barreja UI/art, abast gran) i temps ampliable (no aplica encara: cap puzle actual és cronometrat). Reset segur, no dependència exclusiva de color i pistes graduables ja fets. | Mode d'alt contrast disponible al menú; si s'afegeix algun puzle cronometrat, el seu temps ha de ser ampliable. |
 
 ### P2 — VR funcional i publicable
 
 | ID | Sistema | Implementació pendent | Criteri d'acceptació |
 |---|---|---|---|
 | VR-004 | UI Toolkit | Fer la UI world-space realment interactiva. | Punter XR, focus, scroll, botons, teclat numèric i inventari verificats amb ambdues mans. |
-| VR-005 | Física | Garantir paritat de grab, socket i equipament. | Agafar, deixar, llançar, sockets, dues mans opcionals i Save/Load sense duplicats. |
+| VR-005c | Física | Permetre agafar un mateix objecte amb dues mans (dual-grab) i revisar Save/Load d'objectes equipats/agafats per duplicats (equipar per mà i paritat de socket ja fets). | Dual-grab opcional i test de Save/Load sense estats duplicats. |
 | VR-006 | Feature gating | Separar la capa XR de les escenes PC. | En PC no s'executa cap bridge ni interactable XR; en VR s'activen sense duplicar la lògica de gameplay. |
 | VR-007 | QA hardware | Crear matriu de dispositius i proves. | OpenXR validat almenys en un visor PCVR i un standalone objectiu; locomoció, UI, haptics, guardat i rendiment documentats. |
 
@@ -308,14 +321,14 @@ Matriu objectiu:
 
 ## 8. Ordre recomanat d'implementació
 
-1. `P0-001` a `P0-008`: impedir que el deute creixi mentre s'afegeixen mecàniques.
+1. `P0-001`, `P0-003b` a `P0-008`: impedir que el deute creixi mentre s'afegeixen mecàniques (`P0-002` ja fet).
 2. `SH-006` i `SH-012`: completar QA VR d'amagatalls i durada de la vertical slice.
-3. `SH-015`, `SH-016` i `SH-018` a `SH-020`: tancar presentació/QA de hardware i ampliar portes, tensió i accessibilitat.
-4. `ER-001` a `ER-008`: ampliar varietat i qualitat d'autor per Escape Room.
-5. `VR-004` a `VR-007`: completar UI, física, feature gating i QA de hardware sobre el rig funcional.
+3. `SH-015` i `SH-016`: tancar presentació/QA de hardware (`SH-020b`, head bob, ja fet).
+4. `ER-001`, `ER-002c`, `ER-004`, `ER-007` i `ER-008b`: ampliar varietat i qualitat d'autor per Escape Room (`ER-003`, `ER-005` i `ER-006` ja fets).
+5. `VR-004`, `VR-005c`, `VR-006` i `VR-007`: completar dual-grab, feature gating i QA de hardware sobre el rig funcional (mà, vinyeta, hàptics, paritat de socket i equipament per mà ja resolts).
 6. `ARC-001` a `ARC-010`: es poden intercalar, però han d'estar resolts abans de publicar la versió comercial final.
 
-La propera fita funcional recomanada és `SH-018`: obertura lenta, peek i slam de portes amb soroll diferenciat i ús per la IA. En paral·lel, `SH-006`, `SH-012` i `SH-016` continuen requerint validació de contingut o hardware. La base tècnica d'enemic, soroll, persecució, amagatall, stamina, checkpoint, càmera nocturna, traversal i evasió ja existeix.
+`SH-018` (portes per fases) i `SH-019` (director de tensió) ja estan fets i verificats. La propera fita funcional pendent de decidir amb el propietari és entre `SH-020b` (head bob), `VR-005` (paritat de física a dues mans), o algun `ER-*` de profunditat d'Escape Room; `SH-006`, `SH-012` i `SH-016` continuen requerint validació de contingut o hardware real, ajornada per ara. La base tècnica d'enemic, soroll, persecució, amagatall, stamina, checkpoint, càmera nocturna, traversal, evasió, director de tensió i accessibilitat horror ja existeix.
 
 ## 9. Fora d'abast intencionat
 

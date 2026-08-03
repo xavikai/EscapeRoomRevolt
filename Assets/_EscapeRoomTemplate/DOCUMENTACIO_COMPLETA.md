@@ -64,6 +64,9 @@ La plantilla és una base modular per construir jocs d'Escape Room i Survival Ho
 - Puzles de seqüència.
 - Puzles d'estat, com una combinació de palanques.
 - Puzles de socket lògic o físic.
+- Puzles de connectar cables (`WirePuzzle`), amb exclusivitat de socket i correcció parcial.
+- Puzles multi-fase ordenats o ramificats (`MultiStagePuzzle`), amb rollback opcional.
+- Punts d'interès (hotspots) clicables a l'examen 3D, amb revelació d'informació/item persistent.
 - Manipulació física, transport, rotació, llançament i encaix d'objectes.
 - Pistes progressives associades al puzle actiu.
 - Objectius amb prerequisits i final automàtic de sala.
@@ -84,6 +87,9 @@ La plantilla és una base modular per construir jocs d'Escape Room i Survival Ho
 - Equipament visible a la mà i possibilitat de deixar-lo anar.
 - Evasió avançada opcional: lean amb col·lisió de càmera, mirada enrere i slide amb postura segura.
 - En VR, lean i mirada enrere físics; slide artificial de Quest desactivat per defecte.
+- Director de tensió opcional: cooldown global, pressupost d'esdeveniments i zones segures per sobre dels triggers individuals.
+- Camera shake i hàptics de tensió lligats a cordura crítica i persecució (el shake es desactiva sol en VR).
+- Opcions d'accessibilitat reals: reducció de destellos, tremolor de càmera i sorolls forts, i assistència en persecucions.
 
 ### Sistemes transversals
 
@@ -741,6 +747,21 @@ public sealed class ReceptorFusible : MonoBehaviour, IInventoryItemTarget
 
 L'objecte necessita `WorldPrefab` i `CanExamine = true`. El model d'examen és una còpia visual; no modifica l'objecte real ni el prefab.
 
+### Punts d'interès (hotspots) a l'examen 3D
+
+Per amagar secrets dins un objecte examinat (una inscripció, un compartiment amagat, una pista), afegeix un fill al `WorldPrefab` amb un `Collider` i el component `ExamineHotspot`. Es crea des del menú: `Escape Room Framework > Create > Inventory > Examine Hotspot` (si tens un GameObject seleccionat, el crea com a fill seu).
+
+Cada `ExamineHotspot` defineix:
+
+- `id` (només ha de ser únic dins d'aquest objecte);
+- text mostrat quan el jugador hi passa el cursor per sobre sense haver-lo trobat encara;
+- text mostrat quan es revela (en clicar-hi);
+- un `InventoryItemData` opcional que es concedeix la primera vegada;
+- si només es pot revelar una vegada;
+- un `UnityEvent` per a qualsevol efecte addicional (so, animació, partícules).
+
+El jugador no necessita fer res especial: mentre examina l'objecte, passar el cursor per sobre del punt canvia el text de la descripció; en clicar-hi es revela. `ExamineHotspotRegistry` (instanciat automàticament pel `Bootstrapper`) recorda quins hotspots ja s'han trobat, així que en tornar a examinar el mateix objecte —fins i tot en una partida carregada— el text revelat apareix immediatament sense haver de tornar a clicar. Funciona igual a PC i a VR perquè reutilitza els mateixos events de punter que ja feien servir rotar i fer zoom.
+
 ---
 
 ## 15. Objectes físics i equipament
@@ -861,6 +882,44 @@ Un `HorrorEventDefinition` defineix:
 
 Connecta `_onTriggered` a animacions, canvis de llum, aparicions o portes. El trigger desa si ja s'ha activat.
 
+### Director de tensió (opcional)
+
+Afegeix un `TensionDirector` a l'escena per limitar la freqüència *global* d'esdeveniments de terror, per sobre del cooldown propi de cada `HorrorEventTrigger`. Sense cap `TensionDirector` a l'escena, tot funciona exactament com abans —és un afegit purament opcional, mai obligatori.
+
+Controla tres coses:
+
+- **Cooldown global**: segons mínims entre qualsevol parell d'esdeveniments, encara que siguin triggers diferents.
+- **Pressupost per finestra**: màxim N esdeveniments dins un període de temps mòbil, perquè no s'acumulin sustos seguits.
+- **Zones segures**: un període de silenci garantit després de reaparèixer a un checkpoint. Qualsevol altre sistema pot allargar aquest silenci cridant `TensionDirector.Instance?.SuppressFor(segons)` —per exemple, `ChaseSafeZone` ja ho fa en travessar-la.
+
+No cal connectar-lo a res manualment: `HorrorEventTrigger` ja el consulta sol si en troba un a l'escena.
+
+### Camera shake i hàptics de tensió
+
+`CameraShakeController` (instanciat automàticament pel `Bootstrapper` al jugador) ofereix un shake de càmera additiu, basat en "trauma" (0-1) que es va esvaint sol:
+
+```csharp
+CameraShakeController.Instance?.Shake(.5f);
+```
+
+Ja està connectat a la cordura crítica i a l'entrada en persecució d'un enemic, així que normalment no cal cridar-lo a mà —però qualsevol esdeveniment propi (un ensurt, una trampa) el pot fer servir igual. **Es desactiva sol en VR**: sacsejar la càmera d'un casc és una causa coneguda de mareig, a diferència d'un monitor.
+
+Els mateixos dos punts (cordura crítica i persecució) també disparen un hàptic curt als dos mans del jugador VR via `PlayerPlatformRegistry.Current?.SendHaptic(...)`.
+
+### Accessibilitat horror
+
+`GameSettingsData` inclou aquestes opcions, totes disponibles al menú d'ajustos del joc:
+
+| Opció | Efecte |
+|---|---|
+| `reduceFlashes` | Limita la intensitat de la vinyeta de `SanityFeedbackController`. |
+| `reduceScreenShake` | Capa la intensitat del `CameraShakeController` a un valor baix configurable. |
+| `reduceLoudSounds` | Redueix a la meitat el volum dels esdeveniments de terror i dels "tells" d'àudio de l'IA. |
+| `chaseAssistance` | Alenteix un 15% la velocitat de persecució de l'enemic i n'escurça un 30% la memòria (independent de la dificultat). |
+| `reduceGore` | Es desa i té toggle al menú, però la plantilla base no inclou contingut de gore —és un punt d'integració perquè el contingut que hi afegeixis el consulti. |
+
+Cap d'aquestes opcions substitueix la dificultat: són ortogonals, pensades perquè un jugador pugui jugar en `Nightmare` i encara així activar `chaseAssistance` si li cal per motius d'accessibilitat.
+
 ---
 
 ## 18. Puzles
@@ -916,6 +975,29 @@ Qualsevol desviació reinicia la seqüència i aplica el flux d'error.
 ### Socket
 
 `SocketPuzzle` compara un `ItemId`, pot consumir-lo i crear un model col·locat. Per a un flux d'inventari més intuïtiu, una porta o `ItemReceiver` amb `OfferCompatible` acostuma a ser preferible. Per a interacció física, utilitza `PhysicsSocket`.
+
+### Cables
+
+`WirePuzzle` (menú `Create > Puzzles > Wire Puzzle`) resol un puzle de "connecta els cables": cada cable ha d'acabar endollat al seu socket correcte, en qualsevol ordre.
+
+```csharp
+wirePuzzle.Connect("wire_a", "socket_a");
+wirePuzzle.Disconnect("wire_a");
+```
+
+Un socket només pot tenir un cable alhora: endollar-n'hi un altre en desendolla automàticament el que hi hagués, com un endoll real. Es comprova sol quan tots els cables tenen alguna connexió (o crida `SubmitConnections()` manualment). A diferència del panell de codi, una connexió incorrecta **no esborra res** —les connexions que ja estaven bé es mantenen, així el jugador només corregeix les que fallen. Qui representa físicament cada cable/socket a l'escena (un objecte agafable, un botó, el que sigui) és cosa teva; el puzle només necessita que li cridis `Connect`/`Disconnect` amb els IDs corresponents.
+
+### Multi-fase
+
+`MultiStagePuzzle` (menú `Create > Puzzles > Multi-Stage Puzzle`) encadena diverses fases, cadascuna amb el seu propi `UnityEvent` d'entrada i sortida:
+
+```csharp
+multiStagePuzzle.AdvanceStage();          // següent fase de la llista
+multiStagePuzzle.AdvanceToStage("secret"); // salta a una fase concreta per id — així es fan les branques
+multiStagePuzzle.RollbackStage();          // torna a la fase anterior d'aquesta partida (opcional)
+```
+
+Marca una fase com `isSolvedStage` perquè arribar-hi resolgui el puzle automàticament; això permet branques que porten a punts morts sense resoldre res. Save/Load funciona des de qualsevol fase.
 
 ### Puzle personalitzat
 
@@ -1238,6 +1320,8 @@ Per substituir les mans o afegir un objecte visual, fes-lo fill del `ModelSocket
 
 `VRComfortController` aplica el perfil als providers XRI. També és la ruta comuna perquè amagatalls, pausa o respawn bloquegin/restaurin la locomoció sense dependre de `PlayerMovement`.
 
+Si el sample "Tunneling Vignette" d'XRI Starter Assets està importat, `Setup > Create or Update VR Player Prefab` l'instal·la automàticament davant la càmera i el connecta al moviment i gir continus (el teleport i el snap-turn ja són instantanis, no els cal). Redueix el camp de visió breument durant el moviment continu per mitigar el mareig; si el sample no està importat, es queda desactivat sense error.
+
 ### Preparació d'interactuables
 
 L'eina afegeix:
@@ -1246,7 +1330,7 @@ L'eina afegeix:
 - `XRGrabInteractable` per a `PhysicsGrabbable`;
 - `VRInteractionBridge` per redirigir focus i selecció al mateix `IInteractable`.
 
-Només registra colliders propietat d'aquell interactuable. Això evita duplicar colliders de fills que pertanyen a un altre interactuable. El bridge escolta els esdeveniments `hoverEntered`, `hoverExited` i `selectEntered`; no utilitza reflexió ni polling per frame.
+Només registra colliders propietat d'aquell interactuable. Això evita duplicar colliders de fills que pertanyen a un altre interactuable. El bridge escolta els esdeveniments `hoverEntered`, `hoverExited` i `selectEntered`; no utilitza reflexió ni polling per frame. També resol quina mà física (esquerra o dreta) ha disparat cada event, així que els hàptics i qualsevol lògica per mà van sempre al costat correcte, encara que l'objecte s'hagi agafat amb l'esquerra.
 
 Exemple:
 
@@ -1376,7 +1460,13 @@ Flashlight_Modular (arrel lògica)
 ### Create > Puzzles
 
 - `Keypad Panel`: panell de codi amb botons.
+- `Wire Puzzle`: puzle de connectar cables, amb dues regles d'exemple ja emplenades.
+- `Multi-Stage Puzzle`: puzle per fases ordenades o ramificades, amb dues fases d'exemple.
 - `PuzzleDefinition`, `HintData` i altres dades es creen des del menú Create del Project.
+
+### Create > Inventory
+
+- `Examine Hotspot`: punt clicable per amagar secrets dins un objecte examinat en 3D. Si tens un objecte seleccionat, es crea com a fill seu.
 
 ### Create > Triggers
 
@@ -1777,6 +1867,30 @@ bool evidenceRecorded = EvidenceJournal.Instance != null
 ```
 
 La base jugable de Survival Horror es divideix en documents incrementals. La càmera equipable, les bateries independents, la gravació d'evidències, els controls PC/Quest i el procediment de substitució del model estan documentats amb exemples a `Documentation/SURVIVAL_HORROR_MILESTONE_06.md`.
+
+### Ritme i accessibilitat
+
+```csharp
+TensionDirector.Instance?.SuppressFor(10f);
+bool permes = TensionDirector.Instance?.RequestPermission(definition) ?? true;
+CameraShakeController.Instance?.Shake(.5f);
+bool assistenciaActiva = GameSettingsService.Instance != null
+    && GameSettingsService.Instance.Data.chaseAssistance;
+```
+
+### Puzles nous
+
+```csharp
+wirePuzzle.Connect("wire_a", "socket_a");
+multiStagePuzzle.AdvanceToStage("secret");
+```
+
+### Examen 3D
+
+```csharp
+bool trobat = examineHotspot.IsRevealed(itemData.ItemId);
+examineHotspot.Reveal(itemData.ItemId);
+```
 
 ### Objectius
 

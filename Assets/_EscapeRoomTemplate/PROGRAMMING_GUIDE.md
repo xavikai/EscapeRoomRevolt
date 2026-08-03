@@ -93,3 +93,20 @@ evasion.SetLookBackOverride(true);
 Subscribe to `SlideStarted`, `SlideCompleted` and `SlideCancelled` to add presentation without coupling it to movement logic. `PlayerMovement.CanStand()` and the independent evasion crouch owner prevent standing inside geometry or releasing a hiding-spot crouch.
 
 Keep `SaveId` and `ItemId` stable after publication. Run `Validation/Validate Save IDs` and the smoke tests before packaging an update.
+
+## Newer puzzle types
+
+`WirePuzzle` connects wire ids to socket ids; a socket only ever holds one wire, so plugging in a new one unplugs whatever was there. `MultiStagePuzzle` chains ordered or branching `PuzzleStage` entries.
+
+```csharp
+wirePuzzle.Connect("wire_a", "socket_a");
+multiStagePuzzle.AdvanceToStage("secret_branch");
+```
+
+Both create from `Escape Room Framework > Create > Puzzles` with example data pre-filled, and both save/load from any state like every other `PuzzleController`.
+
+## Tension pacing and accessibility
+
+`TensionDirector` (optional, add it to a scene to opt in) gates `HorrorEventTrigger` with a global cooldown and a rolling event budget, on top of each trigger's own cooldown. `CameraShakeController` and haptics already react to critical sanity and enemy chase; call `CameraShakeController.Instance?.Shake(intensity)` for your own stingers — it self-disables in VR.
+
+`GameSettingsData` gained `reduceScreenShake`, `reduceLoudSounds`, `chaseAssistance` and `reduceGore`. The first three already have real consumers (`CameraShakeController`, the horror-event/enemy audio call sites, `HorrorEnemyController`'s chase speed/memory); `reduceGore` is a stored flag with no consumer yet since the base template ships no gore content.
