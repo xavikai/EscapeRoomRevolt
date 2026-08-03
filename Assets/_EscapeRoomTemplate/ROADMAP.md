@@ -110,9 +110,11 @@ Sisè tipus de puzle: `SlidingPuzzle` (menú `Create > Puzzles > Sliding Puzzle`
 
 Cinquè tipus de puzle: `WirePuzzle`, connectar cables a sockets (`Connect(wireId, socketId)`/`Disconnect(wireId)`), amb exclusivitat de socket (endollar-hi un cable en desendolla qualsevol altre que hi hagués), verificació automàtica en omplir totes les connexions i Save/Load de l'estat de cablejat. Els kits de dials/safe i símbols ja estaven coberts per `CodePanelPuzzle` (accepta qualsevol token de text, no només xifres).
 
-`PuzzleController` ara exposa `ResetPuzzle()`: torna qualsevol puzle (dels cinc tipus) a `Unsolved` de manera segura, netejant pistes i l'estat transitori propi (codi introduït, seqüència, connexions o fase actual) via el nou hook `OnPuzzleReset()`. Útil per a un "torna-ho a provar" sense recarregar l'escena. `CodePanelPuzzle` també guanya un LED que batega mentre no està resolt (no només un color fix vermell/verd), perquè no depengui exclusivament del color per llegir l'estat.
+Setè tipus de puzle (`ER-002c`): `PipePuzzle` (menú `Create > Puzzles > Pipe Puzzle`), canonades rotables en una graella — `RotateTile(tileId)` gira una peça 90° i el puzle valida per BFS que hi hagi un camí continu d'obertures coincidents entre la peça font i la peça destí. Data-driven (`PipeTileDefinition` per peça: fila, columna, costats oberts abans de rotar), amb variant seedejada opcional (`_randomizeRotations`, evita generar-se ja resolta) i Save/Load de la rotació de cada peça.
 
-`SaveManager` ara guarda un `RunSeed` estable per partida (es renova a `StartNewGame`, es restaura en carregar). `PuzzleController.ResolveVariantSeed()` el combina amb el `SaveId` de cada puzle perquè cadascun tingui la seva pròpia variant determinista. Tres dels cinc tipus ja ho aprofiten amb un toggle opcional (desactivat per defecte, sense canviar res del contingut ja autoria't): `CodePanelPuzzle` (`_randomizeCode`, codi diferent cada partida), `SequencePuzzle` (`_randomizeOrder`, mateixos passos en ordre barrejat) i `WirePuzzle` (`_randomizeMapping`, mateixos cables/sockets amb aparellament barrejat). Els tres desen la variant triada dins l'estat propi del puzle perquè carregar una partida mai la torni a sortejar per sota d'un puzle ja resolt o d'una pista ja llegida.
+`PuzzleController` ara exposa `ResetPuzzle()`: torna qualsevol puzle (dels set tipus) a `Unsolved` de manera segura, netejant pistes i l'estat transitori propi (codi introduït, seqüència, connexions, fase actual o rotacions) via el nou hook `OnPuzzleReset()`. Útil per a un "torna-ho a provar" sense recarregar l'escena. `CodePanelPuzzle` també guanya un LED que batega mentre no està resolt (no només un color fix vermell/verd), perquè no depengui exclusivament del color per llegir l'estat.
+
+`SaveManager` ara guarda un `RunSeed` estable per partida (es renova a `StartNewGame`, es restaura en carregar). `PuzzleController.ResolveVariantSeed()` el combina amb el `SaveId` de cada puzle perquè cadascun tingui la seva pròpia variant determinista. Quatre dels set tipus ja ho aprofiten amb un toggle opcional (desactivat per defecte, sense canviar res del contingut ja autoria't): `CodePanelPuzzle` (`_randomizeCode`, codi diferent cada partida), `SequencePuzzle` (`_randomizeOrder`, mateixos passos en ordre barrejat), `WirePuzzle` (`_randomizeMapping`, mateixos cables/sockets amb aparellament barrejat) i `PipePuzzle` (`_randomizeRotations`, mateixes peces amb rotació inicial barrejada). Tots desen la variant triada dins l'estat propi del puzle perquè carregar una partida mai la torni a sortejar per sota d'un puzle ja resolt o d'una pista ja llegida.
 
 ### 3.3 Survival Horror disponible ara
 
@@ -284,7 +286,6 @@ Matriu objectiu:
 | ID | Sistema | Implementació pendent | Criteri d'acceptació |
 |---|---|---|---|
 | ER-001 | Graf de puzles | Crear una vista d'autor de dependències i estat. | Mostra prerequisits, sortides, cicles, bloquejos i objectius; valida que una sala tingui almenys una ruta de solució. |
-| ER-002c | Kits de puzle | Afegir canonades (validació de camí continu; dials/safe, símbols, cables i lliscant ja coberts). | Cada kit és data-driven, té prefab de primitives, Save/Load, pistes, reset i exemple documentat. |
 | ER-004 | Quadern | Crear un casebook amb notes, evidències, objectius i pistes. | Cerca/filtre, novetats, estat persistent i integració amb documents i evidències gravades. |
 | ER-007 | Multi-room | Crear un graf de sales i transicions. | Portes/portals poden carregar additivament o canviar escena preservant estat, spawn point i objectius. |
 | ER-008b | Accessibilitat | Modes de contrast (barreja UI/art, abast gran) i temps ampliable (no aplica encara: cap puzle actual és cronometrat). Reset segur, no dependència exclusiva de color i pistes graduables ja fets. | Mode d'alt contrast disponible al menú; si s'afegeix algun puzle cronometrat, el seu temps ha de ser ampliable. |
@@ -317,7 +318,7 @@ Matriu objectiu:
 
 1. `P0-001`, `P0-003b` a `P0-008`: impedir que el deute creixi mentre s'afegeixen mecàniques (`P0-002` ja fet).
 2. `SH-015` i `SH-016`: tancar presentació/QA de hardware (`SH-020b`, head bob, ja fet).
-3. `ER-001`, `ER-002c`, `ER-004`, `ER-007` i `ER-008b`: ampliar varietat i qualitat d'autor per Escape Room (`ER-003`, `ER-005` i `ER-006` ja fets).
+3. `ER-001`, `ER-004`, `ER-007` i `ER-008b`: ampliar varietat i qualitat d'autor per Escape Room (`ER-002c`, `ER-003`, `ER-005` i `ER-006` ja fets).
 4. `VR-004`, `VR-005c`, `VR-006` i `VR-007`: completar dual-grab, feature gating i QA de hardware sobre el rig funcional (mà, vinyeta, hàptics, paritat de socket i equipament per mà ja resolts).
 5. `ARC-001` a `ARC-010`: es poden intercalar, però han d'estar resolts abans de publicar la versió comercial final.
 
