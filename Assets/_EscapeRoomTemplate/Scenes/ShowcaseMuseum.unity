@@ -465,11 +465,23 @@ MonoBehaviour:
   _requiredItemId: 
   _lockedPrompt: Locked
   _openPrompt: Open
+  _closePrompt: Close
+  _peekPrompt: Open further
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
+  _enableAdvancedOperations: 1
+  _peekFraction: 0.18
+  _carefulDuration: 2.4
+  _slamDuration: 0.18
+  _navigationOpenThreshold: 0.72
+  _allowEnemyOperation: 1
+  _enemyCanBreakLock: 0
   _animator: {fileID: 0}
   _openTrigger: Open
   _closeTrigger: Close
+  _peekTrigger: Peek
+  _slamOpenTrigger: SlamOpen
+  _slamCloseTrigger: SlamClose
   _movementType: 1
   _openDuration: 0.8
   _customPivot: {fileID: 0}
@@ -478,8 +490,14 @@ MonoBehaviour:
   _slideOffset: {x: 1.5, y: 0, z: 0}
   _openSound: {fileID: 0}
   _closeSound: {fileID: 0}
+  _carefulSound: {fileID: 0}
+  _slamSound: {fileID: 0}
   _lockedSound: {fileID: 0}
   _pitchVariance: 0.1
+  _carefulNoiseRadius: 2.5
+  _normalOpenNoiseRadius: 8
+  _normalCloseNoiseRadius: 11
+  _slamNoiseRadius: 18
 --- !u!4 &9639234
 Transform:
   m_ObjectHideFlags: 0
@@ -2400,11 +2418,23 @@ MonoBehaviour:
   _requiredItemId: 
   _lockedPrompt: Locked
   _openPrompt: Open
+  _closePrompt: Close
+  _peekPrompt: Open further
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
+  _enableAdvancedOperations: 1
+  _peekFraction: 0.18
+  _carefulDuration: 2.4
+  _slamDuration: 0.18
+  _navigationOpenThreshold: 0.72
+  _allowEnemyOperation: 1
+  _enemyCanBreakLock: 0
   _animator: {fileID: 0}
   _openTrigger: Open
   _closeTrigger: Close
+  _peekTrigger: Peek
+  _slamOpenTrigger: SlamOpen
+  _slamCloseTrigger: SlamClose
   _movementType: 0
   _openDuration: 0.8
   _customPivot: {fileID: 1625502584}
@@ -2413,8 +2443,14 @@ MonoBehaviour:
   _slideOffset: {x: 1.5, y: 0, z: 0}
   _openSound: {fileID: 0}
   _closeSound: {fileID: 0}
+  _carefulSound: {fileID: 0}
+  _slamSound: {fileID: 0}
   _lockedSound: {fileID: 0}
   _pitchVariance: 0.1
+  _carefulNoiseRadius: 2.5
+  _normalOpenNoiseRadius: 8
+  _normalCloseNoiseRadius: 11
+  _slamNoiseRadius: 18
 --- !u!4 &107265346
 Transform:
   m_ObjectHideFlags: 0
@@ -2859,6 +2895,7 @@ GameObject:
   - component: {fileID: 132818239}
   - component: {fileID: 132818245}
   - component: {fileID: 132818244}
+  - component: {fileID: 132818246}
   m_Layer: 0
   m_Name: Grabbable_3
   m_TagString: Untagged
@@ -3148,6 +3185,24 @@ MonoBehaviour:
   m_LimitAngularVelocity: 0
   m_MaxLinearVelocityDelta: 10
   m_MaxAngularVelocityDelta: 20
+--- !u!114 &132818246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 132818237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dbfef0f064c1f84e940f107d5aa298e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Survival.GameplayImpactNoiseEmitter
+  _minimumImpactSpeed: 1.25
+  _loudImpactSpeed: 7
+  _minimumRadius: 2.5
+  _maximumRadius: 13
+  _cooldown: 0.18
+  _thrownMultiplier: 1.35
 --- !u!1 &140026704
 GameObject:
   m_ObjectHideFlags: 0
@@ -3219,11 +3274,23 @@ MonoBehaviour:
   _requiredItemId: 
   _lockedPrompt: Locked
   _openPrompt: Open
+  _closePrompt: Close
+  _peekPrompt: Open further
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
+  _enableAdvancedOperations: 1
+  _peekFraction: 0.18
+  _carefulDuration: 2.4
+  _slamDuration: 0.18
+  _navigationOpenThreshold: 0.72
+  _allowEnemyOperation: 1
+  _enemyCanBreakLock: 0
   _animator: {fileID: 0}
   _openTrigger: Open
   _closeTrigger: Close
+  _peekTrigger: Peek
+  _slamOpenTrigger: SlamOpen
+  _slamCloseTrigger: SlamClose
   _movementType: 1
   _openDuration: 0.8
   _customPivot: {fileID: 449896843}
@@ -3232,8 +3299,14 @@ MonoBehaviour:
   _slideOffset: {x: 0, y: 2.5, z: 0}
   _openSound: {fileID: 0}
   _closeSound: {fileID: 0}
+  _carefulSound: {fileID: 0}
+  _slamSound: {fileID: 0}
   _lockedSound: {fileID: 0}
   _pitchVariance: 0.1
+  _carefulNoiseRadius: 2.5
+  _normalOpenNoiseRadius: 8
+  _normalCloseNoiseRadius: 11
+  _slamNoiseRadius: 18
 --- !u!4 &144560022
 Transform:
   m_ObjectHideFlags: 0
@@ -5918,6 +5991,7 @@ MonoBehaviour:
   - Red
   - Green
   - Blue
+  _randomizeOrder: 0
 --- !u!4 &260493353
 Transform:
   m_ObjectHideFlags: 0
@@ -6178,6 +6252,7 @@ GameObject:
   - component: {fileID: 278366784}
   - component: {fileID: 278366790}
   - component: {fileID: 278366789}
+  - component: {fileID: 278366791}
   m_Layer: 0
   m_Name: Grabbable_5
   m_TagString: Untagged
@@ -6467,6 +6542,24 @@ MonoBehaviour:
   m_LimitAngularVelocity: 0
   m_MaxLinearVelocityDelta: 10
   m_MaxAngularVelocityDelta: 20
+--- !u!114 &278366791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 278366782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dbfef0f064c1f84e940f107d5aa298e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Survival.GameplayImpactNoiseEmitter
+  _minimumImpactSpeed: 1.25
+  _loudImpactSpeed: 7
+  _minimumRadius: 2.5
+  _maximumRadius: 13
+  _cooldown: 0.18
+  _thrownMultiplier: 1.35
 --- !u!21 &282151577
 Material:
   serializedVersion: 8
@@ -7244,11 +7337,23 @@ MonoBehaviour:
   _requiredItemId: 
   _lockedPrompt: It's firmly locked. A mechanism holds it.
   _openPrompt: Open
+  _closePrompt: Close
+  _peekPrompt: Open further
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
+  _enableAdvancedOperations: 1
+  _peekFraction: 0.18
+  _carefulDuration: 2.4
+  _slamDuration: 0.18
+  _navigationOpenThreshold: 0.72
+  _allowEnemyOperation: 1
+  _enemyCanBreakLock: 0
   _animator: {fileID: 0}
   _openTrigger: Open
   _closeTrigger: Close
+  _peekTrigger: Peek
+  _slamOpenTrigger: SlamOpen
+  _slamCloseTrigger: SlamClose
   _movementType: 0
   _openDuration: 0.8
   _customPivot: {fileID: 745379867}
@@ -7257,8 +7362,14 @@ MonoBehaviour:
   _slideOffset: {x: 1.5, y: 0, z: 0}
   _openSound: {fileID: 0}
   _closeSound: {fileID: 0}
+  _carefulSound: {fileID: 0}
+  _slamSound: {fileID: 0}
   _lockedSound: {fileID: 0}
   _pitchVariance: 0.1
+  _carefulNoiseRadius: 2.5
+  _normalOpenNoiseRadius: 8
+  _normalCloseNoiseRadius: 11
+  _slamNoiseRadius: 18
 --- !u!4 &331057785
 Transform:
   m_ObjectHideFlags: 0
@@ -10338,6 +10449,7 @@ GameObject:
   - component: {fileID: 504240787}
   - component: {fileID: 504240793}
   - component: {fileID: 504240792}
+  - component: {fileID: 504240794}
   m_Layer: 0
   m_Name: Grabbable_1
   m_TagString: Untagged
@@ -10627,6 +10739,24 @@ MonoBehaviour:
   m_LimitAngularVelocity: 0
   m_MaxLinearVelocityDelta: 10
   m_MaxAngularVelocityDelta: 20
+--- !u!114 &504240794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 504240785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dbfef0f064c1f84e940f107d5aa298e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Survival.GameplayImpactNoiseEmitter
+  _minimumImpactSpeed: 1.25
+  _loudImpactSpeed: 7
+  _minimumRadius: 2.5
+  _maximumRadius: 13
+  _cooldown: 0.18
+  _thrownMultiplier: 1.35
 --- !u!1 &508067088
 GameObject:
   m_ObjectHideFlags: 0
@@ -13958,12 +14088,14 @@ MonoBehaviour:
   _correctCode: 1234
   _maxCodeLength: 4
   _autoCheckWhenFull: 1
+  _randomizeCode: 0
   _display3D: {fileID: 1628876600}
   _statusLed: {fileID: 788142271}
   _beepSound: {fileID: 0}
   _successSound: {fileID: 0}
   _errorSound: {fileID: 0}
   _pitchVariance: 0.05
+  _idlePulseSpeed: 2.5
 --- !u!4 &708379863
 Transform:
   m_ObjectHideFlags: 0
@@ -16930,11 +17062,23 @@ MonoBehaviour:
   _requiredItemId: key_office_01
   _lockedPrompt: Locked
   _openPrompt: Open
+  _closePrompt: Close
+  _peekPrompt: Open further
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
+  _enableAdvancedOperations: 1
+  _peekFraction: 0.18
+  _carefulDuration: 2.4
+  _slamDuration: 0.18
+  _navigationOpenThreshold: 0.72
+  _allowEnemyOperation: 1
+  _enemyCanBreakLock: 0
   _animator: {fileID: 0}
   _openTrigger: Open
   _closeTrigger: Close
+  _peekTrigger: Peek
+  _slamOpenTrigger: SlamOpen
+  _slamCloseTrigger: SlamClose
   _movementType: 0
   _openDuration: 0.8
   _customPivot: {fileID: 508490791}
@@ -16943,8 +17087,14 @@ MonoBehaviour:
   _slideOffset: {x: 1.5, y: 0, z: 0}
   _openSound: {fileID: 0}
   _closeSound: {fileID: 0}
+  _carefulSound: {fileID: 0}
+  _slamSound: {fileID: 0}
   _lockedSound: {fileID: 0}
   _pitchVariance: 0.1
+  _carefulNoiseRadius: 2.5
+  _normalOpenNoiseRadius: 8
+  _normalCloseNoiseRadius: 11
+  _slamNoiseRadius: 18
 --- !u!4 &855987598
 Transform:
   m_ObjectHideFlags: 0
@@ -20077,6 +20227,7 @@ GameObject:
   - component: {fileID: 1037078083}
   - component: {fileID: 1037078089}
   - component: {fileID: 1037078088}
+  - component: {fileID: 1037078090}
   m_Layer: 0
   m_Name: Grabbable_6
   m_TagString: Untagged
@@ -20366,6 +20517,24 @@ MonoBehaviour:
   m_LimitAngularVelocity: 0
   m_MaxLinearVelocityDelta: 10
   m_MaxAngularVelocityDelta: 20
+--- !u!114 &1037078090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1037078081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dbfef0f064c1f84e940f107d5aa298e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Survival.GameplayImpactNoiseEmitter
+  _minimumImpactSpeed: 1.25
+  _loudImpactSpeed: 7
+  _minimumRadius: 2.5
+  _maximumRadius: 13
+  _cooldown: 0.18
+  _thrownMultiplier: 1.35
 --- !u!1 &1044850425
 GameObject:
   m_ObjectHideFlags: 0
@@ -21103,11 +21272,23 @@ MonoBehaviour:
   _requiredItemId: 
   _lockedPrompt: Locked electronically.
   _openPrompt: Open
+  _closePrompt: Close
+  _peekPrompt: Open further
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
+  _enableAdvancedOperations: 1
+  _peekFraction: 0.18
+  _carefulDuration: 2.4
+  _slamDuration: 0.18
+  _navigationOpenThreshold: 0.72
+  _allowEnemyOperation: 1
+  _enemyCanBreakLock: 0
   _animator: {fileID: 0}
   _openTrigger: Open
   _closeTrigger: Close
+  _peekTrigger: Peek
+  _slamOpenTrigger: SlamOpen
+  _slamCloseTrigger: SlamClose
   _movementType: 0
   _openDuration: 0.8
   _customPivot: {fileID: 1172932154}
@@ -21116,8 +21297,14 @@ MonoBehaviour:
   _slideOffset: {x: 1.5, y: 0, z: 0}
   _openSound: {fileID: 0}
   _closeSound: {fileID: 0}
+  _carefulSound: {fileID: 0}
+  _slamSound: {fileID: 0}
   _lockedSound: {fileID: 0}
   _pitchVariance: 0.1
+  _carefulNoiseRadius: 2.5
+  _normalOpenNoiseRadius: 8
+  _normalCloseNoiseRadius: 11
+  _slamNoiseRadius: 18
 --- !u!4 &1110830929
 Transform:
   m_ObjectHideFlags: 0
@@ -21377,11 +21564,23 @@ MonoBehaviour:
   _requiredItemId: 
   _lockedPrompt: Locked
   _openPrompt: Open
+  _closePrompt: Close
+  _peekPrompt: Open further
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
+  _enableAdvancedOperations: 1
+  _peekFraction: 0.18
+  _carefulDuration: 2.4
+  _slamDuration: 0.18
+  _navigationOpenThreshold: 0.72
+  _allowEnemyOperation: 1
+  _enemyCanBreakLock: 0
   _animator: {fileID: 0}
   _openTrigger: Open
   _closeTrigger: Close
+  _peekTrigger: Peek
+  _slamOpenTrigger: SlamOpen
+  _slamCloseTrigger: SlamClose
   _movementType: 1
   _openDuration: 0.8
   _customPivot: {fileID: 0}
@@ -21390,8 +21589,14 @@ MonoBehaviour:
   _slideOffset: {x: 0, y: 0, z: -0.5}
   _openSound: {fileID: 0}
   _closeSound: {fileID: 0}
+  _carefulSound: {fileID: 0}
+  _slamSound: {fileID: 0}
   _lockedSound: {fileID: 0}
   _pitchVariance: 0.1
+  _carefulNoiseRadius: 2.5
+  _normalOpenNoiseRadius: 8
+  _normalCloseNoiseRadius: 11
+  _slamNoiseRadius: 18
 --- !u!4 &1113921457
 Transform:
   m_ObjectHideFlags: 0
@@ -23630,11 +23835,23 @@ MonoBehaviour:
   _requiredItemId: 
   _lockedPrompt: Locked
   _openPrompt: Open
+  _closePrompt: Close
+  _peekPrompt: Open further
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
+  _enableAdvancedOperations: 1
+  _peekFraction: 0.18
+  _carefulDuration: 2.4
+  _slamDuration: 0.18
+  _navigationOpenThreshold: 0.72
+  _allowEnemyOperation: 1
+  _enemyCanBreakLock: 0
   _animator: {fileID: 0}
   _openTrigger: Open
   _closeTrigger: Close
+  _peekTrigger: Peek
+  _slamOpenTrigger: SlamOpen
+  _slamCloseTrigger: SlamClose
   _movementType: 0
   _openDuration: 0.8
   _customPivot: {fileID: 69743041}
@@ -23643,8 +23860,14 @@ MonoBehaviour:
   _slideOffset: {x: 1.5, y: 0, z: 0}
   _openSound: {fileID: 0}
   _closeSound: {fileID: 0}
+  _carefulSound: {fileID: 0}
+  _slamSound: {fileID: 0}
   _lockedSound: {fileID: 0}
   _pitchVariance: 0.1
+  _carefulNoiseRadius: 2.5
+  _normalOpenNoiseRadius: 8
+  _normalCloseNoiseRadius: 11
+  _slamNoiseRadius: 18
 --- !u!4 &1275924047
 Transform:
   m_ObjectHideFlags: 0
@@ -28473,6 +28696,7 @@ GameObject:
   - component: {fileID: 1523697999}
   - component: {fileID: 1523698005}
   - component: {fileID: 1523698004}
+  - component: {fileID: 1523698006}
   m_Layer: 0
   m_Name: Grabbable_4
   m_TagString: Untagged
@@ -28762,6 +28986,24 @@ MonoBehaviour:
   m_LimitAngularVelocity: 0
   m_MaxLinearVelocityDelta: 10
   m_MaxAngularVelocityDelta: 20
+--- !u!114 &1523698006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1523697997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dbfef0f064c1f84e940f107d5aa298e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Survival.GameplayImpactNoiseEmitter
+  _minimumImpactSpeed: 1.25
+  _loudImpactSpeed: 7
+  _minimumRadius: 2.5
+  _maximumRadius: 13
+  _cooldown: 0.18
+  _thrownMultiplier: 1.35
 --- !u!1 &1529783623
 GameObject:
   m_ObjectHideFlags: 0
@@ -31170,11 +31412,23 @@ MonoBehaviour:
   _requiredItemId: 
   _lockedPrompt: Locked
   _openPrompt: Open
+  _closePrompt: Close
+  _peekPrompt: Open further
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
+  _enableAdvancedOperations: 1
+  _peekFraction: 0.18
+  _carefulDuration: 2.4
+  _slamDuration: 0.18
+  _navigationOpenThreshold: 0.72
+  _allowEnemyOperation: 1
+  _enemyCanBreakLock: 0
   _animator: {fileID: 0}
   _openTrigger: Open
   _closeTrigger: Close
+  _peekTrigger: Peek
+  _slamOpenTrigger: SlamOpen
+  _slamCloseTrigger: SlamClose
   _movementType: 0
   _openDuration: 0.8
   _customPivot: {fileID: 140026705}
@@ -31183,8 +31437,14 @@ MonoBehaviour:
   _slideOffset: {x: 1.5, y: 0, z: 0}
   _openSound: {fileID: 0}
   _closeSound: {fileID: 0}
+  _carefulSound: {fileID: 0}
+  _slamSound: {fileID: 0}
   _lockedSound: {fileID: 0}
   _pitchVariance: 0.1
+  _carefulNoiseRadius: 2.5
+  _normalOpenNoiseRadius: 8
+  _normalCloseNoiseRadius: 11
+  _slamNoiseRadius: 18
 --- !u!4 &1706956869
 Transform:
   m_ObjectHideFlags: 0
@@ -31650,6 +31910,7 @@ GameObject:
   - component: {fileID: 1733600599}
   - component: {fileID: 1733600605}
   - component: {fileID: 1733600604}
+  - component: {fileID: 1733600606}
   m_Layer: 0
   m_Name: Grabbable_2
   m_TagString: Untagged
@@ -31939,6 +32200,24 @@ MonoBehaviour:
   m_LimitAngularVelocity: 0
   m_MaxLinearVelocityDelta: 10
   m_MaxAngularVelocityDelta: 20
+--- !u!114 &1733600606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1733600597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dbfef0f064c1f84e940f107d5aa298e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Survival.GameplayImpactNoiseEmitter
+  _minimumImpactSpeed: 1.25
+  _loudImpactSpeed: 7
+  _minimumRadius: 2.5
+  _maximumRadius: 13
+  _cooldown: 0.18
+  _thrownMultiplier: 1.35
 --- !u!1 &1733761151
 GameObject:
   m_ObjectHideFlags: 0
@@ -35237,6 +35516,7 @@ GameObject:
   - component: {fileID: 1950698345}
   - component: {fileID: 1950698351}
   - component: {fileID: 1950698350}
+  - component: {fileID: 1950698352}
   m_Layer: 0
   m_Name: HeavyBox
   m_TagString: Untagged
@@ -35526,6 +35806,24 @@ MonoBehaviour:
   m_LimitAngularVelocity: 0
   m_MaxLinearVelocityDelta: 10
   m_MaxAngularVelocityDelta: 20
+--- !u!114 &1950698352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1950698343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dbfef0f064c1f84e940f107d5aa298e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Survival.GameplayImpactNoiseEmitter
+  _minimumImpactSpeed: 1.25
+  _loudImpactSpeed: 7
+  _minimumRadius: 2.5
+  _maximumRadius: 13
+  _cooldown: 0.18
+  _thrownMultiplier: 1.35
 --- !u!1 &1965945142
 GameObject:
   m_ObjectHideFlags: 0
