@@ -145,6 +145,7 @@ Cinquè tipus de puzle: `WirePuzzle`, connectar cables a sockets (`Connect(wireI
 - Evidències gravables per temps d'enquadrament, diari persistent i integració directa amb objectius data-driven.
 - Evasió opcional amb lean, mirada enrere i slide, col·lisions de càmera, postura segura i controls rebindables; en Quest el lean/look-back és físic i el slide artificial està desactivat per defecte.
 - Bridge d'interacció VR que detecta la mà real de l'interactor (esquerra/dreta) a hover/select, en lloc d'assumir sempre la dreta; vinyeta de confort (tunneling) oficial d'XRI connectada al moviment i gir continus.
+- Escena `SurvivalHorrorDemo` (build index 3) amb una vertical slice original completa i verificada en Play Mode: cadena de quatre objectius data-driven encadenats per prerequisit (`recover_batteries` → `restore_power` → `record_anomaly` → `escape_facility`, via `ObjectiveManager`/`ObjectiveSet`/`ObjectiveDefinition`), enemic, dues zones d'amagatall, generador d'emergència interactuable, subjecte gravable amb el camcorder, quatre repte de traversal (vault/climb/ladder/squeeze), llaunes llançables com a distracció de soroll, zona de checkpoint doble, `ChaseSafeZone` a la sortida i un `EndingDefinition` de victòria (`DemoEscapeEnding`) que `GameFlowManager` dispara en completar l'últim objectiu. Verificat: `manage_scene validate` sense incidències, cap error/warning en entrar en Play Mode, i cada identificador de disparador (`_itemId`, nom del GameObject, `_evidenceId`) confirmat contra l'objectiu que l'espera. Pendent: cronometrar-la amb un jugador real per confirmar el recorregut de 10–15 minuts (el que no es pot validar sense una persona jugant-hi).
 
 Aquests sistemes ja constitueixen un bucle tècnic complet, però la demo encara necessita profunditat, dificultats, feedback i QA per assolir qualitat comercial.
 
@@ -271,12 +272,6 @@ Matriu objectiu:
 | P0-007 | Localització | Eliminar textos de runtime codificats directament. | Taules o catàleg localitzable, idioma de fallback i castellà/anglès de mostra; UXML, menús, prompts, objectius, pistes i errors no depenen de literals C#. |
 | P0-008 | Validació | Ampliar el validador comercial. | Detecta referències obligatòries null, IDs, cicles d'objectius, receptes trencades, scenes de build, UXML contract, perfils, XR incomplet i assets sense llicència registrada. |
 
-### P1 — Vertical slice Survival Horror tipus Outlast
-
-| ID | Sistema | Implementació pendent | Criteri d'acceptació |
-|---|---|---|---|
-| SH-012 | Demo | Crear una escena vertical slice de Survival Horror original. | Inclou exploració, objectiu, recurs de visió, enemic, soroll, persecució, amagatall, checkpoint i final; recorregut de 10–15 minuts. |
-
 ### P2 — Càmera nocturna i moviment d'escapada
 
 | ID | Sistema | Implementació pendent | Criteri d'acceptació |
@@ -321,13 +316,12 @@ Matriu objectiu:
 ## 8. Ordre recomanat d'implementació
 
 1. `P0-001`, `P0-003b` a `P0-008`: impedir que el deute creixi mentre s'afegeixen mecàniques (`P0-002` ja fet).
-2. `SH-012`: construir la vertical slice de 10–15 minuts (`SH-006` ja fet).
-3. `SH-015` i `SH-016`: tancar presentació/QA de hardware (`SH-020b`, head bob, ja fet).
-4. `ER-001`, `ER-002c`, `ER-004`, `ER-007` i `ER-008b`: ampliar varietat i qualitat d'autor per Escape Room (`ER-003`, `ER-005` i `ER-006` ja fets).
-5. `VR-004`, `VR-005c`, `VR-006` i `VR-007`: completar dual-grab, feature gating i QA de hardware sobre el rig funcional (mà, vinyeta, hàptics, paritat de socket i equipament per mà ja resolts).
-6. `ARC-001` a `ARC-010`: es poden intercalar, però han d'estar resolts abans de publicar la versió comercial final.
+2. `SH-015` i `SH-016`: tancar presentació/QA de hardware (`SH-020b`, head bob, ja fet).
+3. `ER-001`, `ER-002c`, `ER-004`, `ER-007` i `ER-008b`: ampliar varietat i qualitat d'autor per Escape Room (`ER-003`, `ER-005` i `ER-006` ja fets).
+4. `VR-004`, `VR-005c`, `VR-006` i `VR-007`: completar dual-grab, feature gating i QA de hardware sobre el rig funcional (mà, vinyeta, hàptics, paritat de socket i equipament per mà ja resolts).
+5. `ARC-001` a `ARC-010`: es poden intercalar, però han d'estar resolts abans de publicar la versió comercial final.
 
-`SH-018` (portes per fases), `SH-019` (director de tensió) i `SH-006` (amagatalls genèrics) ja estan fets i verificats. La propera fita funcional és `SH-012`: construir la vertical slice original de 10–15 minuts, ja que tota la base tècnica que requereix (enemic, soroll, persecució, amagatall, stamina, checkpoint, càmera nocturna, traversal, evasió, director de tensió i accessibilitat horror) ja existeix. `SH-012` i `SH-016` continuen requerint validació de contingut o hardware real.
+`SH-018` (portes per fases), `SH-019` (director de tensió), `SH-006` (amagatalls genèrics) i `SH-012` (vertical slice) ja estan fets i verificats tècnicament; només queda que el propietari cronometri `SH-012` amb un jugador real per confirmar que el recorregut cau dins dels 10–15 minuts objectiu. Amb tot el backlog P1 tancat, la propera fita és decidir entre `P0-*` (bloquejadors comercials), `SH-015`/`SH-016` (presentació i QA de hardware) o algun `ER-*` de profunditat d'Escape Room. `SH-016` continua requerint hardware real.
 
 ## 9. Fora d'abast intencionat
 
