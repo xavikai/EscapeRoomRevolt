@@ -129,7 +129,7 @@ Cinquè tipus de puzle: `WirePuzzle`, connectar cables a sockets (`Connect(wireI
 - Director de tensió opcional que limita la freqüència global d'esdeveniments de terror (cooldown entre qualsevol parell d'esdeveniments, pressupost per finestra mòbil i zones segures per checkpoint/zona de persecució), sense substituir l'autor de nivell ni el cooldown propi de cada esdeveniment.
 - Camera shake additiu basat en trauma i hàptics de tensió lligats a cordura crítica i entrada en persecució; el shake es desactiva automàticament en VR per evitar mareig.
 - Accessibilitat horror ampliada: reducció real de sorolls forts (esdeveniments i tells d'IA) i assistència en persecucions (enemic més lent i amb menys memòria) ja aplicades i disponibles al menú; reducció de tremolor de càmera també aplicada. Reducció de gore queda exposada com a toggle/hook per a quan hi hagi contingut de gore.
-- Amagatalls inspeccionables per la IA i anchors separats d'entrada, sortida i inspecció.
+- Amagatalls inspeccionables per la IA i anchors separats d'entrada, sortida i inspecció. Tres prefabs d'exemple (`HidingLocker_Modular`, `HidingBed_Modular`, `HidingContainer_Modular`) i una eina d'autoria (`Escape Room Framework/Create/Survival/Hiding Spot`) que genera el mateix esquelet (col·lisió trigger, `NavMeshObstacle`, anchors, `ModelSocket` reemplaçable) per a qualsevol dels quatre tipus (`Locker`, `UnderBed`, `Container`, `Custom`). Mentre s'està amagat, un vinyeta de pantalla (`HidingViewFeedback`, creat automàticament pel Bootstrapper) tanca la visió i s'intensifica amb la respiració, sense tocar el FOV real de la càmera (segur en VR); usa una prioritat de `Volume` més alta que la de cordura perquè es superposi mentre s'està amagat i deixi veure el vinyeta de cordura en sortir, en lloc de forçar el paràmetre compartit a zero permanentment.
 - Portes operables per la IA segons perfil, amb bloqueig NavMesh alliberat en obrir-se.
 - Portes amb obertura per fases (peek), mode curós i slam, cadascun amb soroll i durada diferenciats, compatible amb la interacció d'IA existent.
 - Checkpoints amb snapshot independent de les ranures manuals i restauració de l'estat `ISaveable`.
@@ -275,7 +275,6 @@ Matriu objectiu:
 
 | ID | Sistema | Implementació pendent | Criteri d'acceptació |
 |---|---|---|---|
-| SH-006 | Amagatalls | Crear lockers, llits i contenidors genèrics. | Entrada/sortida, càmera, bloqueig de moviment, respiració, ocupació, IA que pot inspeccionar i compatibilitat PC/VR. |
 | SH-012 | Demo | Crear una escena vertical slice de Survival Horror original. | Inclou exploració, objectiu, recurs de visió, enemic, soroll, persecució, amagatall, checkpoint i final; recorregut de 10–15 minuts. |
 
 ### P2 — Càmera nocturna i moviment d'escapada
@@ -322,13 +321,13 @@ Matriu objectiu:
 ## 8. Ordre recomanat d'implementació
 
 1. `P0-001`, `P0-003b` a `P0-008`: impedir que el deute creixi mentre s'afegeixen mecàniques (`P0-002` ja fet).
-2. `SH-006` i `SH-012`: completar QA VR d'amagatalls i durada de la vertical slice.
+2. `SH-012`: construir la vertical slice de 10–15 minuts (`SH-006` ja fet).
 3. `SH-015` i `SH-016`: tancar presentació/QA de hardware (`SH-020b`, head bob, ja fet).
 4. `ER-001`, `ER-002c`, `ER-004`, `ER-007` i `ER-008b`: ampliar varietat i qualitat d'autor per Escape Room (`ER-003`, `ER-005` i `ER-006` ja fets).
 5. `VR-004`, `VR-005c`, `VR-006` i `VR-007`: completar dual-grab, feature gating i QA de hardware sobre el rig funcional (mà, vinyeta, hàptics, paritat de socket i equipament per mà ja resolts).
 6. `ARC-001` a `ARC-010`: es poden intercalar, però han d'estar resolts abans de publicar la versió comercial final.
 
-`SH-018` (portes per fases) i `SH-019` (director de tensió) ja estan fets i verificats. La propera fita funcional pendent de decidir amb el propietari és entre `SH-020b` (head bob), `VR-005` (paritat de física a dues mans), o algun `ER-*` de profunditat d'Escape Room; `SH-006`, `SH-012` i `SH-016` continuen requerint validació de contingut o hardware real, ajornada per ara. La base tècnica d'enemic, soroll, persecució, amagatall, stamina, checkpoint, càmera nocturna, traversal, evasió, director de tensió i accessibilitat horror ja existeix.
+`SH-018` (portes per fases), `SH-019` (director de tensió) i `SH-006` (amagatalls genèrics) ja estan fets i verificats. La propera fita funcional és `SH-012`: construir la vertical slice original de 10–15 minuts, ja que tota la base tècnica que requereix (enemic, soroll, persecució, amagatall, stamina, checkpoint, càmera nocturna, traversal, evasió, director de tensió i accessibilitat horror) ja existeix. `SH-012` i `SH-016` continuen requerint validació de contingut o hardware real.
 
 ## 9. Fora d'abast intencionat
 
