@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using EscapeRoomRevolt.Core.Settings;
 
 namespace EscapeRoomRevolt.Systems.Audio
 {
@@ -9,9 +10,14 @@ namespace EscapeRoomRevolt.Systems.Audio
         public static AudioManager Instance { get; private set; }
 
         [Header("Global Volumes")]
+        [Tooltip("Used only when no GameSettingsService is present (e.g. a standalone test scene). Otherwise the player's saved settings win.")]
         [Range(0f, 1f)] public float MasterVolume = 1f;
         [Range(0f, 1f)] public float MusicVolume = 0.5f;
         [Range(0f, 1f)] public float SFXVolume = 1f;
+
+        private float EffectiveMasterVolume => GameSettingsService.Instance != null ? GameSettingsService.Instance.Data.masterVolume : MasterVolume;
+        private float EffectiveMusicVolume => GameSettingsService.Instance != null ? GameSettingsService.Instance.Data.musicVolume : MusicVolume;
+        private float EffectiveSFXVolume => GameSettingsService.Instance != null ? GameSettingsService.Instance.Data.sfxVolume : SFXVolume;
 
         [Header("Pool Settings")]
         [SerializeField] private int _poolSize = 15;
@@ -98,8 +104,8 @@ namespace EscapeRoomRevolt.Systems.Audio
             AudioSource source = GetAvailableSource();
             source.transform.position = position;
             source.clip = clip;
-            source.volume = volumeMultiplier * SFXVolume * MasterVolume;
-            
+            source.volume = volumeMultiplier * EffectiveSFXVolume * EffectiveMasterVolume;
+
             source.spatialBlend = 1f; // Ensure it's 3D
             source.pitch = 1f + Random.Range(-pitchVariance, pitchVariance);
             
@@ -118,8 +124,8 @@ namespace EscapeRoomRevolt.Systems.Audio
 
             AudioSource source = GetAvailableSource();
             source.clip = clip;
-            source.volume = volumeMultiplier * SFXVolume * MasterVolume;
-            
+            source.volume = volumeMultiplier * EffectiveSFXVolume * EffectiveMasterVolume;
+
             source.spatialBlend = 0f; // 2D Sound, no panning/distance attenuation
             source.pitch = 1f;
             
@@ -176,7 +182,7 @@ namespace EscapeRoomRevolt.Systems.Audio
         {
             if (_ambientSource.clip == clip) return;
             _ambientSource.clip = clip;
-            _ambientSource.volume = volumeMultiplier * SFXVolume * MasterVolume;
+            _ambientSource.volume = volumeMultiplier * EffectiveSFXVolume * EffectiveMasterVolume;
             _ambientSource.Play();
         }
 
@@ -193,7 +199,7 @@ namespace EscapeRoomRevolt.Systems.Audio
 
             float elapsed = 0f;
             float startVolumeOut = fadeOutSource.volume;
-            float targetVolumeIn = MusicVolume * MasterVolume;
+            float targetVolumeIn = EffectiveMusicVolume * EffectiveMasterVolume;
 
             while (elapsed < duration)
             {
@@ -213,9 +219,9 @@ namespace EscapeRoomRevolt.Systems.Audio
         private void Update()
         {
             // Real-time volume adjustments (in case they are changed via a Settings Menu)
-            if (_isBgmA_Active && _bgmSourceA.isPlaying) _bgmSourceA.volume = MusicVolume * MasterVolume;
-            if (!_isBgmA_Active && _bgmSourceB.isPlaying) _bgmSourceB.volume = MusicVolume * MasterVolume;
-            if (_ambientSource.isPlaying) _ambientSource.volume = SFXVolume * MasterVolume;
+            if (_isBgmA_Active && _bgmSourceA.isPlaying) _bgmSourceA.volume = EffectiveMusicVolume * EffectiveMasterVolume;
+            if (!_isBgmA_Active && _bgmSourceB.isPlaying) _bgmSourceB.volume = EffectiveMusicVolume * EffectiveMasterVolume;
+            if (_ambientSource.isPlaying) _ambientSource.volume = EffectiveSFXVolume * EffectiveMasterVolume;
         }
     }
 }

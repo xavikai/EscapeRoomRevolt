@@ -15,6 +15,16 @@ namespace EscapeRoomRevolt.Core.Settings
         public bool fullscreen = true;
         public bool subtitles = true;
         public bool reduceFlashes;
+        [Tooltip("Caps intensity on any camera-shake effect that checks this flag. No shake effect exists in the base template yet — this is an integration point for buyer-authored content.")]
+        public bool reduceScreenShake;
+        [Tooltip("Halves the volume of horror-event stingers and enemy audio tells.")]
+        public bool reduceLoudSounds;
+        [Tooltip("Lets buyer-authored gore content tone itself down. No gore content exists in the base template — this is an integration point.")]
+        public bool reduceGore;
+        [Tooltip("Slightly slows enemy chase speed and shortens how long they remember your last position.")]
+        public bool chaseAssistance;
+        [Tooltip("Caps the intensity of the PC camera head bob while walking/running.")]
+        public bool reduceHeadBob;
         [TextArea] public string bindingOverridesJson = string.Empty;
     }
 
@@ -38,19 +48,36 @@ namespace EscapeRoomRevolt.Core.Settings
         {
             Data = data ?? new GameSettingsData();
             Apply();
-            File.WriteAllText(Path.Combine(Application.persistentDataPath, FileName), JsonUtility.ToJson(Data, true));
+            try
+            {
+                File.WriteAllText(Path.Combine(Application.persistentDataPath, FileName), JsonUtility.ToJson(Data, true));
+            }
+            catch (Exception exception)
+            {
+                Debug.LogWarning($"[GameSettingsService] Could not save settings.json: {exception.Message}");
+            }
         }
 
         private void Load()
         {
             string path = Path.Combine(Application.persistentDataPath, FileName);
-            if (File.Exists(path)) Data = JsonUtility.FromJson<GameSettingsData>(File.ReadAllText(path)) ?? new GameSettingsData();
+            if (File.Exists(path))
+            {
+                try
+                {
+                    Data = JsonUtility.FromJson<GameSettingsData>(File.ReadAllText(path)) ?? new GameSettingsData();
+                }
+                catch (Exception exception)
+                {
+                    Debug.LogWarning($"[GameSettingsService] Could not read settings.json, using defaults: {exception.Message}");
+                    Data = new GameSettingsData();
+                }
+            }
             Apply();
         }
 
         private void Apply()
         {
-            AudioListener.volume = Data.masterVolume;
             if (Data.qualityLevel >= 0 && Data.qualityLevel < QualitySettings.names.Length)
                 QualitySettings.SetQualityLevel(Data.qualityLevel, true);
             Screen.fullScreen = Data.fullscreen;

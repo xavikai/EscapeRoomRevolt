@@ -134,10 +134,19 @@ namespace EscapeRoomRevolt.UI.Toolkit
             Show(MenuScreen.Settings, "PANEL DE MANTENIMIENTO");
             var settings = GameSettingsService.Instance?.Data ?? new GameSettingsData();
             AddSlider("Volumen maestro", settings.masterVolume, value => { settings.masterVolume = value; SaveSettings(settings); });
+            AddSlider("Volumen de música", settings.musicVolume, value => { settings.musicVolume = value; SaveSettings(settings); });
+            AddSlider("Volumen de efectos", settings.sfxVolume, value => { settings.sfxVolume = value; SaveSettings(settings); });
             AddSlider("Sensibilidad", settings.mouseSensitivity, value => { settings.mouseSensitivity = value; SaveSettings(settings); }, 0.1f, 3f);
+            AddQualitySelector(settings);
             AddToggle("Pantalla completa", settings.fullscreen, value => { settings.fullscreen = value; SaveSettings(settings); });
             AddToggle("Subtítulos", settings.subtitles, value => { settings.subtitles = value; SaveSettings(settings); });
             AddToggle("Reducir destellos", settings.reduceFlashes, value => { settings.reduceFlashes = value; SaveSettings(settings); });
+            AddToggle("Reducir temblor de cámara", settings.reduceScreenShake, value => { settings.reduceScreenShake = value; SaveSettings(settings); });
+            AddToggle("Reducir sonidos fuertes", settings.reduceLoudSounds, value => { settings.reduceLoudSounds = value; SaveSettings(settings); });
+            AddToggle("Reducir gore", settings.reduceGore, value => { settings.reduceGore = value; SaveSettings(settings); });
+            AddToggle("Reducir balanceo de cámara", settings.reduceHeadBob, value => { settings.reduceHeadBob = value; SaveSettings(settings); });
+            if (GameFeatures.IsEnabled(OptionalGameFeature.EnemyAI))
+                AddToggle("Asistencia en persecuciones", settings.chaseAssistance, value => { settings.chaseAssistance = value; SaveSettings(settings); });
             if (GameFeatures.IsEnabled(OptionalGameFeature.PlayerVitals)) AddDifficultySelector();
             AddSectionLabel("CONTROLES");
             AddRebind("Avanzar", "Move", "up", settings);
@@ -475,6 +484,26 @@ namespace EscapeRoomRevolt.UI.Toolkit
         {
             var toggle = new Toggle(label) { value = value }; toggle.RegisterValueChangedCallback(evt => changed(evt.newValue));
             _content.Add(toggle);
+        }
+
+        private void AddQualitySelector(GameSettingsData settings)
+        {
+            string[] names = QualitySettings.names;
+            if (names.Length == 0) return;
+
+            int currentLevel = settings.qualityLevel >= 0 && settings.qualityLevel < names.Length
+                ? settings.qualityLevel
+                : QualitySettings.GetQualityLevel();
+            var choices = new List<string>(names);
+            var dropdown = new DropdownField("Calidad gráfica", choices, currentLevel);
+            dropdown.RegisterValueChangedCallback(evt =>
+            {
+                int index = choices.IndexOf(evt.newValue);
+                if (index < 0) return;
+                settings.qualityLevel = index;
+                SaveSettings(settings);
+            });
+            _content.Add(dropdown);
         }
 
         private void AddDifficultySelector()

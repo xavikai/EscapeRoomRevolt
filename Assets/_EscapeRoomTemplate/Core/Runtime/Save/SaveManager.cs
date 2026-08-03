@@ -20,6 +20,7 @@ namespace EscapeRoomRevolt.Core.Save
         public string savedAtUtc;
         public float playTimeSeconds;
         public string thumbnailFile;
+        public int runSeed;
         public List<string> keys = new List<string>();
         public List<string> values = new List<string>();
         public List<string> destroyedEntities = new List<string>();
@@ -67,6 +68,15 @@ namespace EscapeRoomRevolt.Core.Save
         private float _playTimeSeconds;
         private SaveGameData _pendingLoad;
 
+        /// <summary>
+        /// Stable per-playthrough seed, persisted with the save. A fresh one is rolled on
+        /// StartNewGame() (via ResetSession); loading a save restores the one it was played with, so
+        /// anything seeded from it (e.g. a randomized puzzle code) stays the same across a reload
+        /// instead of rerolling into a state that no longer matches an already-solved puzzle or a
+        /// hint the player already read.
+        /// </summary>
+        public int RunSeed { get; private set; }
+
         public event Action<string> SaveCompleted;
         public event Action<string> LoadCompleted;
         public event Action<string, string> OperationFailed;
@@ -80,6 +90,7 @@ namespace EscapeRoomRevolt.Core.Save
             }
             _instance = this;
             DontDestroyOnLoad(gameObject);
+            RunSeed = Guid.NewGuid().GetHashCode();
         }
 
         private void OnDestroy()
@@ -178,7 +189,8 @@ namespace EscapeRoomRevolt.Core.Save
                 sceneName = SceneManager.GetActiveScene().name,
                 savedAtUtc = DateTime.UtcNow.ToString("O"),
                 playTimeSeconds = _playTimeSeconds,
-                thumbnailFile = $"{SanitizeSlotId(slotId)}.png"
+                thumbnailFile = $"{SanitizeSlotId(slotId)}.png",
+                runSeed = RunSeed
             };
 
             var usedIds = new HashSet<string>();
@@ -238,21 +250,12 @@ namespace EscapeRoomRevolt.Core.Save
                 return;
             }
 
-            SaveGameData data;
-            try
-            {
-                data = JsonUtility.FromJson<SaveGameData>(File.ReadAllText(path));
-            }
-            catch (Exception exception)
-            {
-                OperationFailed?.Invoke(slotId, exception.Message);
-                Debug.LogError($"[SaveManager] Failed to read slot '{slotId}': {exception.Message}");
-                return;
-            }
-
+            SaveGameData data = TryReadSlot(path);
             if (data == null)
             {
-                Debug.LogError("[SaveManager] Failed to parse save file.");
+                const string message = "La partida guardada está dañada y no se pudo recuperar ni desde su copia de seguridad.";
+                OperationFailed?.Invoke(slotId, message);
+                Debug.LogError($"[SaveManager] {message}");
                 return;
             }
 
@@ -301,6 +304,8 @@ namespace EscapeRoomRevolt.Core.Save
         {
             string path = GetSlotPath(slotId);
             if (File.Exists(path)) File.Delete(path);
+            string backupPath = path + ".bak";
+            if (File.Exists(backupPath)) File.Delete(backupPath);
             string thumbnailPath = GetThumbnailPath(slotId);
             if (File.Exists(thumbnailPath)) File.Delete(thumbnailPath);
         }
@@ -313,11 +318,13 @@ namespace EscapeRoomRevolt.Core.Save
             _destroyedEntities.Clear();
             _saveables.Clear();
             _playTimeSeconds = 0f;
+            RunSeed = Guid.NewGuid().GetHashCode();
         }
 
         private void BeginSceneLoad(SaveGameData data)
         {
             _pendingLoad = data;
+            RunSeed = data.runSeed;
             _destroyedEntities.Clear();
             foreach (string destroyed in data.destroyedEntities) _destroyedEntities.Add(destroyed);
             _saveables.Clear();
@@ -352,6 +359,7 @@ namespace EscapeRoomRevolt.Core.Save
         private void Restore(SaveGameData data, string slotId)
         {
             CleanupSaveables();
+            RunSeed = data.runSeed;
             _destroyedEntities.Clear();
             foreach (var destroyed in data.destroyedEntities)
             {
@@ -396,12 +404,26 @@ namespace EscapeRoomRevolt.Core.Save
             Debug.Log($"[SaveManager] Loaded slot '{slotId}'.");
         }
 
+        /// <summary>Reads a slot, falling back to its <c>.bak</c> copy (written by WriteSlot's File.Replace) if the primary file is missing or corrupted.</summary>
         private static SaveGameData TryReadSlot(string path)
+        {
+            SaveGameData data = TryReadSlotFile(path);
+            if (data != null) return data;
+
+            string backupPath = path + ".bak";
+            if (!File.Exists(backupPath)) return null;
+
+            data = TryReadSlotFile(backupPath);
+            if (data != null) Debug.LogWarning($"[SaveManager] Slot '{Path.GetFileName(path)}' was corrupted; recovered from its backup.");
+            return data;
+        }
+
+        private static SaveGameData TryReadSlotFile(string path)
         {
             try { return JsonUtility.FromJson<SaveGameData>(File.ReadAllText(path)); }
             catch (Exception exception)
             {
-                Debug.LogWarning($"[SaveManager] Ignoring invalid slot '{Path.GetFileName(path)}': {exception.Message}");
+                Debug.LogWarning($"[SaveManager] Could not read '{Path.GetFileName(path)}': {exception.Message}");
                 return null;
             }
         }
@@ -430,13 +452,20 @@ namespace EscapeRoomRevolt.Core.Save
         private string GetSlotPath(string slotId) => Path.Combine(GetSaveFolder(), $"{SanitizeSlotId(slotId)}.json");
         public string GetThumbnailPath(string slotId) => Path.Combine(GetSaveFolder(), $"{SanitizeSlotId(slotId)}.png");
 
+        /// <summary>
+        /// Writes the temp file first, then atomically swaps it into place. If the process dies at
+        /// any point before the final swap, the previous save on disk is untouched — there is no
+        /// window where the slot file is missing, unlike a Delete-then-Move sequence.
+        /// </summary>
         private void WriteSlot(string slotId, string json)
         {
             string path = GetSlotPath(slotId);
             string temporaryPath = path + ".tmp";
+            string backupPath = path + ".bak";
             File.WriteAllText(temporaryPath, json);
-            if (File.Exists(path)) File.Delete(path);
-            File.Move(temporaryPath, path);
+
+            if (File.Exists(path)) File.Replace(temporaryPath, path, backupPath);
+            else File.Move(temporaryPath, path);
         }
     }
 }

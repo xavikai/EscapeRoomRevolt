@@ -62,6 +62,9 @@ namespace EscapeRoomRevolt.Player.PC
         public Transform ViewTransform => _playerCamera;
         public float CameraPitch => _cameraPitch;
 
+        /// <summary>Base sensitivity multiplied by the player's saved accessibility preference (0.1-3, default 1), so the settings slider scales this value instead of replacing it.</summary>
+        private float EffectiveMouseSensitivity => _mouseSensitivity * (GameSettingsService.Instance != null ? GameSettingsService.Instance.Data.mouseSensitivity : 1f);
+
         // ── Unity Lifecycle ──────────────────────────────────────────────────
         private void Awake()
         {
@@ -119,8 +122,9 @@ namespace EscapeRoomRevolt.Player.PC
 
             var input = EscapeRoomRevolt.Core.Input.InputRouter.Instance;
             Vector2 look = input != null ? input.Look * 0.05f : Vector2.zero;
-            float mouseX = look.x * _mouseSensitivity * Time.deltaTime;
-            float mouseY = look.y * _mouseSensitivity * Time.deltaTime;
+            float sensitivity = EffectiveMouseSensitivity;
+            float mouseX = look.x * sensitivity * Time.deltaTime;
+            float mouseY = look.y * sensitivity * Time.deltaTime;
 
             // Horizontal rotation — rotates the whole player body
             transform.Rotate(Vector3.up * mouseX);
