@@ -46,7 +46,31 @@ Para terminar una partida puedes:
 
 La pantalla final permite reintentar, volver al menú principal o salir.
 
-## 4. Inventario
+## 4. Personalizar el aspecto y los textos del menú
+
+### Cambiar colores, fuentes y logo
+
+1. En el panel de Proyecto, botón derecho → `Create > Escape Room Framework > Menu Theme Settings`. Dale un nombre, por ejemplo `MiTemaDeMenu`.
+2. En el Inspector del nuevo asset, ajusta los colores (fondo del panel, acento, título, botones) y, si quieres, arrastra una fuente ya importada (`.ttf`/`.otf`) en `Title Font`/`Body Font` y una imagen en `Logo`.
+3. Busca el objeto `MenuUI` en tu escena (tiene el componente `UI Toolkit Menu Controller`) y arrastra tu asset a su campo `_theme`.
+4. Entra en Play — el menú ya usa tu paleta, tipografías y logo. Sin asignar nada, el menú conserva el diseño original de la plantilla.
+
+Si prefieres editar directamente el archivo de estilos en vez de crear un asset, `EscapeRoomMenu.uss` tiene los colores más repetidos como variables al principio del fichero (`--color-accent`, `--color-text`...), así que cambiar la paleta base es editar unas pocas líneas en vez de buscar cada color suelto.
+
+El propio jugador puede activar un modo de alto contraste desde Ajustes; ese modo siempre tiene prioridad sobre tu tema, para que la accesibilidad nunca dependa de la personalización visual.
+
+### Cambiar los textos que aparecen
+
+Los textos del menú principal y del menú de pausa (título de cada pantalla y sus botones) viven en un catálogo editable sin tocar código:
+
+1. Selecciona `Assets/_EscapeRoomTemplate/Resources/DefaultLocalizationCatalog.asset`.
+2. En el Inspector verás una lista de entradas; cada una tiene una clave (el texto español original, por ejemplo `"Nueva partida"`) y una lista de traducciones por idioma.
+3. Para cambiar un texto, edita el campo `Text` de la fila `es` de la entrada correspondiente.
+4. Para añadir un idioma (o completar las traducciones al inglés que ya incluye), añade una fila nueva con su código (`en`, `fr`...) y su traducción — aparecerá automáticamente en el desplegable de idioma de Ajustes, sin tocar ningún script.
+
+**Importante**: por ahora este catálogo solo cubre el menú principal y el de pausa. El resto de textos del juego (HUD, inventario, notas, mensajes de puzles, prompts de interacción como "Amagar-se" o "Sortir") todavía están escritos directamente en el código C# de cada sistema — cambiarlos significa editar ese texto en el script correspondiente. Ampliar el catálogo a todo el juego es trabajo pendiente (`P0-007` en `ROADMAP.md`).
+
+## 5. Inventario
 
 El inventario se abre con `I` en PC. El almacenamiento ya no está limitado por la barra rápida.
 
@@ -57,7 +81,7 @@ El inventario se abre con `I` en PC. El almacenamiento ya no está limitado por 
 
 Cada puerta o receptor puede cambiar su política a `Selected Only` o `Auto Use Single` desde el Inspector.
 
-## 5. Controles PC predeterminados
+## 6. Controles PC predeterminados
 
 - WASD: movimiento.
 - Ratón: mirar.
@@ -78,7 +102,7 @@ Cada puerta o receptor puede cambiar su política a `Selected Only` o `Auto Use 
 
 Los controles principales se pueden reasignar durante el juego desde `Ajustes > Controles`; los cambios se guardan fuera de las partidas. Para modificar bindings de mando o XR, edita `Resources/Input/EscapeRoomInputActions.inputactions`.
 
-## 6. Preparación VR
+## 7. Preparación VR
 
 **Experimental**: el soporte VR es funcionalmente completo (rig, manos, hápticos, UI 3D, confort) pero todavía no ha pasado QA en un visor físico real — solo en el simulador de XRI. No asumas paridad total con PC hasta validarlo en hardware.
 
@@ -90,7 +114,7 @@ Los controles principales se pueden reasignar durante el juego desde `Ajustes > 
 
 El prefab VR lo genera la versión instalada de XRI e incorpora adaptadores de manos, hápticos y UI Toolkit 3D. Los modelos de mando/mano se sustituyen bajo sus `ModelSocket`.
 
-## 7. Accesibilidad y ritmo de terror
+## 8. Accesibilidad y ritmo de terror
 
 Desde el menú de ajustes del propio juego (no del Editor), el jugador puede activar:
 
@@ -102,7 +126,7 @@ Ninguna de estas opciones sustituye a la dificultad: son independientes, así qu
 
 Si añades un `TensionDirector` a la escena, limita cuántos eventos de terror pueden dispararse seguidos (cooldown global y presupuesto por ventana de tiempo), por encima del cooldown propio de cada evento. Es opcional: sin él, todo funciona igual que antes.
 
-## 8. Publicación
+## 9. Publicación
 
 Antes de distribuir el asset:
 

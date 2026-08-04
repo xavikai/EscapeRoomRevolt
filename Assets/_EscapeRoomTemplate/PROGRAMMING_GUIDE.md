@@ -124,6 +124,17 @@ float breathing = hidingSpot.BreathingIntensity; // 0-1, drives audio/haptics
 
 `GameSettingsData.highContrastMode` (exposed as a toggle in the Settings screen) forces a fixed black/white/yellow palette across every menu screen, and always wins over an assigned `MenuThemeSettings` — accessibility overrides branding, not the other way around.
 
+## Localization
+
+`LocalizationService.Tr(key)` resolves a string against `DefaultLocalizationCatalog.asset` (`Resources/DefaultLocalizationCatalog.asset`) for the language in `GameSettingsData.languageCode`, falling back to the catalog's fallback language, then to the key itself if nothing matches — so a call site is safe to add before its catalog entry exists.
+
+```csharp
+label.text = LocalizationService.Tr("Continuar");
+LocalizationService.Instance.SetLanguage("en"); // persists via GameSettingsService, fires LanguageChanged
+```
+
+By convention the key is the original Spanish text rather than a structured id (`Tr("Continuar")`, not `Tr("menu.continue")`) — a missing key still displays correctly since it falls through to itself, so migrating one call site at a time never breaks anything. Only `UIToolkitMenuController.Show()` (every screen title) and `ShowMain()`/`ShowPause()`'s buttons go through it so far; everything else (HUD, inventory, notes, puzzle prompts, interactable prompts like `HidingSpot._enterPrompt`) is still a plain C# literal. `LocalizationCatalog.AvailableLanguages()` derives the Settings language dropdown from whatever language codes actually appear in the catalog, so adding a new language is purely a data change — add a `LocalizedString` row to each entry, no code or UI change needed.
+
 ## Tension pacing and accessibility
 
 `TensionDirector` (optional, add it to a scene to opt in) gates `HorrorEventTrigger` with a global cooldown and a rolling event budget, on top of each trigger's own cooldown. `CameraShakeController` and haptics already react to critical sanity and enemy chase; call `CameraShakeController.Instance?.Shake(intensity)` for your own stingers — it self-disables in VR.
