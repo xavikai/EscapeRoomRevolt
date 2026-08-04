@@ -187,16 +187,45 @@ namespace EscapeRoomRevolt.Core.Save
                 OperationFailed?.Invoke(slotId, message);
                 return;
             }
+
+            SaveGameData data = CaptureSnapshot();
+            data.slotId = SanitizeSlotId(slotId);
+            data.thumbnailFile = $"{data.slotId}.png";
+
+            try
+            {
+                WriteSlot(data.slotId, JsonUtility.ToJson(data, true));
+                if (Application.isPlaying) ScreenCapture.CaptureScreenshot(GetThumbnailPath(data.slotId));
+            }
+            catch (Exception exception)
+            {
+                string message = $"No se pudo guardar: {exception.Message}";
+                OperationFailed?.Invoke(data.slotId, message);
+                Debug.LogError($"[SaveManager] {message}");
+                return;
+            }
+
+            EscapeRoomRevolt.Core.EventBus.Publish(new EscapeRoomRevolt.Core.OnGameSaved { slotId = data.slotId });
+            SaveCompleted?.Invoke(data.slotId);
+            Debug.Log($"[SaveManager] Game saved to slot '{data.slotId}'.");
+        }
+
+        /// <summary>
+        /// Captures every registered ISaveable into an in-memory snapshot, without touching disk.
+        /// Used by SaveGame (which adds slot metadata and writes it) and by systems that need to
+        /// preserve state across a scene change without a real save file (e.g. room-to-room
+        /// transitions via GameFlowManager.TransitionToRoom).
+        /// </summary>
+        public SaveGameData CaptureSnapshot()
+        {
             CleanupSaveables();
 
             SaveGameData data = new SaveGameData
             {
-                slotId = SanitizeSlotId(slotId),
                 scenePath = SceneManager.GetActiveScene().path,
                 sceneName = SceneManager.GetActiveScene().name,
                 savedAtUtc = DateTime.UtcNow.ToString("O"),
                 playTimeSeconds = _playTimeSeconds,
-                thumbnailFile = $"{SanitizeSlotId(slotId)}.png",
                 runSeed = RunSeed
             };
 
@@ -221,23 +250,7 @@ namespace EscapeRoomRevolt.Core.Save
             }
 
             data.destroyedEntities.AddRange(_destroyedEntities);
-
-            try
-            {
-                WriteSlot(data.slotId, JsonUtility.ToJson(data, true));
-                if (Application.isPlaying) ScreenCapture.CaptureScreenshot(GetThumbnailPath(data.slotId));
-            }
-            catch (Exception exception)
-            {
-                string message = $"No se pudo guardar: {exception.Message}";
-                OperationFailed?.Invoke(data.slotId, message);
-                Debug.LogError($"[SaveManager] {message}");
-                return;
-            }
-
-            EscapeRoomRevolt.Core.EventBus.Publish(new EscapeRoomRevolt.Core.OnGameSaved { slotId = data.slotId });
-            SaveCompleted?.Invoke(data.slotId);
-            Debug.Log($"[SaveManager] Game saved to slot '{data.slotId}'.");
+            return data;
         }
 
         public void LoadGame()
@@ -272,7 +285,7 @@ namespace EscapeRoomRevolt.Core.Save
                 return;
             }
 
-            Restore(data, slotId);
+            RestoreSnapshot(data, slotId);
         }
 
         public bool HasSave(string slotId) => File.Exists(GetSlotPath(slotId));
@@ -360,10 +373,16 @@ namespace EscapeRoomRevolt.Core.Save
             foreach (MonoBehaviour behaviour in FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include))
                 if (behaviour is ISaveable saveable) Register(saveable);
 
-            if (data != null) Restore(data, data.slotId);
+            if (data != null) RestoreSnapshot(data, data.slotId);
         }
 
-        private void Restore(SaveGameData data, string slotId)
+        /// <summary>
+        /// Restores every ISaveable in the current scene from an in-memory snapshot, without
+        /// touching disk. Used by LoadGame (after reading a slot from disk) and by systems that
+        /// need to restore state after a scene change without a real save file (e.g. room-to-room
+        /// transitions via GameFlowManager.TransitionToRoom).
+        /// </summary>
+        public void RestoreSnapshot(SaveGameData data, string slotId)
         {
             CleanupSaveables();
             RunSeed = data.runSeed;

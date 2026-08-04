@@ -132,6 +132,13 @@ namespace EscapeRoomRevolt.Core.Flow
                 roomId = _objectiveSet.RoomId,
                 completionTimeSeconds = Mathf.Max(0f, Time.unscaledTime - _startedAt)
             });
+
+            if (!string.IsNullOrWhiteSpace(_objectiveSet.NextRoomScene))
+            {
+                GameFlowManager.EnsureInstance().TransitionToRoom(_objectiveSet.NextRoomScene, _objectiveSet.NextRoomSpawnId, RoomLoadMode.Single);
+                return;
+            }
+
             GameFlowManager.EnsureInstance().CompleteGame(_objectiveSet.CompletionEnding);
         }
 

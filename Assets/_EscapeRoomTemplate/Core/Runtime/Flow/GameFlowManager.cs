@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using EscapeRoomRevolt.Core.Save;
+using EscapeRoomRevolt.Player;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,6 +9,15 @@ namespace EscapeRoomRevolt.Core.Flow
 {
     public enum GameFlowState { Boot, MainMenu, Loading, Playing, Paused, Completed, Failed }
     public enum GameOutcome { Victory, Defeat }
+
+    /// <summary>How RoomPortal/ObjectiveSet-driven room transitions load their target scene.</summary>
+    public enum RoomLoadMode
+    {
+        /// <summary>Unloads the current scene entirely. State is preserved via an in-memory SaveManager snapshot; revisiting an earlier room reloads it fresh (no per-room backtracking cache).</summary>
+        Single,
+        /// <summary>Loads the target scene alongside the current one. Nothing is unloaded, so backtracking works for free — intended for a small number of rooms kept in memory together.</summary>
+        Additive
+    }
 
     public readonly struct GameResult
     {
@@ -39,6 +49,8 @@ namespace EscapeRoomRevolt.Core.Flow
         private GameFlowState _state = GameFlowState.Boot;
         private GameResult? _lastResult;
         private bool _transitionInProgress;
+        private SaveGameData _pendingRoomSnapshot;
+        private string _pendingRoomSpawnId;
 
         public event Action<GameFlowState> StateChanged;
         public event Action<GameResult> GameEnded;
@@ -124,6 +136,50 @@ namespace EscapeRoomRevolt.Core.Flow
             LoadScene(SceneManager.GetActiveScene().path);
         }
 
+        /// <summary>
+        /// Sends the player to a spawn point in another scene (see RoomSpawnPoint), used by
+        /// RoomPortal and by ObjectiveManager when a room's ObjectiveSet has a next room configured.
+        /// Single mode preserves inventory/objectives/world-state via an in-memory SaveManager
+        /// snapshot; Additive mode loads the target scene alongside the current one instead, so
+        /// nothing needs preserving because nothing was unloaded.
+        /// </summary>
+        public void TransitionToRoom(string targetScene, string targetSpawnId, RoomLoadMode mode)
+        {
+            if (_transitionInProgress) return;
+            if (string.IsNullOrWhiteSpace(targetScene))
+            {
+                Debug.LogError("[GameFlow] TransitionToRoom called with no target scene.");
+                return;
+            }
+
+            if (mode == RoomLoadMode.Additive)
+            {
+                StartCoroutine(TransitionAdditiveRoutine(targetScene, targetSpawnId));
+                return;
+            }
+
+            _pendingRoomSnapshot = SaveManager.Instance?.CaptureSnapshot();
+            _pendingRoomSpawnId = targetSpawnId;
+            LoadScene(targetScene);
+        }
+
+        private IEnumerator TransitionAdditiveRoutine(string targetScene, string targetSpawnId)
+        {
+            _transitionInProgress = true;
+            AsyncOperation operation = SceneManager.LoadSceneAsync(targetScene, LoadSceneMode.Additive);
+            if (operation == null)
+            {
+                Debug.LogError($"[GameFlow] Unity could not load scene '{targetScene}'. Add it to Build Settings.");
+                _transitionInProgress = false;
+                yield break;
+            }
+            while (!operation.isDone) yield return null;
+
+            Scene loaded = SceneManager.GetSceneByName(targetScene);
+            PositionPlayerAtSpawn(loaded, targetSpawnId);
+            _transitionInProgress = false;
+        }
+
         public void SetPaused(bool paused)
         {
             if (_state == GameFlowState.Completed || _state == GameFlowState.Failed || _state == GameFlowState.Loading) return;
@@ -202,6 +258,49 @@ namespace EscapeRoomRevolt.Core.Flow
             _transitionInProgress = false;
             Time.timeScale = 1f;
             SetState(MatchesScene(scene, MainMenuScene) ? GameFlowState.MainMenu : GameFlowState.Playing);
+
+            if (_pendingRoomSnapshot != null || !string.IsNullOrWhiteSpace(_pendingRoomSpawnId))
+                ApplyPendingRoomTransition(scene);
+        }
+
+        private void ApplyPendingRoomTransition(Scene scene)
+        {
+            string spawnId = _pendingRoomSpawnId;
+            SaveGameData snapshot = _pendingRoomSnapshot;
+            _pendingRoomSpawnId = null;
+            _pendingRoomSnapshot = null;
+
+            PositionPlayerAtSpawn(scene, spawnId);
+
+            SaveManager save = SaveManager.Instance;
+            if (save == null || snapshot == null) return;
+
+            // sceneLoaded runs after Awake/OnEnable but before Start, same as SaveManager's own
+            // scene-load restore — register every ISaveable in the new scene before restoring.
+            foreach (MonoBehaviour behaviour in FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include))
+                if (behaviour is ISaveable saveable) save.Register(saveable);
+            save.RestoreSnapshot(snapshot, "room-transition");
+        }
+
+        private static void PositionPlayerAtSpawn(Scene scene, string spawnId)
+        {
+            if (string.IsNullOrWhiteSpace(spawnId)) return;
+
+            RoomSpawnPoint match = null;
+            foreach (RoomSpawnPoint point in FindObjectsByType<RoomSpawnPoint>(FindObjectsInactive.Include))
+            {
+                if (point.gameObject.scene != scene || point.SpawnId != spawnId) continue;
+                match = point;
+                break;
+            }
+
+            if (match == null)
+            {
+                Debug.LogWarning($"[GameFlow] No RoomSpawnPoint with id '{spawnId}' found in scene '{scene.name}'.");
+                return;
+            }
+
+            PlayerPlatformRegistry.Current?.TeleportTo(match.transform.position, match.transform.rotation);
         }
 
         private void SetState(GameFlowState state)
