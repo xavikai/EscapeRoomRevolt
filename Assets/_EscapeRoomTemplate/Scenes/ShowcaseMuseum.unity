@@ -867,7 +867,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c23956e0aaefb54688ec3e427fdb2b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Puzzle.PipePuzzle
-  _definition: {fileID: 0}
+  _definition: {fileID: 11400000, guid: a21b2a6daeaa3ed4fa8d3159c7aa9864, type: 2}
   _puzzleId: 
   _puzzleName: New Puzzle
   _onSolved:
@@ -3514,7 +3514,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dce9839b9ebc01a458416331b3e2b653, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Puzzle.WirePuzzle
-  _definition: {fileID: 0}
+  _definition: {fileID: 11400000, guid: 4af42e29e1e465747a6cd18f9c0b6bc0, type: 2}
   _puzzleId: 
   _puzzleName: New Puzzle
   _onSolved:
@@ -38913,7 +38913,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf5580f5e3653c4e8b6f5914c8dcd5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Puzzle.SlidingPuzzle
-  _definition: {fileID: 0}
+  _definition: {fileID: 11400000, guid: 38d307cb90500b84a889bb3898019af9, type: 2}
   _puzzleId: 
   _puzzleName: New Puzzle
   _onSolved:
@@ -39248,7 +39248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01ba774de38940f48b46b7f0196f047d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Puzzle.MultiStagePuzzle
-  _definition: {fileID: 0}
+  _definition: {fileID: 11400000, guid: ce1ea1158a552a447bb5deb775240e77, type: 2}
   _puzzleId: 
   _puzzleName: New Puzzle
   _onSolved:
