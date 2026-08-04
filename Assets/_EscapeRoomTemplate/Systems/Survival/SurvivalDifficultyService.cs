@@ -31,6 +31,7 @@ namespace EscapeRoomRevolt.Systems.Survival
             if (Instance != null && Instance != this) { Destroy(gameObject); return; }
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            SaveManager.ManualSaveGate = () => AllowsManualSaving;
             if (_settings == null) _settings = Resources.Load<SurvivalDifficultySettings>(ResourcePath);
             string preferredId = PlayerPrefs.GetString(PreferenceKey, string.Empty);
             _activeProfile = _settings != null ? _settings.Find(preferredId) ?? _settings.DefaultProfile : null;

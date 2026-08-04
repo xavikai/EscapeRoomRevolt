@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using EscapeRoomRevolt.Core.Settings;
-using EscapeRoomRevolt.Systems.Survival;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -76,6 +75,14 @@ namespace EscapeRoomRevolt.Core.Save
         /// hint the player already read.
         /// </summary>
         public int RunSeed { get; private set; }
+
+        /// <summary>
+        /// Optional gate an OptionalGameFeature.PlayerVitals system (e.g. SurvivalDifficultyService)
+        /// can register to forbid manual saving under the active difficulty. Core.Save has no
+        /// compile-time dependency on Systems, so it exposes this extension point instead of
+        /// referencing the concrete type directly; defaults to always-allowed.
+        /// </summary>
+        public static Func<bool> ManualSaveGate { get; set; } = () => true;
 
         public event Action<string> SaveCompleted;
         public event Action<string> LoadCompleted;
@@ -173,7 +180,7 @@ namespace EscapeRoomRevolt.Core.Save
         public void SaveGame(string slotId)
         {
             if (string.IsNullOrWhiteSpace(slotId)) slotId = DefaultSlotId;
-            if (GameFeatures.IsEnabled(OptionalGameFeature.PlayerVitals) && !SurvivalDifficultyService.AllowsManualSaving)
+            if (GameFeatures.IsEnabled(OptionalGameFeature.PlayerVitals) && !ManualSaveGate())
             {
                 const string message = "Manual saving is disabled by the active Survival Horror difficulty.";
                 Debug.LogWarning($"[SaveManager] {message}");

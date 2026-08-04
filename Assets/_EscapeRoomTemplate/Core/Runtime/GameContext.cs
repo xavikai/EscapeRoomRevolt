@@ -26,9 +26,10 @@ namespace EscapeRoomRevolt.Core
         }
 
         /// <summary>
-        /// Called by the Bootstrapper once all systems are ready.
+        /// Called by the Bootstrapper (Core/Bootstrap, outside this assembly by design — it's the
+        /// composition root and needs to see every layer) once all systems are ready.
         /// </summary>
-        internal static void MarkInitialized()
+        public static void MarkInitialized()
         {
             IsInitialized = true;
             Debug.Log("[GameContext] All systems initialized.");
