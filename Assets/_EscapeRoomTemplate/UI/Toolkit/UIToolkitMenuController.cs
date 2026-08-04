@@ -20,7 +20,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
     public enum MenuScreen { Hidden, Main, Pause, Settings, Save, Load, Credits, Results, Confirmation }
 
     [RequireComponent(typeof(UIDocument))]
-    public sealed class UIToolkitMenuController : MonoBehaviour
+    public sealed class UIToolkitMenuController : MonoBehaviour, IMenuPanel
     {
         public static UIToolkitMenuController Instance { get; private set; }
         public bool IsBlockingGameplay => _screen != MenuScreen.Hidden;

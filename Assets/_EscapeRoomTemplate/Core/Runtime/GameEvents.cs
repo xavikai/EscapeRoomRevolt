@@ -157,4 +157,35 @@ namespace EscapeRoomRevolt.Core
 
     /// <summary>Requests the menu to toggle the pause screen.</summary>
     public struct RequestTogglePause { }
+
+    // ─────────────────────────────────────────────
+    //  PLAYER-TO-SYSTEMS EVENTS — the reverse direction: Player publishes,
+    //  Systems subscribes, so Player never needs a concrete reference to a
+    //  Systems singleton either. Same request/state split as the UI events
+    //  above.
+    // ─────────────────────────────────────────────
+
+    /// <summary>Fired by PlayerVitals whenever whether the player is currently allowed to sprint changes (exhaustion or death).</summary>
+    public struct OnPlayerCanSprintChanged
+    {
+        public bool canSprint;
+    }
+
+    /// <summary>Requests the inventory to make a specific quick-access slot active.</summary>
+    public struct RequestSetActiveQuickSlot
+    {
+        public int slot;
+    }
+
+    /// <summary>Requests the inventory to move the active quick-access slot by a relative direction.</summary>
+    public struct RequestNavigateQuickAccess
+    {
+        public int direction;
+    }
+
+    /// <summary>Informs PlayerVitals of the player's current sprint state, for stamina drain/recovery.</summary>
+    public struct RequestSetSprinting
+    {
+        public bool isSprinting;
+    }
 }

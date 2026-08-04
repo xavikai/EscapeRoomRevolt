@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using EscapeRoomRevolt.Core;
 using EscapeRoomRevolt.Core.Flow;
 using EscapeRoomRevolt.Core.Save;
 using EscapeRoomRevolt.Core.Settings;
@@ -62,6 +63,7 @@ namespace EscapeRoomRevolt.Systems.Survival
         private bool _isDead;
         private float _nextDamageTime;
         private Coroutine _deathRoutine;
+        private bool? _lastPublishedCanSprint;
 
         public float Health => _health;
         public float MaxHealth => _maxHealth;
@@ -109,6 +111,10 @@ namespace EscapeRoomRevolt.Systems.Survival
             }
         }
 
+        private void OnEnable() => EventBus.Subscribe<RequestSetSprinting>(HandleSetSprintingRequest);
+        private void OnDisable() => EventBus.Unsubscribe<RequestSetSprinting>(HandleSetSprintingRequest);
+        private void HandleSetSprintingRequest(RequestSetSprinting evt) => SetSprinting(evt.isSprinting);
+
         private void OnDestroy()
         {
             SaveManager.Instance?.Unregister(this);
@@ -138,6 +144,7 @@ namespace EscapeRoomRevolt.Systems.Survival
             if (_health > 0f) return;
             _sprinting = false;
             _isDead = true;
+            PublishCanSprintIfChanged();
             SetControlBlocked(true);
             Died?.Invoke();
             if (_deathRoutine != null) StopCoroutine(_deathRoutine);
@@ -195,9 +202,20 @@ namespace EscapeRoomRevolt.Systems.Survival
 
         private void SetExhausted(bool value)
         {
-            if (_exhausted == value) return;
-            _exhausted = value;
-            ExhaustionChanged?.Invoke(value);
+            if (_exhausted != value)
+            {
+                _exhausted = value;
+                ExhaustionChanged?.Invoke(value);
+            }
+            PublishCanSprintIfChanged();
+        }
+
+        private void PublishCanSprintIfChanged()
+        {
+            bool canSprint = CanSprint;
+            if (_lastPublishedCanSprint == canSprint) return;
+            _lastPublishedCanSprint = canSprint;
+            EventBus.Publish(new OnPlayerCanSprintChanged { canSprint = canSprint });
         }
 
         private void SetControlBlocked(bool blocked)

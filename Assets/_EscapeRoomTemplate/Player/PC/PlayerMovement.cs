@@ -52,7 +52,7 @@ namespace EscapeRoomRevolt.Player.PC
         private bool   _forcedCrouch;
         private bool   _evasionCrouch;
         private Vector3 _originalCameraLocalPosition;
-        private PlayerVitals _vitals;
+        private bool _vitalsAllowSprint = true;
         private readonly Collider[] _stanceOverlaps = new Collider[16];
 
         public bool IsMovementFrozen { get; set; }
@@ -69,7 +69,6 @@ namespace EscapeRoomRevolt.Player.PC
         private void Awake()
         {
             _cc = GetComponent<CharacterController>();
-            _vitals = GetComponent<PlayerVitals>();
 
             if (_playerCamera == null)
             {
@@ -87,6 +86,10 @@ namespace EscapeRoomRevolt.Player.PC
             SaveManager.Instance?.Register(this);
         }
 
+        private void OnEnable() => EventBus.Subscribe<OnPlayerCanSprintChanged>(HandleCanSprintChanged);
+        private void OnDisable() => EventBus.Unsubscribe<OnPlayerCanSprintChanged>(HandleCanSprintChanged);
+        private void HandleCanSprintChanged(OnPlayerCanSprintChanged evt) => _vitalsAllowSprint = evt.canSprint;
+
         private void OnDestroy()
         {
             SaveManager.Instance?.Unregister(this);
@@ -98,7 +101,7 @@ namespace EscapeRoomRevolt.Player.PC
             if (GameplayBlockState.IsBlocking)
             {
                 IsSprinting = false;
-                _vitals?.SetSprinting(false);
+                EventBus.Publish(new RequestSetSprinting { isSprinting = false });
                 return;
             }
 
@@ -106,7 +109,7 @@ namespace EscapeRoomRevolt.Player.PC
             if (IsMovementFrozen)
             {
                 IsSprinting = false;
-                _vitals?.SetSprinting(false);
+                EventBus.Publish(new RequestSetSprinting { isSprinting = false });
                 return;
             }
             HandleMovement();
@@ -154,8 +157,8 @@ namespace EscapeRoomRevolt.Player.PC
             if (GameFeatures.IsEnabled(OptionalGameFeature.AdvancedEvasion)
                 && input != null && input.LeanModifierHeld) h = 0f;
 
-            IsSprinting = input != null && input.SprintHeld && !_isCrouching && (_vitals == null || _vitals.CanSprint) && moveInput.sqrMagnitude > .01f;
-            _vitals?.SetSprinting(IsSprinting);
+            IsSprinting = input != null && input.SprintHeld && !_isCrouching && _vitalsAllowSprint && moveInput.sqrMagnitude > .01f;
+            EventBus.Publish(new RequestSetSprinting { isSprinting = IsSprinting });
             float speed = _isCrouching ? _crouchSpeed : (IsSprinting ? _sprintSpeed : _walkSpeed);
 
             Vector3 move = transform.right * h + transform.forward * v;

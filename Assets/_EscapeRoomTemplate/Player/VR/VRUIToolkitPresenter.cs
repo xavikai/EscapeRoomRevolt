@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using EscapeRoomRevolt.UI.Toolkit;
+using EscapeRoomRevolt.Core;
 
 namespace EscapeRoomRevolt.Player.VR
 {
@@ -55,7 +55,7 @@ namespace EscapeRoomRevolt.Player.VR
 
                 VRUIPanelColliderController inputGate = document.GetComponent<VRUIPanelColliderController>();
                 if (inputGate == null) inputGate = document.gameObject.AddComponent<VRUIPanelColliderController>();
-                bool isMenu = document.GetComponent<UIToolkitMenuController>() != null;
+                bool isMenu = document.GetComponent<IMenuPanel>() != null;
                 inputGate.Configure(isMenu
                     ? VRUIPanelColliderController.PanelKind.Menu
                     : VRUIPanelColliderController.PanelKind.Gameplay);

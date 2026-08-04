@@ -6,7 +6,6 @@ using EscapeRoomRevolt.Core.Save;
 using EscapeRoomRevolt.Systems.Equipment;
 using EscapeRoomRevolt.Systems.Interaction;
 using EscapeRoomRevolt.Player;
-using EscapeRoomRevolt.UI.Toolkit;
 using UnityEngine;
 
 namespace EscapeRoomRevolt.Systems.Inventory
@@ -93,6 +92,21 @@ namespace EscapeRoomRevolt.Systems.Inventory
             ResolveDropOrigin();
             SaveManager.Instance?.Register(this);
         }
+
+        private void OnEnable()
+        {
+            EventBus.Subscribe<RequestSetActiveQuickSlot>(HandleSetActiveQuickSlotRequest);
+            EventBus.Subscribe<RequestNavigateQuickAccess>(HandleNavigateQuickAccessRequest);
+        }
+
+        private void OnDisable()
+        {
+            EventBus.Unsubscribe<RequestSetActiveQuickSlot>(HandleSetActiveQuickSlotRequest);
+            EventBus.Unsubscribe<RequestNavigateQuickAccess>(HandleNavigateQuickAccessRequest);
+        }
+
+        private void HandleSetActiveQuickSlotRequest(RequestSetActiveQuickSlot evt) => SetActiveQuickSlot(evt.slot);
+        private void HandleNavigateQuickAccessRequest(RequestNavigateQuickAccess evt) => NavigateQuickAccess(evt.direction);
 
         private void OnDestroy()
         {
@@ -218,7 +232,7 @@ namespace EscapeRoomRevolt.Systems.Inventory
             switch (action)
             {
                 case InventoryPrimaryAction.Read:
-                    GameplayUIController.Instance?.ShowNote(data.NoteContent);
+                    EventBus.Publish(new RequestShowNoteReader { content = data.NoteContent });
                     EventBus.Publish(new OnNoteRead { noteId = data.ItemId, content = data.NoteContent });
                     return true;
                 case InventoryPrimaryAction.EquipOrHold:

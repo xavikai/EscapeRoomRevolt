@@ -24,12 +24,12 @@ namespace EscapeRoomRevolt.Player.PC
             if (input.PausePressed)
                 HandlePause();
 
-            EscapeRoomRevolt.Systems.Inventory.InventoryManager inventory = EscapeRoomRevolt.Systems.Inventory.InventoryManager.Instance;
-            if (inventory != null && !GameplayBlockState.IsGameplayModalBlocking)
+            if (!GameplayBlockState.IsGameplayModalBlocking)
             {
-                if (input.TryGetQuickSlotPressed(out int slot)) inventory.SetActiveQuickSlot(slot);
+                if (input.TryGetQuickSlotPressed(out int slot))
+                    EventBus.Publish(new RequestSetActiveQuickSlot { slot = slot });
                 if (input.QuickNavigatePerformed && Mathf.Abs(input.QuickNavigate) > .01f)
-                    inventory.NavigateQuickAccess(input.QuickNavigate > 0f ? -1 : 1);
+                    EventBus.Publish(new RequestNavigateQuickAccess { direction = input.QuickNavigate > 0f ? -1 : 1 });
             }
         }
 
