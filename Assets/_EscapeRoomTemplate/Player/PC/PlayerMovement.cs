@@ -1,5 +1,5 @@
 using UnityEngine;
-using EscapeRoomRevolt.UI.PC;
+using EscapeRoomRevolt.Core;
 using EscapeRoomRevolt.Core.Save;
 using EscapeRoomRevolt.Core.Settings;
 using EscapeRoomRevolt.Systems.Survival;
@@ -13,7 +13,7 @@ namespace EscapeRoomRevolt.Player.PC
     /// Requirements:
     ///   - CharacterController component on the same GameObject
     ///   - Camera as a child GameObject (assign _playerCamera in the Inspector)
-    ///   - UIManager in the scene (used to block movement when UI is open)
+    ///   - Movement blocks automatically while GameplayBlockState.IsBlocking is true (UI open)
     /// </summary>
     [RequireComponent(typeof(CharacterController))]
     public class PlayerMovement : MonoBehaviour, ISaveable
@@ -95,10 +95,7 @@ namespace EscapeRoomRevolt.Player.PC
         private void Update()
         {
             // Block all input when a UI panel is open
-            bool uiBlocking = (UIManager.Instance != null && UIManager.Instance.IsUIBlockingGameplay)
-                || (EscapeRoomRevolt.UI.Toolkit.UIToolkitMenuController.Instance != null
-                    && EscapeRoomRevolt.UI.Toolkit.UIToolkitMenuController.Instance.IsBlockingGameplay);
-            if (uiBlocking)
+            if (GameplayBlockState.IsBlocking)
             {
                 IsSprinting = false;
                 _vitals?.SetSprinting(false);

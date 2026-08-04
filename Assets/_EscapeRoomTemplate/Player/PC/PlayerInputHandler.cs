@@ -1,5 +1,5 @@
 using UnityEngine;
-using EscapeRoomRevolt.UI.PC;
+using EscapeRoomRevolt.Core;
 
 namespace EscapeRoomRevolt.Player.PC
 {
@@ -15,19 +15,17 @@ namespace EscapeRoomRevolt.Player.PC
     {
         private void Update()
         {
-            if (UIManager.Instance == null) return;
-
             var input = EscapeRoomRevolt.Core.Input.InputRouter.Instance;
             if (input == null) return;
 
             if (input.InventoryPressed)
-                UIManager.Instance.ToggleInventory();
+                EventBus.Publish(new RequestToggleInventory());
 
             if (input.PausePressed)
                 HandlePause();
 
             EscapeRoomRevolt.Systems.Inventory.InventoryManager inventory = EscapeRoomRevolt.Systems.Inventory.InventoryManager.Instance;
-            if (inventory != null && !UIManager.Instance.IsUIBlockingGameplay)
+            if (inventory != null && !GameplayBlockState.IsGameplayModalBlocking)
             {
                 if (input.TryGetQuickSlotPressed(out int slot)) inventory.SetActiveQuickSlot(slot);
                 if (input.QuickNavigatePerformed && Mathf.Abs(input.QuickNavigate) > .01f)
@@ -39,20 +37,13 @@ namespace EscapeRoomRevolt.Player.PC
         private void HandlePause()
         {
             // Gameplay overlays own Escape before the pause document does.
-            if (UIManager.Instance.IsUIBlockingGameplay)
+            if (GameplayBlockState.IsGameplayModalBlocking)
             {
-                UIManager.Instance.CloseTopPanel();
+                EventBus.Publish(new RequestCloseTopPanel());
                 return;
             }
 
-            if (EscapeRoomRevolt.UI.Toolkit.UIToolkitMenuController.Instance != null)
-            {
-                EscapeRoomRevolt.UI.Toolkit.UIToolkitMenuController.Instance.TogglePause();
-                return;
-            }
-
-            // Otherwise toggle the pause menu
-            UIManager.Instance.TogglePauseMenu();
+            EventBus.Publish(new RequestTogglePause());
         }
     }
 }

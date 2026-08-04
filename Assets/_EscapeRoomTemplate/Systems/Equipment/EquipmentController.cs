@@ -1,4 +1,5 @@
 using System;
+using EscapeRoomRevolt.Core;
 using EscapeRoomRevolt.Core.Input;
 using EscapeRoomRevolt.Core.Save;
 using EscapeRoomRevolt.Systems.Interaction;
@@ -122,13 +123,7 @@ namespace EscapeRoomRevolt.Systems.Equipment
             _equipmentSocket.localPosition = new Vector3(.28f, -.24f, .55f);
         }
 
-        private static bool IsGameplayBlocked()
-        {
-            return (EscapeRoomRevolt.UI.PC.UIManager.Instance != null
-                    && EscapeRoomRevolt.UI.PC.UIManager.Instance.IsUIBlockingGameplay)
-                || (EscapeRoomRevolt.UI.Toolkit.UIToolkitMenuController.Instance != null
-                    && EscapeRoomRevolt.UI.Toolkit.UIToolkitMenuController.Instance.IsBlockingGameplay);
-        }
+        private static bool IsGameplayBlocked() => GameplayBlockState.IsBlocking;
 
         public string SaveId => "EquipmentController";
 

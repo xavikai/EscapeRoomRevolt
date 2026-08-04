@@ -1,7 +1,7 @@
 using System;
+using EscapeRoomRevolt.Core;
 using EscapeRoomRevolt.Core.Save;
 using EscapeRoomRevolt.Core.Settings;
-using EscapeRoomRevolt.UI.PC;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -65,7 +65,7 @@ namespace EscapeRoomRevolt.Systems.Survival
             _hasTriggered = true;
             _lastTriggeredAt = Time.unscaledTime;
             SanityController.Instance?.ApplyStress(_definition.StressApplied);
-            if (!string.IsNullOrWhiteSpace(_definition.Subtitle)) UIManager.Instance?.ShowSubtitle(_definition.Subtitle);
+            if (!string.IsNullOrWhiteSpace(_definition.Subtitle)) EventBus.Publish(new RequestShowSubtitle { text = _definition.Subtitle });
             if (_definition.Audio != null && EscapeRoomRevolt.Systems.Audio.AudioManager.Instance != null)
             {
                 bool reduceLoudSounds = GameSettingsService.Instance != null && GameSettingsService.Instance.Data.reduceLoudSounds;

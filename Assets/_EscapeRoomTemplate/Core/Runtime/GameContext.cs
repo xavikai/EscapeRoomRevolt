@@ -23,6 +23,7 @@ namespace EscapeRoomRevolt.Core
         {
             IsInitialized = false;
             EventBus.Clear();
+            GameplayBlockState.Reset();
         }
 
         /// <summary>
@@ -42,6 +43,7 @@ namespace EscapeRoomRevolt.Core
         {
             IsInitialized = false;
             EventBus.Clear();
+            GameplayBlockState.Reset();
             Debug.Log("[GameContext] New session state cleared.");
         }
     }

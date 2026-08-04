@@ -1,5 +1,4 @@
-using EscapeRoomRevolt.UI.PC;
-using EscapeRoomRevolt.UI.Toolkit;
+using EscapeRoomRevolt.Core;
 using UnityEngine;
 
 namespace EscapeRoomRevolt.Player.VR
@@ -19,8 +18,8 @@ namespace EscapeRoomRevolt.Player.VR
         {
             if (_collider == null) return;
             _collider.enabled = _panelKind == PanelKind.Menu
-                ? UIToolkitMenuController.Instance != null && UIToolkitMenuController.Instance.IsBlockingGameplay
-                : UIManager.Instance != null && UIManager.Instance.IsUIBlockingGameplay;
+                ? GameplayBlockState.IsMenuScreenBlocking
+                : GameplayBlockState.IsGameplayModalBlocking;
         }
     }
 }

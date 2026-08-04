@@ -1,4 +1,5 @@
 using System;
+using EscapeRoomRevolt.Core;
 using EscapeRoomRevolt.Core.Input;
 using EscapeRoomRevolt.Core.Settings;
 using UnityEngine;
@@ -122,12 +123,6 @@ namespace EscapeRoomRevolt.Systems.Survival
             ProgressChanged?.Invoke(0f);
         }
 
-        private static bool IsGameplayBlocked()
-        {
-            return (EscapeRoomRevolt.UI.PC.UIManager.Instance != null
-                    && EscapeRoomRevolt.UI.PC.UIManager.Instance.IsUIBlockingGameplay)
-                || (EscapeRoomRevolt.UI.Toolkit.UIToolkitMenuController.Instance != null
-                    && EscapeRoomRevolt.UI.Toolkit.UIToolkitMenuController.Instance.IsBlockingGameplay);
-        }
+        private static bool IsGameplayBlocked() => GameplayBlockState.IsBlocking;
     }
 }

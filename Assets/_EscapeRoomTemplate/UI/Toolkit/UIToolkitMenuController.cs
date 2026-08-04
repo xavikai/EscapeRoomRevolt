@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using EscapeRoomRevolt.Core;
 using EscapeRoomRevolt.Core.Flow;
 using EscapeRoomRevolt.Core.Input;
 using EscapeRoomRevolt.Core.Localization;
@@ -64,7 +65,12 @@ namespace EscapeRoomRevolt.UI.Toolkit
             flow.StateChanged += HandleFlowStateChanged;
             flow.GameEnded += ShowResults;
             if (flow.IsMainMenuScene) ShowMain(); else Hide();
+            EventBus.Subscribe<RequestTogglePause>(HandleTogglePauseRequest);
         }
+
+        private void OnDisable() => EventBus.Unsubscribe<RequestTogglePause>(HandleTogglePauseRequest);
+
+        private void HandleTogglePauseRequest(RequestTogglePause evt) => TogglePause();
 
         private void OnDestroy()
         {
@@ -228,11 +234,21 @@ namespace EscapeRoomRevolt.UI.Toolkit
             AddButton("Salir", GameFlowManager.EnsureInstance().QuitGame, "menu-button menu-button--quiet");
         }
 
+        /// <summary>Assigns _screen and publishes OnMenuUIBlockingChanged when the blocking state flips.</summary>
+        private void SetScreen(MenuScreen screen)
+        {
+            bool wasBlocking = _screen != MenuScreen.Hidden;
+            _screen = screen;
+            bool isBlocking = _screen != MenuScreen.Hidden;
+            if (isBlocking != wasBlocking)
+                EventBus.Publish(new OnMenuUIBlockingChanged { isBlocking = isBlocking });
+        }
+
         public void Hide()
         {
             if (GameFlowManager.Instance != null && GameFlowManager.State == GameFlowState.Paused)
                 GameFlowManager.Instance.SetPaused(false);
-            _screen = MenuScreen.Hidden;
+            SetScreen(MenuScreen.Hidden);
             Time.timeScale = 1f;
             if (_root != null) _root.style.display = DisplayStyle.None;
             UnityEngine.Cursor.lockState = CursorLockMode.Locked;
@@ -246,7 +262,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
         /// </summary>
         private void Show(MenuScreen screen, string titleKey)
         {
-            _screen = screen;
+            SetScreen(screen);
             _root.style.display = DisplayStyle.Flex;
             _title.text = Tr(titleKey);
             ApplyStructuralTheme();

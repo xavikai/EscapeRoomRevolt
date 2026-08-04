@@ -1,6 +1,6 @@
 using System.Collections;
 using UnityEngine;
-using EscapeRoomRevolt.UI.PC;
+using EscapeRoomRevolt.Core;
 using System;
 using EscapeRoomRevolt.Core.Input;
 
@@ -70,7 +70,7 @@ namespace EscapeRoomRevolt.Systems.Hint
             {
                 StopCoroutine(_hideSubtitleCoroutine);
             }
-            UIManager.Instance?.HideSubtitle();
+            EventBus.Publish(new RequestHideSubtitle());
         }
 
         public void ClearActivePuzzle(HintData puzzleData)
@@ -96,7 +96,7 @@ namespace EscapeRoomRevolt.Systems.Hint
             // Format as character thoughts (italics)
             string formattedText = $"<i>{currentHint.hintText}</i>";
             
-            UIManager.Instance?.ShowSubtitle(formattedText);
+            EventBus.Publish(new RequestShowSubtitle { text = formattedText });
             
             // Play Audio if it exists
             if (currentHint.hintAudio != null && EscapeRoomRevolt.Systems.Audio.AudioManager.Instance != null)
@@ -116,7 +116,7 @@ namespace EscapeRoomRevolt.Systems.Hint
         private IEnumerator HideSubtitleAfterDelay(float delay)
         {
             yield return new WaitForSecondsRealtime(delay);
-            UIManager.Instance?.HideSubtitle();
+            EventBus.Publish(new RequestHideSubtitle());
         }
     }
 }

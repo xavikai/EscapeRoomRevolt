@@ -56,9 +56,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
             if (!_currentTarget.IsAlive() && _currentTarget != null)
                 SwitchFocus(null);
 
-            if ((EscapeRoomRevolt.UI.PC.UIManager.Instance != null && EscapeRoomRevolt.UI.PC.UIManager.Instance.IsUIBlockingGameplay)
-                || (EscapeRoomRevolt.UI.Toolkit.UIToolkitMenuController.Instance != null
-                    && EscapeRoomRevolt.UI.Toolkit.UIToolkitMenuController.Instance.IsBlockingGameplay))
+            if (GameplayBlockState.IsBlocking)
                 return;
 
             // Block InteractionManager if we are currently holding a physics object
@@ -119,18 +117,6 @@ namespace EscapeRoomRevolt.Systems.Interaction
             _currentTarget = newTarget.IsAlive() ? newTarget : null;
             if (_currentTarget.IsAlive()) _currentTarget.OnFocusEnter();
             OnFocusChanged?.Invoke(_currentTarget);
-
-            if (EscapeRoomRevolt.UI.PC.UIManager.Instance != null)
-            {
-                if (_currentTarget.IsAlive() && _currentTarget.CanInteract)
-                {
-                    EscapeRoomRevolt.UI.PC.UIManager.Instance.SetCrosshair(_currentTarget.InteractionCursor);
-                }
-                else
-                {
-                    EscapeRoomRevolt.UI.PC.UIManager.Instance.SetCrosshair(CursorType.Default);
-                }
-            }
         }
 
         private void TriggerInteraction()

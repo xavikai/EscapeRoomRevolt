@@ -1,9 +1,9 @@
 using System;
+using EscapeRoomRevolt.Core;
 using EscapeRoomRevolt.Core.Input;
 using EscapeRoomRevolt.Core.Settings;
 using EscapeRoomRevolt.Player.PC;
 using EscapeRoomRevolt.Player.VR;
-using EscapeRoomRevolt.UI.PC;
 using UnityEngine;
 
 namespace EscapeRoomRevolt.Systems.Survival
@@ -267,10 +267,7 @@ namespace EscapeRoomRevolt.Systems.Survival
 
         private bool IsBlocked()
         {
-            bool uiBlocking = (UIManager.Instance != null && UIManager.Instance.IsUIBlockingGameplay)
-                || (EscapeRoomRevolt.UI.Toolkit.UIToolkitMenuController.Instance != null
-                    && EscapeRoomRevolt.UI.Toolkit.UIToolkitMenuController.Instance.IsBlockingGameplay);
-            return uiBlocking || (_vitals != null && (_vitals.IsDead || _vitals.IsHidden))
+            return GameplayBlockState.IsBlocking || (_vitals != null && (_vitals.IsDead || _vitals.IsHidden))
                 || (_traversal != null && _traversal.IsTraversing);
         }
 

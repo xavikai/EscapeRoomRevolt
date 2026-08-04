@@ -1,4 +1,5 @@
 using UnityEngine;
+using EscapeRoomRevolt.Core;
 using EscapeRoomRevolt.Systems.Inventory;
 
 namespace EscapeRoomRevolt.Systems.Interaction
@@ -66,11 +67,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
             {
                 // Handle Read In-Place
                 _hasBeenRead = true;
-
-                if (EscapeRoomRevolt.UI.PC.UIManager.Instance != null)
-                {
-                    EscapeRoomRevolt.UI.PC.UIManager.Instance.ShowNoteReader(NoteContent);
-                }
+                EventBus.Publish(new RequestShowNoteReader { content = NoteContent });
 
                 if (DisappearAfterRead)
                     gameObject.SetActive(false);

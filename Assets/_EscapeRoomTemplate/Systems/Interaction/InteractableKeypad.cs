@@ -1,6 +1,6 @@
 using UnityEngine;
+using EscapeRoomRevolt.Core;
 using EscapeRoomRevolt.Systems.Puzzle;
-using EscapeRoomRevolt.UI.PC;
 
 namespace EscapeRoomRevolt.Systems.Interaction
 {
@@ -35,13 +35,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
         {
             if (_puzzle == null) _puzzle = GetComponent<CodePanelPuzzle>();
             if (_puzzle == null) return;
-            if (UIManager.Instance != null)
-            {
-                UIManager.Instance.ShowKeypad(_puzzle);
-                return;
-            }
-
-            EnterFocusMode();
+            EventBus.Publish(new RequestShowKeypad { puzzle = _puzzle });
         }
 
         private void EnterFocusMode()

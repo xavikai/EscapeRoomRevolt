@@ -1,3 +1,4 @@
+using EscapeRoomRevolt.Core;
 using EscapeRoomRevolt.Core.Input;
 using EscapeRoomRevolt.Player;
 using UnityEngine;
@@ -43,9 +44,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
         {
             if (_currentHeldObject == null) return;
 
-            if ((EscapeRoomRevolt.UI.PC.UIManager.Instance != null && EscapeRoomRevolt.UI.PC.UIManager.Instance.IsUIBlockingGameplay)
-                || (EscapeRoomRevolt.UI.Toolkit.UIToolkitMenuController.Instance != null
-                    && EscapeRoomRevolt.UI.Toolkit.UIToolkitMenuController.Instance.IsBlockingGameplay))
+            if (GameplayBlockState.IsBlocking)
             {
                 Drop();
                 return;

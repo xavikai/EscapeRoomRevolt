@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using EscapeRoomRevolt.Core;
 using EscapeRoomRevolt.Core.Settings;
 using EscapeRoomRevolt.Systems.Equipment;
 using EscapeRoomRevolt.Systems.Interaction;
@@ -69,6 +70,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
         private float _hotbarVisibleUntil;
         private Coroutine _subtitleRoutine;
         private IInteractable _displayedPromptTarget;
+        private IInteractable _displayedCrosshairTarget;
         private PhysicsGrabbable _displayedHeldObject;
 
         private InventoryManager _inventory;
@@ -104,6 +106,12 @@ namespace EscapeRoomRevolt.UI.Toolkit
             CacheElements();
             RegisterCallbacks();
             HideAll();
+            EventBus.Subscribe<RequestShowSubtitle>(HandleShowSubtitleRequest);
+            EventBus.Subscribe<RequestHideSubtitle>(HandleHideSubtitleRequest);
+            EventBus.Subscribe<RequestToggleInventory>(HandleToggleInventoryRequest);
+            EventBus.Subscribe<RequestCloseTopPanel>(HandleCloseTopPanelRequest);
+            EventBus.Subscribe<RequestShowNoteReader>(HandleShowNoteReaderRequest);
+            EventBus.Subscribe<RequestShowKeypad>(HandleShowKeypadRequest);
         }
 
         private void Start()
@@ -122,7 +130,27 @@ namespace EscapeRoomRevolt.UI.Toolkit
             HandleKeypadKeyboard();
         }
 
-        private void OnDisable() => UnbindServices();
+        private void OnDisable()
+        {
+            UnbindServices();
+            EventBus.Unsubscribe<RequestShowSubtitle>(HandleShowSubtitleRequest);
+            EventBus.Unsubscribe<RequestHideSubtitle>(HandleHideSubtitleRequest);
+            EventBus.Unsubscribe<RequestToggleInventory>(HandleToggleInventoryRequest);
+            EventBus.Unsubscribe<RequestCloseTopPanel>(HandleCloseTopPanelRequest);
+            EventBus.Unsubscribe<RequestShowNoteReader>(HandleShowNoteReaderRequest);
+            EventBus.Unsubscribe<RequestShowKeypad>(HandleShowKeypadRequest);
+        }
+
+        private void HandleShowSubtitleRequest(RequestShowSubtitle evt) => ShowSubtitle(evt.text);
+        private void HandleHideSubtitleRequest(RequestHideSubtitle evt) => HideSubtitle();
+        private void HandleToggleInventoryRequest(RequestToggleInventory evt) => ToggleInventory();
+        private void HandleCloseTopPanelRequest(RequestCloseTopPanel evt) => CloseTopPanel();
+        private void HandleShowNoteReaderRequest(RequestShowNoteReader evt) => ShowNote(evt.content);
+
+        private void HandleShowKeypadRequest(RequestShowKeypad evt)
+        {
+            if (evt.puzzle is CodePanelPuzzle puzzle) ShowKeypad(puzzle);
+        }
 
         private void OnDestroy()
         {
@@ -297,6 +325,16 @@ namespace EscapeRoomRevolt.UI.Toolkit
         private void UpdateInteractionPrompt()
         {
             if (_interactionPrompt == null) return;
+
+            // Pulled here (instead of InteractionManager pushing into UIManager.SetCrosshair) so
+            // Systems never needs to reach into the UI layer to update the crosshair.
+            IInteractable target = InteractionManager.Instance != null ? InteractionManager.Instance.CurrentTarget : null;
+            if (!ReferenceEquals(target, _displayedCrosshairTarget))
+            {
+                _displayedCrosshairTarget = target;
+                SetCrosshair(target.IsAlive() && target.CanInteract ? target.InteractionCursor : CursorType.Default);
+            }
+
             if (IsBlockingGameplay)
             {
                 SetVisible(_interactionPrompt, false);
@@ -322,7 +360,6 @@ namespace EscapeRoomRevolt.UI.Toolkit
                 return;
             }
 
-            IInteractable target = InteractionManager.Instance != null ? InteractionManager.Instance.CurrentTarget : null;
             bool show = target.IsAlive() && target.CanInteract && UnityEngine.Cursor.lockState == CursorLockMode.Locked;
             if (show && !ReferenceEquals(target, _displayedPromptTarget))
             {
@@ -920,12 +957,22 @@ namespace EscapeRoomRevolt.UI.Toolkit
 
         private IEnumerator CloseAfterDelay(float seconds) { yield return new WaitForSecondsRealtime(seconds); CloseTopPanel(); }
 
+        /// <summary>Assigns _modal and publishes OnGameplayUIBlockingChanged when the blocking state flips.</summary>
+        private void SetModal(GameplayModal modal)
+        {
+            bool wasBlocking = _modal != GameplayModal.None;
+            _modal = modal;
+            bool isBlocking = _modal != GameplayModal.None;
+            if (isBlocking != wasBlocking)
+                EventBus.Publish(new OnGameplayUIBlockingChanged { isBlocking = isBlocking });
+        }
+
         private void OpenModal(GameplayModal modal, VisualElement panel)
         {
             if (_modal == GameplayModal.Examiner && modal != GameplayModal.Examiner)
                 DestroyExaminedModel();
             HideModalPanels();
-            _modal = modal;
+            SetModal(modal);
             SetVisible(_modalLayer, true);
             SetVisible(panel, true);
             UnityEngine.Cursor.lockState = CursorLockMode.None;
@@ -936,7 +983,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
         {
             if (_modal == GameplayModal.None) return;
             if (_modal == GameplayModal.Examiner) DestroyExaminedModel();
-            _modal = GameplayModal.None;
+            SetModal(GameplayModal.None);
             _combineSourceIndex = -1;
             _itemUseRequest = null;
             _currentPuzzle = null;
@@ -952,7 +999,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
 
         private void HideAll()
         {
-            _modal = GameplayModal.None;
+            SetModal(GameplayModal.None);
             HideModalPanels();
             SetVisible(_modalLayer, false);
             SetVisible(_interactionPrompt, false);

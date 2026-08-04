@@ -100,4 +100,61 @@ namespace EscapeRoomRevolt.Core
         public string interactableId;
         public GameObject target;
     }
+
+    // ─────────────────────────────────────────────
+    //  UI STATE EVENTS — published by the UI layer so Systems/Player never
+    //  need to reach into UIManager/UIToolkitMenuController singletons to
+    //  know whether gameplay input should be blocked. Prefer reading the
+    //  cached EscapeRoomRevolt.Core.GameplayBlockState instead of
+    //  subscribing to these directly.
+    // ─────────────────────────────────────────────
+
+    /// <summary>Fired by GameplayUIController when a gameplay modal (inventory, note, keypad, examiner) opens or closes.</summary>
+    public struct OnGameplayUIBlockingChanged
+    {
+        public bool isBlocking;
+    }
+
+    /// <summary>Fired by UIToolkitMenuController when the active menu screen changes to/from Hidden.</summary>
+    public struct OnMenuUIBlockingChanged
+    {
+        public bool isBlocking;
+    }
+
+    // ─────────────────────────────────────────────
+    //  UI REQUEST EVENTS — published by Systems/Player to ask the UI layer
+    //  to do something, instead of calling UIManager/UIToolkitMenuController
+    //  directly. GameplayUIController/UIToolkitMenuController subscribe and
+    //  perform the action; publishing with no listener is a harmless no-op.
+    // ─────────────────────────────────────────────
+
+    /// <summary>Requests the gameplay UI to show a subtitle line.</summary>
+    public struct RequestShowSubtitle
+    {
+        public string text;
+    }
+
+    /// <summary>Requests the gameplay UI to hide the current subtitle.</summary>
+    public struct RequestHideSubtitle { }
+
+    /// <summary>Requests the gameplay UI to open the note reader with the given content.</summary>
+    public struct RequestShowNoteReader
+    {
+        public string content;
+    }
+
+    /// <summary>Requests the gameplay UI to open the keypad modal for a specific puzzle component.</summary>
+    public struct RequestShowKeypad
+    {
+        public Component puzzle;
+    }
+
+    /// <summary>Requests the gameplay UI to toggle the inventory panel.</summary>
+    public struct RequestToggleInventory { }
+
+    /// <summary>Requests the gameplay UI to close its topmost modal panel.</summary>
+    public struct RequestCloseTopPanel { }
+
+    /// <summary>Requests the menu to toggle the pause screen.</summary>
+    public struct RequestTogglePause { }
 }

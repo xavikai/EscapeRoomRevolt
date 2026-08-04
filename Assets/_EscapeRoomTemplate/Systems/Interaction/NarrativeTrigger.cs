@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using EscapeRoomRevolt.Core;
 using EscapeRoomRevolt.Core.Save;
-using EscapeRoomRevolt.UI.PC;
 
 namespace EscapeRoomRevolt.Systems.Interaction
 {
@@ -125,15 +124,13 @@ namespace EscapeRoomRevolt.Systems.Interaction
 
         private IEnumerator ShowSubtitlesRoutine(List<SubtitleLine> lines)
         {
-            if (UIManager.Instance == null) yield break;
-
             foreach (var line in lines)
             {
-                UIManager.Instance.ShowSubtitle(line.text);
+                EventBus.Publish(new RequestShowSubtitle { text = line.text });
                 yield return new WaitForSeconds(line.duration);
             }
 
-            UIManager.Instance.HideSubtitle();
+            EventBus.Publish(new RequestHideSubtitle());
         }
 
         public string SaveId => _guid;
