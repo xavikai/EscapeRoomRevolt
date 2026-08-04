@@ -12,15 +12,27 @@ namespace EscapeRoomRevolt.Player.VR
         [SerializeField] private Transform _leftHand;
         [SerializeField] private Transform _rightHand;
         private XROrigin _origin;
+        private VRComfortController _comfort;
 
         public override PlayerPlatform Platform => PlayerPlatform.VirtualReality;
         public override Transform Head => _head != null ? _head : transform;
         public override bool SupportsHaptics => true;
         public override Transform GetHand(PlayerHand hand) => hand == PlayerHand.Left ? _leftHand : _rightHand;
 
+        public override void SetMovementBlocked(bool blocked)
+        {
+            if (_comfort == null) _comfort = GetComponent<VRComfortController>();
+            _comfort?.SetMovementBlocked(blocked);
+        }
+
+        public override void SetLookBlocked(bool blocked) { }
+
+        public override void TeleportTo(Vector3 position, Quaternion rotation) => TeleportRig(position, rotation);
+
         private void Awake()
         {
             _origin = GetComponent<XROrigin>();
+            _comfort = GetComponent<VRComfortController>();
             if (_head == null)
             {
                 Camera camera = GetComponentInChildren<Camera>(true);

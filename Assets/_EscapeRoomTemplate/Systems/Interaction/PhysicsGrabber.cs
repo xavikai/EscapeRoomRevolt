@@ -82,10 +82,9 @@ namespace EscapeRoomRevolt.Systems.Interaction
                 return;
             }
 
-            var playerMovement = transform.root.GetComponentInChildren<EscapeRoomRevolt.Player.PC.PlayerMovement>();
             if (input.SecondaryActionHeld)
             {
-                if (playerMovement != null) playerMovement.IsMouseLookFrozen = true;
+                PlayerPlatformRegistry.Current?.SetLookBlocked(true);
 
                 Vector2 look = input.Look * 5f;
                 Transform head = PlayerPlatformRegistry.Current?.Head;
@@ -98,7 +97,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
             }
             else
             {
-                if (playerMovement != null) playerMovement.IsMouseLookFrozen = false;
+                PlayerPlatformRegistry.Current?.SetLookBlocked(false);
             }
         }
 
@@ -177,8 +176,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
                 }
             }
 
-            var playerMovement = transform.root.GetComponentInChildren<EscapeRoomRevolt.Player.PC.PlayerMovement>();
-            if (playerMovement != null) playerMovement.IsMouseLookFrozen = false;
+            PlayerPlatformRegistry.Current?.SetLookBlocked(false);
 
             _currentHeldObject.OnDropped();
             

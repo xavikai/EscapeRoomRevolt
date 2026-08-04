@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using EscapeRoomRevolt.Core.Settings;
 using EscapeRoomRevolt.Player;
-using EscapeRoomRevolt.Player.PC;
 using EscapeRoomRevolt.Player.VR;
 using UnityEngine;
 
@@ -14,7 +13,6 @@ namespace EscapeRoomRevolt.Systems.Survival
     {
         public static TraversalController Instance { get; private set; }
 
-        private PlayerMovement _pcMovement;
         private VRComfortController _vrComfort;
         private VRPlayerPlatformAdapter _vrAdapter;
         private CharacterController _characterController;
@@ -35,7 +33,6 @@ namespace EscapeRoomRevolt.Systems.Survival
             if (!GameFeatures.IsEnabled(OptionalGameFeature.Traversal)) { enabled = false; return; }
             if (Instance != null && Instance != this) { Destroy(this); return; }
             Instance = this;
-            _pcMovement = GetComponent<PlayerMovement>();
             _vrComfort = GetComponent<VRComfortController>();
             _vrAdapter = GetComponent<VRPlayerPlatformAdapter>();
             _characterController = GetComponent<CharacterController>();
@@ -161,12 +158,8 @@ namespace EscapeRoomRevolt.Systems.Survival
 
         private void SetControlsBlocked(bool blocked)
         {
-            if (_pcMovement != null)
-            {
-                _pcMovement.IsMovementFrozen = blocked;
-                _pcMovement.IsMouseLookFrozen = blocked;
-            }
-            _vrComfort?.SetMovementBlocked(blocked);
+            PlayerPlatformRegistry.Current?.SetMovementBlocked(blocked);
+            PlayerPlatformRegistry.Current?.SetLookBlocked(blocked);
         }
 
         private void ReleaseControls()

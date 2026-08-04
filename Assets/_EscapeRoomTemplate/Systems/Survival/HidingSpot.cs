@@ -3,7 +3,6 @@ using EscapeRoomRevolt.Core.Input;
 using EscapeRoomRevolt.Core.Settings;
 using EscapeRoomRevolt.Player;
 using EscapeRoomRevolt.Player.PC;
-using EscapeRoomRevolt.Player.VR;
 using EscapeRoomRevolt.Systems.Interaction;
 using UnityEngine;
 using UnityEngine.Events;
@@ -37,7 +36,6 @@ namespace EscapeRoomRevolt.Systems.Survival
         [SerializeField] private UnityEvent _onForcedExpose;
         private Transform _playerRoot;
         private PlayerMovement _pcMovement;
-        private VRComfortController _vrComfort;
         private PlayerVitals _vitals;
         private float _enteredAt;
         private float _breathingIntensity;
@@ -91,14 +89,12 @@ namespace EscapeRoomRevolt.Systems.Survival
             }
             if (_playerRoot == null) return;
             _pcMovement = _playerRoot.GetComponent<PlayerMovement>();
-            _vrComfort = _playerRoot.GetComponent<VRComfortController>();
             _vitals = _playerRoot.GetComponent<PlayerVitals>();
             ActiveForPlayer = this;
             _enteredAt = Time.time;
             if (_forceCrouchedPose) _pcMovement?.SetForcedCrouch(true);
             MovePlayer(_insideAnchor != null ? _insideAnchor : transform);
-            if (_pcMovement != null) _pcMovement.IsMovementFrozen = true;
-            _vrComfort?.SetMovementBlocked(true);
+            PlayerPlatformRegistry.Current?.SetMovementBlocked(true);
             _vitals?.SetHidden(true);
             _onEntered?.Invoke();
             Entered?.Invoke(this);
@@ -109,8 +105,7 @@ namespace EscapeRoomRevolt.Systems.Survival
             if (ActiveForPlayer != this) return;
             MovePlayer(_exitAnchor != null ? _exitAnchor : transform);
             if (_forceCrouchedPose) _pcMovement?.SetForcedCrouch(false);
-            if (_pcMovement != null) _pcMovement.IsMovementFrozen = false;
-            _vrComfort?.SetMovementBlocked(false);
+            PlayerPlatformRegistry.Current?.SetMovementBlocked(false);
             _vitals?.SetHidden(false);
             SetBreathingIntensity(0f);
             _onExited?.Invoke();
@@ -118,7 +113,6 @@ namespace EscapeRoomRevolt.Systems.Survival
             ActiveForPlayer = null;
             _playerRoot = null;
             _pcMovement = null;
-            _vrComfort = null;
             _vitals = null;
         }
 
@@ -143,10 +137,10 @@ namespace EscapeRoomRevolt.Systems.Survival
         private void MovePlayer(Transform anchor)
         {
             if (_playerRoot == null || anchor == null) return;
-            VRPlayerPlatformAdapter vrAdapter = _playerRoot.GetComponent<VRPlayerPlatformAdapter>();
-            if (vrAdapter != null)
+            IPlayerPlatformAdapter adapter = _playerRoot.GetComponent<IPlayerPlatformAdapter>();
+            if (adapter != null)
             {
-                vrAdapter.TeleportRig(anchor.position, anchor.rotation);
+                adapter.TeleportTo(anchor.position, anchor.rotation);
                 return;
             }
             CharacterController controller = _playerRoot.GetComponent<CharacterController>();

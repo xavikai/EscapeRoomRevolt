@@ -13,6 +13,15 @@ namespace EscapeRoomRevolt.Player
         Transform GetHand(PlayerHand hand);
         bool SupportsHaptics { get; }
         void SendHaptic(PlayerHand hand, float amplitude, float duration);
+
+        /// <summary>Freezes/unfreezes player movement. VR routes this through its comfort controller.</summary>
+        void SetMovementBlocked(bool blocked);
+
+        /// <summary>Freezes/unfreezes free-look. No-op on VR — head tracking can't be frozen without causing discomfort.</summary>
+        void SetLookBlocked(bool blocked);
+
+        /// <summary>Instantly relocates the player. VR moves the tracking origin without disturbing the physical head offset.</summary>
+        void TeleportTo(Vector3 position, Quaternion rotation);
     }
 
     public static class PlayerPlatformRegistry

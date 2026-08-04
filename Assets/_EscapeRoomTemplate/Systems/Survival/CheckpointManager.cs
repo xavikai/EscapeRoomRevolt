@@ -3,8 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using EscapeRoomRevolt.Core.Save;
 using EscapeRoomRevolt.Core.Settings;
-using EscapeRoomRevolt.Player.PC;
-using EscapeRoomRevolt.Player.VR;
+using EscapeRoomRevolt.Player;
 using UnityEngine;
 
 namespace EscapeRoomRevolt.Systems.Survival
@@ -71,20 +70,11 @@ namespace EscapeRoomRevolt.Systems.Survival
         public bool TryRespawn(PlayerVitals vitals)
         {
             if (_current == null || vitals == null || !SurvivalDifficultyService.AllowsCheckpoints) return false;
-            PlayerMovement player = vitals.GetComponent<PlayerMovement>();
             HidingSpot.ActiveForPlayer?.ExitImmediately();
             RestoreSnapshot();
-            VRPlayerPlatformAdapter vrAdapter = vitals.GetComponent<VRPlayerPlatformAdapter>();
-            if (vrAdapter != null) vrAdapter.TeleportRig(_current.SpawnPosition, _current.SpawnRotation);
-            else
-            {
-                CharacterController controller = vitals.GetComponent<CharacterController>();
-                if (controller != null) controller.enabled = false;
-                vitals.transform.SetPositionAndRotation(_current.SpawnPosition, _current.SpawnRotation);
-                if (controller != null) controller.enabled = true;
-            }
-            if (player != null) { player.IsMovementFrozen = false; player.IsMouseLookFrozen = false; }
-            vitals.GetComponent<VRComfortController>()?.SetMovementBlocked(false);
+            PlayerPlatformRegistry.Current?.TeleportTo(_current.SpawnPosition, _current.SpawnRotation);
+            PlayerPlatformRegistry.Current?.SetMovementBlocked(false);
+            PlayerPlatformRegistry.Current?.SetLookBlocked(false);
             vitals.RestoreForCheckpoint();
             Respawned?.Invoke();
             return true;

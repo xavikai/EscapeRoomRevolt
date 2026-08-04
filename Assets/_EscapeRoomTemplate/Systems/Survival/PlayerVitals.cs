@@ -3,8 +3,7 @@ using System.Collections;
 using EscapeRoomRevolt.Core.Flow;
 using EscapeRoomRevolt.Core.Save;
 using EscapeRoomRevolt.Core.Settings;
-using EscapeRoomRevolt.Player.PC;
-using EscapeRoomRevolt.Player.VR;
+using EscapeRoomRevolt.Player;
 using UnityEngine;
 
 namespace EscapeRoomRevolt.Systems.Survival
@@ -203,13 +202,8 @@ namespace EscapeRoomRevolt.Systems.Survival
 
         private void SetControlBlocked(bool blocked)
         {
-            PlayerMovement movement = GetComponent<PlayerMovement>();
-            if (movement != null)
-            {
-                movement.IsMovementFrozen = blocked;
-                movement.IsMouseLookFrozen = blocked;
-            }
-            GetComponent<VRComfortController>()?.SetMovementBlocked(blocked);
+            PlayerPlatformRegistry.Current?.SetMovementBlocked(blocked);
+            PlayerPlatformRegistry.Current?.SetLookBlocked(blocked);
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using EscapeRoomRevolt.Core;
 using EscapeRoomRevolt.Core.Save;
 using EscapeRoomRevolt.Core.Settings;
+using EscapeRoomRevolt.Player;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -47,7 +48,7 @@ namespace EscapeRoomRevolt.Systems.Survival
 
         private void OnTriggerEnter(Collider other)
         {
-            if (_activation == HorrorEventActivation.PlayerEnters && (other.CompareTag("Player") || other.GetComponentInParent<EscapeRoomRevolt.Player.PC.PlayerMovement>() != null))
+            if (_activation == HorrorEventActivation.PlayerEnters && (other.CompareTag("Player") || other.GetComponentInParent<IPlayerPlatformAdapter>() != null))
                 TryTrigger();
         }
 
