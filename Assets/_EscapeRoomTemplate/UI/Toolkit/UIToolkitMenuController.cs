@@ -577,7 +577,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
         private void AddSlider(string label, float value, Action<float> changed, float low = 0f, float high = 1f)
         {
             var row = new VisualElement(); row.AddToClassList("setting-row");
-            row.Add(new Label(label));
+            var rowLabel = new Label(label); rowLabel.AddToClassList("setting-row-label"); row.Add(rowLabel);
             var slider = new Slider(low, high) { value = value }; slider.RegisterValueChangedCallback(evt => changed(evt.newValue));
             // The row already shows its own Label; collapse the Slider's own (empty) reserved label
             // gutter so the track isn't squeezed into whatever width is left over.
