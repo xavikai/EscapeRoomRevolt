@@ -80,6 +80,8 @@ Los controles principales se pueden reasignar durante el juego desde `Ajustes > 
 
 ## 6. Preparación VR
 
+**Experimental**: el soporte VR es funcionalmente completo (rig, manos, hápticos, UI 3D, confort) pero todavía no ha pasado QA en un visor físico real — solo en el simulador de XRI. No asumas paridad total con PC hasta validarlo en hardware.
+
 1. Espera a que Package Manager termine de importar OpenXR, XR Plug-in Management y XRI.
 2. Configura OpenXR para los destinos deseados en Project Settings.
 3. Ejecuta `Setup/Create or Update VR Player Prefab`.
