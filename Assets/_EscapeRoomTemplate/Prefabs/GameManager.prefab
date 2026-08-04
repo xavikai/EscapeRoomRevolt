@@ -68,6 +68,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 511ae6da088d0554faab7528b22d6909, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.UI.Toolkit.UIToolkitMenuController
+  _theme: {fileID: 0}
 --- !u!1 &2583828608794683454
 GameObject:
   m_ObjectHideFlags: 0
@@ -129,11 +130,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Inventory.InventoryManager
   _maxSlots: 20
+  _catalog: {fileID: 11400000, guid: 7bf79030ee2bc3d499807e00b93a76d0, type: 2}
   _quickAccessCapacity: 4
   _autoAssignQuickAccess: 1
-  _logActions: 1
   _dropOrigin: {fileID: 0}
-  _catalog: {fileID: 11400000, guid: 7bf79030ee2bc3d499807e00b93a76d0, type: 2}
+  _logActions: 1
 --- !u!1 &6348893440527392827
 GameObject:
   m_ObjectHideFlags: 0
@@ -145,7 +146,6 @@ GameObject:
   - component: {fileID: 1895278405914400832}
   - component: {fileID: 8543930268803237231}
   - component: {fileID: 6929319753078032813}
-  - component: {fileID: 6250886964249164246}
   m_Layer: 0
   m_Name: GameplayUI
   m_TagString: Untagged
@@ -206,15 +206,3 @@ MonoBehaviour:
   _examineTexture: {fileID: 8400000, guid: 951f6c4a27a7dcb49a90e3d0d200b16b, type: 2}
   _examineRotationSpeed: 0.35
   _examineZoomSpeed: 0.08
---- !u!114 &6250886964249164246
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6348893440527392827}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88f7dd198c8bb2b4290bc81ee1eaa859, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.UI.PC.UIManager

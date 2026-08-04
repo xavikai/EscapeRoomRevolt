@@ -4,7 +4,6 @@ using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 using EscapeRoomRevolt.Core;
 using EscapeRoomRevolt.Player.PC;
-using EscapeRoomRevolt.UI.PC;
 using EscapeRoomRevolt.Systems.Interaction;
 using EscapeRoomRevolt.Systems.Inventory;
 using EscapeRoomRevolt.Systems.Puzzle;
