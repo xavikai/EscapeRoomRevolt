@@ -21,7 +21,7 @@ Regles de manteniment:
 
 La plantilla ja és una base funcional i bastant completa per crear Escape Rooms en primera persona. Té interacció, inventari contextual, combinació, examen 3D, puzles, pistes, objectius, finals, Save/Load i UI Toolkit. La separació per perfils de gènere funciona i evita mostrar cordura o llanterna quan no corresponen.
 
-Com a Survival Horror ja existeix una vertical slice tècnica inspirada en el tipus de tensió d'Outlast: patrulla, percepció visual i auditiva, persecució, amagatalls, dany, mort, checkpoints i recorregut d'escapada. El treball pendent és convertir aquesta base funcional en una experiència de durada comercial, ampliar la càmera nocturna/evidències i completar QA real de VR i accessibilitat.
+Com a Survival Horror ja existeix una vertical slice tècnica inspirada en el tipus de tensió d'Outlast: patrulla, percepció visual i auditiva, persecució, amagatalls, dany, mort, checkpoints i recorregut d'escapada. El treball pendent és convertir aquesta base funcional en una experiència de durada comercial i completar QA real de VR i hardware.
 
 Veredicte actual:
 
@@ -145,7 +145,7 @@ Setè tipus de puzle (`ER-002c`): `PipePuzzle` (menú `Create > Puzzles > Pipe P
 - Traversal compartit PC/VR amb vault, climb, ladder i squeeze bidireccionals, anchors, corbes, gizmos, cancel·lació segura i polítiques de ruta per enemic.
 - Recorregut enemic visible sobre obstacles autoritzats, amb restauració segura del `NavMeshAgent`; alternativa per NavMesh o bloqueig configurable per obstacle.
 - Confort de traversal VR configurable entre moviment animat i canvi instantani, sense dependència d'un SDK propietari de Meta.
-- Càmera modular equipable, independent de la llanterna, amb pujar/baixar, zoom, visió nocturna, bateria específica i controls PC/XR rebindables.
+- Càmera modular equipable, independent de la llanterna, amb pujar/baixar, zoom, visió nocturna, bateria específica i controls PC/XR rebindables. L'art final de visió nocturna (`SH-015`) ja està connectat: `NightVisionFeedbackController` construeix un `Volume` URP (tint verd, gra de pel·lícula i vinyeta) que es difumina segons `NightVisionController.StateChanged`, i limita gra/vinyeta quan l'ajust d'accessibilitat "reduir destells" està actiu (mateix patró que `SanityFeedbackController`/`HidingViewFeedback`). Verificat en Play Mode: amb l'ajust desactivat es mantenen els valors configurats (gra 0,7 / vinyeta 0,35); activat, es limiten a 0,25 / 0,2.
 - Evidències gravables per temps d'enquadrament, diari persistent i integració directa amb objectius data-driven.
 - Evasió opcional amb lean, mirada enrere i slide, col·lisions de càmera, postura segura i controls rebindables; en Quest el lean/look-back és físic i el slide artificial està desactivat per defecte.
 - Bridge d'interacció VR que detecta la mà real de l'interactor (esquerra/dreta) a hover/select, en lloc d'assumir sempre la dreta; vinyeta de confort (tunneling) oficial d'XRI connectada al moviment i gir continus.
@@ -275,11 +275,10 @@ Matriu objectiu:
 | P0-007 | Localització | Infraestructura feta i verificada (`LocalizationCatalog`, `LocalizationService`, selector d'idioma a Ajustes, `DefaultLocalizationCatalog.asset` amb 16 entrades ES/EN). Convertit `UIToolkitMenuController.Show()` (tots els títols de pantalla) i els botons de `ShowMain`/`ShowPause`. Pendent: la resta de botons/etiquetes del menú, tot `GameplayUIController` (HUD, inventari, notes, keypad), i els prompts/errors definits directament a C# arreu del codi (`HidingSpot._enterPrompt`, missatges de `SaveManager`, etc.). Per convenció d'aquesta passada, la clau del catàleg és el text castellà original — una migració completa podria introduir claus estructurades. | Taules o catàleg localitzable, idioma de fallback i castellà/anglès de mostra; UXML, menús, prompts, objectius, pistes i errors no depenen de literals C#. |
 | P0-008 | Validació | `CommercialReadinessValidator` ara detecta cicles de prerequisits entre `ObjectiveDefinition` (DFS, verificat creant un cicle de prova real), receptes de combinació trencades (`CombineWith`/`ResultItem` nuls) i el contracte UXML del menú (clona `EscapeRoomMenu.uxml` i comprova que existeixin els elements `title`/`screen-content` que `UIToolkitMenuController` consulta per nom). Ja detectava referències null, IDs duplicats, escenes de build i existència de perfil. Pendent: comprovar `GameplayHUD.uxml`, completesa del rig XR i assets sense llicència registrada (aquest últim depèn de `ThirdPartyNotices.md`, `P0-005`). | Detecta referències obligatòries null, IDs, cicles d'objectius, receptes trencades, scenes de build, UXML contract, perfils, XR incomplet i assets sense llicència registrada. |
 
-### P2 — Càmera nocturna i moviment d'escapada
+### P2 — QA de traversal en hardware
 
 | ID | Sistema | Implementació pendent | Criteri d'acceptació |
 |---|---|---|---|
-| SH-015 | Presentació NV | Connectar l'art final de visió nocturna als hooks existents. | Perfil URP, soroll/degradació i feedback visual respecten reducció de destells; la lògica de consum, estats, fallback i events ja està implementada. |
 | SH-016 | Traversal | Tancar QA de traversal en Meta Quest. | Les quatre variants, els dos modes de confort i la cancel·lació es verifiquen en visor; sense mareig greu, clipping ni pèrdua de tracking origin. |
 
 ### P2 — Profunditat específica d'Escape Room
@@ -317,12 +316,12 @@ Matriu objectiu:
 ## 8. Ordre recomanat d'implementació
 
 1. `P0-001`, `P0-003b`, `P0-005` a `P0-008` (aquests dos últims amb progrés parcial real): impedir que el deute creixi mentre s'afegeixen mecàniques (`P0-002` i `P0-004` ja fets).
-2. `SH-015` i `SH-016`: tancar presentació/QA de hardware (`SH-020b`, head bob, ja fet).
+2. `SH-016`: tancar QA de hardware (`SH-015`, presentació de visió nocturna, i `SH-020b`, head bob, ja fets).
 3. `ER-001`, `ER-004` i `ER-007`: ampliar varietat i qualitat d'autor per Escape Room (`ER-002c`, `ER-003`, `ER-005`, `ER-006` i `ER-008b` ja fets).
 4. `VR-004`, `VR-005c`, `VR-006` i `VR-007`: completar dual-grab, feature gating i QA de hardware sobre el rig funcional (mà, vinyeta, hàptics, paritat de socket i equipament per mà ja resolts).
 5. `ARC-001` a `ARC-010`: es poden intercalar, però han d'estar resolts abans de publicar la versió comercial final.
 
-`SH-018` (portes per fases), `SH-019` (director de tensió), `SH-006` (amagatalls genèrics) i `SH-012` (vertical slice) ja estan fets i verificats tècnicament; només queda que el propietari cronometri `SH-012` amb un jugador real per confirmar que el recorregut cau dins dels 10–15 minuts objectiu. Amb tot el backlog P1 tancat, la propera fita és decidir entre `P0-*` (bloquejadors comercials), `SH-015`/`SH-016` (presentació i QA de hardware) o algun `ER-*` de profunditat d'Escape Room. `SH-016` continua requerint hardware real.
+`SH-018` (portes per fases), `SH-019` (director de tensió), `SH-006` (amagatalls genèrics), `SH-012` (vertical slice) i `SH-015` (presentació de visió nocturna) ja estan fets i verificats tècnicament; només queda que el propietari cronometri `SH-012` amb un jugador real per confirmar que el recorregut cau dins dels 10–15 minuts objectiu. Amb tot el backlog P1 tancat, la propera fita és decidir entre `P0-*` (bloquejadors comercials), `SH-016` (QA de hardware) o algun `ER-*` de profunditat d'Escape Room. `SH-016` continua requerint hardware real.
 
 ## 9. Fora d'abast intencionat
 

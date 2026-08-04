@@ -1,3 +1,4 @@
+using EscapeRoomRevolt.Core.Settings;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -22,8 +23,15 @@ namespace EscapeRoomRevolt.Systems.Survival
         [SerializeField, Range(0f, 1f)] private float _vignetteIntensity = .35f;
         [SerializeField, Min(0f)] private float _fadeSpeed = 4f;
 
+        [Header("Accessibility")]
+        [Tooltip("Caps grain and vignette intensity when the player enabled 'Reduce Flashes' in settings.")]
+        [SerializeField, Range(0f, 1f)] private float _reducedFlashesGrainCap = .25f;
+        [SerializeField, Range(0f, 1f)] private float _reducedFlashesVignetteCap = .2f;
+
         private NightVisionController _camcorder;
         private Volume _volume;
+        private FilmGrain _filmGrain;
+        private Vignette _vignette;
         private float _targetWeight;
 
         private void Awake()
@@ -47,12 +55,22 @@ namespace EscapeRoomRevolt.Systems.Survival
         {
             if (_volume == null) return;
             _volume.weight = Mathf.MoveTowards(_volume.weight, _targetWeight, _fadeSpeed * Time.deltaTime);
+            ApplyAccessibilityCaps();
         }
 
         private void HandleStateChanged()
         {
             _targetWeight = _camcorder.IsNightVisionEnabled ? 1f : 0f;
             EnsurePostProcessingEnabled();
+        }
+
+        private void ApplyAccessibilityCaps()
+        {
+            bool reduceFlashes = GameSettingsService.Instance != null && GameSettingsService.Instance.Data.reduceFlashes;
+            if (_filmGrain != null)
+                _filmGrain.intensity.value = reduceFlashes ? Mathf.Min(_grainIntensity, _reducedFlashesGrainCap) : _grainIntensity;
+            if (_vignette != null)
+                _vignette.intensity.value = reduceFlashes ? Mathf.Min(_vignetteIntensity, _reducedFlashesVignetteCap) : _vignetteIntensity;
         }
 
         private void EnsurePostProcessingEnabled()
@@ -72,15 +90,15 @@ namespace EscapeRoomRevolt.Systems.Survival
             colorAdjustments.postExposure.Override(_postExposure);
             colorAdjustments.saturation.Override(_saturation);
 
-            FilmGrain filmGrain = profile.Add<FilmGrain>(true);
-            filmGrain.type.Override(FilmGrainLookup.Medium1);
-            filmGrain.intensity.Override(_grainIntensity);
+            _filmGrain = profile.Add<FilmGrain>(true);
+            _filmGrain.type.Override(FilmGrainLookup.Medium1);
+            _filmGrain.intensity.Override(_grainIntensity);
 
-            Vignette vignette = profile.Add<Vignette>(true);
-            vignette.color.Override(Color.black);
-            vignette.intensity.Override(_vignetteIntensity);
-            vignette.smoothness.Override(.85f);
-            vignette.rounded.Override(true);
+            _vignette = profile.Add<Vignette>(true);
+            _vignette.color.Override(Color.black);
+            _vignette.intensity.Override(_vignetteIntensity);
+            _vignette.smoothness.Override(.85f);
+            _vignette.rounded.Override(true);
 
             var volumeObject = new GameObject("NightVisionVolume");
             volumeObject.transform.SetParent(transform, false);

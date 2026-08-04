@@ -20,7 +20,7 @@ For what's built and what's pending, see the living document: **[ROADMAP.md](ROA
 - [x] Los `SaveId`, `ItemId` y `PersistentId` son únicos.
 - [x] Los modelos pueden sustituirse sin modificar scripts ni colliders lógicos (`ReplaceableModelSlot`).
 - [x] La escena `SurvivalHorrorDemo` es una vertical slice completa y verificada: objetivos encadenados, enemigo, escondites, evidencias, checkpoints y final.
-- [ ] **Sin tests automatizados** — bloqueado en separar el runtime en `asmdef` (`P0-001`/`ARC-001`).
+- [ ] **Cobertura de tests insuficiente** — el runtime ya está separado en `asmdef` (`Core`/`Player`/`Systems`/`UI`, `ARC-001` cerrado) y hay 12 tests EditMode reales, pero falta llegar al mínimo de 20 EditMode + 10 PlayMode (`P0-001`).
 - [ ] **Sin `ThirdPartyNotices.md`** — falta inventariar el origen/licencia de los audios de `Assets/_EscapeRoomTemplate/Audio` y confirmar que son redistribuibles (`P0-005`).
 - [ ] **Sin localización** — los textos de UI y gameplay están escritos directamente en castellano en el código C# (`P0-007`).
 - [ ] VR es funcionalmente completo pero no ha pasado QA en hardware real (`VR-007`/`SH-016`).
