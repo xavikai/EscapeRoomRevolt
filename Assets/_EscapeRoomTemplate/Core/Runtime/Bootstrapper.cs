@@ -114,6 +114,12 @@ namespace EscapeRoomRevolt.Core
             if (pcPlayer != null && pcPlayer.GetComponent<EscapeRoomRevolt.Player.PC.HeadBobController>() == null)
                 pcPlayer.gameObject.AddComponent<EscapeRoomRevolt.Player.PC.HeadBobController>();
 
+            if (GameObject.FindAnyObjectByType<EscapeRoomRevolt.Core.Localization.LocalizationService>() == null)
+            {
+                GameObject localizationObj = new GameObject("LocalizationService");
+                localizationObj.AddComponent<EscapeRoomRevolt.Core.Localization.LocalizationService>();
+            }
+
             // Ensure AudioManager exists in the scene
             if (GameObject.FindAnyObjectByType<EscapeRoomRevolt.Systems.Audio.AudioManager>() == null)
             {

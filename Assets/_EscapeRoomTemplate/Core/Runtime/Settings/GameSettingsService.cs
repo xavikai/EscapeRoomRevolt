@@ -27,6 +27,8 @@ namespace EscapeRoomRevolt.Core.Settings
         public bool reduceHeadBob;
         [Tooltip("Forces the menu to a fixed high-contrast palette (black/white/yellow), overriding any assigned MenuThemeSettings so accessibility always wins over branding.")]
         public bool highContrastMode;
+        [Tooltip("ISO-ish language code read by LocalizationService, e.g. \"es\" or \"en\". Empty uses the catalog's fallback language.")]
+        public string languageCode = "es";
         [TextArea] public string bindingOverridesJson = string.Empty;
     }
 

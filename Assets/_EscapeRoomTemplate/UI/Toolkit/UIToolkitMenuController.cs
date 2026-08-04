@@ -6,8 +6,10 @@ using System.IO;
 using System.Linq;
 using EscapeRoomRevolt.Core.Flow;
 using EscapeRoomRevolt.Core.Input;
+using EscapeRoomRevolt.Core.Localization;
 using EscapeRoomRevolt.Core.Save;
 using EscapeRoomRevolt.Core.Settings;
+using static EscapeRoomRevolt.Core.Localization.LocalizationService;
 using EscapeRoomRevolt.Systems.Survival;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -89,18 +91,18 @@ namespace EscapeRoomRevolt.UI.Toolkit
             Time.timeScale = 1f;
             Show(MenuScreen.Main, "EXPEDIENTE DE INVESTIGACIÓN");
             GameFlowManager flow = GameFlowManager.EnsureInstance();
-            Button continueButton = AddButton("Continuar", flow.ContinueGame);
+            Button continueButton = AddButton(Tr("Continuar"), flow.ContinueGame);
             continueButton.SetEnabled(flow.CanContinue());
-            AddButton("Nueva partida", () =>
+            AddButton(Tr("Nueva partida"), () =>
             {
                 if (SaveManager.Instance != null && SaveManager.Instance.GetSlots().Count > 0)
                     ShowConfirmation("¿Iniciar una nueva investigación? Las partidas guardadas no se borrarán.", flow.StartNewGame, ShowMain);
                 else flow.StartNewGame();
             });
-            AddButton("Cargar partida", () => { _backScreen = MenuScreen.Main; ShowLoad(); });
-            AddButton("Ajustes", () => { _backScreen = MenuScreen.Main; ShowSettings(); });
-            AddButton("Créditos", ShowCredits, "menu-button menu-button--quiet");
-            AddButton("Salir", () => ShowConfirmation("¿Salir del juego?", flow.QuitGame, ShowMain), "menu-button menu-button--quiet");
+            AddButton(Tr("Cargar partida"), () => { _backScreen = MenuScreen.Main; ShowLoad(); });
+            AddButton(Tr("Ajustes"), () => { _backScreen = MenuScreen.Main; ShowSettings(); });
+            AddButton(Tr("Créditos"), ShowCredits, "menu-button menu-button--quiet");
+            AddButton(Tr("Salir"), () => ShowConfirmation("¿Salir del juego?", flow.QuitGame, ShowMain), "menu-button menu-button--quiet");
         }
 
         public void ShowPause()
@@ -108,18 +110,18 @@ namespace EscapeRoomRevolt.UI.Toolkit
             GameFlowManager.EnsureInstance().SetPaused(true);
             _backScreen = MenuScreen.Pause;
             Show(MenuScreen.Pause, "ARCHIVO DE INCIDENTE");
-            AddButton("Reanudar investigación", Hide);
-            Button saveButton = AddButton("Guardar partida", ShowSave);
+            AddButton(Tr("Reanudar investigación"), Hide);
+            Button saveButton = AddButton(Tr("Guardar partida"), ShowSave);
             saveButton.SetEnabled(SurvivalDifficultyService.AllowsManualSaving);
-            AddButton("Cargar partida", ShowLoad);
-            AddButton("Ajustes", ShowSettings);
-            AddButton("Menú principal…", () => ShowConfirmation(
+            AddButton(Tr("Cargar partida"), ShowLoad);
+            AddButton(Tr("Ajustes"), ShowSettings);
+            AddButton(Tr("Menú principal…"), () => ShowConfirmation(
                 "VOLVER AL MENÚ PRINCIPAL",
                 "La escena del menú principal se cargará al confirmar. El progreso que no hayas guardado se perderá.",
                 GameFlowManager.EnsureInstance().ReturnToMainMenu,
                 ShowPause,
                 "VOLVER AL MENÚ"), "menu-button menu-button--quiet");
-            AddButton("Salir", () => ShowConfirmation("¿Salir del juego?", GameFlowManager.EnsureInstance().QuitGame, ShowPause), "menu-button menu-button--quiet");
+            AddButton(Tr("Salir"), () => ShowConfirmation("¿Salir del juego?", GameFlowManager.EnsureInstance().QuitGame, ShowPause), "menu-button menu-button--quiet");
         }
 
         public void ShowSave()
@@ -146,6 +148,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
         {
             Show(MenuScreen.Settings, "PANEL DE MANTENIMIENTO");
             var settings = GameSettingsService.Instance?.Data ?? new GameSettingsData();
+            AddLanguageSelector(settings);
             AddSlider("Volumen maestro", settings.masterVolume, value => { settings.masterVolume = value; SaveSettings(settings); });
             AddSlider("Volumen de música", settings.musicVolume, value => { settings.musicVolume = value; SaveSettings(settings); });
             AddSlider("Volumen de efectos", settings.sfxVolume, value => { settings.sfxVolume = value; SaveSettings(settings); });
@@ -236,11 +239,16 @@ namespace EscapeRoomRevolt.UI.Toolkit
             UnityEngine.Cursor.visible = false;
         }
 
-        private void Show(MenuScreen screen, string title)
+        /// <summary>
+        /// titleKey is looked up via LocalizationService.Tr — by this project's convention the key
+        /// is the original Spanish text, so passing a literal here still displays correctly even
+        /// before every call site has been migrated to a stable key.
+        /// </summary>
+        private void Show(MenuScreen screen, string titleKey)
         {
             _screen = screen;
             _root.style.display = DisplayStyle.Flex;
-            _title.text = title;
+            _title.text = Tr(titleKey);
             ApplyStructuralTheme();
             ReleasePreviews();
             _content.Clear();
@@ -578,6 +586,35 @@ namespace EscapeRoomRevolt.UI.Toolkit
         {
             var toggle = new Toggle(label) { value = value }; toggle.RegisterValueChangedCallback(evt => changed(evt.newValue));
             _content.Add(toggle);
+        }
+
+        private static readonly Dictionary<string, string> LanguageDisplayNames = new Dictionary<string, string>
+        {
+            { "es", "Español" },
+            { "en", "English" },
+        };
+
+        private void AddLanguageSelector(GameSettingsData settings)
+        {
+            LocalizationService localization = LocalizationService.Instance;
+            if (localization == null) return;
+
+            List<string> codes = localization.AvailableLanguages();
+            if (codes.Count <= 1) return;
+
+            List<string> choices = codes.ConvertAll(code => LanguageDisplayNames.TryGetValue(code, out string name) ? name : code);
+            int current = codes.IndexOf(localization.CurrentLanguage);
+            if (current < 0) current = 0;
+
+            var dropdown = new DropdownField("Idioma", choices, current);
+            dropdown.RegisterValueChangedCallback(evt =>
+            {
+                int index = choices.IndexOf(evt.newValue);
+                if (index < 0) return;
+                localization.SetLanguage(codes[index]);
+                ShowSettings();
+            });
+            _content.Add(dropdown);
         }
 
         private void AddQualitySelector(GameSettingsData settings)
