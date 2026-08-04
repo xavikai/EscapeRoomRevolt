@@ -579,6 +579,9 @@ namespace EscapeRoomRevolt.UI.Toolkit
             var row = new VisualElement(); row.AddToClassList("setting-row");
             row.Add(new Label(label));
             var slider = new Slider(low, high) { value = value }; slider.RegisterValueChangedCallback(evt => changed(evt.newValue));
+            // The row already shows its own Label; collapse the Slider's own (empty) reserved label
+            // gutter so the track isn't squeezed into whatever width is left over.
+            slider.AddToClassList("unity-base-field--no-label");
             row.Add(slider); _content.Add(row);
         }
 
