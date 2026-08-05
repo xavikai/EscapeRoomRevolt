@@ -794,6 +794,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1620413204937892929}
   - component: {fileID: 2694946411538591511}
+  - component: {fileID: 8453294652625708348}
   m_Layer: 0
   m_Name: LightSocket
   m_TagString: Untagged
@@ -827,7 +828,7 @@ Light:
   serializedVersion: 13
   m_Type: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: 150
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -881,6 +882,23 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!114 &8453294652625708348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7198844203248110483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ae52b77ccd7f624f8a533a9cb229cdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Survival.FlashlightVolumetricBeam
+  _flashlight: {fileID: 0}
+  _lengthScale: 0.8
+  _segments: 20
+  _coreIntensity: 1.6
+  _outerIntensity: 0.5
 --- !u!1 &7826478475359372170
 GameObject:
   m_ObjectHideFlags: 0
