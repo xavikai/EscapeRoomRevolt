@@ -110,13 +110,21 @@ namespace EscapeRoomRevolt.Systems.Puzzle
             if (_definition != null && _definition.Hints != null)
                 HintManager.Instance?.ClearActivePuzzle(_definition.Hints);
 
-            if (_feedbackCamera != null)
+            // Skipped in VR on purpose: yanking the view to another camera fights head tracking and
+            // is a reliable way to make players ill. The solve still reads through sound and through
+            // whatever OnSolved drives (a door opening, a light), which need no camera cut.
+            if (_feedbackCamera != null && !IsVirtualReality)
             {
                 StartCoroutine(PlayFeedbackCinematic());
             }
 
             OnPuzzleCompleted();
         }
+
+        /// <summary>True while the player is in a headset, so presentation that assumes control of the camera can stand aside.</summary>
+        protected static bool IsVirtualReality =>
+            EscapeRoomRevolt.Player.PlayerPlatformRegistry.Current != null &&
+            EscapeRoomRevolt.Player.PlayerPlatformRegistry.Current.Platform == EscapeRoomRevolt.Player.PlayerPlatform.VirtualReality;
 
         private System.Collections.IEnumerator PlayFeedbackCinematic()
         {

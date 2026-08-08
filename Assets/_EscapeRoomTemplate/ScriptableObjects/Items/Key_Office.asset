@@ -15,11 +15,15 @@ MonoBehaviour:
   _itemId: key_office_01
   _displayName: Rusty Key
   _description: An old key. Probably opens a drawer.
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: d382e65de8a1b734abb2e78436269089, type: 3}
   _worldPrefab: {fileID: 5758558780192995299, guid: 043a7774e9dc4704fbeed20340458e02, type: 3}
+  _category: 0
+  _primaryAction: 0
   _isConsumable: 1
   _isStackable: 0
   _maxStack: 1
+  _canDrop: 1
+  _canExamine: 1
   _isReadable: 0
   _noteContent: 
   _combinations: []

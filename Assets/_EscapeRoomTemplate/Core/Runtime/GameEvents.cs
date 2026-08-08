@@ -132,6 +132,10 @@ namespace EscapeRoomRevolt.Core
     public struct RequestShowSubtitle
     {
         public string text;
+        /// <summary>Seconds to keep the line up after it finishes typing, then hide it on its own.
+        /// Leave at 0 when the publisher hides the line itself (a timed narrative sequence, say);
+        /// anything above 0 means "show this and forget about it".</summary>
+        public float holdSeconds;
     }
 
     /// <summary>Requests the gameplay UI to hide the current subtitle.</summary>

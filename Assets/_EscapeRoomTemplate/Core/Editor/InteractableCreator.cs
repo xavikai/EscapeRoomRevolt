@@ -243,27 +243,8 @@ namespace EscapeRoomRevolt.EditorTools
                 + " Place it as a child of an item's WorldPrefab, sized to cover the area players should click while examining.");
         }
 
-        [MenuItem("Escape Room Framework/Create/Puzzles/Wire Puzzle", priority = 202)]
-        public static void CreateWirePuzzle()
-        {
-            GameObject logicObj = new GameObject("NewWirePuzzle");
-            SceneView view = SceneView.lastActiveSceneView;
-            if (view != null) logicObj.transform.position = view.pivot;
-
-            WirePuzzle puzzle = logicObj.AddComponent<WirePuzzle>();
-            SerializedObject so = new SerializedObject(puzzle);
-            SerializedProperty rules = so.FindProperty("_rules");
-            rules.arraySize = 2;
-            rules.GetArrayElementAtIndex(0).FindPropertyRelative("wireId").stringValue = "wire_a";
-            rules.GetArrayElementAtIndex(0).FindPropertyRelative("correctSocketId").stringValue = "socket_a";
-            rules.GetArrayElementAtIndex(1).FindPropertyRelative("wireId").stringValue = "wire_b";
-            rules.GetArrayElementAtIndex(1).FindPropertyRelative("correctSocketId").stringValue = "socket_b";
-            so.ApplyModifiedProperties();
-
-            FinalizeCreation(logicObj);
-            Debug.Log("[Escape Room Framework] Wire Puzzle created with two example rules (wire_a→socket_a, wire_b→socket_b). "
-                + "Call Connect(wireId, socketId) from whatever interactable represents each wire/socket pair in your scene.");
-        }
+        // Placement and Sliding now live in PuzzleCreator, which builds the pieces and wiring too
+        // instead of leaving a bare controller for the designer to finish by hand.
 
         [MenuItem("Escape Room Framework/Create/Puzzles/Pipe Puzzle", priority = 205)]
         public static void CreatePipePuzzle()
@@ -298,28 +279,6 @@ namespace EscapeRoomRevolt.EditorTools
             FinalizeCreation(logicObj);
             Debug.Log("[Escape Room Framework] Pipe Puzzle created with two example segments, both rotated 180° away from solved. "
                 + "Call RotateTile(tileId) from whatever interactable represents each segment in your scene; rotate each one twice to connect pipe_a to pipe_b.");
-        }
-
-        [MenuItem("Escape Room Framework/Create/Puzzles/Sliding Puzzle", priority = 204)]
-        public static void CreateSlidingPuzzle()
-        {
-            GameObject logicObj = new GameObject("NewSlidingPuzzle");
-            SceneView view = SceneView.lastActiveSceneView;
-            if (view != null) logicObj.transform.position = view.pivot;
-
-            SlidingPuzzle puzzle = logicObj.AddComponent<SlidingPuzzle>();
-            SerializedObject so = new SerializedObject(puzzle);
-            so.FindProperty("_columns").intValue = 3;
-            so.FindProperty("_rows").intValue = 2;
-            SerializedProperty target = so.FindProperty("_targetOrder");
-            string[] example = { "1", "2", "3", "4", "5", "" };
-            target.arraySize = example.Length;
-            for (int i = 0; i < example.Length; i++) target.GetArrayElementAtIndex(i).stringValue = example[i];
-            so.ApplyModifiedProperties();
-
-            FinalizeCreation(logicObj);
-            Debug.Log("[Escape Room Framework] Sliding Puzzle created as a 3x2 example (5 tiles + 1 empty slot). "
-                + "Call TryMoveTile(tileId) from whatever interactable represents each tile in your scene.");
         }
 
         [MenuItem("Escape Room Framework/Create/Puzzles/Multi-Stage Puzzle", priority = 203)]
@@ -454,6 +413,38 @@ namespace EscapeRoomRevolt.EditorTools
             so.ApplyModifiedProperties();
 
             FinalizeCreation(logicObj);
+        }
+
+        [MenuItem("Escape Room Framework/Create/Interactables/Multi-Position Lever", priority = 110)]
+        public static void CreateMultiPositionLever()
+        {
+            GameObject logicObj = CreateBaseInteractable("NewCyclerLever", new Vector3(0.1f, 0.4f, 0.1f), new Color(0.6f, 0.4f, 0.2f));
+
+            Transform visuals = logicObj.transform.Find("NewCyclerLever_Visuals");
+            if (visuals != null)
+            {
+                visuals.localPosition = new Vector3(0, 0.2f, 0); // Offset up so pivot is at base
+            }
+
+            var positioner = logicObj.AddComponent<SteppedPositioner>();
+            logicObj.AddComponent<InteractableCycler>();
+            SerializedObject so = new SerializedObject(positioner);
+            so.FindProperty("_movementType").enumValueIndex = (int)SteppedMovementType.Rotate;
+            SerializedProperty positions = so.FindProperty("_positions");
+            positions.arraySize = 3;
+            Vector3[] exampleAngles = { new Vector3(-45f, 0f, 0f), new Vector3(0f, 0f, 0f), new Vector3(45f, 0f, 0f) };
+            for (int i = 0; i < 3; i++)
+            {
+                SerializedProperty element = positions.GetArrayElementAtIndex(i);
+                element.FindPropertyRelative("prompt").stringValue = "Cycle";
+                element.FindPropertyRelative("rotation").vector3Value = exampleAngles[i];
+            }
+            so.FindProperty("_visualTransform").objectReferenceValue = logicObj.transform;
+            so.ApplyModifiedProperties();
+
+            FinalizeCreation(logicObj);
+            Debug.Log("[Escape Room Framework] Multi-Position Lever created with 3 example positions. "
+                + "Add/remove entries in Positions to change how many states it cycles through, for Rotate or Slide.");
         }
 
         [MenuItem("Escape Room Framework/Create/Triggers/Hint Zone", priority = 302)]

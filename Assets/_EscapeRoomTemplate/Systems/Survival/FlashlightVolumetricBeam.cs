@@ -15,9 +15,11 @@ namespace EscapeRoomRevolt.Systems.Survival
     {
         [SerializeField] private FlashlightController _flashlight;
         [SerializeField, Range(.1f, 1f)] private float _lengthScale = .8f;
+        [Tooltip("Distance from the bulb where the visible beam starts. Keeping this off zero avoids the near end filling the whole screen when looking straight down the beam (first person).")]
+        [SerializeField, Range(.1f, 1f)] private float _nearDistance = .35f;
         [SerializeField, Min(3)] private int _segments = 20;
-        [SerializeField, Range(0f, 5f)] private float _coreIntensity = 1.6f;
-        [SerializeField, Range(0f, 5f)] private float _outerIntensity = .5f;
+        [SerializeField, Range(0f, 2f)] private float _coreIntensity = .35f;
+        [SerializeField, Range(0f, 2f)] private float _outerIntensity = .12f;
 
         private Light _light;
         private MeshRenderer _coreRenderer;
@@ -37,8 +39,9 @@ namespace EscapeRoomRevolt.Systems.Survival
             _coreMaterial = BuildMaterial(shader, _light.color, _coreIntensity);
             _outerMaterial = BuildMaterial(shader, _light.color, _outerIntensity);
 
-            _coreRenderer = BuildCone("VolumetricCore", length, _light.innerSpotAngle * .5f, _coreMaterial);
-            _outerRenderer = BuildCone("VolumetricOuter", length, _light.spotAngle * .5f, _outerMaterial);
+            float near = Mathf.Min(_nearDistance, length * .5f);
+            _coreRenderer = BuildFrustum("VolumetricCore", near, length, _light.innerSpotAngle * .5f, _coreMaterial);
+            _outerRenderer = BuildFrustum("VolumetricOuter", near, length, _light.spotAngle * .5f, _outerMaterial);
 
             ApplyVisibility();
         }
@@ -75,37 +78,53 @@ namespace EscapeRoomRevolt.Systems.Survival
         }
 
         /// <summary>
-        /// Builds a cone (apex at the local origin, opening along local +Z) whose vertex alpha
-        /// fades from 1 at the apex to 0 at the outer ring, so the additive shader reads as a
-        /// beam that is brightest near the bulb and dissolves toward the far edge.
+        /// Builds an open frustum (no near or far cap, opening along local +Z) whose vertex alpha
+        /// fades from brightest at the near ring to 0 at the far ring. Starting the near ring away
+        /// from the bulb - instead of a true apex at the origin - keeps the beam from filling the
+        /// whole screen when the camera looks straight down its own beam (first person).
         /// </summary>
-        private MeshRenderer BuildCone(string goName, float length, float halfAngleDegrees, Material material)
+        private MeshRenderer BuildFrustum(string goName, float nearDistance, float farDistance, float halfAngleDegrees, Material material)
         {
-            float radius = length * Mathf.Tan(halfAngleDegrees * Mathf.Deg2Rad);
+            float nearRadius = nearDistance * Mathf.Tan(halfAngleDegrees * Mathf.Deg2Rad);
+            float farRadius = farDistance * Mathf.Tan(halfAngleDegrees * Mathf.Deg2Rad);
 
-            var vertices = new Vector3[_segments + 1];
-            var colors = new Color[_segments + 1];
-            var triangles = new int[_segments * 3];
+            var vertices = new Vector3[_segments * 2];
+            var normals = new Vector3[_segments * 2];
+            var colors = new Color[_segments * 2];
+            var triangles = new int[_segments * 6];
 
-            vertices[0] = Vector3.zero;
-            colors[0] = new Color(1f, 1f, 1f, 1f);
             for (int i = 0; i < _segments; i++)
             {
                 float t = i / (float)_segments * Mathf.PI * 2f;
-                vertices[i + 1] = new Vector3(Mathf.Cos(t) * radius, Mathf.Sin(t) * radius, length);
-                colors[i + 1] = new Color(1f, 1f, 1f, 0f);
+                float cos = Mathf.Cos(t);
+                float sin = Mathf.Sin(t);
+                Vector3 radial = new Vector3(cos, sin, 0f);
+                vertices[i] = new Vector3(cos * nearRadius, sin * nearRadius, nearDistance);
+                normals[i] = radial;
+                colors[i] = new Color(1f, 1f, 1f, 1f);
+                vertices[_segments + i] = new Vector3(cos * farRadius, sin * farRadius, farDistance);
+                normals[_segments + i] = radial;
+                colors[_segments + i] = new Color(1f, 1f, 1f, 0f);
             }
             for (int i = 0; i < _segments; i++)
             {
-                int current = i + 1;
-                int next = (i + 1) % _segments + 1;
-                triangles[i * 3] = 0;
-                triangles[i * 3 + 1] = current;
-                triangles[i * 3 + 2] = next;
+                int nearA = i;
+                int nearB = (i + 1) % _segments;
+                int farA = _segments + i;
+                int farB = _segments + (i + 1) % _segments;
+
+                triangles[i * 6] = nearA;
+                triangles[i * 6 + 1] = farA;
+                triangles[i * 6 + 2] = nearB;
+
+                triangles[i * 6 + 3] = nearB;
+                triangles[i * 6 + 4] = farA;
+                triangles[i * 6 + 5] = farB;
             }
 
             var mesh = new Mesh { name = goName };
             mesh.vertices = vertices;
+            mesh.normals = normals;
             mesh.colors = colors;
             mesh.triangles = triangles;
             mesh.RecalculateBounds();

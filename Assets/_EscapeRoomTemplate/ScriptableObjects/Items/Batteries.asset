@@ -14,12 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Inventory.InventoryItemData
   _itemId: batteries
   _displayName: Pilas
-  _description: Un joc de piles compatible amb la llanterna i la càmera. Prem R per recarregar la llanterna o B per recarregar la càmera.
-  _icon: {fileID: 0}
+  _description: "Un joc de piles compatible amb la llanterna i la c\xE0mera. Prem
+    R per recarregar la llanterna o B per recarregar la c\xE0mera."
+  _icon: {fileID: 21300000, guid: 0f74ac6bf76dd7d43b6b2dba201623f6, type: 3}
   _worldPrefab: {fileID: 0}
+  _category: 0
+  _primaryAction: 0
   _isConsumable: 1
   _isStackable: 1
   _maxStack: 4
+  _canDrop: 1
+  _canExamine: 1
   _isReadable: 0
   _noteContent: 
   _combinations: []

@@ -15,8 +15,15 @@ MonoBehaviour:
   _itemId: Green_key_01
   _displayName: clau verda
   _description: 
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: be6ec5750acbca3459956b268226f218, type: 3}
   _worldPrefab: {fileID: 0}
+  _category: 0
+  _primaryAction: 0
   _isConsumable: 1
   _isStackable: 0
   _maxStack: 1
+  _canDrop: 1
+  _canExamine: 1
+  _isReadable: 0
+  _noteContent: 
+  _combinations: []

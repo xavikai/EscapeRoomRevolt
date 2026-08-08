@@ -28,6 +28,27 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         public int Columns => _columns;
         public int Rows => _rows;
         public IReadOnlyList<string> CurrentOrder => _currentOrder;
+        /// <summary>The solved arrangement. Outside play mode this is the only order that exists, so views use it to preview the assembled board.</summary>
+        public IReadOnlyList<string> TargetOrder => _targetOrder;
+
+#if UNITY_EDITOR
+        /// <summary>
+        /// Keeps Target Order consistent with the grid size, so changing Columns/Rows in the
+        /// Inspector is enough to reshape the puzzle (3x2, 3x3, 4x4...) without hand-editing the
+        /// list and risking a wrong count or a missing empty slot. Only regenerates when the size
+        /// actually changed, so a hand-authored arrangement of the right size is left alone.
+        /// </summary>
+        private void OnValidate()
+        {
+            int needed = _columns * _rows;
+            if (_targetOrder == null) _targetOrder = new List<string>();
+            if (_targetOrder.Count == needed) return;
+
+            _targetOrder.Clear();
+            for (int i = 1; i < needed; i++) _targetOrder.Add(i.ToString());
+            _targetOrder.Add(string.Empty);
+        }
+#endif
 
         protected override void Awake()
         {

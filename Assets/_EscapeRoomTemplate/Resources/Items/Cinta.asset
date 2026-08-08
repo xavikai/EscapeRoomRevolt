@@ -12,14 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7e91f1c516575448ba0cfdd157f476f, type: 3}
   m_Name: Cinta
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Inventory.InventoryItemData
-  _itemId: 
+  _itemId: cinta
   _displayName: New Item
   _description: 
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: f1625b04e058a744ca2266631d8b3ed0, type: 3}
   _worldPrefab: {fileID: 0}
+  _category: 0
+  _primaryAction: 0
   _isConsumable: 1
   _isStackable: 0
   _maxStack: 1
+  _canDrop: 1
+  _canExamine: 1
   _isReadable: 0
   _noteContent: 
   _combinations: []

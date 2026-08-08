@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using EscapeRoomRevolt.Core;
 
@@ -27,6 +28,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
         private IInteractable _currentTarget;
         private Camera _mainCamera;
         private Camera _overrideCamera;
+        private readonly RaycastHit[] _interactionHits = new RaycastHit[16];
 
         public static InteractionManager Instance { get; private set; }
         public Material GlobalOutlineMaterial => _globalOutlineMaterial;
@@ -100,15 +102,45 @@ namespace EscapeRoomRevolt.Systems.Interaction
             if (_showDebugRay)
                 Debug.DrawRay(ray.origin, ray.direction * _interactionRange, Color.cyan);
 
-            IInteractable detected = null;
-
-            if (Physics.Raycast(ray, out RaycastHit hit, _interactionRange, _interactableLayer))
-                detected = hit.collider.GetComponentInParent<IInteractable>();
+            IInteractable detected = FindInteractableAlong(ray);
 
             if (!detected.IsAlive()) detected = null;
 
             if (detected != _currentTarget)
                 SwitchFocus(detected);
+        }
+
+        /// <summary>
+        /// Returns the nearest interactable the ray reaches. Trigger volumes that aren't themselves
+        /// interactable are passed through rather than blocking: they are gameplay zones, not
+        /// physical surfaces, and a socket's generous capture volume would otherwise shadow the very
+        /// object resting inside it. Solid geometry still blocks, so walls keep occluding normally.
+        /// </summary>
+        private IInteractable FindInteractableAlong(Ray ray)
+        {
+            int count = Physics.RaycastNonAlloc(ray, _interactionHits, _interactionRange, _interactableLayer, QueryTriggerInteraction.Collide);
+            if (count == 0) return null;
+
+            System.Array.Sort(_interactionHits, 0, count, RaycastDistanceComparer.Instance);
+
+            for (int i = 0; i < count; i++)
+            {
+                Collider collider = _interactionHits[i].collider;
+                if (collider == null) continue;
+
+                IInteractable interactable = collider.GetComponentInParent<IInteractable>();
+                if (interactable.IsAlive()) return interactable;
+
+                // A solid, non-interactable collider genuinely blocks line of sight; a trigger doesn't.
+                if (!collider.isTrigger) return null;
+            }
+            return null;
+        }
+
+        private sealed class RaycastDistanceComparer : IComparer<RaycastHit>
+        {
+            public static readonly RaycastDistanceComparer Instance = new RaycastDistanceComparer();
+            public int Compare(RaycastHit a, RaycastHit b) => a.distance.CompareTo(b.distance);
         }
 
         private void SwitchFocus(IInteractable newTarget)

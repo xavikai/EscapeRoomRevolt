@@ -96,16 +96,16 @@ Keep `SaveId` and `ItemId` stable after publication. Run `Validation/Validate Sa
 
 ## Newer puzzle types
 
-`WirePuzzle` connects wire ids to socket ids; a socket only ever holds one wire, so plugging in a new one unplugs whatever was there. `MultiStagePuzzle` chains ordered or branching `PuzzleStage` entries. `SlidingPuzzle` is a classic 15-puzzle that always starts pre-shuffled into a solvable state. `PipePuzzle` is a grid of rotatable segments, solved when a breadth-first search finds a continuous path of matching openings between a source and a sink tile.
+`PlacementPuzzle` connects piece ids to socket ids; a socket only ever holds one piece, so placing a new one removes whatever was there. `MultiStagePuzzle` chains ordered or branching `PuzzleStage` entries. `SlidingPuzzle` is a classic 15-puzzle that always starts pre-shuffled into a solvable state. `PipePuzzle` is a grid of rotatable segments, solved when a breadth-first search finds a continuous path of matching openings between a source and a sink tile.
 
 ```csharp
-wirePuzzle.Connect("wire_a", "socket_a");
+placementPuzzle.Connect("piece_a", "socket_a");
 multiStagePuzzle.AdvanceToStage("secret_branch");
 slidingPuzzle.TryMoveTile("3");
 pipePuzzle.RotateTile("pipe_a");
 ```
 
-All four create from `Escape Room Framework > Create > Puzzles` with example data pre-filled, and all save/load from any state like every other `PuzzleController`. `PuzzleController.ResetPuzzle()` returns any of the eight puzzle types to `Unsolved` without reloading the scene. `CodePanelPuzzle`, `SequencePuzzle`, `WirePuzzle` and `PipePuzzle` can optionally randomize their content once per playthrough (seeded from `SaveManager.RunSeed`, so reloading never re-rolls an already-solved puzzle).
+All four create from `Escape Room Framework > Create > Puzzles` with example data pre-filled, and all save/load from any state like every other `PuzzleController`. `PuzzleController.ResetPuzzle()` returns any of the eight puzzle types to `Unsolved` without reloading the scene. `CodePanelPuzzle`, `SequencePuzzle`, `PlacementPuzzle` and `PipePuzzle` can optionally randomize their content once per playthrough (seeded from `SaveManager.RunSeed`, so reloading never re-rolls an already-solved puzzle).
 
 ## Hiding spots
 

@@ -188,10 +188,14 @@ namespace EscapeRoomRevolt.Systems.Interaction
         {
             if (_currentHeldObject == null || _heldRigidbody == null) return;
 
+            // Objects a puzzle needs back are set down, never hurled: throwing one out of reach
+            // would leave the puzzle permanently unsolvable.
+            if (!_currentHeldObject.CanBeThrown) { Drop(); return; }
+
             Rigidbody rb = _heldRigidbody;
             PhysicsGrabbable thrown = _currentHeldObject;
             Drop();
-            
+
             rb.AddForce(transform.forward * _throwForce, ForceMode.Impulse);
             thrown?.OnThrown();
         }

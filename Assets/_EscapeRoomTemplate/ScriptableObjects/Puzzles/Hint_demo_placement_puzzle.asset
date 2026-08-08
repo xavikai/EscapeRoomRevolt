@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 43a161e7bcc449b4fb8271d772b6054a, type: 3}
-  m_Name: Hint_demo_wire_puzzle
+  m_Name: Hint_demo_placement_puzzle
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Hint.HintData
   delayBeforeFirstHint: 120
   delayBetweenHints: 60

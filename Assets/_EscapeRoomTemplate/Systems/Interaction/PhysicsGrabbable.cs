@@ -9,6 +9,12 @@ namespace EscapeRoomRevolt.Systems.Interaction
     [RequireComponent(typeof(GameplayImpactNoiseEmitter))]
     public class PhysicsGrabbable : InteractableBase
     {
+        [Tooltip("Whether the player can hurl this. Turn it off for anything a puzzle needs back: a "
+               + "thrown piece can end up somewhere unreachable and leave the puzzle unsolvable.")]
+        [SerializeField] private bool _canBeThrown = true;
+
+        public bool CanBeThrown => _canBeThrown;
+
         private Rigidbody _rb;
         private GameplayImpactNoiseEmitter _impactNoise;
 
@@ -30,6 +36,12 @@ namespace EscapeRoomRevolt.Systems.Interaction
                 Debug.LogWarning("[PhysicsGrabbable] No PhysicsGrabber found in scene. Make sure the Player has one.");
             }
         }
+
+        /// <summary>
+        /// Turns grabbing on or off at runtime. Used when a prop stops being a loose object and
+        /// becomes part of the scenery — a fuse seated in its holder once the circuit is live.
+        /// </summary>
+        public void SetGrabbable(bool value) => SetInteractable(value);
 
         public void OnDropped()
         {

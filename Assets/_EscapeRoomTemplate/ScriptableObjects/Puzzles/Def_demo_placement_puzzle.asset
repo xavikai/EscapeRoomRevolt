@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ec3cb5d8fbfc7eb478b44c5c7b44d084, type: 3}
-  m_Name: Def_demo_wire_puzzle
+  m_Name: Def_demo_placement_puzzle
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Puzzle.PuzzleDefinition
-  _persistentId: demo_wire_puzzle
-  _displayName: "Empalme el\xE9ctrico"
+  _persistentId: demo_placement_puzzle
+  _displayName: Piezas encajables
   _category: 5
-  _objective: Conecta cada cable a su enchufe correcto.
+  _objective: "Coloca cada pieza en su posici\xF3n correcta."
   _hints: {fileID: 11400000, guid: 2e4ed585cae7036469a1daf897fa9afe, type: 2}
   _sanityPenalty: 4

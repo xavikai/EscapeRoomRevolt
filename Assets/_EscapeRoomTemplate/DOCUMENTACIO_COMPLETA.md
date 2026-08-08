@@ -31,6 +31,7 @@ Interfície: UI Toolkit; no es necessita cap `Canvas` per al flux principal.
 15. Objectes físics i equipament
 16. Llanterna
 17. Cordura i esdeveniments de terror
+17bis. Referència dels altres mòduls de Survival Horror
 18. Puzles
 19. Pistes progressives
 20. Objectius i final de partida
@@ -64,7 +65,7 @@ La plantilla és una base modular per construir jocs d'Escape Room i Survival Ho
 - Puzles de seqüència.
 - Puzles d'estat, com una combinació de palanques.
 - Puzles de socket lògic o físic.
-- Puzles de connectar cables (`WirePuzzle`), amb exclusivitat de socket i correcció parcial.
+- Puzles de col·locar peces (`PlacementPuzzle`), amb exclusivitat de socket i correcció parcial.
 - Puzles multi-fase ordenats o ramificats (`MultiStagePuzzle`), amb rollback opcional.
 - Punts d'interès (hotspots) clicables a l'examen 3D, amb revelació d'informació/item persistent.
 - Manipulació física, transport, rotació, llançament i encaix d'objectes.
@@ -105,16 +106,32 @@ La plantilla és una base modular per construir jocs d'Escape Room i Survival Ho
 
 La plantilla té un únic perfil actiu per projecte, desat a `Resources/GenreFeatureSettings.asset`. Es canvia des de `Escape Room Framework > Configuration` i s'aplica en iniciar la sessió de Play següent.
 
+La base compartida no es pot desactivar mai, perquè és l'esquelet del joc:
+
 | Sistema | Escape Room | Survival Horror | Custom Hybrid |
 |---|---:|---:|---:|
 | Interacció, inventari, examen, notes i objectes físics | Sí | Sí | Sí |
 | Portes, codis, puzles, pistes, objectius, Save/Load i finals | Sí | Sí | Sí |
 | PC, comandament, VR, menús i UI Toolkit | Sí | Sí | Sí |
-| Llanterna, bateries, HUD i controls `F`/`R` | Ocult i inactiu | Actiu | Configurable |
-| Evasió avançada (`Alt + A/D`, `X`, `V`) | Oculta i inactiva | Activa | Configurable |
-| Estabilitat/cordura i el seu HUD | Ocult i inactiu | Actiu | Configurable |
-| Penalització de cordura per errors | Inactiva | Activa | Configurable |
-| Esdeveniments de terror | Inactius | Actius | Configurable |
+
+La resta són **mòduls opcionals**. Cadascun correspon a un flag d'`OptionalGameFeature` i, amb el perfil `Custom Hybrid`, s'activa o es desactiva per separat des de l'Inspector de `GenreFeatureSettings`:
+
+| Flag | Sistema | Escape Room | Survival Horror |
+|---|---|---:|---:|
+| `Flashlight` | Llanterna amb bateria i HUD (`F`/`R`) | Inactiu | Actiu |
+| `Sanity` | Cordura, HUD d'estabilitat i penalització per errors de puzle | Inactiu | Actiu |
+| `HorrorEvents` | Esdeveniments de terror i director de tensió | Inactiu | Actiu |
+| `PlayerVitals` | Vida, dany, mort/respawn i estamina | Inactiu | Actiu |
+| `EnemyAI` | Enemic amb patrulla, visió, oïda i persecució | Inactiu | Actiu |
+| `Hiding` | Amagatalls amb risc d'exposició | Inactiu | Actiu |
+| `NightVision` | Visió nocturna amb càrrega i zoom | Inactiu | Actiu |
+| `Checkpoints` | Punts de control que restauren món i jugador | Inactiu | Actiu |
+| `Traversal` | Saltar, esquivar i passar per forats | Inactiu | Actiu |
+| `EvidenceRecording` | Gravar proves amb càmera (found-footage) | Inactiu | Actiu |
+| `AdvancedEvasion` | Lean, mirada enrere i slide (`Alt + A/D`, `X`, `V`) | Inactiu | Actiu |
+| `AdvancedDoors` | Portes que es poden aguantar, forçar o bloquejar | Inactiu | Actiu |
+
+Consulta la secció 17bis per al funcionament i la configuració de cadascun.
 
 Per crear un Escape Room pur:
 
@@ -922,6 +939,129 @@ Cap d'aquestes opcions substitueix la dificultat: són ortogonals, pensades perq
 
 ---
 
+## 17bis. Referència dels altres mòduls de Survival Horror
+
+Les seccions 16 i 17 cobreixen llanterna, cordura i esdeveniments de terror. Aquesta cobreix la resta de mòduls opcionals de la taula de la secció 1. Tots s'activen o desactiven amb el seu flag a `GenreFeatureSettings`; si el flag està desactivat, el component s'autodesactiva i pots deixar-lo tranquil·lament a l'escena.
+
+### Constants i salut del jugador (`PlayerVitals`)
+
+Flag: `PlayerVitals`. Component al jugador. Gestiona vida i estamina en un sol lloc.
+
+| Camp | Per a què serveix |
+|---|---|
+| `_maxHealth` | Vida màxima |
+| `_damageInvulnerability` | Segons d'immunitat després de rebre un cop, per evitar morir per acumulació instantània |
+| `_deathRespawnDelay` | Espera abans de reaparèixer |
+| `_maxStamina` | Estamina màxima |
+| `_sprintDrainPerSecond` | Consum mentre corres |
+| `_recoveryPerSecond` / `_recoveryDelay` | Ritme i espera de recuperació |
+| `_resumeSprintAt` | Fracció d'estamina necessària per tornar a poder córrer (evita l'esprint intermitent) |
+
+Font de dany habitual: `DamageVolume` (zona que fa mal en entrar-hi o mentre hi ets).
+
+### Enemic (`HorrorEnemyController` + `HorrorEnemyProfile`)
+
+Flag: `EnemyAI`. El comportament viu al **perfil** (`ScriptableObject`), no al component: així pots tenir diversos enemics amb el mateix script i estadístiques diferents, o canviar la dificultat sense tocar l'escena.
+
+Al component configures **on** i **què veu**:
+
+| Camp | Per a què serveix |
+|---|---|
+| `_profile` | El `HorrorEnemyProfile` amb velocitats, rangs i temps |
+| `_eye` | Des d'on calcula la visió (posa'l a l'alçada del cap) |
+| `_patrolPoints` | Ruta de patrulla; si es deixa buit, es queda a la zona |
+| `_visionBlockingMask` | Quines capes tallen la línia de visió |
+| `_traversalDetectionDistance` / `_traversalDetectionRadius` | Com detecta obstacles que pot travessar |
+
+Sistemes que hi interactuen:
+
+- `PlayerVisibility` + `VisibilityZone` — com de visible ets segons on ets i què fas (agachat, amb llanterna encesa, en una zona fosca).
+- `GameplayNoiseEmitter` — el que fa soroll et delata. `GameplayImpactNoiseEmitter` ho aplica als objectes llançats.
+- `ChaseDirector` + `ChaseSafeZone` — controlen el **ritme** de la persecució i defineixen llocs on l'enemic abandona.
+
+### Amagatalls (`HidingSpot`)
+
+Flag: `Hiding`. Posa'l a un armari, sota un llit, etc.
+
+| Camp | Per a què serveix |
+|---|---|
+| `_insideAnchor` / `_exitAnchor` | On es col·loca el jugador a dins i on surt |
+| `_inspectionAnchor` | Des d'on mira l'enemic si ve a inspeccionar |
+| `_kind` | Tipus (armari, sota el llit…) — afecta l'animació i la postura |
+| `_forceCrouchedPose` | Força postura ajupida |
+| `_minimumStayTime` | Evita entrar i sortir en un frame |
+| `_exposureDamage` | Dany si et descobreixen a dins |
+| `_calmBreathingIntensity` | Intensitat de la respiració (feedback de tensió) |
+
+### Visió nocturna (`NightVisionController`)
+
+Flag: `NightVision`. Model de recurs consumible, igual que la llanterna.
+
+| Camp | Per a què serveix |
+|---|---|
+| `_maxCharge` / `_startingCharge01` | Càrrega màxima i inicial |
+| `_drainPerSecond` | Consum mentre està encesa |
+| `_batteryItemId` | `ItemId` de la recàrrega (per defecte `camcorder_battery`) |
+| `_lowThreshold` / `_criticalThreshold` | Llindars d'avís del HUD |
+| `_zoomFieldOfView` | FOV en fer zoom |
+
+### Punts de control (`CheckpointManager` + `CheckpointEntity`)
+
+Flag: `Checkpoints`. `SurvivalCheckpoint` marca el lloc; `CheckpointEntity` marca els objectes que s'han de restaurar. Els `PickableItem` s'hi afegeixen sols quan el flag està actiu.
+
+Diferència important respecte al Save/Load: el checkpoint és **automàtic i de sessió** (tornar enrere en morir); el Save/Load és **explícit i persistent** (secció 21). Conviuen sense trepitjar-se.
+
+### Travessies (`TraversalObstacle`)
+
+Flag: `Traversal`. Saltar una tanca, passar per un forat, esquivar.
+
+| Camp | Per a què serveix |
+|---|---|
+| `_type` | `Vault`, etc. |
+| `_entryAnchor` / `_exitAnchor` | Punts d'entrada i sortida del moviment |
+| `_duration` / `_arcHeight` / `_motionCurve` | Forma i durada del moviment |
+| `_prompt` | Text d'interacció |
+| `_enemyPolicy` | **Clau per al disseny**: si l'enemic pot seguir-te (`RouteAround` el fa donar la volta) |
+| `_onStarted` / `_onCompleted` | `UnityEvent` per encadenar so o animació |
+
+`_enemyPolicy` és el camp que converteix una travessia en una eina d'escapada: una finestra que l'enemic ha de vorejar et dona avantatge.
+
+### Gravació de proves (`CamcorderEvidenceRecorder`)
+
+Flag: `EvidenceRecording`. Mecànica found-footage: apuntar amb la càmera a una prova el temps suficient.
+
+| Camp | Per a què serveix |
+|---|---|
+| `_viewCamera` | Càmera que grava |
+| `_recordingMask` | Capes que es poden gravar |
+| `_rayDistance` | Abast |
+| `_resetProgressWhenReleased` | Si el progrés es perd en deixar de gravar |
+| `_onRecordingStarted` / `_onRecordingStopped` / `_onEvidenceCompleted` | Enganxa-hi so, HUD o objectius |
+
+Dades relacionades: `EvidenceDefinition` (què és cada prova), `RecordableEvidence` (component a l'objecte gravable) i `EvidenceJournal` (registre del que has recollit).
+
+### Evasió avançada (`EvasionController`)
+
+Flag: `AdvancedEvasion`. Lean amb col·lisió de càmera (`Alt + A/D`), mirada enrere (`X`) i slide (`V`).
+
+En VR el lean i la mirada enrere passen a ser **físics** —mous el cos de veritat— i el slide artificial ve desactivat per defecte per confort.
+
+### Consola d'energia (`SurvivalPowerConsole`)
+
+Objectiu de sala típic: restablir el corrent per obrir una porta, fent soroll que atrau l'enemic.
+
+| Camp | Per a què serveix |
+|---|---|
+| `_controlledDoor` | Porta que es desbloqueja |
+| `_readyPrompt` / `_completedPrompt` | Textos abans i després |
+| `_noiseRadius` | Radi del soroll generat: el preu de resoldre-ho |
+
+### Dificultat (`SurvivalDifficultyService` + `SurvivalDifficultyProfile`)
+
+Escala els paràmetres dels sistemes anteriors sense duplicar contingut. És **ortogonal a l'accessibilitat**: un jugador pot jugar en `Nightmare` i tenir igualment activada l'assistència en persecucions.
+
+---
+
 ## 18. Puzles
 
 ### Separació dades/lògica
@@ -970,22 +1110,27 @@ Qualsevol desviació reinicia la seqüència i aplica el flux d'error.
 
 ### Estat
 
-`StatePuzzle` observa diversos `InteractableToggle`. Es resol quan tots coincideixen amb el booleà requerit. L'ordre no importa.
+`StatePuzzle` observa diversos `SteppedPositioner`. Es resol quan tots estan a l'índex de posició requerit. L'ordre no importa.
+
+`SteppedPositioner` mou un objecte entre N posicions discretes (rotació o translació), definides una a una des de l'Inspector: no està limitat a dos estats. No és interactuable per si sol — qui l'acciona es defineix a part, de manera que es pot reutilitzar en objectes que ja tenen el seu propi interactuable:
+
+- `InteractableCycler` (menú `Create > Interactables > Multi-Position Lever`): fa que el jugador l'avanci una posició per clic. És la versió multi-posició d'`InteractableToggle`, que es manté binari per a interruptors simples.
+- Un pont propi d'un puzle, com `PipeTileButton`, que ja és qui gestiona el clic i només fa servir el positioner per animar la rotació de la peça.
 
 ### Socket
 
 `SocketPuzzle` compara un `ItemId`, pot consumir-lo i crear un model col·locat. Per a un flux d'inventari més intuïtiu, una porta o `ItemReceiver` amb `OfferCompatible` acostuma a ser preferible. Per a interacció física, utilitza `PhysicsSocket`.
 
-### Cables
+### Col·locació de peces
 
-`WirePuzzle` (menú `Create > Puzzles > Wire Puzzle`) resol un puzle de "connecta els cables": cada cable ha d'acabar endollat al seu socket correcte, en qualsevol ordre.
+`PlacementPuzzle` (menú `Create > Puzzles > Placement Puzzle`) resol un puzle de "col·loca cada peça al seu lloc": cada peça ha d'acabar al seu socket correcte, en qualsevol ordre.
 
 ```csharp
-wirePuzzle.Connect("wire_a", "socket_a");
-wirePuzzle.Disconnect("wire_a");
+placementPuzzle.Connect("piece_a", "socket_a");
+placementPuzzle.Disconnect("piece_a");
 ```
 
-Un socket només pot tenir un cable alhora: endollar-n'hi un altre en desendolla automàticament el que hi hagués, com un endoll real. Es comprova sol quan tots els cables tenen alguna connexió (o crida `SubmitConnections()` manualment). A diferència del panell de codi, una connexió incorrecta **no esborra res** —les connexions que ja estaven bé es mantenen, així el jugador només corregeix les que fallen. Qui representa físicament cada cable/socket a l'escena (un objecte agafable, un botó, el que sigui) és cosa teva; el puzle només necessita que li cridis `Connect`/`Disconnect` amb els IDs corresponents.
+Un socket només pot tenir una peça alhora: col·locar-n'hi una altra en treu automàticament la que hi hagués, com un encaix real. Es comprova sol quan totes les peces tenen alguna col·locació (o crida `SubmitConnections()` manualment). A diferència del panell de codi, una col·locació incorrecta **no esborra res** —les que ja estaven bé es mantenen, així el jugador només corregeix les que fallen. Qui representa físicament cada peça/socket a l'escena (un objecte agafable, un botó, el que sigui) és cosa teva; el puzle només necessita que li cridis `Connect`/`Disconnect` amb els IDs corresponents.
 
 ### Multi-fase
 
@@ -1242,11 +1387,41 @@ Quan hi ha una modal oberta:
 - `Esc` tanca la modal superior abans d'obrir pausa;
 - els objectes físics sostinguts es deixen anar.
 
-### Personalitzar estètica
+### Personalitzar el disseny dels menús
 
-Modifica USS per colors, marges, tipografia i estats. Mantén els `name` dels elements UXML perquè els controladors els busquen amb `Q<T>("nom")`.
+Hi ha **tres nivells**, de menys a més invasiu. Fes servir sempre el més baix que et resolgui el problema.
 
-Exemple segur:
+#### Nivell 1 — `MenuThemeSettings` (recomanat: sense tocar codi ni USS)
+
+Un `ScriptableObject` que reskineja el menú des de l'Inspector. És la via recomanada per canviar la marca del joc.
+
+1. Botó dret al Project: `Create > Escape Room Framework > Menu Theme Settings`.
+2. Selecciona el `GameObject` que té `UIToolkitMenuController` (a l'escena `MainMenu`).
+3. Arrossega l'asset al camp **`_theme`**.
+
+Camps disponibles:
+
+| Camp | Efecte |
+|---|---|
+| `panelBackground` | Fons del panell del menú |
+| `accent` | Vora del panell i color d'accent de targetes i camps de reassignació de tecles |
+| `titleText` | Color del títol de cada pantalla |
+| `buttonBackground` | Fons dels botons |
+| `buttonBackgroundHover` | Fons dels botons amb el ratolí a sobre |
+| `buttonText` | Color del text dels botons |
+| `titleFont` | Tipografia dels títols (buit = per defecte d'Unity) |
+| `bodyFont` | Tipografia de la resta de textos (buit = per defecte) |
+| `logo` | `Sprite` que apareix sobre el títol a totes les pantalles (buit = cap logo) |
+
+Dues coses a tenir en compte:
+
+- Els valors per defecte de l'asset **coincideixen exactament** amb l'aspecte original. Crear-lo i no tocar res no canvia res.
+- Deixar `_theme` buit també és vàlid: llavors manen els valors de `EscapeRoomMenu.uss`.
+- **L'alt contrast sempre guanya.** Si el jugador activa alt contrast als ajustos d'accessibilitat, el tema s'ignora. És deliberat: l'accessibilitat passa per davant de la marca.
+
+#### Nivell 2 — USS (colors, marges i estats que el tema no cobreix)
+
+Edita `UI/Toolkit/EscapeRoomMenu.uss` (menús) o `UI/Toolkit/GameplayHUD.uss` (HUD de joc). Canviar **classes** és segur:
 
 ```css
 .menu-button {
@@ -1260,7 +1435,15 @@ Exemple segur:
 }
 ```
 
-Canviar una classe és segur. Canviar `name="screen-content"`, `name="inventory-grid"` o altres IDs exigeix actualitzar el C#.
+Compte amb l'ordre de prioritat: si tens un `MenuThemeSettings` assignat, els seus colors s'apliquen **per estil inline** i, per tant, **sobreescriuen l'USS** dels camps que cobreix. Si canvies un color a l'USS i no veus l'efecte, mira si el tema ja el controla.
+
+#### Nivell 3 — UXML (estructura)
+
+Edita `UI/Toolkit/EscapeRoomMenu.uxml` per afegir o reorganitzar elements.
+
+**Regla crítica:** no canviïs els atributs `name` dels elements existents. Els controladors els busquen amb `Q<T>("nom")`, i renombrar-ne un el trenca en silenci (no dona error de compilació, simplement deixa de funcionar). Afegir elements nous amb noms nous és segur.
+
+Noms que **no** es poden tocar sense actualitzar el C#: `screen-content`, `inventory-grid`, i qualsevol altre referenciat a `UIToolkitMenuController` o `GameplayUIController`.
 
 ---
 
@@ -1433,77 +1616,168 @@ Flashlight_Modular (arrel lògica)
 
 ## 25. Menú superior `Escape Room Framework`
 
+Tot el menú viu a `Assets/_EscapeRoomTemplate/Core/Editor/`. Cap entrada modifica res fora de l'escena o dels assets que anuncia, i totes registren Undo quan creen objectes.
+
+### Com està organitzat
+
+Els grups no són arbitraris: segueixen **el cicle de vida d'un projecte**, de dalt a baix.
+
+| Grup | Quan el fas servir | Freqüència |
+|---|---|---|
+| *(arrel)* Perfil de gènere | Al començar el projecte, per decidir quines mecàniques existeixen | Un cop |
+| `Setup` | Muntar l'esquelet: managers, jugador, menú principal, VR | Un cop per projecte |
+| `Create` | Autoria de contingut: tot el que omple una sala | Constantment |
+| `Demo` | Obrir els exemples o regenerar la vertical slice | Consulta |
+| `Validation` | Abans de fer build o empaquetar | Cada lliurament |
+| `Maintenance` | Reparar o regenerar assets derivats | Quan cal |
+| `Documentation` | Obrir els manuals | Consulta |
+
+La regla que els separa és **què toquen**: `Setup` toca la configuració del projecte, `Create` toca l'escena, `Validation` no toca res (només informa) i `Maintenance` toca assets ja existents.
+
+Dins de `Create`, els subgrups es distingeixen per **com hi arriba el jugador**:
+
+| Subgrup | Criteri |
+|---|---|
+| `Interactables` | Objectes que el jugador **mira i acciona** directament (una porta, una palanca). Un objecte, una funció. |
+| `Puzzles` | Sistemes amb **estat de resolució**: un controlador més les peces que el manipulen. Tenen `OnSolved`. |
+| `Inventory` | Coses lligades als **objectes que portes** o al seu examen en 3D. |
+| `Triggers` | Volums que actuen **en entrar-hi**, sense que el jugador els accioni. |
+| `Flow` | **Progressió de la partida**: objectius i finals. No són contingut d'una sala sinó del joc. |
+| `Survival` | Mecàniques **restringides pel perfil de gènere**: només fan res si el flag corresponent està actiu. |
+
+Unity dibuixa **separadors** dins d'alguns submenús, i marquen un canvi de naturalesa:
+
+- A `Puzzles`, `Add Feedback To Selected Puzzle` queda separat perquè **no crea un puzle**: modifica el que tinguis seleccionat.
+- A `Demo`, `Create or Update Survival Horror Demo` queda separat de les entrades `Open ...` perquè **genera contingut**, no obre una escena.
+- A `Maintenance`, les dues entrades d'icones queden separades de les de scripts perduts: unes **generen** assets i les altres **reparen** escenes.
+
+### Perfil de gènere (arrel del menú)
+
+Quatre entrades sense submenú, perquè afecten tot el projecte. Escriuen a `Resources/GenreFeatureSettings.asset` i s'apliquen a la següent sessió de Play.
+
+| Entrada | Què fa |
+|---|---|
+| `Use Escape Room Profile` | Desactiva els dotze mòduls opcionals de survival. Els components es queden a les escenes però s'autodesactiven. |
+| `Use Survival Horror Profile` | Activa els dotze de cop. |
+| `Use Custom Hybrid Profile` | Deixa que triïs cada flag per separat a l'Inspector de l'asset. |
+| `Select Genre Feature Settings` | Localitza i selecciona l'asset al Project. |
+
+Els tres perfils mostren una marca de verificació al costat del que està actiu.
+
 ### Setup
 
-- `Build Complete VR Template`: configura OpenXR, regenera el rig i crea l'escena de prova.
-- `Configure OpenXR (PC + Android)`: assigna el loader i inicialització automàtica.
-- `Instantiate Game Manager`: col·loca el prefab si no n'hi ha cap; si ja existeix, el selecciona.
-- `Instantiate PC Player`: mateix comportament per al jugador PC.
-- `Create or Update Main Menu Scene...`: crea o reconstrueix `MainMenu`, crea settings si falten i la posa primera al Build Profile. Reemplaçar una escena existent demana confirmació.
-- `Create or Update VR Player Prefab`: regenera el rig complet a partir dels Starter Assets oficials.
-- `Create VR Template Scene`: crea una escena mínima executable i un simulador opcional.
-- `Prepare Current Scene Interactables for VR`: afegeix components XRI sense substituir scripts de gameplay.
+Configuració inicial del projecte. Totes són **no destructives**: si el que han de crear ja existeix, el seleccionen en lloc de duplicar-lo.
+
+| Entrada | Què fa |
+|---|---|
+| `Instantiate Game Manager` | Col·loca el prefab de serveis persistents a l'escena activa. Si ja n'hi ha un, només el selecciona. |
+| `Instantiate PC Player` | Igual amb el jugador de PC. |
+| `Create or Update Main Menu Scene...` | Crea o reconstrueix l'escena `MainMenu`, genera els assets de configuració que falten i la posa **primera** al Build Profile. Si l'escena ja existeix, demana confirmació abans de reemplaçar-la. |
+| `Configure OpenXR (PC + Android)` | Assigna el loader d'OpenXR i l'inicialització automàtica per a les dues plataformes. |
+| `Create or Update VR Player Prefab` | Regenera el rig de VR complet a partir dels Starter Assets oficials d'XRI. |
+| `Create VR Template Scene` | Crea una escena mínima executable en VR, amb simulador opcional per provar sense visor. |
+| `Build Complete VR Template` | Fa les tres anteriors seguides: OpenXR + rig + escena de prova. |
+| `Prepare Current Scene Interactables for VR` | Recorre l'escena i afegeix els components d'XRI als interactuables **sense substituir** cap script de gameplay. La lògica de joc segueix sent la mateixa a PC i VR. |
 
 ### Create > Interactables
 
-- `Door`: porta pivotant o lliscant.
-- `Cabinet`: contenidor interactuable.
-- `Drawer`: calaix.
-- `Note`: document llegible.
-- `Pickable Item`: base d'objecte d'inventari.
-- `Generic Trigger`: interacció amb `UnityEvent`.
-- `Item Receiver`: receptor amb selecció contextual.
-- `Lever`: toggle visual per a puzles.
-- `Switch`: interruptor.
-- `Physics Grabbable`: objecte físic.
+Cada entrada crea un objecte `*_Logic` amb el component de lògica i un fill `*_Visuals` amb la malla i el material URP, col·locat on apunta la vista d'escena.
+
+| Entrada | Component | Notes |
+|---|---|---|
+| `Door` | `Door` | Pivotant o lliscant, amb pany opcional. |
+| `Cabinet` | `Door` | Preconfigurada com a armari (gir). |
+| `Drawer` | `Door` | Preconfigurada com a calaix (lliscament). |
+| `Note` | `InteractableNote` | Document llegible. |
+| `Pickable Item` | `PickableItem` | Base d'objecte recollible; cal assignar-li l'`InventoryItemData`. |
+| `Generic Trigger` | `InteractableTrigger` | Dispara un `UnityEvent` en interactuar. La peça per connectar coses des de l'Inspector. |
+| `Item Receiver` | `ItemReceiver` | Rep un objecte de l'inventari. Inclou punt on apareixerà el model. |
+| `Lever` | `InteractableToggle` | Interruptor **binari** que gira. |
+| `Switch` | `InteractableToggle` | Interruptor **binari** que llisca. |
+| `Multi-Position Lever` | `SteppedPositioner` + `InteractableCycler` | Control de **N posicions**, amb 3 d'exemple. Afegeix o treu entrades a la llista `Positions` per canviar-ne el nombre. |
+| `Physics Grabbable` | `PhysicsGrabbable` | Objecte agafable, transportable i llançable. |
 
 ### Create > Puzzles
 
-- `Keypad Panel`: panell de codi amb botons.
-- `Wire Puzzle`: puzle de connectar cables, amb dues regles d'exemple ja emplenades.
-- `Multi-Stage Puzzle`: puzle per fases ordenades o ramificades, amb dues fases d'exemple.
-- `PuzzleDefinition`, `HintData` i altres dades es creen des del menú Create del Project.
+Aquestes entrades no creen només el controlador: creen **el puzle jugable sencer** (peces, vista i cablejat inclosos).
+
+| Entrada | Què crea |
+|---|---|
+| `Keypad Panel` | Panell amb botons numèrics funcionals, càmera d'enfocament i ressaltat. |
+| `Placement Puzzle` | Controlador + **2 peces transportables** (`PhysicsGrabbable` + `GrabbablePiece`) + **3 endolls** amb `PieceSocketReceiver`, un dels quals és esquer. |
+| `Multi-Stage Puzzle` | Controlador amb dues fases d'exemple. *(Només dades: encara no crea els objectes de cada fase.)* |
+| `Sliding Puzzle` | Controlador 3×2 + **5 fitxes clicables** + `SlidingBoardView` + marcador del forat, tot enllaçat i ja disposat en graella. |
+| `Pipe Puzzle` | Controlador amb dues canonades d'exemple. *(Només dades: encara no crea els segments.)* |
+| `Throw Puzzle` | Controlador + **3 dianes** `ThrowTarget` que canvien de color en encertar-les. |
+| `Sequence Puzzle` | Controlador + **3 botons** de colors, cablejats per introduir la seqüència vermell → verd → blau. |
+| `State Puzzle` | Controlador + **3 palanques de 3 posicions**, amb les condicions ja enllaçades (es resol amb 0/1/2 d'esquerra a dreta). |
+| `Add Feedback To Selected Puzzle` | **Actua sobre el puzle seleccionat.** Li afegeix una **porta bloquejada**, una **càmera de feedback enfocant-la** i el **so de resolt**, tot enllaçat a `OnSolved`. La porta rep un `SaveId` únic. |
+
+`PuzzleDefinition` i `HintData` no es creen des d'aquí sinó des del menú `Create` del Project (són assets, no objectes d'escena).
+
+Per canviar la mida del puzle lliscant, edita `Columns`/`Rows` al controlador: l'ordre objectiu es regenera sol. Després, al menú de context de `SlidingBoardView`, executa **`Rebuild tiles for grid size`** perquè creï o elimini les fitxes necessàries.
 
 ### Create > Inventory
 
-- `Examine Hotspot`: punt clicable per amagar secrets dins un objecte examinat en 3D. Si tens un objecte seleccionat, es crea com a fill seu.
+| Entrada | Què fa |
+|---|---|
+| `Examine Hotspot` | Punt clicable per amagar informació dins d'un objecte examinat en 3D. Si tens un objecte seleccionat, es crea com a fill seu. |
 
 ### Create > Triggers
 
-- `Narrative Trigger`: subtítol/veu o lògica narrativa.
-- `Hint Zone`: activa context de pistes.
+| Entrada | Què fa |
+|---|---|
+| `Narrative Trigger` | Volum que dispara subtítol, veu o lògica narrativa en entrar-hi. |
+| `Hint Zone` | Volum que activa el context de pistes d'un puzle mentre hi ets a dins. |
 
 ### Create > Flow
 
-- `Objective Manager`: controlador d'objectius de l'escena.
-- `Game End Trigger`: final de victòria/derrota invocable o per volum.
+| Entrada | Què fa |
+|---|---|
+| `Objective Manager` | Controlador d'objectius de l'escena. |
+| `Game End Trigger` | Final de victòria o derrota, invocable per event o per volum. |
+
+### Create > Survival
+
+| Entrada | Què fa |
+|---|---|
+| `Hiding Spot` | Amagatall amb punts d'entrada, sortida i inspecció ja col·locats. |
 
 ### Demo
 
-- obre Main Menu;
-- obre Showcase Museum;
-- obre Locked Office.
-
-Abans de canviar d'escena, Unity ofereix guardar canvis.
+| Entrada | Què fa |
+|---|---|
+| `Create or Update Survival Horror Demo` | Construeix una vertical slice de survival sencera amb primitives pròpies del projecte (sense assets de tercers). |
+| `Open Main Menu` / `Open Showcase Museum` / `Open Locked Office` | Obren les escenes d'exemple. Unity ofereix desar els canvis abans de canviar d'escena. |
 
 ### Validation
 
-- `Run Framework Smoke Tests`: integritat general d'assets i configuració.
-- `Validate Current Scene`: UIDocuments, Canvas heretats, layers, Build Profile, puzles, pistes, IDs, catàleg i bateries.
-- `Validate Save IDs`: duplicitats de persistència.
-- `Check Render Pipeline Dependency`: dependència URP.
+Cap d'aquestes entrades modifica res: només informen.
+
+| Entrada | Què comprova |
+|---|---|
+| `Run Framework Smoke Tests` | Integritat general d'assets i configuració del framework. |
+| `Validate Current Scene` | UIDocuments, Canvas heretats, capes, Build Profile, puzles, pistes, IDs, catàleg d'objectes i bateries. També detecta **cicles de prerequisits** entre objectius (un cicle fa que cap objectiu del grup es pugui completar mai) i **referències de combinació trencades** per objectes esborrats. |
+| `Validate Save IDs` | Busca `SaveId` duplicats, que farien que dos objectes compartissin estat guardat. |
+| `Check Render Pipeline Dependency` | Comprova la dependència d'URP. **Només comprova**: mai modifica el Package Manager. |
 
 ### Maintenance
 
-- `Preview Missing Scripts`: selecciona problemes, no modifica res.
-- `Repair Missing Scripts…`: demana confirmació, registra Undo i elimina només referències perdudes.
+| Entrada | Què fa |
+|---|---|
+| `Preview Missing Scripts` | Selecciona els objectes amb scripts perduts. **No modifica res.** |
+| `Repair Missing Scripts…` | Demana confirmació, registra Undo i elimina **només** les referències perdudes. |
+| `Generate Missing Item Icons` | Genera la icona dels `InventoryItemData` que no en tenen. Si l'objecte té `World Prefab`, en fa una foto en 3D amb fons transparent; si no en té, **dibuixa un sprite 2D** segons què és (nota, clau, pila, fusible, bitllet, cinta, llanterna o caixa genèrica). També substitueix els sprites interns d'Unity que hagin quedat com a marcador de posició. |
+| `Regenerate All Item Icons` | El mateix, però refà també les que ja existien. |
 
 ### Documentation
 
-- manual curt per a dissenyadors;
-- guia de programació;
-- documentació completa;
-- localització del HUD.
+| Entrada | Què obre |
+|---|---|
+| `Open User Manual` | Manual curt per a dissenyadors. |
+| `Open Programming Guide` | Guia per ampliar la plantilla amb C#. |
+| `Open Complete Documentation` | Aquest document. |
+| `Locate Gameplay HUD` | Selecciona al Project els assets del HUD de joc. |
 
 ---
 

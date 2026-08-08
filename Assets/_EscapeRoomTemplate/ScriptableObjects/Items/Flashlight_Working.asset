@@ -14,12 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Inventory.InventoryItemData
   _itemId: flashlight_working
   _displayName: Linterna operativa
-  _description: Una linterna modular lista para usar. Equípala y pulsa F para encenderla; pulsa R para consumir unas pilas y recargarla.
-  _icon: {fileID: 0}
+  _description: "Una linterna modular lista para usar. Equ\xEDpala y pulsa F para
+    encenderla; pulsa R para consumir unas pilas y recargarla."
+  _icon: {fileID: 21300000, guid: e77c650f20de50c4dad77a16469aba6b, type: 3}
   _worldPrefab: {fileID: 2709283103502204016, guid: 5455c721e7e2be84bab3f447d065d0a1, type: 3}
+  _category: 0
+  _primaryAction: 0
   _isConsumable: 0
   _isStackable: 0
   _maxStack: 1
+  _canDrop: 1
+  _canExamine: 1
   _isReadable: 0
   _noteContent: 
   _combinations: []

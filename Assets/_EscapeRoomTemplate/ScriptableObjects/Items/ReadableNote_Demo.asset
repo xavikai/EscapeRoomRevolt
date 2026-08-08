@@ -15,11 +15,15 @@ MonoBehaviour:
   _itemId: note_demo_01
   _displayName: Mysterious Letter
   _description: A crumpled letter I found.
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 8f641ec7d517cd645a1233e8a02289b7, type: 3}
   _worldPrefab: {fileID: 0}
+  _category: 0
+  _primaryAction: 0
   _isConsumable: 1
   _isStackable: 0
   _maxStack: 1
+  _canDrop: 1
+  _canExamine: 1
   _isReadable: 1
   _noteContent: 'This is a note you picked up!
 

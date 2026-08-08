@@ -8,7 +8,9 @@ namespace EscapeRoomRevolt.Systems.Interaction
         Hand,
         Eye,
         Puzzle,
-        Exit
+        Exit,
+        /// <summary>Shown while carrying a physics object: reports that a throw is armed, rather than describing whatever is behind it.</summary>
+        Throw
     }
 
     /// <summary>

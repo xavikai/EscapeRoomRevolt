@@ -70,7 +70,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
         private float _hotbarVisibleUntil;
         private Coroutine _subtitleRoutine;
         private IInteractable _displayedPromptTarget;
-        private IInteractable _displayedCrosshairTarget;
+        private CursorType? _displayedCursor;
         private PhysicsGrabbable _displayedHeldObject;
 
         private InventoryManager _inventory;
@@ -141,7 +141,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
             EventBus.Unsubscribe<RequestShowKeypad>(HandleShowKeypadRequest);
         }
 
-        private void HandleShowSubtitleRequest(RequestShowSubtitle evt) => ShowSubtitle(evt.text);
+        private void HandleShowSubtitleRequest(RequestShowSubtitle evt) => ShowSubtitle(evt.text, evt.holdSeconds);
         private void HandleHideSubtitleRequest(RequestHideSubtitle evt) => HideSubtitle();
         private void HandleToggleInventoryRequest(RequestToggleInventory evt) => ToggleInventory();
         private void HandleCloseTopPanelRequest(RequestCloseTopPanel evt) => CloseTopPanel();
@@ -289,9 +289,11 @@ namespace EscapeRoomRevolt.UI.Toolkit
             _crosshair.RemoveFromClassList("crosshair--hand");
             _crosshair.RemoveFromClassList("crosshair--eye");
             _crosshair.RemoveFromClassList("crosshair--puzzle");
+            _crosshair.RemoveFromClassList("crosshair--throw");
             if (type == CursorType.Hand) _crosshair.AddToClassList("crosshair--hand");
             else if (type == CursorType.Eye) _crosshair.AddToClassList("crosshair--eye");
             else if (type == CursorType.Puzzle) _crosshair.AddToClassList("crosshair--puzzle");
+            else if (type == CursorType.Throw) _crosshair.AddToClassList("crosshair--throw");
         }
 
         private void OnSanityChanged(float _) => RefreshSanity();
@@ -329,10 +331,17 @@ namespace EscapeRoomRevolt.UI.Toolkit
             // Pulled here (instead of InteractionManager pushing into UIManager.SetCrosshair) so
             // Systems never needs to reach into the UI layer to update the crosshair.
             IInteractable target = InteractionManager.Instance != null ? InteractionManager.Instance.CurrentTarget : null;
-            if (!ReferenceEquals(target, _displayedCrosshairTarget))
+            PhysicsGrabber grabber = PhysicsGrabber.Instance;
+
+            // Carrying something wins over whatever is behind it: the useful thing to report while
+            // holding an object is that a throw is armed, not that there is a door further away.
+            CursorType desiredCursor = grabber != null && grabber.IsHoldingObject
+                ? CursorType.Throw
+                : (target.IsAlive() && target.CanInteract ? target.InteractionCursor : CursorType.Default);
+            if (!_displayedCursor.HasValue || _displayedCursor.Value != desiredCursor)
             {
-                _displayedCrosshairTarget = target;
-                SetCrosshair(target.IsAlive() && target.CanInteract ? target.InteractionCursor : CursorType.Default);
+                _displayedCursor = desiredCursor;
+                SetCrosshair(desiredCursor);
             }
 
             if (IsBlockingGameplay)
@@ -343,7 +352,6 @@ namespace EscapeRoomRevolt.UI.Toolkit
                 return;
             }
 
-            PhysicsGrabber grabber = PhysicsGrabber.Instance;
             if (grabber != null && grabber.IsHoldingObject)
             {
                 PhysicsGrabbable heldObject = grabber.CurrentHeldObject;
@@ -930,11 +938,11 @@ namespace EscapeRoomRevolt.UI.Toolkit
             foreach (Transform child in root.transform) SetLayerRecursively(child.gameObject, layer);
         }
 
-        public void ShowSubtitle(string text)
+        public void ShowSubtitle(string text, float holdSeconds = 0f)
         {
             if (GameSettingsService.Instance != null && !GameSettingsService.Instance.Data.subtitles) return;
             if (_subtitleRoutine != null) StopCoroutine(_subtitleRoutine);
-            _subtitleRoutine = StartCoroutine(TypeSubtitle(text ?? string.Empty));
+            _subtitleRoutine = StartCoroutine(TypeSubtitle(text ?? string.Empty, holdSeconds));
         }
 
         public void HideSubtitle()
@@ -944,7 +952,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
             SetVisible(_subtitle, false);
         }
 
-        private IEnumerator TypeSubtitle(string text)
+        private IEnumerator TypeSubtitle(string text, float holdSeconds)
         {
             _subtitle.text = string.Empty;
             SetVisible(_subtitle, true);
@@ -953,6 +961,12 @@ namespace EscapeRoomRevolt.UI.Toolkit
                 _subtitle.text += character;
                 yield return new WaitForSecondsRealtime(.025f);
             }
+
+            // Without this a publisher that never calls HideSubtitle leaves the line on screen for
+            // the rest of the session. Zero keeps the old behaviour for callers that time their own.
+            if (holdSeconds <= 0f) yield break;
+            yield return new WaitForSecondsRealtime(holdSeconds);
+            HideSubtitle();
         }
 
         private IEnumerator CloseAfterDelay(float seconds) { yield return new WaitForSecondsRealtime(seconds); CloseTopPanel(); }
