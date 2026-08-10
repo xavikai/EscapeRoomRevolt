@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec3cb5d8fbfc7eb478b44c5c7b44d084, type: 3}
   m_Name: Def_demo_multistage_puzzle
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Puzzle.PuzzleDefinition
-  _persistentId: demo_multistage_puzzle
-  _displayName: Panel de fases
-  _category: 5
-  _objective: Acciona la palanca para avanzar de fase.
+  _persistentId: demo_multistage_chain
+  _displayName: Cadena de seguretat
+  _category: 1
+  _objective: "Resol la seq\xFC\xE8ncia de colors i despr\xE9s configura les tres
+    palanques."
   _hints: {fileID: 11400000, guid: 2c7d9c80e12ace7429b88b912669319c, type: 2}
   _sanityPenalty: 4

@@ -151,7 +151,7 @@ La separació afecta runtime i interfície, no elimina assets. Així es pot canv
 
 ### Provar la plantilla
 
-1. Obre `Assets/_EscapeRoomTemplate/Scenes/MainMenu.unity`.
+1. Obre `Assets/_EscapeRoomTemplate/Scenes/MainMenu.unity` per provar el menú directament, o inicia una build per recórrer també `Intro`.
 2. Prem Play.
 3. Selecciona `Nueva partida`.
 4. Es carregarà `ShowcaseMuseum`, la primera escena jugable configurada.
@@ -162,13 +162,16 @@ La separació afecta runtime i interfície, no elimina assets. Així es pot canv
 
 ### Provar directament una escena jugable
 
-També pots obrir `ShowcaseMuseum.unity` o `LockedOffice.unity` i prémer Play. El `GameManager` de l'escena crea o localitza els serveis necessaris. No obstant això, una build comercial sempre ha de començar per `MainMenu`.
+També pots obrir `ShowcaseMuseum.unity` o `LockedOffice.unity` i prémer Play. El `GameManager` de l'escena crea o localitza els serveis necessaris. Una build comercial ha de començar per `Intro` si s'utilitza; en cas contrari, per `MainMenu`.
 
 ### Ordre actual del Build Profile
 
-1. `MainMenu.unity`
-2. `ShowcaseMuseum.unity`
-3. `LockedOffice.unity`
+1. `Intro.unity`
+2. `MainMenu.unity`
+3. `ShowcaseMuseum.unity`
+4. `LockedOffice.unity`
+5. `SurvivalHorrorDemo.unity`
+6. `VRTemplate.unity`
 
 Si una escena es canvia de nom o de carpeta, cal actualitzar el Build Profile i `GameFlowSettings`.
 
@@ -237,7 +240,7 @@ Conté un `UIDocument` amb:
 - `EscapeRoomMenu.uss`: estil;
 - `UIToolkitMenuController`: navegació i accions.
 
-No és un simple panell dins de l'escena jugable: és una escena independent i és la primera escena de la build.
+No és un simple panell dins de l'escena jugable: és una escena independent. És la primera escena de la build quan no hi ha intro, o la segona darrere de `Intro`.
 
 ### Opcions del menú principal
 
@@ -247,6 +250,8 @@ No és un simple panell dins de l'escena jugable: és una escena independent i �
 - `Ajustes`: obre opcions i controls.
 - `Créditos`: mostra el text de crèdits que el comprador ha de personalitzar.
 - `Salir`: demana confirmació i tanca l'aplicació. A l'Editor atura Play Mode.
+
+`Ajustes` inclou el selector d'idioma quan `DefaultLocalizationCatalog` té més d'una llengua. `UIToolkitMenuController` crea automàticament `SaveManager`, `GameSettingsService`, `LocalizationService` i `InputRouter` si el menú s'executa sense el `GameManager` persistent.
 
 ### Opcions del menú de pausa
 
@@ -1139,10 +1144,45 @@ Un socket només pot tenir una peça alhora: col·locar-n'hi una altra en treu a
 ```csharp
 multiStagePuzzle.AdvanceStage();          // següent fase de la llista
 multiStagePuzzle.AdvanceToStage("secret"); // salta a una fase concreta per id — així es fan les branques
+multiStagePuzzle.CompleteStage("phase_1"); // només avança si aquesta és realment la fase activa
 multiStagePuzzle.RollbackStage();          // torna a la fase anterior d'aquesta partida (opcional)
 ```
 
-Marca una fase com `isSolvedStage` perquè arribar-hi resolgui el puzle automàticament; això permet branques que porten a punts morts sense resoldre res. Save/Load funciona des de qualsevol fase.
+Marca una fase com `isSolvedStage` perquè arribar-hi resolgui el puzle automàticament; això permet branques que porten a punts morts sense resoldre res. Save/Load funciona des de qualsevol fase. Per encadenar puzles fills, connecta cada `OnSolved` a `CompleteStage(id)`: si un fill antic torna a emetre o el jugador resol una fase fora d'ordre, el pare no avança. El preset `Multi-Stage Chain Puzzle` crea una seqüència de colors seguida d'un puzle de palanques completament cablejat.
+
+### Rodets numèrics
+
+`Number Wheels Puzzle` obre un configurador de creació: es poden triar entre 2 i 8 rodets decimals i introduir la combinació inicial xifra per xifra. El generador adapta automàticament el nombre de condicions de `StatePuzzle`, l'amplada de la carcassa, la separació, el títol (`CODI DE N XIFRES`), el botó d'entrada i el camp de visió de la càmera. No introdueix un solver redundant: cada rodet és un `SteppedPositioner`, `NumberWheelView` només en mostra la xifra i `StatePuzzle` comprova la combinació.
+
+El component `NumberWheelsPuzzleAuthoring` conserva el nombre de rodes i la solució. Des del seu Inspector es poden editar i prémer `Rebuild wheels and layout`. La reconstrucció substitueix només `NumberWheels_Generated`: manté el mateix `StatePuzzle`, `PuzzleFocusPoint`, `PuzzleDefinition`, pistes i listeners `OnSolved`; també conserva els prefabs assignats als `ReplaceableModelSlot` de la carcassa, el botó i les rodes que continuen existint. Això permet tancar primer l'estructura del codi i substituir després els placeholders per una maleta, caixa forta o candau.
+
+En PC cal obrir la vista enfocada, passar el cursor pel rodet i usar `W` per pujar o `S` per baixar; ambdues direccions fan volta entre 0 i 9. No hi ha botons de fletxa ni es pot manipular el codi des de la vista general. La interacció directa es conserva només en VR.
+
+En PC, `Examinar combinació` activa `PuzzleFocusPoint` i obre una vista centrada amb una càmera pròpia; es mostren les peces 3D reals i se'n surt amb clic dret. El preset de la sala 13 col·loca el conjunt al 48% de l'escala original, a la paret al costat de la porta, mentre la càmera filla conserva una lectura gran en primer pla. En VR no es força cap càmera per evitar canvis de vista incòmodes. Tant la carcassa (`CombinationLockHousing_Logic`) com cadascun dels quatre rodets tenen un `ReplaceableModelSlot`: es poden substituir per una maleta, una caixa forta o un candau mantenint intactes els controls, la combinació i la vista enfocada.
+
+### Perills mòbils i temporitzador de Game Over
+
+Són dues mecàniques independents. `MovingHazard` mou el seu objecte entre `Start Point` i `End Point`, de manera que la direcció pot ser qualsevol vector 3D. Serveix per una paret que avança o retrocedeix, un sostre que baixa, un terra que puja, una plataforma lateral o un volum d'aigua. Pot provocar derrota en arribar al destí i/o en tocar el jugador, exposa `StartHazard`, `StopHazard`, `ResetHazard` i `TriggerGameOver`, i desa el progrés del recorregut.
+
+`GameOverTimer` no mou cap objecte. Gestiona un límit de temps independent, opcional i desable; si arriba a zero activa la derrota configurada. Pot mostrar-se al HUD compartit amb etiqueta, valor `mm:ss`, barra de progrés i avisos visuals als últims segons. Exposa `StartTimer`, `StopTimer`, `ResetTimer` i `Expire`, i desa el temps consumit i l'estat. Això permet usar només el temporitzador, només el perill mòbil o combinar-los mitjançant events sense acoblar-los.
+
+`TimedGameOverHazard` es conserva únicament perquè escenes o prefabs antics continuïn carregant-se, però ja no apareix al menú normal d'autoria i no s'ha d'usar en contingut nou.
+
+### Llançament
+
+`ThrowPuzzle` registra dianes per ID. Cada `ThrowTarget` notifica l'impacte i el puzle es resol quan s'han completat totes les dianes requerides. El creador genera tres dianes funcionals.
+
+### Lliscant
+
+`SlidingPuzzle` manté una graella amb un únic forat i només accepta moviments adjacents. El remenat parteix de la solució amb moviments legals, de manera que la variant sempre és resoluble. `SlidingBoardView` crea les fitxes i pot repartir una imatge font entre les cel·les.
+
+### Melodia
+
+La melodia no necessita un solver nou: `MelodyPlayer` presenta la pista i els botons alimenten un `SequencePuzzle`. Això manté separats contingut audiovisual i regla d'ordre.
+
+### Canonades
+
+`PipePuzzle` rota segments 90° i valida amb cerca de camí que les obertures coincideixin des de la font fins al destí. El creador genèric aporta dades mínimes; en un nivell nou cal crear o reconstruir la vista interactiva i connectar un feedback a `OnSolved`. La sala 10 de `ShowcaseMuseum` ja és un exemple tancat: en resoldre, desbloqueja i obre `PipeExitDoor_Logic` i activa `PipeSolvedBeacon`.
 
 ### Puzle personalitzat
 
@@ -1672,7 +1712,7 @@ Configuració inicial del projecte. Totes són **no destructives**: si el que ha
 |---|---|
 | `Instantiate Game Manager` | Col·loca el prefab de serveis persistents a l'escena activa. Si ja n'hi ha un, només el selecciona. |
 | `Instantiate PC Player` | Igual amb el jugador de PC. |
-| `Create or Update Main Menu Scene...` | Crea o reconstrueix l'escena `MainMenu`, genera els assets de configuració que falten i la posa **primera** al Build Profile. Si l'escena ja existeix, demana confirmació abans de reemplaçar-la. |
+| `Create or Update Main Menu Scene...` | Crea o reconstrueix l'escena `MainMenu` i genera els assets de configuració que falten. La posa primera, excepte si ja hi ha una `Intro` habilitada: llavors conserva `Intro → MainMenu`. Si l'escena ja existeix, demana confirmació abans de reemplaçar-la. |
 | `Configure OpenXR (PC + Android)` | Assigna el loader d'OpenXR i l'inicialització automàtica per a les dues plataformes. |
 | `Create or Update VR Player Prefab` | Regenera el rig de VR complet a partir dels Starter Assets oficials d'XRI. |
 | `Create VR Template Scene` | Crea una escena mínima executable en VR, amb simulador opcional per provar sense visor. |
@@ -1699,23 +1739,26 @@ Cada entrada crea un objecte `*_Logic` amb el component de lògica i un fill `*_
 
 ### Create > Puzzles
 
-Aquestes entrades no creen només el controlador: creen **el puzle jugable sencer** (peces, vista i cablejat inclosos).
+La majoria d'entrades creen un **kit jugable** amb peces, vista i cablejat. `Pipe Puzzle` continua sent l'única excepció que crea principalment controlador i dades d'exemple.
+
+Cada peça segueix la mateixa separació que els interactuables: un node `*_Logic` amb els scripts, el **col·lider d'interacció** i un `ReplaceableModelSlot`, i un fill `*_Visuals` que només porta la malla de mostra. Per substituir el cub per un model teu, assigna el prefab a `Model Prefab` del `ReplaceableModelSlot`: el placeholder s'amaga sol i el model apareix **també a l'editor**, sense tocar res més. El col·lider viu a l'arrel precisament perquè canviar l'art no se l'endugui.
 
 | Entrada | Què crea |
 |---|---|
 | `Keypad Panel` | Panell amb botons numèrics funcionals, càmera d'enfocament i ressaltat. |
 | `Placement Puzzle` | Controlador + **2 peces transportables** (`PhysicsGrabbable` + `GrabbablePiece`) + **3 endolls** amb `PieceSocketReceiver`, un dels quals és esquer. |
-| `Multi-Stage Puzzle` | Controlador amb dues fases d'exemple. *(Només dades: encara no crea els objectes de cada fase.)* |
-| `Sliding Puzzle` | Controlador 3×2 + **5 fitxes clicables** + `SlidingBoardView` + marcador del forat, tot enllaçat i ja disposat en graella. |
+| `Multi-Stage Puzzle` | Cadena jugable amb seqüència de colors, fase de tres palanques i endpoint resolt; cada fill només pot completar la seva fase activa. |
+| `Number Wheels Puzzle` | Panell compacte amb `StatePuzzle`, **4 rodets decimals substituïbles**, controls `<`/`>` bidireccionals, vista enfocada en PC i combinació 3142 d'exemple. |
+| `Sliding Puzzle` | Controlador 3×3 + **8 fitxes clicables** + `SlidingBoardView` + marcador del forat, tot enllaçat i ja disposat en graella. |
 | `Pipe Puzzle` | Controlador amb dues canonades d'exemple. *(Només dades: encara no crea els segments.)* |
 | `Throw Puzzle` | Controlador + **3 dianes** `ThrowTarget` que canvien de color en encertar-les. |
 | `Sequence Puzzle` | Controlador + **3 botons** de colors, cablejats per introduir la seqüència vermell → verd → blau. |
 | `State Puzzle` | Controlador + **3 palanques de 3 posicions**, amb les condicions ja enllaçades (es resol amb 0/1/2 d'esquerra a dreta). |
 | `Add Feedback To Selected Puzzle` | **Actua sobre el puzle seleccionat.** Li afegeix una **porta bloquejada**, una **càmera de feedback enfocant-la** i el **so de resolt**, tot enllaçat a `OnSolved`. La porta rep un `SaveId` únic. |
 
-`PuzzleDefinition` i `HintData` no es creen des d'aquí sinó des del menú `Create` del Project (són assets, no objectes d'escena).
+`PuzzleDefinition` i `HintData` no es creen des d'aquí sinó des del menú `Create` del Project (són assets, no objectes d'escena). Per tant, un puzle acabat de generar és jugable gràcies al fallback d'ID, però **no passa el validador comercial** fins que se li assigna una definició; tampoc pot oferir pistes data-driven sense `HintData`.
 
-Per canviar la mida del puzle lliscant, edita `Columns`/`Rows` al controlador: l'ordre objectiu es regenera sol. Després, al menú de context de `SlidingBoardView`, executa **`Rebuild tiles for grid size`** perquè creï o elimini les fitxes necessàries.
+Per canviar la mida del puzle lliscant, edita `Columns`/`Rows` al controlador: l'ordre objectiu es regenera sol i l'inspector et dibuixa la solució com una graella on **cliques la cel·la que ha de quedar buida**. Després prem **`Rebuild board`** a `SlidingBoardView` perquè creï o elimini les fitxes necessàries; si el nombre no quadra, el mateix inspector t'avisa. Assignant-li una `Source Image`, el tauler reparteix la textura en fragments i la solució correcta passa a ser la imatge reconstruïda, sense haver d'autoritzar cap ordre.
 
 ### Create > Inventory
 
@@ -1736,6 +1779,8 @@ Per canviar la mida del puzle lliscant, edita `Columns`/`Rows` al controlador: l
 |---|---|
 | `Objective Manager` | Controlador d'objectius de l'escena. |
 | `Game End Trigger` | Final de victòria o derrota, invocable per event o per volum. |
+| `Moving Hazard (Any Direction)` | Perill mòbil independent entre dos marcadors 3D, amb presets de paret, sostre, terra i laterals, i derrota opcional per contacte o destí. |
+| `Game Over Timer (HUD)` | Límit de temps independent, opcional i desable, amb etiqueta i visualització al HUD; activa Game Over en arribar a zero. |
 
 ### Create > Survival
 
@@ -1783,6 +1828,10 @@ Cap d'aquestes entrades modifica res: només informen.
 
 ## 26. Escenes de demostració
 
+### Intro
+
+Seqüència opcional de logo, imatge, vídeo o càmera abans del menú. La mostra conté un pas d'imatge buit que s'ha de substituir pel contingut de marca final.
+
 ### MainMenu
 
 Demostra:
@@ -1801,16 +1850,27 @@ Demostra:
 - interacció;
 - inventari;
 - combinació;
-- puzles de codi, seqüència i estat;
+- puzles de codi, seqüència, estat, llançament, col·locació, lliscant, melodia, canonades, cadena multi-fase i rodets numèrics;
+- una sala amb sostre mòbil i temporitzador HUD creats com a mecàniques independents;
 - portes i objectes;
 - llanterna i bateria;
 - cordura i esdeveniment de terror;
 - guardat/càrrega;
 - preparació VR.
 
+Les ampliacions avançades són les sales 11 (`Room11_MultiStageChain`), 12 (`Room12_IndependentHazards`) i 13 (`Room13_NumberWheels`). La sala 12 demostra un `MovingHazard` configurat com a sostre descendent i un `GameOverTimer` de HUD separat, cadascun amb el seu propi botó d'inici. Es poden reconstruir de manera idempotent amb `Demo > Add or Update Expansion Rooms`. `Demo > Apply Escape Room Closure Fixes` reaplica, també de manera idempotent, les definicions de Throw/Melody i fases internes, el payoff de Pipe, els prompts del Sliding Puzzle i la nomenclatura semàntica de `ShowcaseMuseum` i `LockedOffice`.
+
 ### LockedOffice
 
 És una sala més compacta orientada a mostrar un flux d'Escape Room encadenat, amb portes, keypad, caixa forta, objectes i persistència.
+
+### SurvivalHorrorDemo
+
+Vertical slice separada del tancament Escape Room. Demostra objectius encadenats, IA, amagatalls, checkpoints, evidència, traversal i final de partida. Conserva placeholders visuals que s'han de substituir en un producte final.
+
+### VRTemplate
+
+Escena mínima per validar el rig XRI, mans, interacció, teleport i UI. La validació definitiva requereix un runtime OpenXR actiu i hardware real.
 
 Les demos són referència, no una obligació estructural. Un comprador pot crear escenes pròpies i mantenir únicament els prefabs/sistemes necessaris.
 
@@ -1935,7 +1995,7 @@ GameplayUIController.Instance?.ToggleInventory()
 
 ### Checklist tècnic
 
-- [ ] La build comença a `MainMenu`.
+- [ ] La build comença a `Intro → MainMenu`, o directament a `MainMenu` si no s'utilitza intro.
 - [ ] Nova partida, continuar i càrrega manual funcionen.
 - [ ] Pausa > Menú principal > confirmació funciona en una build.
 - [ ] No hi ha `Canvas` heretats a les escenes finals.
@@ -1996,7 +2056,7 @@ GameplayUIController.Instance?.ToggleInventory()
 
 ### El menú principal no apareix en iniciar build
 
-- posa `MainMenu.unity` a l'índex 0 del Build Profile;
+- posa `MainMenu.unity` a l'índex 0, o a l'índex 1 darrere d'una `Intro.unity` habilitada;
 - comprova que està habilitada;
 - executa `Setup > Create or Update Main Menu Scene...` només si l'escena falta o està corrupta; reconstruir reemplaça el fitxer després de confirmar.
 
@@ -2197,4 +2257,4 @@ La plantilla està dissenyada perquè el comprador construeixi contingut nou sen
 6. validar;
 7. provar sempre el recorregut complet `MainMenu → Partida → Pausa → MainMenu → Càrrega → Final`.
 
-Per a una consulta breu orientada a dissenyadors, consulta `UserManual.md`. Per a una introducció compacta a les APIs, consulta `PROGRAMMING_GUIDE.md`.
+Per a una consulta breu orientada a dissenyadors, consulta `UserManual.md`. Per a una introducció compacta a les APIs, consulta `PROGRAMMING_GUIDE.md`. L'estat verificat sala per sala i els bloquejadors de tancament es mantenen a `AUDITORIA_ESCAPE_ROOM_2026-08-09.md`.

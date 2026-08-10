@@ -1,13 +1,13 @@
 # Escape Room Framework - Programming Guide
 
-For the exhaustive architecture, authoring tutorials, API examples, VR workflow and troubleshooting reference, see [DOCUMENTACIO_COMPLETA.md](DOCUMENTACIO_COMPLETA.md).
+For the exhaustive architecture, authoring tutorials, API examples, VR workflow and troubleshooting reference, see [DOCUMENTACIO_COMPLETA.md](DOCUMENTACIO_COMPLETA.md). The current Escape Room closure audit is [AUDITORIA_ESCAPE_ROOM_2026-08-09.md](AUDITORIA_ESCAPE_ROOM_2026-08-09.md).
 
 ## Safe setup workflow
 
 The supported entry point is the `Escape Room Framework` menu. Setup commands are idempotent or request confirmation before replacing generated assets. Legacy scene generators, automatic package installation and direct destructive cleanup commands are intentionally hidden.
 
 1. Run `Validation/Run Framework Smoke Tests`.
-2. Run `Setup/Create or Update Main Menu Scene` once. It creates `MainMenu.unity`, `GameFlowSettings` and places the menu first in Build Settings.
+2. Run `Setup/Create or Update Main Menu Scene` once. It creates `MainMenu.unity` and `GameFlowSettings`. `MainMenu` is first unless an enabled `Intro` already exists; in that case the order remains `Intro → MainMenu`.
 3. For VR, let Package Manager import OpenXR, XR Plug-in Management and XRI, then configure the desired OpenXR profiles in Project Settings.
 4. Run `Setup/Create or Update VR Player Prefab`. It delegates the rig hierarchy to Unity's installed XRI version and saves `Player_VR.prefab`.
 5. In each VR scene, run `Setup/Prepare Current Scene Interactables for VR`. Existing gameplay components are preserved.
@@ -47,6 +47,22 @@ ObjectiveManager.Instance.CompleteObjective("restore_power");
 ```
 
 For a simple exit or defeat volume, use `GameEndTrigger`.
+
+### Independent timed failure mechanics
+
+Use `MovingHazard` and `GameOverTimer` independently. The moving component follows any authored 3D line between its `StartPoint` and `EndPoint`; the timer component publishes its state to the shared gameplay HUD and fails the game at zero. Neither component owns the other.
+
+```csharp
+movingHazard.StartHazard();   // wall, ceiling, floor or custom direction
+movingHazard.StopHazard();
+movingHazard.ResetHazard();
+
+gameOverTimer.StartTimer();   // optional HUD countdown
+gameOverTimer.StopTimer();
+gameOverTimer.ResetTimer();
+```
+
+Create them from `Escape Room Framework > Create > Flow > Moving Hazard (Any Direction)` and `Game Over Timer (HUD)`. Both implement `ISaveable`. `TimedGameOverHazard` remains only as a compatibility component for existing scenes or prefabs.
 
 ## Inventory model
 

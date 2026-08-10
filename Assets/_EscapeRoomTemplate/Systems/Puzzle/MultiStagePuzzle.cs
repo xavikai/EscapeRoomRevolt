@@ -13,9 +13,9 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         [Tooltip("Marks this as a solving endpoint: reaching it calls Solve() automatically. Leave false for dead-end/reset branches or intermediate stages.")]
         public bool isSolvedStage;
         [Tooltip("Fired whenever this stage becomes current during normal play (never replayed on load).")]
-        public UnityEvent onEnter;
+        public UnityEvent onEnter = new UnityEvent();
         [Tooltip("Fired when leaving this stage, forward or via rollback (never replayed on load).")]
-        public UnityEvent onExit;
+        public UnityEvent onExit = new UnityEvent();
     }
 
     /// <summary>
@@ -39,6 +39,7 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         public int CurrentStageIndex => _currentStageIndex;
         public PuzzleStage CurrentStage => _currentStageIndex >= 0 && _currentStageIndex < _stages.Count ? _stages[_currentStageIndex] : null;
         public int StageCount => _stages.Count;
+        public PuzzleStage GetStage(int index) => index >= 0 && index < _stages.Count ? _stages[index] : null;
 
         protected override void Awake()
         {
@@ -52,6 +53,21 @@ namespace EscapeRoomRevolt.Systems.Puzzle
             if (IsSolved || _currentStageIndex + 1 >= _stages.Count) return;
             AdvanceToStage(_currentStageIndex + 1);
         }
+
+        /// <summary>
+        /// Completes the current stage only when the caller belongs to that exact stage. This is the
+        /// safe entry point for chained child puzzles: a previously solved or out-of-order child can
+        /// never advance the parent by accident.
+        /// </summary>
+        public bool TryCompleteStage(string expectedStageId)
+        {
+            if (IsSolved || CurrentStage == null || CurrentStage.id != expectedStageId) return false;
+            AdvanceStage();
+            return true;
+        }
+
+        /// <summary>UnityEvent-friendly wrapper around TryCompleteStage.</summary>
+        public void CompleteStage(string expectedStageId) => TryCompleteStage(expectedStageId);
 
         /// <summary>Jumps to a specific stage by id — the mechanism for branches.</summary>
         public void AdvanceToStage(string stageId)

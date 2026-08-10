@@ -24,7 +24,8 @@ Not a single closed room — a reusable framework where rooms, puzzles, enemies 
 
 - **Interaction & authoring** — raycast (PC) and XRI (VR) share one `InteractionDispatcher`; doors, drawers, cabinets, levers, switches, notes and pickables are all created from the `Escape Room Framework > Create` Editor menu with example data pre-filled.
 - **Inventory** — quantities, hotbar, guided combination, 3D examination with clickable `ExamineHotspot`s, equipment via `ModelSocket`.
-- **Eight puzzle types** — code panel, sequence, state, socket, multi-stage (branching), sliding (15-puzzle), wire (connect-the-cables) and pipe (rotate-to-connect). All share reset, progressive hints and optional seeded randomized variants.
+- **Nine puzzle controllers** — code panel, sequence, state, socket, throw, placement, multi-stage (branching), sliding and pipe (rotate-to-connect). Melody is a presentation of the shared sequence solver. All share reset, persistence and progressive-hint integration; selected types support seeded variants.
+- **Independent fail-state mechanics** — a `MovingHazard` that travels between arbitrary 3D markers (wall, ceiling, floor, platform or water) and a separate optional `GameOverTimer` presented in the shared gameplay HUD.
 - **Save/Load** — three manual slots, quick save/load, thumbnails, atomic writes with backup recovery, versioned per-object state.
 - **Survival Horror** — modular flashlight and night-vision camcorder, sanity with visual/audio/haptic feedback, patrol/perception/chase AI with two enemy archetypes, hideable lockers/beds/containers with AI inspection, checkpoints, typed damage, PC/VR-shared traversal (vault/climb/ladder/squeeze), evasion (lean/look-back/slide), a tension director that rate-limits horror events, and data-driven difficulty presets.
 - **UI Toolkit menus** — main menu, pause, settings, save/load, credits, results, all Canvas-free. Re-skinnable from a single `MenuThemeSettings` asset (colors, fonts, logo) without touching code or USS, plus a built-in high-contrast accessibility mode.
@@ -34,9 +35,10 @@ Not a single closed room — a reusable framework where rooms, puzzles, enemies 
 
 | Scene | Genre | What it shows |
 |---|---|---|
+| `Intro` | — | Optional logo/cutscene sequence before the menu. |
 | `MainMenu` | — | Entry point, profile-agnostic. |
-| `LockedOffice` | Escape Room | Small vertical slice: key, drawer, note, safe code, socket puzzle. |
-| `ShowcaseMuseum` | Escape Room | Larger sandbox covering most interactables and all eight puzzle types. |
+| `LockedOffice` | Escape Room | Small vertical slice: keys, doors, drawer, note, keypad/safe flow and persistence. |
+| `ShowcaseMuseum` | Escape Room | Larger sandbox covering all nine puzzle controllers, a multi-stage chain, dynamic number wheels, an arbitrary-direction moving hazard and an independent HUD Game Over timer. |
 | `SurvivalHorrorDemo` | Survival Horror | A verified vertical slice: a four-objective chain (recover batteries → restore power → record evidence → escape), an enemy, two hiding spots, noise-distraction throwables, four traversal challenges, a double checkpoint and a victory ending. |
 | `VRTemplate` | — | Minimal XRI rig, teleport, grab and a simple interactable. |
 
@@ -52,10 +54,11 @@ The supported entry point is the **Escape Room Framework** Editor menu — legac
 ## Documentation
 
 - [`Assets/_EscapeRoomTemplate/ROADMAP.md`](Assets/_EscapeRoomTemplate/ROADMAP.md) — the living status document: what's verified, what's pending, in what order. Read this first for "where are we now."
+- [`Assets/_EscapeRoomTemplate/AUDITORIA_ESCAPE_ROOM_2026-08-09.md`](Assets/_EscapeRoomTemplate/AUDITORIA_ESCAPE_ROOM_2026-08-09.md) — current room-by-room closure audit for the Escape Room template.
 - [`Assets/_EscapeRoomTemplate/PROGRAMMING_GUIDE.md`](Assets/_EscapeRoomTemplate/PROGRAMMING_GUIDE.md) — API-level guide to the systems above, with code snippets.
 - [`Assets/_EscapeRoomTemplate/DOCUMENTACIO_COMPLETA.md`](Assets/_EscapeRoomTemplate/DOCUMENTACIO_COMPLETA.md) — exhaustive architecture and authoring reference.
 - [`Assets/_EscapeRoomTemplate/UserManual.md`](Assets/_EscapeRoomTemplate/UserManual.md) — end-player-facing controls and menu reference.
 
 ## Known gaps before commercial release
 
-Tracked in detail in `ROADMAP.md`. In short: no automated test suite yet (blocked on splitting the runtime into `asmdef` assemblies first), no `ThirdPartyNotices` / asset license inventory yet, and UI/gameplay text is not yet localized — it ships in Spanish only. VR is functionally complete but not yet QA'd on real hardware.
+Tracked in detail in `ROADMAP.md`. In short: 12/12 EditMode and 13/13 PlayMode tests pass; PlayMode has exceeded its target, but EditMode still needs to reach 20. The Escape Room puzzle definitions and Pipe payoff are closed. Audio licenses remain to be confirmed in `ThirdPartyNotices.md`, localization is partial, a final human build playthrough is pending, and VR has not yet passed QA on real hardware.

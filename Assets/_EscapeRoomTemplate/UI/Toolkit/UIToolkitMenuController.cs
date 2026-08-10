@@ -564,6 +564,8 @@ namespace EscapeRoomRevolt.UI.Toolkit
                 new GameObject("SaveManager").AddComponent<SaveManager>();
             if (GameSettingsService.Instance == null)
                 new GameObject("GameSettingsService").AddComponent<GameSettingsService>();
+            if (LocalizationService.Instance == null)
+                new GameObject("LocalizationService").AddComponent<LocalizationService>();
             if (InputRouter.Instance == null)
                 new GameObject("InputRouter").AddComponent<InputRouter>();
             if (GameFeatures.IsEnabled(OptionalGameFeature.PlayerVitals) && SurvivalDifficultyService.Instance == null)
