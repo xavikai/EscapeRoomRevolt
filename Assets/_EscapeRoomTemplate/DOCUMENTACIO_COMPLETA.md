@@ -66,7 +66,7 @@ La plantilla és una base modular per construir jocs d'Escape Room i Survival Ho
 - Puzles d'estat, com una combinació de palanques.
 - Puzles de socket lògic o físic.
 - Puzles de col·locar peces (`PlacementPuzzle`), amb exclusivitat de socket i correcció parcial.
-- Puzles multi-fase ordenats o ramificats (`MultiStagePuzzle`), amb rollback opcional.
+- Grups de puzles encadenats (`MultiStagePuzzle`): tots els fills visibles, final conjunt i ordre lliure o obligatori.
 - Punts d'interès (hotspots) clicables a l'examen 3D, amb revelació d'informació/item persistent.
 - Manipulació física, transport, rotació, llançament i encaix d'objectes.
 - Pistes progressives associades al puzle actiu.
@@ -172,6 +172,10 @@ També pots obrir `ShowcaseMuseum.unity` o `LockedOffice.unity` i prémer Play. 
 4. `LockedOffice.unity`
 5. `SurvivalHorrorDemo.unity`
 6. `VRTemplate.unity`
+7. `ShowcaseMuseumVR.unity`
+8. `LockedOfficeVR.unity`
+
+`ShowcaseMuseumVR.unity` és la versió VR completa del museu i es distribueix com a escena de demostració específica de plataforma. `VRTemplate.unity`, en canvi, és només l'escena mínima amb rig, teleport, grab i interacció bàsica; no conté les sales del museu.
 
 Si una escena es canvia de nom o de carpeta, cal actualitzar el Build Profile i `GameFlowSettings`.
 
@@ -1137,18 +1141,23 @@ placementPuzzle.Disconnect("piece_a");
 
 Un socket només pot tenir una peça alhora: col·locar-n'hi una altra en treu automàticament la que hi hagués, com un encaix real. Es comprova sol quan totes les peces tenen alguna col·locació (o crida `SubmitConnections()` manualment). A diferència del panell de codi, una col·locació incorrecta **no esborra res** —les que ja estaven bé es mantenen, així el jugador només corregeix les que fallen. Qui representa físicament cada peça/socket a l'escena (un objecte agafable, un botó, el que sigui) és cosa teva; el puzle només necessita que li cridis `Connect`/`Disconnect` amb els IDs corresponents.
 
-### Multi-fase
+### Puzles encadenats
 
-`MultiStagePuzzle` (menú `Create > Puzzles > Multi-Stage Puzzle`) encadena diverses fases, cadascuna amb el seu propi `UnityEvent` d'entrada i sortida:
+`MultiStagePuzzle` (menú `Create > Puzzles > Multi-Stage Puzzle`) és un coordinador d'un nombre arbitrari de `PuzzleController` independents. Cada entrada `ChainedPuzzle` conté un `id`, el puzle fill i l'arrel que agrupa els seus controls. Tots els fills continuen actius i visibles a l'escena; no s'amaguen ni se substitueixen quan un altre es resol.
+
+- `_requireOrder = false`: els fills es poden resoldre en qualsevol ordre.
+- `_requireOrder = true`: s'ha de seguir l'ordre de la llista.
+- `_lockFuturePuzzles = true`: els puzles futurs continuen visibles, però els seus `InteractableBase` no responen fins que arriba el seu torn.
+
+La porta, llum o mecanisme final s'ha de connectar una sola vegada a l'`OnSolved` del coordinador. El coordinador només es resol quan tots els fills referenciats estan resolts. La llista de l'Inspector es pot ampliar amb tants puzles com necessiti l'habitació.
 
 ```csharp
-multiStagePuzzle.AdvanceStage();          // següent fase de la llista
-multiStagePuzzle.AdvanceToStage("secret"); // salta a una fase concreta per id — així es fan les branques
-multiStagePuzzle.CompleteStage("phase_1"); // només avança si aquesta és realment la fase activa
-multiStagePuzzle.RollbackStage();          // torna a la fase anterior d'aquesta partida (opcional)
+int total = multiStagePuzzle.PuzzleCount;
+int current = multiStagePuzzle.CurrentPuzzleIndex;
+ChainedPuzzle entry = multiStagePuzzle.GetPuzzle(current);
 ```
 
-Marca una fase com `isSolvedStage` perquè arribar-hi resolgui el puzle automàticament; això permet branques que porten a punts morts sense resoldre res. Save/Load funciona des de qualsevol fase. Per encadenar puzles fills, connecta cada `OnSolved` a `CompleteStage(id)`: si un fill antic torna a emetre o el jugador resol una fase fora d'ordre, el pare no avança. El preset `Multi-Stage Chain Puzzle` crea una seqüència de colors seguida d'un puzle de palanques completament cablejat.
+El preset crea dos exemples físicament separats —seqüència a l'esquerra i palanques a la dreta— i configura ordre obligatori. És la mateixa estructura usada a la sala 11 de `ShowcaseMuseum` i `ShowcaseMuseumVR`.
 
 ### Rodets numèrics
 
@@ -1156,9 +1165,9 @@ Marca una fase com `isSolvedStage` perquè arribar-hi resolgui el puzle automàt
 
 El component `NumberWheelsPuzzleAuthoring` conserva el nombre de rodes i la solució. Des del seu Inspector es poden editar i prémer `Rebuild wheels and layout`. La reconstrucció substitueix només `NumberWheels_Generated`: manté el mateix `StatePuzzle`, `PuzzleFocusPoint`, `PuzzleDefinition`, pistes i listeners `OnSolved`; també conserva els prefabs assignats als `ReplaceableModelSlot` de la carcassa, el botó i les rodes que continuen existint. Això permet tancar primer l'estructura del codi i substituir després els placeholders per una maleta, caixa forta o candau.
 
-En PC cal obrir la vista enfocada, passar el cursor pel rodet i usar `W` per pujar o `S` per baixar; ambdues direccions fan volta entre 0 i 9. No hi ha botons de fletxa ni es pot manipular el codi des de la vista general. La interacció directa es conserva només en VR.
+En PC cal obrir la vista enfocada i clicar els botons físics ▲/▼ situats damunt i sota de cada rodet; les dues direccions fan volta entre 0 i 9. `E` obre el panell i continua sent una alternativa sobre un control seleccionat, però no és necessària per prémer les fletxes. No hi ha control amb W/S ni amb les fletxes del teclat.
 
-En PC, `Examinar combinació` activa `PuzzleFocusPoint` i obre una vista centrada amb una càmera pròpia; es mostren les peces 3D reals i se'n surt amb clic dret. El preset de la sala 13 col·loca el conjunt al 48% de l'escala original, a la paret al costat de la porta, mentre la càmera filla conserva una lectura gran en primer pla. En VR no es força cap càmera per evitar canvis de vista incòmodes. Tant la carcassa (`CombinationLockHousing_Logic`) com cadascun dels quatre rodets tenen un `ReplaceableModelSlot`: es poden substituir per una maleta, una caixa forta o un candau mantenint intactes els controls, la combinació i la vista enfocada.
+En PC, `Examinar combinació` activa `PuzzleFocusPoint` i obre una vista centrada amb una càmera pròpia; es mostren les peces 3D reals i se'n surt amb clic dret. `InteractionManager` llegeix la posició i el clic esquerre des del nou Input System mentre el cursor és lliure. En VR no es força cap càmera per evitar canvis de vista incòmodes: el panell VR genera controls ▲/▼ equivalents i tots dos camins criden `NumberWheelInteractable.TryStep`. El preset de la sala 13 col·loca el conjunt al 48% de l'escala original, a la paret al costat de la porta, mentre la càmera filla conserva una lectura gran en primer pla. Tant la carcassa (`CombinationLockHousing_Logic`) com cadascun dels quatre rodets tenen un `ReplaceableModelSlot`: es poden substituir per una maleta, una caixa forta o un candau mantenint intactes els controls, la combinació i la vista enfocada.
 
 ### Perills mòbils i temporitzador de Game Over
 
@@ -1850,7 +1859,7 @@ Demostra:
 - interacció;
 - inventari;
 - combinació;
-- puzles de codi, seqüència, estat, llançament, col·locació, lliscant, melodia, canonades, cadena multi-fase i rodets numèrics;
+- puzles de codi, seqüència, estat, llançament, col·locació, lliscant, melodia, canonades, grups encadenats visibles i rodets numèrics;
 - una sala amb sostre mòbil i temporitzador HUD creats com a mecàniques independents;
 - portes i objectes;
 - llanterna i bateria;
@@ -1858,7 +1867,7 @@ Demostra:
 - guardat/càrrega;
 - preparació VR.
 
-Les ampliacions avançades són les sales 11 (`Room11_MultiStageChain`), 12 (`Room12_IndependentHazards`) i 13 (`Room13_NumberWheels`). La sala 12 demostra un `MovingHazard` configurat com a sostre descendent i un `GameOverTimer` de HUD separat, cadascun amb el seu propi botó d'inici. Es poden reconstruir de manera idempotent amb `Demo > Add or Update Expansion Rooms`. `Demo > Apply Escape Room Closure Fixes` reaplica, també de manera idempotent, les definicions de Throw/Melody i fases internes, el payoff de Pipe, els prompts del Sliding Puzzle i la nomenclatura semàntica de `ShowcaseMuseum` i `LockedOffice`.
+Les ampliacions avançades són les sales 11 (`Room11_MultiStageChain`), 12 (`Room12_IndependentHazards`) i 13 (`Room13_NumberWheels`). La sala 11 manté tots els puzles fills visibles i demostra l'ordre obligatori; la sala 13 usa botons físics ▲/▼ a PC i controls equivalents en VR. La sala 12 demostra un `MovingHazard` configurat com a sostre descendent i un `GameOverTimer` de HUD separat, cadascun amb el seu propi botó d'inici. Es poden reconstruir de manera idempotent amb `Demo > Add or Update Expansion Rooms`. `Demo > Apply Escape Room Closure Fixes` reaplica, també de manera idempotent, les definicions, el payoff de Pipe, els prompts del Sliding Puzzle i la nomenclatura semàntica de `ShowcaseMuseum` i `LockedOffice`.
 
 ### LockedOffice
 
@@ -2216,7 +2225,7 @@ bool assistenciaActiva = GameSettingsService.Instance != null
 
 ```csharp
 wirePuzzle.Connect("wire_a", "socket_a");
-multiStagePuzzle.AdvanceToStage("secret");
+ChainedPuzzle active = multiStagePuzzle.GetPuzzle(multiStagePuzzle.CurrentPuzzleIndex);
 ```
 
 ### Examen 3D

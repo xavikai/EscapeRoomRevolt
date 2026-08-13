@@ -165,6 +165,12 @@ namespace EscapeRoomRevolt.Core
         public Component puzzle;
     }
 
+    /// <summary>Requests the VR gameplay panel to open the bidirectional number-wheels modal.</summary>
+    public struct RequestShowNumberWheels
+    {
+        public Component puzzle;
+    }
+
     /// <summary>Requests the gameplay UI to toggle the inventory panel.</summary>
     public struct RequestToggleInventory { }
 

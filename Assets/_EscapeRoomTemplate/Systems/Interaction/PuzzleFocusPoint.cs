@@ -52,7 +52,15 @@ namespace EscapeRoomRevolt.Systems.Interaction
 
         public void Enter()
         {
-            if (_isFocused || IsVirtualReality) return;
+            if (_isFocused) return;
+            if (IsVirtualReality)
+            {
+                if (_puzzle != null)
+                    EventBus.Publish(new RequestShowNumberWheels { puzzle = _puzzle });
+                else
+                    Debug.LogWarning($"[PuzzleFocusPoint] {name} cannot open a VR puzzle panel without an assigned puzzle.", this);
+                return;
+            }
             if (_focusCamera == null)
             {
                 Debug.LogWarning($"[PuzzleFocusPoint] {name} has no focus camera assigned.", this);

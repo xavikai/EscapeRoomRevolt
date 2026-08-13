@@ -18,26 +18,44 @@ namespace EscapeRoomRevolt.Systems.Tests
     public sealed class AdvancedEscapeRoomMechanicsTests
     {
         [UnityTest]
-        public IEnumerator MultiStage_RejectsOutOfOrderChildAndSolvesInOrder()
+        public IEnumerator MultiStage_KeepsChildrenVisibleLocksOrderAndSolvesWhenAllComplete()
         {
             var owner = new GameObject("MultiStageTest");
             owner.SetActive(false);
             var puzzle = owner.AddComponent<MultiStagePuzzle>();
-            SetPrivate(puzzle, "_stages", new List<PuzzleStage>
+            var firstRoot = new GameObject("FirstPuzzle");
+            firstRoot.transform.SetParent(owner.transform);
+            var first = firstRoot.AddComponent<SequencePuzzle>();
+            SetPrivate(first, "_correctSequence", new List<string> { "first" });
+            var firstControl = firstRoot.AddComponent<InteractableTrigger>();
+
+            var secondRoot = new GameObject("SecondPuzzle");
+            secondRoot.transform.SetParent(owner.transform);
+            var second = secondRoot.AddComponent<SequencePuzzle>();
+            SetPrivate(second, "_correctSequence", new List<string> { "second" });
+            var secondControl = secondRoot.AddComponent<InteractableTrigger>();
+
+            SetPrivate(puzzle, "_puzzles", new List<ChainedPuzzle>
             {
-                new PuzzleStage { id = "first" },
-                new PuzzleStage { id = "second" },
-                new PuzzleStage { id = "solved", isSolvedStage = true }
+                new ChainedPuzzle { id = "first", puzzle = first, interactionRoot = firstRoot },
+                new ChainedPuzzle { id = "second", puzzle = second, interactionRoot = secondRoot }
             });
+            SetPrivate(puzzle, "_requireOrder", true);
+            SetPrivate(puzzle, "_lockFuturePuzzles", true);
             owner.SetActive(true);
             yield return null;
 
-            Assert.That(puzzle.CurrentStage.id, Is.EqualTo("first"));
-            Assert.That(puzzle.TryCompleteStage("second"), Is.False);
-            Assert.That(puzzle.CurrentStage.id, Is.EqualTo("first"));
-            Assert.That(puzzle.TryCompleteStage("first"), Is.True);
-            Assert.That(puzzle.CurrentStage.id, Is.EqualTo("second"));
-            Assert.That(puzzle.TryCompleteStage("second"), Is.True);
+            Assert.That(firstRoot.activeSelf, Is.True);
+            Assert.That(secondRoot.activeSelf, Is.True);
+            Assert.That(firstControl.CanInteract, Is.True);
+            Assert.That(secondControl.CanInteract, Is.False);
+
+            first.InputStep("first");
+            Assert.That(puzzle.IsSolved, Is.False);
+            Assert.That(secondRoot.activeSelf, Is.True);
+            Assert.That(secondControl.CanInteract, Is.True);
+
+            second.InputStep("second");
             Assert.That(puzzle.IsSolved, Is.True);
             Object.Destroy(owner);
         }

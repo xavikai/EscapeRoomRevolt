@@ -2,18 +2,19 @@
 
 Data: 9 d'agost de 2026  
 Actualització de tancament: 10 d'agost de 2026  
+Actualització PC/VR i release beta: 13 d'agost de 2026
 Projecte: Unity 6000.4.9f1, URP 17.4.0  
 Abast: eines d'autoria, menú principal, flux de build, persistència, nomenclatura, documentació i totes les sales de les escenes incloses.
 
 ## Veredicte executiu
 
-La base d'Escape Room és funcional: els vuit puzles originals instal·lats al museu es poden resoldre i l'ampliació incorpora dos exemples avançats (cadena multi-fase i rodets numèrics), un perill mòbil multidireccional i un temporitzador HUD independent. Totes les escenes estan lliures de scripts perduts i els IDs persistents comprovats són únics. El menú principal cobreix nova partida, continuar, tres ranures manuals, ajustos, controls, crèdits, pausa i sortida.
+La base d'Escape Room és funcional: els vuit puzles originals instal·lats al museu es poden resoldre i l'ampliació incorpora dos exemples avançats (grup de puzles simultanis i rodets numèrics amb botons físics), un perill mòbil multidireccional i un temporitzador HUD independent. `ShowcaseMuseum` i `ShowcaseMuseumVR` contenen la mateixa lògica a les sales 11 i 13. Totes les escenes estan lliures de scripts perduts i els IDs persistents comprovats són únics. El menú principal cobreix nova partida, continuar, tres ranures manuals, ajustos, controls, crèdits, pausa i sortida.
 
 Els tres bloquejadors específics detectats a la mostra Escape Room ja estan resolts:
 
-1. `ThrowPuzzleController` i `MelodyPuzzleController` tenen `PuzzleDefinition` i `HintData`; les dues fases internes de `MultiStagePuzzle` també tenen identitat explícita i ja no depenen del nom del GameObject.
+1. `ThrowPuzzleController` i `MelodyPuzzleController` tenen `PuzzleDefinition` i `HintData`; els fills coordinats per `MultiStagePuzzle` continuen sent `PuzzleController` independents amb identitat pròpia.
 2. El puzle de canonades de la sala 10 té tres respostes persistents a `OnSolved`: desbloqueja i obre `PipeExitDoor_Logic` i activa `PipeSolvedBeacon`.
-3. La cobertura PlayMode arriba a 13 tests reals, tots passant, amb puzles originals, multi-fase, rodets —inclòs el bloqueig per enfocament, el gir W/S bidireccional i la normalització dinàmica de 2–8 rodes—, perill mòbil en qualsevol direcció, temporitzador HUD independent, menú principal i round-trip Save/Load en memòria.
+3. La cobertura PlayMode arriba a 14 tests reals, tots passant, amb puzles originals, grups encadenats visibles, rodets —inclòs el bloqueig per enfocament, el pas bidireccional compartit pels botons PC/VR i la normalització dinàmica de 2–8 rodes—, perill mòbil en qualsevol direcció, temporitzador HUD independent, menú principal i round-trip Save/Load en memòria.
 
 També continua pendent el bloquejador transversal de llicències: cal confirmar l'origen dels àudios i completar `ThirdPartyNotices.md` abans de distribuir l'asset.
 
@@ -33,7 +34,7 @@ Resultats mesurats:
 |---|---|
 | Smoke tests del framework | PASS, 0 avisos |
 | EditMode | 12/12 PASS (`EventBus` i `LocalizationCatalog`) |
-| PlayMode automatitzat | 12/12 PASS (9 puzles/mecàniques, menú principal i Save/Load) |
+| PlayMode automatitzat | 14/14 PASS (puzles/mecàniques, menú principal i Save/Load) |
 | Escenes amb missing scripts o prefabs trencats | 0/6 |
 | Puzles del museu resolts en Play Mode | 8/8 |
 | Accions de creació provades | 27/27 després de corregir `Keypad Panel` |
@@ -75,7 +76,7 @@ Incidències corregides durant l'auditoria:
 |---|---:|---|---|
 | `Intro` | 3 objectes | Seqüència i càrrega de menú cablejades | Substituir el pas d'imatge buit pel logo o contingut comercial final |
 | `MainMenu` | 3 objectes, 1 `UIDocument` | Flux i serveis correctes després de les correccions | Assignar tema/crèdits finals si es publica |
-| `ShowcaseMuseum` | 321+ objectes, 2 `UIDocument`, 82+ saveables | Definicions, payoff i nomenclatura corregits; 13/13 PlayMode | Homogeneïtzar la segona peça de Placement i fer playthrough de build |
+| `ShowcaseMuseum` | 321+ objectes, 2 `UIDocument`, 82+ saveables | Definicions, payoff i nomenclatura corregits; 14/14 PlayMode | Homogeneïtzar la segona peça de Placement i fer playthrough de build |
 | `LockedOffice` | 93 objectes, 2 `UIDocument` | 2 teclats amb definició i noms semàntics | Cal un playthrough humà complet de principi a fi |
 | `SurvivalHorrorDemo` | 96 objectes, 2 `UIDocument` | Vertical slice estructuralment vàlida | Cinc `Placeholder_ReplaceMe` i QA de durada; fora del tancament Escape Room |
 | `VRTemplate` | 76 objectes, 2 `UIDocument` | Rig i adaptadors assignats | QA OpenXR en hardware real |
@@ -151,11 +152,12 @@ Cap de les sis escenes té scripts perduts ni referències de prefab trencades s
 - La cerca de camí resol el puzle correctament.
 - `OnSolved` té tres listeners persistents: desbloqueja i obre `PipeExitDoor_Logic` i activa `PipeSolvedBeacon`.
 
-### Sala 11 — Cadena multi-fase
+### Sala 11 — Puzles encadenats
 
-- `MultiStagePuzzle` governa tres fases: seqüència, palanques i resolt.
-- Cada puzle fill crida `CompleteStage(id)`, que rebutja resolucions fora d'ordre.
-- Té `PuzzleDefinition`, tres pistes, porta i balisa verda connectades a `OnSolved`.
+- `MultiStagePuzzle` coordina una llista ampliable de puzles fills independents; tots es mantenen actius i visibles a l'habitació.
+- El preset mostra la seqüència a l'esquerra i les palanques a la dreta. La sala està configurada amb ordre obligatori: el segon conjunt es veu des del principi, però no accepta interacció fins que es resol el primer.
+- El component permet desactivar `_requireOrder` perquè els fills es resolguin lliurement, o afegir tantes entrades `ChainedPuzzle` com calgui.
+- La porta i la balisa verda escolten només l'`OnSolved` del coordinador, que no s'emet fins que tots els fills estan resolts.
 
 ### Sala 12 — Perill mòbil i temporitzador independents
 
@@ -169,8 +171,8 @@ Cap de les sis escenes té scripts perduts ni referències de prefab trencades s
 - El preset del museu usa quatre `SteppedPositioner` de deu posicions, amb `NumberWheelView` per mostrar les xifres, però l'autoria ja és dinàmica entre 2 i 8 rodes.
 - `Create > Puzzles > Number Wheels Puzzle` obre un configurador de nombre de rodes i combinació. `NumberWheelsPuzzleAuthoring` permet canviar-los després i reconstruir carcassa, separació, títol, condicions i càmera sense perdre `PuzzleDefinition`, pistes ni conseqüències `OnSolved`.
 - El candau està reduït al 48% i muntat a la paret al costat de la porta: a la sala té escala de maleta/candau, però la càmera enfocada continua mostrant-lo gran i centrat.
-- En PC les rodetes no accepten interacció des de la vista general. Cal entrar amb `Examinar combinació`, passar el cursor pel rodet desitjat i usar `W` per pujar o `S` per baixar, amb retorn circular entre 0 i 9. S'han eliminat els botons `<` i `>`.
-- `PuzzleFocusPoint` obre una vista centrada del model 3D real; en VR es manté la interacció directa. La carcassa i cada rodet tenen `ReplaceableModelSlot`, de manera que es poden adaptar a una maleta, caixa forta o candau sense duplicar la lògica.
+- En PC les rodetes no accepten interacció des de la vista general. Cal entrar amb `Examinar combinació` i clicar ▲/▼ damunt o sota de cada rodet, amb retorn circular entre 0 i 9. No s'utilitzen W/S ni les fletxes del teclat.
+- `PuzzleFocusPoint` obre una vista centrada del model 3D real. En VR no es força aquesta càmera: el panell genera controls ▲/▼ equivalents. PC i VR acaben cridant el mateix `TryStep(+1/-1)`. La carcassa i cada rodet tenen `ReplaceableModelSlot`, de manera que es poden adaptar a una maleta, caixa forta o candau sense duplicar la lògica.
 - `StatePuzzle` comprova la combinació 3142; no duplica la lògica de solver.
 - Té `PuzzleDefinition`, tres pistes, porta i balisa verda connectades a `OnSolved`.
 
@@ -186,14 +188,14 @@ Cap de les sis escenes té scripts perduts ni referències de prefab trencades s
 | Lliscant | `Def_demo_sliding_puzzle` | PASS automatitzat | llum + porta | Tancat |
 | Melodia | `Def_demo_melody_puzzle` | PASS automatitzat (`SequencePuzzle`) | porta + so | Tancat |
 | Canonades | `Def_demo_pipe_puzzle` | PASS automatitzat | porta + balisa | Tancat |
-| Cadena multi-fase | `Def_demo_multistage_puzzle` | PASS automatitzat | porta + llum | Tancat |
+| Puzles encadenats | `Def_demo_multistage_puzzle` | PASS automatitzat (ordre lliure i obligatori) | porta + llum | Tancat |
 | Rodets numèrics | `Def_demo_number_wheels_puzzle` | PASS automatitzat | porta + llum | Tancat |
 
 ## Eines d'autoria i menú superior
 
 Les 27 accions principals provades creen objectes sense missing scripts ni referències d'objecte trencades després de la correcció del teclat. Hi ha, però, dos límits de producte que la documentació ha d'explicar sense ambigüitat:
 
-- `Multi-Stage Puzzle` ja crea una cadena jugable completa i `Number Wheels Puzzle` un candau decimal reutilitzant `StatePuzzle`. `Pipe Puzzle` continua creant principalment controlador i dades d'exemple.
+- `Multi-Stage Puzzle` crea un grup jugable de fills simultàniament visibles, amb llista ampliable i ordre opcional. `Number Wheels Puzzle` crea un candau decimal amb botons ▲/▼ compartits entre PC i VR reutilitzant `StatePuzzle`. `Pipe Puzzle` continua creant principalment controlador i dades d'exemple.
 - Els creadors genèrics de puzles deixen `PuzzleDefinition` buit perquè no poden inventar el contingut final. El fallback de nom permet jugar, però cal assignar definició i pistes abans de publicar. Les sales 11 i 13 sí que les generen perquè són mostres tancades.
 
 Millora d'autoria recomanada: afegir a cada creador un diàleg opcional «Crear definició i feedback» que generi un `PuzzleDefinition`, un `HintData` inicial i un preset de resposta. Això tanca el forat entre «es pot crear» i «passa el validador comercial».

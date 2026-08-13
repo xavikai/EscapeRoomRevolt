@@ -24,8 +24,8 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         [SerializeField] private string _puzzleName = "New Puzzle";
 
         [Header("Unity Events")]
-        [SerializeField] private UnityEvent _onSolved;
-        [SerializeField] private UnityEvent _onFailed;
+        [SerializeField] private UnityEvent _onSolved = new UnityEvent();
+        [SerializeField] private UnityEvent _onFailed = new UnityEvent();
 
         public UnityEvent OnSolvedEvent => _onSolved;
         public UnityEvent OnFailedEvent => _onFailed;

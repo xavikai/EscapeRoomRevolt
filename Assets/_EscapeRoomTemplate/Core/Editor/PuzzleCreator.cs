@@ -309,11 +309,17 @@ namespace EscapeRoomRevolt.EditorTools
             var wheelInputs = new List<NumberWheelInteractable>();
             for (int i = 0; i < normalized.Length; i++)
             {
+                float wheelX = (i - (normalized.Length - 1) * .5f) * wheelSpacing;
                 GameObject wheel = CreateNumberWheel("Wheel" + (i + 1), generated);
-                wheel.transform.localPosition = new Vector3((i - (normalized.Length - 1) * .5f) * wheelSpacing, 1.12f, 0f);
+                wheel.transform.localPosition = new Vector3(wheelX, 1.12f, 0f);
                 RestoreReplacementModel(wheel, replacementModels);
                 SteppedPositioner positioner = wheel.GetComponent<SteppedPositioner>();
-                wheelInputs.Add(wheel.GetComponent<NumberWheelInteractable>());
+                NumberWheelInteractable wheelInput = wheel.GetComponent<NumberWheelInteractable>();
+                wheelInputs.Add(wheelInput);
+                CreateNumberWheelStepButton("Wheel" + (i + 1) + "UpButton", generated,
+                    new Vector3(wheelX, 1.47f, -.08f), wheelInput, 1, "▲");
+                CreateNumberWheelStepButton("Wheel" + (i + 1) + "DownButton", generated,
+                    new Vector3(wheelX, .76f, -.08f), wheelInput, -1, "▼");
                 conditions.GetArrayElementAtIndex(i).FindPropertyRelative("Positioner").objectReferenceValue = positioner;
                 conditions.GetArrayElementAtIndex(i).FindPropertyRelative("RequiredIndex").intValue = normalized[i];
             }
@@ -354,7 +360,8 @@ namespace EscapeRoomRevolt.EditorTools
             openLabel.rectTransform.sizeDelta = new Vector2(openButtonWidth * .92f, .35f);
 
             TextMeshPro help = CreatePanelLabel(generated, "FocusHelp", new Vector3(0f, .78f, -.01f),
-                "W PUJA · S BAIXA · CLIC DRET SURT", .55f, new Color(.6f, .68f, .8f));
+                "BOTONS ▲ / ▼ · CLIC DRET SURT", .46f, new Color(.6f, .68f, .8f));
+            help.transform.localPosition = new Vector3(0f, .52f, -.01f);
             help.rectTransform.sizeDelta = new Vector2(panelWidth * .9f, .4f);
 
             EditorUtility.SetDirty(authoring);
@@ -466,6 +473,22 @@ namespace EscapeRoomRevolt.EditorTools
             return logic;
         }
 
+        private static void CreateNumberWheelStepButton(string name, Transform parent, Vector3 localPosition,
+            NumberWheelInteractable wheel, int direction, string arrow)
+        {
+            GameObject button = CreatePiece(name, parent, new Vector3(.27f, .17f, .08f),
+                new Color(.12f, .22f, .32f));
+            button.transform.localPosition = localPosition;
+
+            var stepButton = button.AddComponent<NumberWheelStepButton>();
+            stepButton.Configure(wheel, direction);
+            AddVRBridge(button, stepButton);
+
+            TextMeshPro label = CreatePanelLabel(button.transform, "ArrowLabel", new Vector3(0f, 0f, -.055f),
+                arrow, 1.05f, new Color(.88f, .94f, 1f));
+            label.rectTransform.sizeDelta = new Vector2(.25f, .18f);
+        }
+
         private static TextMeshPro CreatePanelLabel(Transform parent, string name, Vector3 localPosition,
             string text, float fontSize, Color color)
         {
@@ -487,21 +510,44 @@ namespace EscapeRoomRevolt.EditorTools
         public static void CreateMultiStageChainPuzzle()
         {
             GameObject root = CreateMultiStageChainPuzzleKit("MultiStageChainPuzzle");
-            Finalize(root, "Multi-Stage Chain Puzzle created and playable: solve the colour sequence, then set the three levers. "
-                + "Only the child puzzle belonging to the active stage may advance the chain.");
+            Finalize(root, "Chained Puzzle Group created and playable: all child puzzles stay visible, and the group solves only when every child is complete. "
+                + "Use Require Order on MultiStagePuzzle to choose between free order and ordered unlocking.");
         }
 
         internal static GameObject CreateMultiStageChainPuzzleKit(string name)
         {
             GameObject root = new GameObject(name);
-            var parent = root.AddComponent<MultiStagePuzzle>();
+            root.AddComponent<MultiStagePuzzle>();
+            RebuildMultiStageChainPuzzleKit(root);
+            return root;
+        }
 
-            GameObject sequenceGroup = new GameObject("Stage01_Sequence");
-            sequenceGroup.transform.SetParent(root.transform, false);
+        public static void RebuildMultiStageChainPuzzleKit(GameObject root)
+        {
+            if (root == null) return;
+            var parent = root.GetComponent<MultiStagePuzzle>();
+            if (parent == null) parent = root.AddComponent<MultiStagePuzzle>();
+
+            Transform previousGenerated = root.transform.Find("MultiStage_Generated");
+            if (previousGenerated != null) Object.DestroyImmediate(previousGenerated.gameObject);
+            Transform legacySequence = root.transform.Find("Stage01_Sequence");
+            if (legacySequence != null) Object.DestroyImmediate(legacySequence.gameObject);
+            Transform legacyLevers = root.transform.Find("Stage02_Levers");
+            if (legacyLevers != null) Object.DestroyImmediate(legacyLevers.gameObject);
+
+            var generatedObject = new GameObject("MultiStage_Generated");
+            generatedObject.transform.SetParent(root.transform, false);
+
+            GameObject sequenceGroup = new GameObject("Puzzle01_Sequence");
+            sequenceGroup.transform.SetParent(generatedObject.transform, false);
+            sequenceGroup.transform.localPosition = new Vector3(-1.15f, 0f, 0f);
             var sequence = sequenceGroup.AddComponent<SequencePuzzle>();
+            PuzzleDefinition sequenceDefinition = AssetDatabase.LoadAssetAtPath<PuzzleDefinition>(
+                "Assets/_EscapeRoomTemplate/ScriptableObjects/Puzzles/MultiStageSequencePuzzle.asset");
             string[] steps = { "red", "green", "blue" };
             Color[] colors = { Color.red, Color.green, Color.blue };
             var sequenceSo = new SerializedObject(sequence);
+            sequenceSo.FindProperty("_definition").objectReferenceValue = sequenceDefinition;
             SerializedProperty correct = sequenceSo.FindProperty("_correctSequence");
             correct.arraySize = steps.Length;
             for (int i = 0; i < steps.Length; i++) correct.GetArrayElementAtIndex(i).stringValue = steps[i];
@@ -519,13 +565,19 @@ namespace EscapeRoomRevolt.EditorTools
                 relaySo.ApplyModifiedProperties();
                 MakeClickable(button, "Pulsar", relay.Press);
             }
+            TextMeshPro sequenceLabel = CreatePanelLabel(sequenceGroup.transform, "PuzzleLabel",
+                new Vector3(0f, 1.55f, 0f), "PUZZLE 1 · SEQÜÈNCIA", .36f, new Color(.8f, .9f, 1f));
+            sequenceLabel.rectTransform.sizeDelta = new Vector2(2.1f, .35f);
 
-            GameObject stateGroup = new GameObject("Stage02_Levers");
-            stateGroup.transform.SetParent(root.transform, false);
-            stateGroup.transform.localPosition = new Vector3(0f, 0f, .9f);
+            GameObject stateGroup = new GameObject("Puzzle02_Levers");
+            stateGroup.transform.SetParent(generatedObject.transform, false);
+            stateGroup.transform.localPosition = new Vector3(1.15f, 0f, 0f);
             var state = stateGroup.AddComponent<StatePuzzle>();
+            PuzzleDefinition stateDefinition = AssetDatabase.LoadAssetAtPath<PuzzleDefinition>(
+                "Assets/_EscapeRoomTemplate/ScriptableObjects/Puzzles/MultiStageStatePuzzle.asset");
             int[] required = { 2, 0, 1 };
             var stateSo = new SerializedObject(state);
+            stateSo.FindProperty("_definition").objectReferenceValue = stateDefinition;
             SerializedProperty conditions = stateSo.FindProperty("_conditions");
             conditions.arraySize = required.Length;
             for (int i = 0; i < required.Length; i++)
@@ -551,29 +603,28 @@ namespace EscapeRoomRevolt.EditorTools
                 conditions.GetArrayElementAtIndex(i).FindPropertyRelative("RequiredIndex").intValue = required[i];
             }
             stateSo.ApplyModifiedProperties();
+            TextMeshPro stateLabel = CreatePanelLabel(stateGroup.transform, "PuzzleLabel",
+                new Vector3(0f, 1.55f, 0f), "PUZZLE 2 · PALANQUES", .36f, new Color(.8f, .9f, 1f));
+            stateLabel.rectTransform.sizeDelta = new Vector2(2.1f, .35f);
 
             var parentSo = new SerializedObject(parent);
-            SerializedProperty stages = parentSo.FindProperty("_stages");
-            stages.arraySize = 3;
-            ConfigureStage(stages.GetArrayElementAtIndex(0), "sequence", false);
-            ConfigureStage(stages.GetArrayElementAtIndex(1), "levers", false);
-            ConfigureStage(stages.GetArrayElementAtIndex(2), "solved", true);
+            SerializedProperty puzzles = parentSo.FindProperty("_puzzles");
+            puzzles.arraySize = 2;
+            ConfigureChainedPuzzle(puzzles.GetArrayElementAtIndex(0), "sequence", sequence, sequenceGroup);
+            ConfigureChainedPuzzle(puzzles.GetArrayElementAtIndex(1), "levers", state, stateGroup);
+            parentSo.FindProperty("_requireOrder").boolValue = true;
+            parentSo.FindProperty("_lockFuturePuzzles").boolValue = true;
             parentSo.ApplyModifiedProperties();
 
-            UnityEventTools.AddStringPersistentListener(sequence.OnSolvedEvent, parent.CompleteStage, "sequence");
-            UnityEventTools.AddBoolPersistentListener(parent.GetStage(0).onExit, sequenceGroup.SetActive, false);
-            UnityEventTools.AddBoolPersistentListener(parent.GetStage(1).onEnter, stateGroup.SetActive, true);
-            UnityEventTools.AddBoolPersistentListener(parent.GetStage(1).onExit, stateGroup.SetActive, false);
-            UnityEventTools.AddStringPersistentListener(state.OnSolvedEvent, parent.CompleteStage, "levers");
-            stateGroup.SetActive(false);
             EditorUtility.SetDirty(parent);
-            return root;
         }
 
-        private static void ConfigureStage(SerializedProperty stage, string id, bool solved)
+        private static void ConfigureChainedPuzzle(SerializedProperty entry, string id, PuzzleController puzzle,
+            GameObject interactionRoot)
         {
-            stage.FindPropertyRelative("id").stringValue = id;
-            stage.FindPropertyRelative("isSolvedStage").boolValue = solved;
+            entry.FindPropertyRelative("id").stringValue = id;
+            entry.FindPropertyRelative("puzzle").objectReferenceValue = puzzle;
+            entry.FindPropertyRelative("interactionRoot").objectReferenceValue = interactionRoot;
         }
 
         // ── Independent fail-state mechanics ────────────────────────────────────────────

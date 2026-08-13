@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using EscapeRoomRevolt.Core;
 
 namespace EscapeRoomRevolt.Systems.Interaction
@@ -76,7 +77,10 @@ namespace EscapeRoomRevolt.Systems.Interaction
             {
                 bool routedInput = EscapeRoomRevolt.Core.Input.InputRouter.Instance != null
                     && EscapeRoomRevolt.Core.Input.InputRouter.Instance.InteractPressed;
-                if (routedInput)
+                bool pointerClick = (Cursor.lockState == CursorLockMode.None || Cursor.visible)
+                    && Mouse.current != null
+                    && Mouse.current.leftButton.wasPressedThisFrame;
+                if (routedInput || pointerClick)
                     TriggerInteraction();
             }
         }
@@ -91,7 +95,10 @@ namespace EscapeRoomRevolt.Systems.Interaction
             if (Cursor.lockState == CursorLockMode.None || Cursor.visible)
             {
                 // Mouse is free, raycast from pointer
-                ray = activeCamera.ScreenPointToRay(Input.mousePosition);
+                Vector2 pointerPosition = Mouse.current != null
+                    ? Mouse.current.position.ReadValue()
+                    : new Vector2(Screen.width * .5f, Screen.height * .5f);
+                ray = activeCamera.ScreenPointToRay(pointerPosition);
             }
             else
             {

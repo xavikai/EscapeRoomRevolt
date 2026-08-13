@@ -78,7 +78,7 @@ namespace EscapeRoomRevolt.EditorTools
         private static void BuildMultiStageRoom(Transform parent)
         {
             Transform room = CreateRoomShell(parent, "Room11_MultiStageChain", new Vector3(-6f, 0f, 55f),
-                new Color(.18f, .32f, .48f), "11 · MULTI-STAGE", "Seqüència → palanques → sortida");
+                new Color(.18f, .32f, .48f), "11 · PUZZLES ENCADENATS", "Resol-los tots · ordre opcional");
 
             GameObject kit = PuzzleCreator.CreateMultiStageChainPuzzleKit("MultiStageChain_Logic");
             kit.transform.SetParent(room, false);
