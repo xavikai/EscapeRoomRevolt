@@ -48,6 +48,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
         public virtual string InteractionPrompt => _interactionPrompt;
         public virtual CursorType InteractionCursor => _cursorType;
         public virtual bool CanInteract => this != null && _canInteract && gameObject.activeInHierarchy;
+        public bool InteractionEnabled => _canInteract;
 
         public void Interact()
         {
@@ -71,6 +72,12 @@ namespace EscapeRoomRevolt.Systems.Interaction
 
         // ── Protected Helpers ────────────────────────────────────────────────
         protected void SetInteractable(bool value) => _canInteract = value;
+
+        /// <summary>
+        /// Lets a puzzle coordinator temporarily lock a visible puzzle without disabling or hiding
+        /// any of its scene objects. The authored interaction setting is restored when enabled.
+        /// </summary>
+        public void SetInteractionEnabled(bool value) => SetInteractable(value);
 
         /// <summary>Stable ID used by the Save system to persist state.</summary>
         public string SaveId => string.IsNullOrEmpty(_saveId) ? name : _saveId;

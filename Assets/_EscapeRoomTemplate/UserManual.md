@@ -1,6 +1,6 @@
 # Manual de usuario - Escape Room Framework
 
-Esta guía cubre el flujo de trabajo para diseñadores. La arquitectura y las APIs están documentadas en [PROGRAMMING_GUIDE.md](PROGRAMMING_GUIDE.md). La referencia exhaustiva, con tutoriales, ejemplos y resolución de problemas, está en [DOCUMENTACIO_COMPLETA.md](DOCUMENTACIO_COMPLETA.md).
+Esta guía cubre el flujo de trabajo para diseñadores. La arquitectura y las APIs están documentadas en [PROGRAMMING_GUIDE.md](PROGRAMMING_GUIDE.md). La referencia exhaustiva, con tutoriales, ejemplos y resolución de problemas, está en [DOCUMENTACIO_COMPLETA.md](DOCUMENTACIO_COMPLETA.md). El estado verificado de cada sala se encuentra en [AUDITORIA_ESCAPE_ROOM_2026-08-09.md](AUDITORIA_ESCAPE_ROOM_2026-08-09.md).
 
 ## 1. Menú del framework
 
@@ -8,8 +8,9 @@ Todas las herramientas soportadas están en `Escape Room Framework`:
 
 - `Configuration`: selecciona el perfil Escape Room, Survival Horror o una combinación personalizada.
 - `Setup`: instala instancias seguras del Game Manager o jugador y genera las escenas/prefabs de plataforma.
-- `Create`: crea interactuables, puzles (incluidos cables y multi-fase), hotspots de examen, triggers y componentes de flujo sin modificar otros objetos.
-- `Demo`: abre las escenas de ejemplo tras ofrecer guardar los cambios actuales.
+- `Create`: crea interactuables, puzles, hotspots de examen, triggers y componentes de flujo sin modificar otros objetos. `Multi-Stage Puzzle` crea un grupo de dos puzles físicamente separados y visibles; la lista admite tantos puzles como se necesiten y permite terminarlos en orden libre u obligatorio antes de activar una única puerta o mecanismo. `Number Wheels Puzzle` abre un configurador para elegir entre 2 y 8 ruedas y definir la combinación. Después puede redimensionarse desde `NumberWheelsPuzzleAuthoring > Rebuild wheels and layout`; carcasa, título, condiciones, botones y cámara se adaptan sin perder la definición ni los eventos del puzle. En PC se abre la vista enfocada y se pulsa con el botón izquierdo sobre ▲/▼; `E` solo abre el panel o actúa como alternativa de interacción. En VR se usan los controles ▲/▼ equivalentes con el gatillo. En `Create > Flow`, `Moving Hazard (Any Direction)` crea por separado una pared, techo, suelo, plataforma o volumen móvil entre dos marcadores 3D, mientras que `Game Over Timer (HUD)` crea un límite de tiempo opcional visible en la interfaz. `Pipe Puzzle` sigue requiriendo completar su presentación interactiva.
+- Tanto `MovingHazard.StartHazard` como `GameOverTimer.StartTimer` pueden conectarse desde el Inspector a un interruptor (`InteractableTrigger`) o a una zona de paso (`EventTriggerZone`). La zona admite filtro por tag, modo de un solo uso, eventos de entrada/salida y rearme mediante `ResetZone`.
+- `Demo`: abre las escenas de ejemplo tras ofrecer guardar los cambios actuales. `Apply Escape Room Closure Fixes` reaplica de forma idempotente definiciones, payoff de Pipe, prompts y nomenclatura semántica en `ShowcaseMuseum` y `LockedOffice`.
 - `Validation`: comprueba IDs, dependencias, escena activa y preparación comercial.
 - `Maintenance`: previsualiza problemas antes de permitir una reparación con Undo.
 - `Documentation`: abre este manual, la guía de programación, la documentación completa o localiza el HUD de UI Toolkit.
@@ -36,7 +37,9 @@ El modelo visual de los prefabs reemplazables vive bajo un `ModelSocket`. Sustit
 
 ## 3. Menú inicial y fin del juego
 
-Usa `Setup/Create or Update Main Menu Scene` para generar el menú inicial y añadirlo primero a Build Settings.
+Usa `Setup/Create or Update Main Menu Scene` para generar el menú inicial. Queda primero en Build Settings, salvo que ya exista una `Intro` habilitada: entonces se conserva el orden `Intro → MainMenu`.
+
+`Nueva partida` carga la escena indicada por `Resources/GameFlowSettings.asset`. En el perfil de muestra Escape Room debe apuntar a `ShowcaseMuseum`; cámbiala explícitamente cuando empieces el juego definitivo.
 
 Para terminar una partida puedes:
 
@@ -106,6 +109,8 @@ Los controles principales se pueden reasignar durante el juego desde `Ajustes > 
 
 **Experimental**: el soporte VR es funcionalmente completo (rig, manos, hápticos, UI 3D, confort) pero todavía no ha pasado QA en un visor físico real — solo en el simulador de XRI. No asumas paridad total con PC hasta validarlo en hardware.
 
+`ShowcaseMuseumVR` contiene la versión VR del museo y conserva los mismos puzles de las salas 11 y 13. `VRTemplate` es una escena mínima de arranque y no contiene las habitaciones del museo.
+
 1. Espera a que Package Manager termine de importar OpenXR, XR Plug-in Management y XRI.
 2. Configura OpenXR para los destinos deseados en Project Settings.
 3. Ejecuta `Setup/Create or Update VR Player Prefab`.
@@ -134,3 +139,4 @@ Antes de distribuir el asset:
 2. Ejecuta `Validation/Validate Save IDs` en cada escena.
 3. Comprueba PC y VR por separado.
 4. No cambies `SaveId` ni `ItemId` en una actualización publicada sin añadir una migración.
+5. Ejecuta `Validation/Validate Current Scene` y resuelve todos los puzles de cada escena desde una build limpia.

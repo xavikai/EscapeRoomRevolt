@@ -12,6 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43a161e7bcc449b4fb8271d772b6054a, type: 3}
   m_Name: Hint_demo_multistage_puzzle
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Hint.HintData
-  delayBeforeFirstHint: 120
-  delayBetweenHints: 60
-  hints: []
+  delayBeforeFirstHint: 45
+  delayBetweenHints: 35
+  hints:
+  - hintText: "Els colors s'han de pr\xE9mer en un ordre concret."
+    hintAudio: {fileID: 0}
+  - hintText: "L'ordre de la primera fase \xE9s vermell, verd i blau."
+    hintAudio: {fileID: 0}
+  - hintText: A la segona fase, deixa les palanques en les posicions 2, 0 i 1.
+    hintAudio: {fileID: 0}

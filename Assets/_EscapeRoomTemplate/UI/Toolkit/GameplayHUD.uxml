@@ -5,6 +5,13 @@
             <ui:VisualElement name="crosshair" class="crosshair crosshair--default" picking-mode="Ignore" />
             <ui:Label name="interaction-prompt" class="interaction-prompt" picking-mode="Ignore" />
             <ui:Label name="objective-text" class="objective-text" picking-mode="Ignore" />
+            <ui:VisualElement name="gameover-timer-hud" class="gameover-timer-hud" picking-mode="Ignore">
+                <ui:Label name="gameover-timer-title" text="TEMPS RESTANT" class="gameover-timer-title" />
+                <ui:Label name="gameover-timer-value" text="01:00" class="gameover-timer-value" />
+                <ui:VisualElement class="gameover-timer-track">
+                    <ui:VisualElement name="gameover-timer-fill" class="gameover-timer-fill" />
+                </ui:VisualElement>
+            </ui:VisualElement>
 
             <ui:VisualElement name="viewfinder-frame" class="viewfinder-frame" picking-mode="Ignore">
                 <ui:VisualElement class="viewfinder-bar viewfinder-bar--top" />

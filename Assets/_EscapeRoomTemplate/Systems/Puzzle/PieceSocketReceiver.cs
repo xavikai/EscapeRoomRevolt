@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using EscapeRoomRevolt.Player.VR;
 using EscapeRoomRevolt.Systems.Interaction;
 
@@ -27,10 +28,26 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         [SerializeField] private Color _occupiedColor = Color.green;
         [SerializeField] private Color _solvedColor = Color.cyan;
 
+        [Header("Events")]
+        [Tooltip("A piece has just settled into this socket. Mechanical feedback belongs here — the "
+               + "clunk, the piece sinking into its holder — not the payoff: this fires for a wrong "
+               + "piece too, and lighting it up would hand the player the answer socket by socket.")]
+        public UnityEvent OnPieceSeated;
+        [Tooltip("The piece that was in this socket is gone — pulled back out, or placed elsewhere. Undo whatever OnPieceSeated did.")]
+        public UnityEvent OnPieceRemoved;
+        [Tooltip("The puzzle is solved and this socket's piece is locked in for good. This is the payoff: the fuse lights up, the model swaps, the animation plays.")]
+        public UnityEvent OnPieceLocked;
+        [Tooltip("Same end state as OnPieceLocked, but restored from a save rather than earned just now. Set the final look here with no fanfare — no sound, no animation, no camera-grabbing flourish at load time.")]
+        public UnityEvent OnLockRestored;
+
+        private enum SocketVisual { Empty, Occupied, Solved }
+
         private Renderer _renderer;
         private SelectionOutlineTarget _outlineTarget;
         private GrabbablePiece _seatedPiece;
         private bool _lockAttempted;
+        private string _occupantPieceId;
+        private SocketVisual? _appliedVisual;
 
         private void Awake()
         {
@@ -53,9 +70,25 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         {
             // Also covers being solved without the event firing here — a solved state restored from a
             // save, where the piece would otherwise sit back at its starting spot as if untouched.
-            if (_puzzle != null && _puzzle.IsSolved && !_lockAttempted) HandleSolved();
+            // Only a restore can reach this: a live solve runs through OnSolvedEvent inside Connect(),
+            // which sets _lockAttempted before any Update sees it.
+            if (_puzzle != null && _puzzle.IsSolved && !_lockAttempted) LockSeatedPiece(restored: true);
+
+            if (_puzzle != null) SyncOccupancy(_puzzle.GetPieceAtSocket(_socketId));
             UpdateColor();
         }
+
+        /// <summary>Fires the seated/removed edge when this socket's occupant changes, so a UnityEvent runs once per placement instead of every frame the piece rests here.</summary>
+        private void SyncOccupancy(string occupantPieceId)
+        {
+            if (occupantPieceId == _occupantPieceId) return;
+            _occupantPieceId = occupantPieceId;
+
+            if (occupantPieceId != null) OnPieceSeated?.Invoke();
+            else OnPieceRemoved?.Invoke();
+        }
+
+        private void HandleSolved() => LockSeatedPiece(restored: false);
 
         /// <summary>
         /// Seats this socket's piece for good. Until the mechanism fires the piece is a loose
@@ -63,16 +96,25 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         /// (the puzzle is solved, so OnTriggerStay bails out) and gravity would pull the piece
         /// straight back out. A fuse feeding a live circuit stays in its holder and can't be pulled.
         /// </summary>
-        private void HandleSolved()
+        private void LockSeatedPiece(bool restored)
         {
             _lockAttempted = true;
 
             if (_seatedPiece == null) _seatedPiece = FindPiece(_puzzle.GetPieceAtSocket(_socketId));
+
+            // A restored save never played the drop, so this socket's occupancy was never observed
+            // changing. Adopt it silently, or the sync below would fire a "just placed" clunk for a
+            // piece that has been sitting there since before the player loaded the game.
+            if (restored) _occupantPieceId = _puzzle.GetPieceAtSocket(_socketId);
+
             if (_seatedPiece == null) return;
 
             _seatedPiece.LockInPlace(_snapPoint != null ? _snapPoint : transform);
             _outlineTarget?.SetHighlighted(false);
             UpdateColor();
+
+            if (restored) OnLockRestored?.Invoke();
+            else OnPieceLocked?.Invoke();
         }
 
         /// <summary>Locates a piece by id, for the restored-from-save case where nothing was ever dropped in this socket during the session.</summary>
@@ -107,7 +149,12 @@ namespace EscapeRoomRevolt.Systems.Puzzle
             // placement every tick while it rests here would re-trigger Fail() (and its sanity
             // penalty) continuously instead of once.
             if (_puzzle.GetConnectedSocket(piece.PieceId) != _socketId)
+            {
+                // Announce the seating before connecting, not after: this Connect can be the one that
+                // solves the puzzle, and a piece must read as placed before it reads as locked in.
+                SyncOccupancy(piece.PieceId);
                 _puzzle.Connect(piece.PieceId, _socketId);
+            }
 
             // That Connect may have solved the puzzle and locked the piece in place already; the
             // magnet below has nothing left to do on a frozen body.
@@ -156,11 +203,23 @@ namespace EscapeRoomRevolt.Systems.Puzzle
             return bridge != null && bridge.IsSelected;
         }
 
+        /// <summary>Repaints the socket only when its state actually changes — writing to .material every frame instances the material and burns a draw call's worth of work to set the same colour it already had.</summary>
         private void UpdateColor()
         {
             if (_renderer == null || _puzzle == null) return;
-            if (_puzzle.IsSolved) { _renderer.material.color = _solvedColor; return; }
-            _renderer.material.color = _puzzle.GetPieceAtSocket(_socketId) != null ? _occupiedColor : _emptyColor;
+
+            SocketVisual desired = _puzzle.IsSolved ? SocketVisual.Solved
+                                 : _occupantPieceId != null ? SocketVisual.Occupied
+                                 : SocketVisual.Empty;
+            if (_appliedVisual == desired) return;
+            _appliedVisual = desired;
+
+            _renderer.material.color = desired switch
+            {
+                SocketVisual.Solved => _solvedColor,
+                SocketVisual.Occupied => _occupiedColor,
+                _ => _emptyColor,
+            };
         }
     }
 }
