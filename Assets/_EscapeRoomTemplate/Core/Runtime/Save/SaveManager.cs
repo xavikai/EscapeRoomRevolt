@@ -240,8 +240,9 @@ namespace EscapeRoomRevolt.Core.Save
                         Debug.LogWarning($"[SaveManager] Duplicate SaveId ignored: '{saveable.SaveId}'.");
                         continue;
                     }
+                    string state = saveable.SaveData();
                     data.keys.Add(saveable.SaveId);
-                    data.values.Add(saveable.SaveData());
+                    data.values.Add(state);
                 }
                 catch (Exception e)
                 {
@@ -262,7 +263,7 @@ namespace EscapeRoomRevolt.Core.Save
         {
             if (string.IsNullOrWhiteSpace(slotId)) slotId = DefaultSlotId;
             string path = GetSlotPath(slotId);
-            if (!File.Exists(path))
+            if (!File.Exists(path) && !File.Exists(path + ".bak"))
             {
                 const string message = "No se ha encontrado la partida.";
                 OperationFailed?.Invoke(slotId, message);
@@ -288,7 +289,7 @@ namespace EscapeRoomRevolt.Core.Save
             RestoreSnapshot(data, slotId);
         }
 
-        public bool HasSave(string slotId) => File.Exists(GetSlotPath(slotId));
+        public bool HasSave(string slotId) => TryReadSlot(GetSlotPath(slotId)) != null;
 
         public List<SaveSlotMetadata> GetSlots()
         {
@@ -296,6 +297,8 @@ namespace EscapeRoomRevolt.Core.Save
             if (!Directory.Exists(folder)) return new List<SaveSlotMetadata>();
 
             return Directory.GetFiles(folder, "*.json")
+                .Concat(Directory.GetFiles(folder, "*.json.bak").Select(path => path.Substring(0, path.Length - 4)))
+                .Distinct()
                 .Select(TryReadSlot)
                 .Where(data => data != null)
                 .Select(data => new SaveSlotMetadata
@@ -343,6 +346,13 @@ namespace EscapeRoomRevolt.Core.Save
 
         private void BeginSceneLoad(SaveGameData data)
         {
+            if (!Application.CanStreamedLevelBeLoaded(data.scenePath))
+            {
+                const string unavailableMessage = "La escena guardada no está incluida en esta versión del juego.";
+                OperationFailed?.Invoke(data.slotId, unavailableMessage);
+                Debug.LogWarning($"[SaveManager] {unavailableMessage} Scene: {data.scenePath}");
+                return;
+            }
             _pendingLoad = data;
             RunSeed = data.runSeed;
             _destroyedEntities.Clear();
@@ -384,6 +394,13 @@ namespace EscapeRoomRevolt.Core.Save
         /// </summary>
         public void RestoreSnapshot(SaveGameData data, string slotId)
         {
+            if (!IsValidSnapshot(data))
+            {
+                const string message = "La estructura de la partida guardada no es válida.";
+                OperationFailed?.Invoke(slotId, message);
+                Debug.LogWarning($"[SaveManager] {message}");
+                return;
+            }
             CleanupSaveables();
             RunSeed = data.runSeed;
             _destroyedEntities.Clear();
@@ -446,12 +463,29 @@ namespace EscapeRoomRevolt.Core.Save
 
         private static SaveGameData TryReadSlotFile(string path)
         {
-            try { return JsonUtility.FromJson<SaveGameData>(File.ReadAllText(path)); }
+            if (!File.Exists(path)) return null;
+            try
+            {
+                SaveGameData data = JsonUtility.FromJson<SaveGameData>(File.ReadAllText(path));
+                return IsValidSnapshot(data) ? data : null;
+            }
             catch (Exception exception)
             {
                 Debug.LogWarning($"[SaveManager] Could not read '{Path.GetFileName(path)}': {exception.Message}");
                 return null;
             }
+        }
+
+        private static bool IsValidSnapshot(SaveGameData data)
+        {
+            if (data == null || data.version < 1 || data.version > 3 || data.keys == null ||
+                data.values == null || data.destroyedEntities == null || data.keys.Count != data.values.Count)
+                return false;
+            var ids = new HashSet<string>();
+            for (int i = 0; i < data.keys.Count; i++)
+                if (string.IsNullOrWhiteSpace(data.keys[i]) || !ids.Add(data.keys[i]) || data.values[i] == null)
+                    return false;
+            return true;
         }
 
         private void CleanupSaveables() => _saveables.RemoveWhere(saveable => !IsAlive(saveable));

@@ -73,7 +73,7 @@ namespace EscapeRoomRevolt.EditorTools
             keypadRoot.transform.localPosition = new Vector3(0, 0, 0.013f); // Slightly in front of the surface
 
             // 1. Create Display LCD
-            GameObject displayObj = new GameObject("Display");
+            GameObject displayObj = new GameObject("Display", typeof(RectTransform));
             displayObj.transform.SetParent(keypadRoot.transform);
             displayObj.transform.localPosition = new Vector3(0, 0.09f, 0); // Position it cleanly at the top
             displayObj.transform.localRotation = Quaternion.Euler(0, 180f, 0); // Rotate to face outward
@@ -157,12 +157,9 @@ namespace EscapeRoomRevolt.EditorTools
             // Only highlight the main keypad base, NOT the buttons or text
             Renderer baseRenderer = logicObj.transform.Find("NewKeypad_Visuals")?.GetComponent<Renderer>();
             if (baseRenderer == null) baseRenderer = logicObj.GetComponentInChildren<Renderer>(); // fallback
-            
-            SerializedProperty highlightProp = soKeypad.FindProperty("_highlightRenderers");
-            highlightProp.arraySize = 1;
-            highlightProp.GetArrayElementAtIndex(0).objectReferenceValue = baseRenderer;
 
             soKeypad.ApplyModifiedProperties();
+            ConfigureOutlineTarget(logicObj, baseRenderer);
 
             FinalizeCreation(logicObj);
         }
@@ -183,7 +180,7 @@ namespace EscapeRoomRevolt.EditorTools
             visualObj.GetComponent<Renderer>().material = mat;
 
             // Text
-            GameObject textObj = new GameObject("Text");
+            GameObject textObj = new GameObject("Text", typeof(RectTransform));
             textObj.transform.SetParent(logicObj.transform);
             textObj.transform.localPosition = new Vector3(0, 0, 0.008f); // Slightly in front of the button (Z+)
             textObj.transform.localRotation = Quaternion.Euler(0, 180f, 0); // Rotate to face outward
@@ -209,11 +206,7 @@ namespace EscapeRoomRevolt.EditorTools
             else btnScript.SetAction(KeypadButtonAction.Digit, value);
 
             // Only highlight the button cube itself
-            SerializedObject soBtn = new SerializedObject(btnScript);
-            SerializedProperty btnHighlightProp = soBtn.FindProperty("_highlightRenderers");
-            btnHighlightProp.arraySize = 1;
-            btnHighlightProp.GetArrayElementAtIndex(0).objectReferenceValue = visualObj.GetComponent<Renderer>();
-            soBtn.ApplyModifiedProperties();
+            ConfigureOutlineTarget(logicObj, visualObj.GetComponent<Renderer>());
 
             return logicObj;
         }
@@ -284,23 +277,7 @@ namespace EscapeRoomRevolt.EditorTools
         [MenuItem("Escape Room Framework/Create/Puzzles/Multi-Stage Puzzle", priority = 203)]
         public static void CreateMultiStagePuzzle()
         {
-            GameObject logicObj = new GameObject("NewMultiStagePuzzle");
-            SceneView view = SceneView.lastActiveSceneView;
-            if (view != null) logicObj.transform.position = view.pivot;
-
-            MultiStagePuzzle puzzle = logicObj.AddComponent<MultiStagePuzzle>();
-            SerializedObject so = new SerializedObject(puzzle);
-            SerializedProperty stages = so.FindProperty("_stages");
-            stages.arraySize = 2;
-            stages.GetArrayElementAtIndex(0).FindPropertyRelative("id").stringValue = "stage_1";
-            stages.GetArrayElementAtIndex(0).FindPropertyRelative("isSolvedStage").boolValue = false;
-            stages.GetArrayElementAtIndex(1).FindPropertyRelative("id").stringValue = "stage_2_solved";
-            stages.GetArrayElementAtIndex(1).FindPropertyRelative("isSolvedStage").boolValue = true;
-            so.ApplyModifiedProperties();
-
-            FinalizeCreation(logicObj);
-            Debug.Log("[Escape Room Framework] Multi-Stage Puzzle created with two example stages. "
-                + "Call AdvanceStage() for linear progress or AdvanceToStage(id) to branch; reaching 'stage_2_solved' solves it automatically.");
+            PuzzleCreator.CreateMultiStageChainPuzzle();
         }
 
         [MenuItem("Escape Room Framework/Create/Interactables/Note", priority = 104)]
@@ -372,6 +349,22 @@ namespace EscapeRoomRevolt.EditorTools
 
             logicObj.AddComponent<AudioSource>();
             logicObj.AddComponent<NarrativeTrigger>();
+
+            FinalizeCreation(logicObj);
+        }
+
+        [MenuItem("Escape Room Framework/Create/Triggers/Event Trigger Zone", priority = 303)]
+        public static void CreateEventTriggerZone()
+        {
+            GameObject logicObj = new GameObject("NewEventTriggerZone");
+
+            SceneView view = SceneView.lastActiveSceneView;
+            if (view != null) logicObj.transform.position = view.pivot;
+
+            BoxCollider col = logicObj.AddComponent<BoxCollider>();
+            col.isTrigger = true;
+            col.size = new Vector3(2f, 2f, 2f);
+            logicObj.AddComponent<EventTriggerZone>();
 
             FinalizeCreation(logicObj);
         }
@@ -581,6 +574,19 @@ namespace EscapeRoomRevolt.EditorTools
             }
 
             return logicObj;
+        }
+
+        private static void ConfigureOutlineTarget(GameObject owner, params Renderer[] renderers)
+        {
+            SelectionOutlineTarget target = owner.GetComponent<SelectionOutlineTarget>();
+            if (target == null) target = owner.AddComponent<SelectionOutlineTarget>();
+
+            SerializedObject serializedTarget = new SerializedObject(target);
+            SerializedProperty rendererProperty = serializedTarget.FindProperty("_renderers");
+            rendererProperty.arraySize = renderers.Length;
+            for (int i = 0; i < renderers.Length; i++)
+                rendererProperty.GetArrayElementAtIndex(i).objectReferenceValue = renderers[i];
+            serializedTarget.ApplyModifiedProperties();
         }
 
         private static void FinalizeCreation(GameObject obj)

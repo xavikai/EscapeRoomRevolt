@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: GameFlowSettings
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Core.Flow.GameFlowSettings
   _mainMenuScene: MainMenu
-  _firstGameplayScene: SurvivalHorrorDemo
+  _firstGameplayScene: ShowcaseMuseum
   _continueSlot: 

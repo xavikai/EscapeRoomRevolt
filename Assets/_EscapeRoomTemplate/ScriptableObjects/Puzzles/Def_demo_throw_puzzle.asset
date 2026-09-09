@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec3cb5d8fbfc7eb478b44c5c7b44d084, type: 3}
+  m_Name: Def_demo_throw_puzzle
+  m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Puzzle.PuzzleDefinition
+  _persistentId: demo_throw_targets
+  _displayName: "Galeria de precisi\xF3"
+  _category: 4
+  _objective: "Encerta les tres dianes amb objectes llan\xE7ables."
+  _hints: {fileID: 11400000, guid: 8b63db46b6260604984d7ee5e972b262, type: 2}
+  _sanityPenalty: 4

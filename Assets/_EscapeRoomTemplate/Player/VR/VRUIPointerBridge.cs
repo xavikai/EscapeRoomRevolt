@@ -38,6 +38,7 @@ namespace EscapeRoomRevolt.Player.VR
 
         private void OnEnable()
         {
+            if (_interactable == null) return;
             _interactable.hoverEntered.AddListener(HandleHoverEntered);
             _interactable.hoverExited.AddListener(HandleHoverExited);
             _interactable.selectEntered.AddListener(HandleSelectEntered);
@@ -46,6 +47,7 @@ namespace EscapeRoomRevolt.Player.VR
 
         private void OnDisable()
         {
+            if (_interactable == null) return;
             _interactable.hoverEntered.RemoveListener(HandleHoverEntered);
             _interactable.hoverExited.RemoveListener(HandleHoverExited);
             _interactable.selectEntered.RemoveListener(HandleSelectEntered);
@@ -103,6 +105,8 @@ namespace EscapeRoomRevolt.Player.VR
         private bool TryRaycastPanel(IXRHoverInteractor interactor, out Vector2 panelPos)
         {
             panelPos = default;
+            if (_collider == null || !_collider.enabled || _document == null || _document.rootVisualElement == null)
+                return false;
             Transform origin = ResolveRayOrigin(interactor);
             if (origin == null) return false;
             if (!_collider.Raycast(new Ray(origin.position, origin.forward), out RaycastHit hit, 100f)) return false;

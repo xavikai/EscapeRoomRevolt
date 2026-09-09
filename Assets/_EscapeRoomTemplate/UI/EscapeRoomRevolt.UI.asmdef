@@ -5,7 +5,8 @@
         "EscapeRoomRevolt.Core",
         "EscapeRoomRevolt.Player",
         "EscapeRoomRevolt.Systems",
-        "Unity.InputSystem"
+        "Unity.InputSystem",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

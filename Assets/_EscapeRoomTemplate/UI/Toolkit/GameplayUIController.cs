@@ -40,6 +40,11 @@ namespace EscapeRoomRevolt.UI.Toolkit
         private Label _sanityState;
         private VisualElement _hotbar;
         private Label _subtitle;
+        private VisualElement _gameOverTimerHud;
+        private Label _gameOverTimerTitle;
+        private Label _gameOverTimerValue;
+        private VisualElement _gameOverTimerFill;
+        private string _activeGameOverTimerId;
         private VisualElement _modalLayer;
         private VisualElement _inventoryPanel;
         private VisualElement _inventoryGrid;
@@ -112,6 +117,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
             EventBus.Subscribe<RequestCloseTopPanel>(HandleCloseTopPanelRequest);
             EventBus.Subscribe<RequestShowNoteReader>(HandleShowNoteReaderRequest);
             EventBus.Subscribe<RequestShowKeypad>(HandleShowKeypadRequest);
+            EventBus.Subscribe<OnGameOverTimerChanged>(HandleGameOverTimerChanged);
         }
 
         private void Start()
@@ -139,6 +145,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
             EventBus.Unsubscribe<RequestCloseTopPanel>(HandleCloseTopPanelRequest);
             EventBus.Unsubscribe<RequestShowNoteReader>(HandleShowNoteReaderRequest);
             EventBus.Unsubscribe<RequestShowKeypad>(HandleShowKeypadRequest);
+            EventBus.Unsubscribe<OnGameOverTimerChanged>(HandleGameOverTimerChanged);
         }
 
         private void HandleShowSubtitleRequest(RequestShowSubtitle evt) => ShowSubtitle(evt.text, evt.holdSeconds);
@@ -146,6 +153,31 @@ namespace EscapeRoomRevolt.UI.Toolkit
         private void HandleToggleInventoryRequest(RequestToggleInventory evt) => ToggleInventory();
         private void HandleCloseTopPanelRequest(RequestCloseTopPanel evt) => CloseTopPanel();
         private void HandleShowNoteReaderRequest(RequestShowNoteReader evt) => ShowNote(evt.content);
+
+        private void HandleGameOverTimerChanged(OnGameOverTimerChanged evt)
+        {
+            if (_gameOverTimerHud == null) return;
+            if (!evt.isVisible)
+            {
+                if (string.IsNullOrEmpty(_activeGameOverTimerId) || _activeGameOverTimerId == evt.timerId)
+                {
+                    _activeGameOverTimerId = null;
+                    SetVisible(_gameOverTimerHud, false);
+                }
+                return;
+            }
+
+            _activeGameOverTimerId = evt.timerId;
+            if (_gameOverTimerTitle != null) _gameOverTimerTitle.text = evt.label ?? "TEMPS RESTANT";
+            int seconds = Mathf.Max(0, Mathf.CeilToInt(evt.secondsRemaining));
+            if (_gameOverTimerValue != null) _gameOverTimerValue.text = $"{seconds / 60:00}:{seconds % 60:00}";
+            if (_gameOverTimerFill != null)
+                _gameOverTimerFill.style.width = Length.Percent(Mathf.Clamp01(evt.normalizedRemaining) * 100f);
+
+            _gameOverTimerHud.EnableInClassList("gameover-timer-hud--warning", seconds <= 10 && seconds > 5);
+            _gameOverTimerHud.EnableInClassList("gameover-timer-hud--critical", seconds <= 5 || evt.hasExpired);
+            SetVisible(_gameOverTimerHud, true);
+        }
 
         private void HandleShowKeypadRequest(RequestShowKeypad evt)
         {
@@ -176,6 +208,10 @@ namespace EscapeRoomRevolt.UI.Toolkit
             _sanityState = _root.Q<Label>("sanity-state");
             _hotbar = _root.Q<VisualElement>("hotbar");
             _subtitle = _root.Q<Label>("subtitle");
+            _gameOverTimerHud = _root.Q<VisualElement>("gameover-timer-hud");
+            _gameOverTimerTitle = _root.Q<Label>("gameover-timer-title");
+            _gameOverTimerValue = _root.Q<Label>("gameover-timer-value");
+            _gameOverTimerFill = _root.Q<VisualElement>("gameover-timer-fill");
             _modalLayer = _root.Q<VisualElement>("modal-layer");
 
             _inventoryPanel = _root.Q<VisualElement>("inventory-panel");
@@ -1019,6 +1055,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
             SetVisible(_interactionPrompt, false);
             SetVisible(_flashlightHud, false);
             SetVisible(_sanityHud, false);
+            SetVisible(_gameOverTimerHud, false);
             SetVisible(_subtitle, false);
         }
 

@@ -49,6 +49,31 @@
     letter-spacing: 1px; -unity-text-align: middle-center; display: none;
 }
 
+.gameover-timer-hud {
+    position: absolute; left: 50%; top: 72px; translate: -50% 0; width: 250px;
+    padding: 10px 14px 11px 14px; background-color: rgba(8, 10, 9, 0.9);
+    border-top-width: 1px; border-top-color: rgb(178, 151, 87); display: none;
+}
+.gameover-timer-title {
+    color: rgb(188, 181, 154); font-size: 10px; letter-spacing: 2px;
+    -unity-text-align: middle-center;
+}
+.gameover-timer-value {
+    margin-top: 2px; color: rgb(228, 218, 183); font-size: 30px; letter-spacing: 3px;
+    -unity-font-style: bold; -unity-text-align: middle-center;
+}
+.gameover-timer-track { height: 3px; margin-top: 5px; background-color: rgb(47, 43, 35); }
+.gameover-timer-fill {
+    width: 100%; height: 100%; background-color: rgb(178, 151, 87);
+    transition-property: width, background-color; transition-duration: 0.1s;
+}
+.gameover-timer-hud--warning { border-top-color: rgb(205, 125, 47); }
+.gameover-timer-hud--warning .gameover-timer-value,
+.gameover-timer-hud--warning .gameover-timer-fill { color: rgb(230, 151, 68); background-color: rgb(205, 125, 47); }
+.gameover-timer-hud--critical { border-top-color: rgb(181, 48, 39); }
+.gameover-timer-hud--critical .gameover-timer-value,
+.gameover-timer-hud--critical .gameover-timer-fill { color: rgb(232, 78, 65); background-color: rgb(181, 48, 39); }
+
 .viewfinder-frame {
     position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: none;
 }

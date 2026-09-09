@@ -33,7 +33,9 @@ namespace EscapeRoomRevolt.UI.Toolkit
 
         private void OnEnable()
         {
-            VisualElement root = GetComponent<UIDocument>().rootVisualElement;
+            UIDocument document = GetComponent<UIDocument>();
+            VisualElement root = document != null ? document.rootVisualElement : null;
+            if (root == null) return;
             _vitalsHud = root.Q("vitals-hud");
             _healthFill = root.Q("health-fill");
             _staminaFill = root.Q("stamina-fill");

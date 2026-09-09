@@ -104,7 +104,7 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         /// <summary>Puts the piece back where it started, at rest. Safe to call from a UnityEvent as a manual "reset piece".</summary>
         public void ReturnHome()
         {
-            if (IsLocked) return;
+            if (IsLocked || IsHeld()) return;
             if (_body != null)
             {
                 _body.linearVelocity = Vector3.zero;
@@ -118,6 +118,8 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         private bool IsHeld()
         {
             if (PhysicsGrabber.Instance != null && PhysicsGrabber.Instance.CurrentHeldObject == _grabbable) return true;
+            VRHardwareInteractor hardware = GetComponentInParent<VRHardwareInteractor>();
+            if (hardware != null && hardware.IsHolding(_grabbable)) return true;
             VRInteractionBridge bridge = GetComponent<VRInteractionBridge>();
             return bridge != null && bridge.IsSelected;
         }

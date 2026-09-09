@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43a161e7bcc449b4fb8271d772b6054a, type: 3}
+  m_Name: Hint_demo_throw_puzzle
+  m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Hint.HintData
+  delayBeforeFirstHint: 45
+  delayBetweenHints: 35
+  hints:
+  - hintText: "Els objectes f\xEDsics nom\xE9s compten si colpegen una diana."
+    hintAudio: {fileID: 0}
+  - hintText: "Cada diana nom\xE9s s'ha d'activar una vegada."
+    hintAudio: {fileID: 0}
+  - hintText: Encerta target1, target2 i target3 en qualsevol ordre.
+    hintAudio: {fileID: 0}

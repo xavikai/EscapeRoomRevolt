@@ -23,6 +23,7 @@ namespace EscapeRoomRevolt.Player.VR
         [SerializeField] private float _distanceFromHead = 1.25f;
         [SerializeField] private float _worldScale = .001f;
         [SerializeField] private Vector3 _localOffset = new Vector3(0f, -.05f, 0f);
+        [SerializeField] private Material _panelMaterialTemplate;
 
         private readonly List<PanelSettings> _runtimePanelSettings = new List<PanelSettings>();
         private readonly List<RenderTexture> _runtimeTextures = new List<RenderTexture>();
@@ -71,7 +72,17 @@ namespace EscapeRoomRevolt.Player.VR
                 quad.localRotation = Quaternion.identity;
                 quad.localScale = new Vector3(_referenceSize.x, _referenceSize.y, 1f) * _worldScale;
 
-                Material material = new Material(Shader.Find("Unlit/Texture")) { mainTexture = renderTexture };
+                Shader fallbackShader = Shader.Find("Universal Render Pipeline/Unlit");
+                if (_panelMaterialTemplate == null && fallbackShader == null)
+                {
+                    Debug.LogWarning($"[VR UI] No compatible panel shader is available; skipping '{document.name}'.");
+                    continue;
+                }
+
+                Material material = _panelMaterialTemplate != null
+                    ? new Material(_panelMaterialTemplate)
+                    : new Material(fallbackShader);
+                material.mainTexture = renderTexture;
                 _runtimeMaterials.Add(material);
                 quadGo.GetComponent<MeshRenderer>().sharedMaterial = material;
 

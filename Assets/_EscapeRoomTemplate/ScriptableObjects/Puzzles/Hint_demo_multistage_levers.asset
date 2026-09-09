@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43a161e7bcc449b4fb8271d772b6054a, type: 3}
+  m_Name: Hint_demo_multistage_levers
+  m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Hint.HintData
+  delayBeforeFirstHint: 45
+  delayBetweenHints: 35
+  hints:
+  - hintText: "Aquesta fase s'activa despr\xE9s de la seq\xFC\xE8ncia."
+    hintAudio: {fileID: 0}
+  - hintText: "Cada palanca t\xE9 tres posicions."
+    hintAudio: {fileID: 0}
+  - hintText: "Les posicions s\xF3n 2, 0 i 1."
+    hintAudio: {fileID: 0}

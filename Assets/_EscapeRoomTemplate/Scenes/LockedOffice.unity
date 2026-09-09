@@ -190,11 +190,23 @@ MonoBehaviour:
   _requiredItemId: key_office_01
   _lockedPrompt: Locked
   _openPrompt: Open
+  _closePrompt: Close
+  _peekPrompt: Open further
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
+  _enableAdvancedOperations: 1
+  _peekFraction: 0.18
+  _carefulDuration: 2.4
+  _slamDuration: 0.18
+  _navigationOpenThreshold: 0.72
+  _allowEnemyOperation: 1
+  _enemyCanBreakLock: 0
   _animator: {fileID: 0}
   _openTrigger: Open
   _closeTrigger: Close
+  _peekTrigger: Peek
+  _slamOpenTrigger: SlamOpen
+  _slamCloseTrigger: SlamClose
   _movementType: 0
   _openDuration: 0.8
   _customPivot: {fileID: 48854434}
@@ -203,8 +215,14 @@ MonoBehaviour:
   _slideOffset: {x: 1.5, y: 0, z: 0}
   _openSound: {fileID: 0}
   _closeSound: {fileID: 0}
+  _carefulSound: {fileID: 0}
+  _slamSound: {fileID: 0}
   _lockedSound: {fileID: 0}
   _pitchVariance: 0.1
+  _carefulNoiseRadius: 2.5
+  _normalOpenNoiseRadius: 8
+  _normalCloseNoiseRadius: 11
+  _slamNoiseRadius: 18
 --- !u!4 &50396175
 Transform:
   m_ObjectHideFlags: 0
@@ -839,7 +857,7 @@ GameObject:
   - component: {fileID: 97751416}
   - component: {fileID: 97751415}
   m_Layer: 0
-  m_Name: NewDrawer_Logic
+  m_Name: OfficeDrawer_01_Logic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -866,11 +884,23 @@ MonoBehaviour:
   _requiredItemId: 
   _lockedPrompt: Locked
   _openPrompt: Open
+  _closePrompt: Close
+  _peekPrompt: Open further
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
+  _enableAdvancedOperations: 1
+  _peekFraction: 0.18
+  _carefulDuration: 2.4
+  _slamDuration: 0.18
+  _navigationOpenThreshold: 0.72
+  _allowEnemyOperation: 1
+  _enemyCanBreakLock: 0
   _animator: {fileID: 0}
   _openTrigger: Open
   _closeTrigger: Close
+  _peekTrigger: Peek
+  _slamOpenTrigger: SlamOpen
+  _slamCloseTrigger: SlamClose
   _movementType: 1
   _openDuration: 0.8
   _customPivot: {fileID: 0}
@@ -879,8 +909,14 @@ MonoBehaviour:
   _slideOffset: {x: 0, y: 0, z: 0.8}
   _openSound: {fileID: 0}
   _closeSound: {fileID: 0}
+  _carefulSound: {fileID: 0}
+  _slamSound: {fileID: 0}
   _lockedSound: {fileID: 0}
   _pitchVariance: 0.1
+  _carefulNoiseRadius: 2.5
+  _normalOpenNoiseRadius: 8
+  _normalCloseNoiseRadius: 11
+  _slamNoiseRadius: 18
 --- !u!4 &97751414
 Transform:
   m_ObjectHideFlags: 0
@@ -1632,7 +1668,7 @@ GameObject:
   - component: {fileID: 143969320}
   - component: {fileID: 143969319}
   m_Layer: 0
-  m_Name: NewPickableItem_Visuals
+  m_Name: OfficeClueItem_01_Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2503,7 +2539,7 @@ GameObject:
   - component: {fileID: 216486091}
   - component: {fileID: 216486090}
   m_Layer: 0
-  m_Name: NewSafe_Logic
+  m_Name: OfficeSafe_01_Logic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2549,12 +2585,14 @@ MonoBehaviour:
   _correctCode: 1234
   _maxCodeLength: 4
   _autoCheckWhenFull: 1
+  _randomizeCode: 0
   _display3D: {fileID: 0}
   _statusLed: {fileID: 0}
   _beepSound: {fileID: 0}
   _successSound: {fileID: 0}
   _errorSound: {fileID: 0}
   _pitchVariance: 0.05
+  _idlePulseSpeed: 2.5
 --- !u!4 &216486091
 Transform:
   m_ObjectHideFlags: 0
@@ -2584,7 +2622,7 @@ GameObject:
   - component: {fileID: 230730503}
   - component: {fileID: 230730502}
   m_Layer: 0
-  m_Name: NewDoor_Logic
+  m_Name: OfficeDoor_02_Logic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2631,11 +2669,23 @@ MonoBehaviour:
   _requiredItemId: 
   _lockedPrompt: Locked
   _openPrompt: Open
+  _closePrompt: Close
+  _peekPrompt: Open further
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
+  _enableAdvancedOperations: 1
+  _peekFraction: 0.18
+  _carefulDuration: 2.4
+  _slamDuration: 0.18
+  _navigationOpenThreshold: 0.72
+  _allowEnemyOperation: 1
+  _enemyCanBreakLock: 0
   _animator: {fileID: 0}
   _openTrigger: Open
   _closeTrigger: Close
+  _peekTrigger: Peek
+  _slamOpenTrigger: SlamOpen
+  _slamCloseTrigger: SlamClose
   _movementType: 0
   _openDuration: 0.8
   _customPivot: {fileID: 211750833}
@@ -2644,8 +2694,14 @@ MonoBehaviour:
   _slideOffset: {x: 1.5, y: 0, z: 0}
   _openSound: {fileID: 0}
   _closeSound: {fileID: 0}
+  _carefulSound: {fileID: 0}
+  _slamSound: {fileID: 0}
   _lockedSound: {fileID: 0}
   _pitchVariance: 0.1
+  _carefulNoiseRadius: 2.5
+  _normalOpenNoiseRadius: 8
+  _normalCloseNoiseRadius: 11
+  _slamNoiseRadius: 18
 --- !u!4 &230730501
 Transform:
   m_ObjectHideFlags: 0
@@ -2767,7 +2823,7 @@ GameObject:
   - component: {fileID: 233794416}
   - component: {fileID: 233794415}
   m_Layer: 0
-  m_Name: NewKeypad_Logic
+  m_Name: OfficeKeypad_01_Logic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2831,12 +2887,14 @@ MonoBehaviour:
   _correctCode: 1234
   _maxCodeLength: 4
   _autoCheckWhenFull: 1
+  _randomizeCode: 0
   _display3D: {fileID: 1840282907}
   _statusLed: {fileID: 797643758}
   _beepSound: {fileID: 0}
   _successSound: {fileID: 0}
   _errorSound: {fileID: 0}
   _pitchVariance: 0.05
+  _idlePulseSpeed: 2.5
 --- !u!4 &233794414
 Transform:
   m_ObjectHideFlags: 0
@@ -3315,7 +3373,7 @@ GameObject:
   - component: {fileID: 377999547}
   - component: {fileID: 377999546}
   m_Layer: 0
-  m_Name: NewNarrativeTrigger
+  m_Name: OfficeNarrativeTrigger_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3487,7 +3545,7 @@ GameObject:
   - component: {fileID: 387640817}
   - component: {fileID: 387640816}
   m_Layer: 0
-  m_Name: NewPickableItem_Visuals
+  m_Name: OfficeClueItem_02_Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4307,7 +4365,7 @@ GameObject:
   - component: {fileID: 503540656}
   - component: {fileID: 503540655}
   m_Layer: 0
-  m_Name: NewPickableItem_Logic
+  m_Name: OfficeClueItem_01_Logic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4565,7 +4623,7 @@ GameObject:
   - component: {fileID: 529660161}
   - component: {fileID: 529660160}
   m_Layer: 0
-  m_Name: NewDrawer_Visuals
+  m_Name: OfficeDrawer_01_Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5972,7 +6030,7 @@ GameObject:
   - component: {fileID: 698584710}
   - component: {fileID: 698584709}
   m_Layer: 0
-  m_Name: NewItemReceiver_Logic
+  m_Name: OfficeItemReceiver_01_Logic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6431,7 +6489,7 @@ GameObject:
   - component: {fileID: 868822104}
   - component: {fileID: 868822103}
   m_Layer: 0
-  m_Name: NewDoor_Visuals
+  m_Name: OfficeDoor_03_Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6543,7 +6601,7 @@ GameObject:
   - component: {fileID: 915730986}
   - component: {fileID: 915730985}
   m_Layer: 0
-  m_Name: NewPickableItem_Logic
+  m_Name: OfficeClueItem_02_Logic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7085,7 +7143,7 @@ GameObject:
   - component: {fileID: 1068350514}
   - component: {fileID: 1068350513}
   m_Layer: 0
-  m_Name: NewItemReceiver_Visuals
+  m_Name: OfficeItemReceiver_01_Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7794,7 +7852,7 @@ GameObject:
   - component: {fileID: 1220652265}
   - component: {fileID: 1220652264}
   m_Layer: 0
-  m_Name: NewPickableItem_Visuals
+  m_Name: Moneda_Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8049,7 +8107,7 @@ GameObject:
   - component: {fileID: 1287709064}
   - component: {fileID: 1287709063}
   m_Layer: 0
-  m_Name: NewDoor_Visuals
+  m_Name: OfficeDoor_02_Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8692,7 +8750,7 @@ GameObject:
   - component: {fileID: 1409470402}
   - component: {fileID: 1409470401}
   m_Layer: 0
-  m_Name: NewCabinet_Visuals
+  m_Name: OfficeCabinet_01_Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9324,7 +9382,7 @@ GameObject:
   - component: {fileID: 1511344922}
   - component: {fileID: 1511344921}
   m_Layer: 0
-  m_Name: NewDoor_Visuals
+  m_Name: OfficeDoor_01_Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9911,7 +9969,7 @@ GameObject:
   - component: {fileID: 1643510978}
   - component: {fileID: 1643510977}
   m_Layer: 0
-  m_Name: NewKeypad_Visuals
+  m_Name: OfficeKeypad_01_Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10023,7 +10081,7 @@ GameObject:
   - component: {fileID: 1650983396}
   - component: {fileID: 1650983395}
   m_Layer: 0
-  m_Name: NewDoor_Logic
+  m_Name: OfficeDoor_03_Logic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10050,11 +10108,23 @@ MonoBehaviour:
   _requiredItemId: Green_key_01
   _lockedPrompt: Locked
   _openPrompt: Open
+  _closePrompt: Close
+  _peekPrompt: Open further
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
+  _enableAdvancedOperations: 1
+  _peekFraction: 0.18
+  _carefulDuration: 2.4
+  _slamDuration: 0.18
+  _navigationOpenThreshold: 0.72
+  _allowEnemyOperation: 1
+  _enemyCanBreakLock: 0
   _animator: {fileID: 0}
   _openTrigger: Open
   _closeTrigger: Close
+  _peekTrigger: Peek
+  _slamOpenTrigger: SlamOpen
+  _slamCloseTrigger: SlamClose
   _movementType: 0
   _openDuration: 0.8
   _customPivot: {fileID: 1937558090}
@@ -10063,8 +10133,14 @@ MonoBehaviour:
   _slideOffset: {x: 1.5, y: 0, z: 0}
   _openSound: {fileID: 0}
   _closeSound: {fileID: 0}
+  _carefulSound: {fileID: 0}
+  _slamSound: {fileID: 0}
   _lockedSound: {fileID: 0}
   _pitchVariance: 0.1
+  _carefulNoiseRadius: 2.5
+  _normalOpenNoiseRadius: 8
+  _normalCloseNoiseRadius: 11
+  _slamNoiseRadius: 18
 --- !u!4 &1650983394
 Transform:
   m_ObjectHideFlags: 0
@@ -10585,7 +10661,7 @@ GameObject:
   - component: {fileID: 1752420775}
   - component: {fileID: 1752420774}
   m_Layer: 0
-  m_Name: NewDoor_Logic
+  m_Name: OfficeDoor_01_Logic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10612,11 +10688,23 @@ MonoBehaviour:
   _requiredItemId: 
   _lockedPrompt: Locked
   _openPrompt: Open
+  _closePrompt: Close
+  _peekPrompt: Open further
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
+  _enableAdvancedOperations: 1
+  _peekFraction: 0.18
+  _carefulDuration: 2.4
+  _slamDuration: 0.18
+  _navigationOpenThreshold: 0.72
+  _allowEnemyOperation: 1
+  _enemyCanBreakLock: 0
   _animator: {fileID: 0}
   _openTrigger: Open
   _closeTrigger: Close
+  _peekTrigger: Peek
+  _slamOpenTrigger: SlamOpen
+  _slamCloseTrigger: SlamClose
   _movementType: 0
   _openDuration: 0.8
   _customPivot: {fileID: 1558045165}
@@ -10625,8 +10713,14 @@ MonoBehaviour:
   _slideOffset: {x: 1.5, y: 0, z: 0}
   _openSound: {fileID: 0}
   _closeSound: {fileID: 0}
+  _carefulSound: {fileID: 0}
+  _slamSound: {fileID: 0}
   _lockedSound: {fileID: 0}
   _pitchVariance: 0.1
+  _carefulNoiseRadius: 2.5
+  _normalOpenNoiseRadius: 8
+  _normalCloseNoiseRadius: 11
+  _slamNoiseRadius: 18
 --- !u!4 &1752420773
 Transform:
   m_ObjectHideFlags: 0
@@ -10747,7 +10841,7 @@ GameObject:
   - component: {fileID: 1763761460}
   - component: {fileID: 1763761459}
   m_Layer: 0
-  m_Name: NewCabinet_Logic
+  m_Name: OfficeCabinet_01_Logic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10774,11 +10868,23 @@ MonoBehaviour:
   _requiredItemId: 
   _lockedPrompt: Locked
   _openPrompt: Open
+  _closePrompt: Close
+  _peekPrompt: Open further
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
+  _enableAdvancedOperations: 1
+  _peekFraction: 0.18
+  _carefulDuration: 2.4
+  _slamDuration: 0.18
+  _navigationOpenThreshold: 0.72
+  _allowEnemyOperation: 1
+  _enemyCanBreakLock: 0
   _animator: {fileID: 0}
   _openTrigger: Open
   _closeTrigger: Close
+  _peekTrigger: Peek
+  _slamOpenTrigger: SlamOpen
+  _slamCloseTrigger: SlamClose
   _movementType: 0
   _openDuration: 0.8
   _customPivot: {fileID: 148464757}
@@ -10787,8 +10893,14 @@ MonoBehaviour:
   _slideOffset: {x: 1.5, y: 0, z: 0}
   _openSound: {fileID: 0}
   _closeSound: {fileID: 0}
+  _carefulSound: {fileID: 0}
+  _slamSound: {fileID: 0}
   _lockedSound: {fileID: 0}
   _pitchVariance: 0.1
+  _carefulNoiseRadius: 2.5
+  _normalOpenNoiseRadius: 8
+  _normalCloseNoiseRadius: 11
+  _slamNoiseRadius: 18
 --- !u!4 &1763761458
 Transform:
   m_ObjectHideFlags: 0
@@ -11021,7 +11133,7 @@ GameObject:
   - component: {fileID: 1788391187}
   - component: {fileID: 1788391186}
   m_Layer: 0
-  m_Name: NewNote_Logic
+  m_Name: OfficeNote_01_Logic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12883,7 +12995,7 @@ GameObject:
   - component: {fileID: 1998609897}
   - component: {fileID: 1998609896}
   m_Layer: 0
-  m_Name: NewNote_Visuals
+  m_Name: OfficeNote_01_Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13990,7 +14102,7 @@ GameObject:
   - component: {fileID: 2080313053}
   - component: {fileID: 2080313052}
   m_Layer: 0
-  m_Name: NewPickableItem_Visuals
+  m_Name: Clau_Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

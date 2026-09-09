@@ -50,7 +50,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
         [SerializeField] private AudioClip _stepSound;
 
         [Header("Events")]
-        public UnityEvent<int> OnPositionChanged;
+        public UnityEvent<int> OnPositionChanged = new UnityEvent<int>();
 
         public int CurrentIndex { get; private set; }
         public int PositionCount => _positions.Count;
@@ -70,11 +70,21 @@ namespace EscapeRoomRevolt.Systems.Interaction
             ApplyStateInstantly();
         }
 
-        /// <summary>Advances to the next position (wrapping), animates into place and fires OnPositionChanged.</summary>
-        public void Advance()
+        /// <summary>Advances to the next position (wrapping).</summary>
+        public void Advance() => Step(1);
+
+        /// <summary>Moves to the previous position (wrapping).</summary>
+        public void Previous() => Step(-1);
+
+        /// <summary>
+        /// Moves in either direction through the authored positions. Positive values move forward,
+        /// negative values move backward and both directions wrap around the ends.
+        /// </summary>
+        public void Step(int delta)
         {
-            if (_positions.Count == 0) return;
-            CurrentIndex = (CurrentIndex + 1) % _positions.Count;
+            if (_positions.Count == 0 || delta == 0) return;
+            int wrappedDelta = delta % _positions.Count;
+            CurrentIndex = (CurrentIndex + wrappedDelta + _positions.Count) % _positions.Count;
 
             if (_audioSource != null && _stepSound != null) _audioSource.PlayOneShot(_stepSound);
 

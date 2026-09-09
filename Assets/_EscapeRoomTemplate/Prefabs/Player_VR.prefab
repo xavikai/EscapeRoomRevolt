@@ -70,6 +70,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1767192439, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_ClearFlags
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1767192439, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_BackGroundColor.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1717954561962503725, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_Name
       value: Player_VR
@@ -118,6 +126,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5895826684305351068, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9173983156334026967, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -146,6 +162,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1717954561962503725, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6674800963685898959}
+    - targetCorrespondingSourceObject: {fileID: 1717954561962503725, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3952786979545008061}
   m_SourcePrefab: {fileID: 100100000, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
 --- !u!4 &2957704814470668706 stripped
 Transform:
@@ -189,7 +208,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4529642976399390973}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b0d946935304fc3b86d068d483d728f, type: 3}
   m_Name: 
@@ -198,6 +217,7 @@ MonoBehaviour:
   _distanceFromHead: 1.25
   _worldScale: 0.001
   _localOffset: {x: 0, y: -0.05, z: 0}
+  _panelMaterialTemplate: {fileID: 2100000, guid: 41bb63aa2d5485b4ba369109f713aa70, type: 2}
 --- !u!114 &7878149914953070063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,6 +260,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed17944474039144b975fa3bad4c438, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Player.PC.PlayerInputHandler
+--- !u!114 &3952786979545008061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4529642976399390973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b63d672f8209f74fad24807739c073f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: EscapeRoomRevolt.Player::EscapeRoomRevolt.Player.VR.VRHardwareInteractor
+  _maxDistance: 2.25
+  _interactionMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  _rayWidth: 0.006
+  _idleColor: {r: 0.25, g: 0.65, b: 1, a: 0.75}
+  _hoverColor: {r: 1, g: 0.75, b: 0.1, a: 1}
+  _throwVelocityScale: 1.65
+  _throwAngularVelocityScale: 1
+  _throwSmoothingTime: 0.09
+  _maximumThrowSpeed: 12
 --- !u!1001 &4224041417430017138
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -251,6 +294,10 @@ PrefabInstance:
     - target: {fileID: 8429981633443581377, guid: 6c8af5c8012f01440af6cb2bc3eb987c, type: 3}
       propertyPath: m_Name
       value: TunnelingVignette
+      objectReference: {fileID: 0}
+    - target: {fileID: 8429981633443581377, guid: 6c8af5c8012f01440af6cb2bc3eb987c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8429981633443581382, guid: 6c8af5c8012f01440af6cb2bc3eb987c, type: 3}
       propertyPath: m_LocalPosition.x

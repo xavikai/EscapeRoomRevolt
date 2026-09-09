@@ -23,6 +23,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_EscapeRoomTemplate/Scenes/VRTemplate.unity
     guid: 479d96234dbd63a40a9ba7f2c01d48ed
+  - enabled: 1
+    path: Assets/_EscapeRoomTemplate/Scenes/ShowcaseMuseumVR.unity
+    guid: 5c5b2b0db4129f642839726fae2622aa
+  - enabled: 1
+    path: Assets/_EscapeRoomTemplate/Scenes/LockedOfficeVR.unity
+    guid: 5b40f54eaf2319c499e0f1e77476dd3e
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 90ba7b36d56c7f54f94b5fa4a6cf6af2, type: 2}
     com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 73febfc3909aa324da481cd38fa18b82, type: 2}
