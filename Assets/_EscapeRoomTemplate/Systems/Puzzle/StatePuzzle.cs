@@ -20,13 +20,13 @@ namespace EscapeRoomRevolt.Systems.Puzzle
     {
         [Header("State Settings")]
         [Tooltip("The required position index for each stepped object to solve the puzzle.")]
-        [SerializeField] private List<StateCondition> _conditions;
+        [SerializeField] private List<StateCondition> _conditions = new List<StateCondition>();
 
         private void OnEnable()
         {
             foreach (var condition in _conditions)
             {
-                if (condition.Positioner != null)
+                if (condition != null && condition.Positioner != null)
                 {
                     condition.Positioner.OnPositionChanged.AddListener(OnPositionChanged);
                 }
@@ -37,7 +37,7 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         {
             foreach (var condition in _conditions)
             {
-                if (condition.Positioner != null)
+                if (condition != null && condition.Positioner != null)
                 {
                     condition.Positioner.OnPositionChanged.RemoveListener(OnPositionChanged);
                 }
@@ -54,9 +54,10 @@ namespace EscapeRoomRevolt.Systems.Puzzle
 
         private void CheckStates()
         {
+            if (_conditions.Count == 0) return;
             foreach (var condition in _conditions)
             {
-                if (condition.Positioner == null) continue;
+                if (condition == null || condition.Positioner == null) return;
 
                 if (condition.Positioner.CurrentIndex != condition.RequiredIndex)
                 {

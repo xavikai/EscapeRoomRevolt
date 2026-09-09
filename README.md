@@ -1,5 +1,7 @@
 # Escape Room Revolt
 
+**Escape Room release preparation:** start with the [buyer quick start](Assets/_EscapeRoomTemplate/Documentation/ESCAPE_ROOM_QUICKSTART.md), then read the [September 2026 audit](Assets/_EscapeRoomTemplate/AUDITORIA_ESCAPE_ROOM_2026-09-09.md) and [release gates](Assets/_EscapeRoomTemplate/COMMERCIAL_READINESS.md). Survival Horror is outside this edition's commercial verification. VR hardware acceptance remains pending.
+
 A Unity 6 (URP) framework for building first-person **Escape Room** and **Survival Horror** games from the same codebase, for PC and VR (XR Interaction Toolkit).
 
 ## Vision
@@ -11,7 +13,7 @@ Not a single closed room — a reusable framework where rooms, puzzles, enemies 
 - Unity `6000.4.9f1`
 - Universal Render Pipeline `17.4.0`
 - Input System `1.20.0`
-- XR Interaction Toolkit `3.3.0` (only needed for VR; PC works without it)
+- XR Interaction Toolkit `3.3.0`, XR Management `4.5.3`, OpenXR `1.16.1` (keep these installed for PC too: the shared Player assembly references XR types)
 
 ## Architecture principles
 
@@ -28,7 +30,7 @@ Not a single closed room — a reusable framework where rooms, puzzles, enemies 
 - **Independent fail-state mechanics** — a `MovingHazard` that travels between arbitrary 3D markers (wall, ceiling, floor, platform or water) and a separate optional `GameOverTimer` presented in the shared gameplay HUD.
 - **Save/Load** — three manual slots, quick save/load, thumbnails, atomic writes with backup recovery, versioned per-object state.
 - **Survival Horror** — modular flashlight and night-vision camcorder, sanity with visual/audio/haptic feedback, patrol/perception/chase AI with two enemy archetypes, hideable lockers/beds/containers with AI inspection, checkpoints, typed damage, PC/VR-shared traversal (vault/climb/ladder/squeeze), evasion (lean/look-back/slide), a tension director that rate-limits horror events, and data-driven difficulty presets.
-- **UI Toolkit menus** — main menu, pause, settings, save/load, credits, results, all Canvas-free. Re-skinnable from a single `MenuThemeSettings` asset (colors, fonts, logo) without touching code or USS, plus a built-in high-contrast accessibility mode.
+- **UI Toolkit menus** — main menu, pause, settings, save/load, credits, results, all Canvas-free. Re-skinnable from a single `MenuThemeSettings` asset (colors, fonts, logo), with image-based button states available through `EscapeRoomMenu.uss`, plus a built-in high-contrast accessibility mode.
 - **VR** — a generated `Player_VR` prefab (XRI Starter Assets), per-hand equipment and haptics, world-space UI Toolkit via `VRUIToolkitPresenter`, and an XRI tunneling vignette wired to continuous move/turn.
 
 ## Demo scenes

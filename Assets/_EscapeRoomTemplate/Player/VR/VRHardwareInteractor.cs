@@ -1,4 +1,5 @@
 using EscapeRoomRevolt.Systems.Interaction;
+using EscapeRoomRevolt.Core;
 using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
@@ -27,6 +28,10 @@ namespace EscapeRoomRevolt.Player.VR
         private VRPlayerPlatformAdapter _adapter;
         private HandState _left;
         private HandState _right;
+
+        /// <summary>Used by sockets to wait for release on the hardware interaction path.</summary>
+        public bool IsHolding(MonoBehaviour item) => item != null &&
+            ((_left != null && _left.held == item) || (_right != null && _right.held == item));
 
         private sealed class HandState
         {
@@ -112,6 +117,25 @@ namespace EscapeRoomRevolt.Player.VR
         private void Process(HandState state)
         {
             if (state == null || state.origin == null || state.line == null) return;
+            InputDevice device = InputDevices.GetDeviceAtXRNode(state.node);
+            bool grip = device.isValid && device.TryGetFeatureValue(CommonUsages.gripButton, out bool gripValue) && gripValue;
+            bool trigger = device.isValid && device.TryGetFeatureValue(CommonUsages.triggerButton, out bool triggerValue) && triggerValue;
+            // UI owns the trigger while a modal is open. Remember its state so closing the
+            // panel with a held trigger cannot also activate an object behind it.
+            if (GameplayBlockState.IsBlocking || Time.timeScale <= 0f || !device.isValid)
+            {
+                if (state.focused.IsAlive()) state.focused.OnFocusExit();
+                state.focused = null;
+                state.line.enabled = false;
+                state.hasPoseSample = false;
+                state.smoothedLinearVelocity = Vector3.zero;
+                state.smoothedAngularVelocity = Vector3.zero;
+                if (state.held != null && !grip && !trigger) EndGrab(state);
+                state.wasTriggerPressed = trigger;
+                state.wasGrabPressed = grip || trigger;
+                return;
+            }
+            state.line.enabled = true;
             SampleHandVelocity(state);
 
             Ray ray = new Ray(state.origin.position, state.origin.forward);
@@ -134,9 +158,6 @@ namespace EscapeRoomRevolt.Player.VR
             state.line.SetPosition(1, ray.GetPoint(distance));
             if (state.material != null) state.material.color = target.IsAlive() ? _hoverColor : _idleColor;
 
-            InputDevice device = InputDevices.GetDeviceAtXRNode(state.node);
-            bool grip = device.isValid && device.TryGetFeatureValue(CommonUsages.gripButton, out bool gripValue) && gripValue;
-            bool trigger = device.isValid && device.TryGetFeatureValue(CommonUsages.triggerButton, out bool triggerValue) && triggerValue;
             MonoBehaviour grabbable = target as MonoBehaviour;
             bool targetIsGrabbable = grabbable != null && grabbable.GetType().Name == "PhysicsGrabbable";
             bool grabPressed = grip || (trigger && (targetIsGrabbable || state.held != null));
@@ -161,6 +182,9 @@ namespace EscapeRoomRevolt.Player.VR
 
         private void BeginGrab(HandState state, MonoBehaviour grabbable)
         {
+            if (state == null || state.held != null || IsHolding(grabbable)) return;
+            if (GameplayBlockState.IsBlocking || Time.timeScale <= 0f ||
+                grabbable is not IInteractable interactable || !interactable.CanInteract) return;
             Rigidbody body = grabbable != null ? grabbable.GetComponent<Rigidbody>() : null;
             if (body == null || state.origin == null) return;
 
@@ -169,8 +193,11 @@ namespace EscapeRoomRevolt.Player.VR
             state.originalParent = grabbable.transform.parent;
             state.originalKinematic = body.isKinematic;
             state.originalGravity = body.useGravity;
-            body.linearVelocity = Vector3.zero;
-            body.angularVelocity = Vector3.zero;
+            if (!body.isKinematic)
+            {
+                body.linearVelocity = Vector3.zero;
+                body.angularVelocity = Vector3.zero;
+            }
             body.isKinematic = true;
             body.useGravity = false;
             grabbable.transform.SetParent(state.origin, true);

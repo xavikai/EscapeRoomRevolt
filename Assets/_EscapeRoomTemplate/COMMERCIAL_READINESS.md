@@ -1,28 +1,38 @@
-# Escape Room / Survival Horror Framework — Commercial Readiness
+# Escape Room — preparación comercial
 
-For what's built and what's pending, see the living document: **[ROADMAP.md](ROADMAP.md)**. The latest Escape Room verification is **[AUDITORIA_ESCAPE_ROOM_2026-08-09.md](AUDITORIA_ESCAPE_ROOM_2026-08-09.md)**. This file stays a short, stable pre-publish checklist and authoring workflow — it doesn't track day-to-day status.
+Revisión: **9 de septiembre de 2026**. Alcance: Escape Room PC y VR con mandos. Survival Horror queda fuera de esta entrega. Véanse [la auditoría y sus límites](AUDITORIA_ESCAPE_ROOM_2026-09-09.md) y [la guía para el comprador](Documentation/ESCAPE_ROOM_QUICKSTART.md).
 
-## Flujo recomendado para crear un nivel
+## Verificado en el proyecto de desarrollo
 
-1. Instanciar `GameManager.prefab` y `Player_PC.prefab` (o `Player_VR.prefab` tras `Setup > Create or Update VR Player Prefab`).
-2. Crear `InventoryItemData`, `PuzzleDefinition`, `HintData` y perfiles de Survival necesarios desde `Escape Room Framework > Create`.
-3. Mantener la lógica en el objeto raíz y sustituir únicamente el hijo visual o `World Prefab` (vía `ReplaceableModelSlot`).
-4. Asignar identificadores persistentes únicos (`SaveId`, `ItemId`, `PersistentId` se generan solos al crear desde el menú del framework).
-5. Ejecutar **Escape Room Framework > Validation > Run Framework Smoke Tests** y **Validate Current Scene**.
-6. Probar guardar, cerrar el juego y cargar cada escena incluida en Build Settings.
+- [x] Compilación en el editor Unity 6000.4.9f1 tras las correcciones.
+- [x] 20/20 pruebas Edit Mode y 23/23 Play Mode; incluyen regresiones de guardado, VR, secuencias, estados y visuales de socket.
+- [x] Siete escenas inspeccionadas sin scripts ausentes ni referencias serializadas rotas detectadas; IDs de guardado sin duplicados dentro de cada escena revisada.
+- [x] Los museos PC y VR contienen los mismos 12 controladores de puzle, todos con definición y pistas.
+- [x] Framework Smoke Test: PASS sin avisos. Validador del museo PC: 2 UIDocuments, 12 puzles, 112 estados y 16 ítems.
+- [x] Arranque en Play de ShowcaseMuseum y ShowcaseMuseumVR con GameContext inicializado y adaptador de plataforma correcto.
+- [x] Guía de uso por mecánica, configuración VR, límites de guardado y matriz de aceptación disponibles desde la documentación y el menú del editor.
+- [x] El constructor de release Windows ya no incluye la demo Survival Horror.
+- [x] Build Windows: 0 errores y 0 avisos; arranque adicional del ejecutable sin gráficos y sin excepciones registradas.
+- [x] Build Android: 0 errores. Conserva 426 avisos de shaders de `com.unity.render-pipelines.core`; su validación visual en visor sigue pendiente.
 
-## Checklist de publicación
+Estas comprobaciones no equivalen a una partida completa ni a una certificación de hardware. En el editor PC se observaron mensajes del controlador de audio XR con retorno al dispositivo predeterminado; deben revisarse en el ejecutable final.
 
-- [x] La consola está limpia en Edit Mode y Play Mode tras actualizar las llamadas de Editor obsoletas de Unity 6.4. La falta de un runtime OpenXR activo puede generar mensajes externos al probar VR en este equipo.
-- [x] No existen Canvas heredados ni referencias rotas — UI Toolkit en todas las pantallas.
-- [x] Todas las escenas jugables contienen cámara, iluminación, GameManager y jugador.
-- [x] Todos los puzles de `ShowcaseMuseum`, incluidos los grupos encadenados visibles de la sala 11 y los rodillos con botones ▲/▼ de la sala 13, tienen `PuzzleDefinition` y `HintData` apropiados. `ShowcaseMuseumVR` mantiene la misma lógica de ambas salas.
-- [x] Los `SaveId`, `ItemId` y `PersistentId` son únicos.
-- [x] Los modelos pueden sustituirse sin modificar scripts ni colliders lógicos (`ReplaceableModelSlot`).
-- [x] La escena `SurvivalHorrorDemo` es una vertical slice completa y verificada: objetivos encadenados, enemigo, escondites, evidencias, checkpoints y final.
-- [ ] **Cobertura parcial** — hay 12/12 tests EditMode y 14/14 PlayMode reales pasando. El objetivo PlayMode ya está superado con puzles, autoría dinámica, peligros móviles, temporizador HUD, menú y Save/Load; falta ampliar EditMode hasta 20 (`P0-001`).
-- [ ] **Sin `ThirdPartyNotices.md`** — falta inventariar el origen/licencia de los audios de `Assets/_EscapeRoomTemplate/Audio` y confirmar que son redistribuibles (`P0-005`).
-- [ ] **Localización parcial** — menú principal/pausa y selector ES/EN funcionan; HUD, inventario, puzles y prompts todavía contienen literales (`P0-007`).
-- [ ] VR es funcionalmente completo pero no ha pasado QA en hardware real (`VR-007`/`SH-016`).
+## Pendiente antes de publicar como versión comercial estable
 
-Última revisión: 13 de agosto de 2026. Compilación limpia, prueba funcional de grupos encadenados en modo ordenado y libre, y paridad estructural comprobada entre `ShowcaseMuseum` y `ShowcaseMuseumVR`. La release se considera beta mientras siga pendiente la matriz completa de QA en visor físico.
+- [ ] Completar la matriz de QA en cada visor/mando anunciado, incluyendo suspensión, pérdida de tracking, UI, lanzamiento, todas las salas y rendimiento sostenido.
+- [ ] Ejecutar una partida completa en los binarios finales PC y Quest y verificar guardado tras cerrar/reabrir el ejecutable.
+- [ ] Importar una copia limpia de la distribución, sin Library ni herramientas privadas, y construir desde ella.
+- [ ] Resolver la procedencia de los cinco audios pendientes y revisar fuentes, muestras y avisos de paquetes en [ThirdPartyNotices.md](ThirdPartyNotices.md).
+- [ ] Revisar todos los textos del producto en los idiomas anunciados; el selector ES/EN no cubre automáticamente contenido de escenas ni contenido del comprador.
+- [ ] Definir el arte y la presentación comercial de la demo: actualmente es una muestra funcional con geometría provisional.
+
+## Flujo de autoría y empaquetado
+
+1. Crear una escena propia con gestor, jugador de una sola plataforma, colliders e iluminación.
+2. Configurar datos, IDs únicos, pistas y eventos; al duplicar, comprobar los IDs copiados.
+3. Añadir rutas de escena y catálogos necesarios. Mantener XR instalado incluso en PC mientras Player dependa de sus tipos.
+4. Ejecutar los validadores y las pruebas, y completar el recorrido con guardado/carga.
+5. Preparar una copia de distribución excluyendo caches, logs, builds y MCP. No eliminar scripts Survival aisladamente: todavía hay dependencias desde sistemas compartidos.
+6. Registrar versión, dispositivo, resultado y limitaciones de cada build. El informe de auditoría distingue los resultados del editor de los binarios y del hardware.
+
+**Estado: beta en preparación comercial.** La matriz en visor físico y las comprobaciones de distribución siguen siendo requisitos abiertos.

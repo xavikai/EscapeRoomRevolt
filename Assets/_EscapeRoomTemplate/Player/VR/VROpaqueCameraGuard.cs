@@ -10,7 +10,7 @@ namespace EscapeRoomRevolt.Player.VR
     /// </summary>
     public sealed class VROpaqueCameraGuard : MonoBehaviour
     {
-        private readonly HashSet<int> _reportedDisabledCameras = new HashSet<int>();
+        private readonly HashSet<Camera> _reportedDisabledCameras = new HashSet<Camera>();
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void Install()
@@ -54,7 +54,7 @@ namespace EscapeRoomRevolt.Player.VR
                     camera.enabled = false;
                     AudioListener listener = camera.GetComponent<AudioListener>();
                     if (listener != null) listener.enabled = false;
-                    if (_reportedDisabledCameras.Add(camera.GetInstanceID()))
+                    if (_reportedDisabledCameras.Add(camera))
                         Debug.LogWarning($"[VR Camera] Disabled non-XR display camera '{camera.name}'.");
                     continue;
                 }

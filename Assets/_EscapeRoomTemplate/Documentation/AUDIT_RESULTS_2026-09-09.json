@@ -1,0 +1,51 @@
+{
+  "date": "2026-09-09",
+  "unity": "6000.4.9f1",
+  "editMode": {
+    "total": 20,
+    "passed": 20,
+    "failed": 0,
+    "skipped": 0,
+    "durationSeconds": 0.8910014,
+    "resultState": "Passed"
+  },
+  "playMode": {
+    "total": 23,
+    "passed": 23,
+    "failed": 0,
+    "skipped": 0,
+    "durationSeconds": 0.568158,
+    "resultState": "Passed"
+  },
+  "sceneInspection": "ShowcaseMuseum: puzzles=12, saveIds=112, cameras=11, UIDocuments=2, missingScripts=0, missingRefs=0, missingDefinitions=0, missingHints=0\r\n  CodePanelPuzzle: 1\r\n  SequencePuzzle: 3\r\n  StatePuzzle: 3\r\n  ThrowPuzzle: 1\r\n  PlacementPuzzle: 1\r\n  SlidingPuzzle: 1\r\n  PipePuzzle: 1\r\n  MultiStagePuzzle: 1\r\nShowcaseMuseumVR: puzzles=12, saveIds=110, cameras=11, UIDocuments=2, missingScripts=0, missingRefs=0, missingDefinitions=0, missingHints=0\r\n  CodePanelPuzzle: 1\r\n  SequencePuzzle: 3\r\n  StatePuzzle: 3\r\n  ThrowPuzzle: 1\r\n  PlacementPuzzle: 1\r\n  SlidingPuzzle: 1\r\n  PipePuzzle: 1\r\n  MultiStagePuzzle: 1\r\nLockedOffice: puzzles=2, saveIds=32, cameras=5, UIDocuments=2, missingScripts=0, missingRefs=0, missingDefinitions=0, missingHints=0\r\n  CodePanelPuzzle: 2\r\nLockedOfficeVR: puzzles=2, saveIds=31, cameras=5, UIDocuments=2, missingScripts=0, missingRefs=0, missingDefinitions=0, missingHints=0\r\n  CodePanelPuzzle: 2\r\nVRTemplate: puzzles=0, saveIds=4, cameras=1, UIDocuments=2, missingScripts=0, missingRefs=0, missingDefinitions=0, missingHints=0\r\nMainMenu: puzzles=0, saveIds=0, cameras=1, UIDocuments=1, missingScripts=0, missingRefs=0, missingDefinitions=0, missingHints=0\r\nIntro: puzzles=0, saveIds=0, cameras=1, UIDocuments=0, missingScripts=0, missingRefs=0, missingDefinitions=0, missingHints=0\r\n",
+  "validators": "Log: [Framework Smoke Test] PASS (0 warning(s)).\nLog: [Commercial Validator] OK — 2 UIDocuments, 12 puzles, 112 estados persistentes y 16 ítems verificados.",
+  "windowsBuild": {
+    "job_id": "build-913e3fc001",
+    "result": "succeeded",
+    "platform": "StandaloneWindows64",
+    "output_path": "Builds/Audit-2026-09-09/Windows/EscapeRoomRevolt.exe",
+    "started_at": "2026-09-09T12:01:50.7881773Z",
+    "duration_seconds": 76.9105411,
+    "completed_at": "2026-09-09T12:03:07.6987184Z",
+    "total_size_mb": 112.18,
+    "errors": 0,
+    "warnings": 0
+  },
+  "androidBuild": {
+    "job_id": "build-228259c30c",
+    "result": "succeeded",
+    "platform": "Android",
+    "output_path": "Builds/Audit-2026-09-09/EscapeRoom-VR.apk",
+    "started_at": "2026-09-09T12:03:44.352936Z",
+    "duration_seconds": 128.7615995,
+    "completed_at": "2026-09-09T12:05:53.1145355Z",
+    "total_size_mb": 868.16,
+    "errors": 0,
+    "warnings": 426
+  },
+  "apkBytes": 55310899,
+  "apkSha256": "BC7D9C2196EF09981679A3B46C1C2BE2CB5B9DAFACA73A038BFC4211D1B25DA0",
+  "androidWarningsSource": "All 426 warnings originate in com.unity.render-pipelines.core shader compilation",
+  "hardwareVrTested": false,
+  "cleanDistributionTested": false
+}

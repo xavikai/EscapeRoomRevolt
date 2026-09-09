@@ -21,6 +21,7 @@ namespace EscapeRoomRevolt.EditorTools
         public static void ValidateLoadedScene()
         {
             var issues = new List<string>();
+            CheckSceneReferences(issues);
 
             GenreFeatureSettings genreSettings = AssetDatabase.LoadAssetAtPath<GenreFeatureSettings>(
                 "Assets/_EscapeRoomTemplate/Resources/GenreFeatureSettings.asset");
@@ -66,6 +67,7 @@ namespace EscapeRoomRevolt.EditorTools
             }
 
             var itemIds = new HashSet<string>();
+            var cataloguedItems = new HashSet<InventoryItemData>();
             string[] catalogGuids = AssetDatabase.FindAssets("t:ItemCatalog");
             if (catalogGuids.Length == 0) issues.Add("No existe ningún ItemCatalog explícito.");
             foreach (string catalogGuid in catalogGuids)
@@ -75,6 +77,7 @@ namespace EscapeRoomRevolt.EditorTools
                 foreach (InventoryItemData item in catalog.Items)
                 {
                     if (item == null) { issues.Add($"Referencia vacía en {catalogPath}."); continue; }
+                    if (!cataloguedItems.Add(item)) continue; // One item asset may belong to several catalogs.
                     if (string.IsNullOrWhiteSpace(item.ItemId)) issues.Add($"Item sin ID: {AssetDatabase.GetAssetPath(item)}");
                     else if (!itemIds.Add(item.ItemId)) issues.Add($"ItemId duplicado '{item.ItemId}' dentro de los catálogos.");
                 }
@@ -110,6 +113,26 @@ namespace EscapeRoomRevolt.EditorTools
             }
 
             Debug.LogWarning($"[Commercial Validator] {issues.Count} incidencia(s):\n- {string.Join("\n- ", issues)}");
+        }
+
+        private static void CheckSceneReferences(List<string> issues)
+        {
+            foreach (GameObject root in SceneManager.GetActiveScene().GetRootGameObjects())
+            foreach (Transform node in root.GetComponentsInChildren<Transform>(true))
+            {
+                if (GameObjectUtility.GetMonoBehavioursWithMissingScriptCount(node.gameObject) > 0)
+                    issues.Add($"Script ausente en '{node.name}'.");
+                foreach (MonoBehaviour component in node.GetComponents<MonoBehaviour>())
+                {
+                    if (component == null) continue;
+                    var serialized = new SerializedObject(component);
+                    SerializedProperty property = serialized.GetIterator();
+                    while (property.NextVisible(true))
+                        if (property.propertyType == SerializedPropertyType.ObjectReference &&
+                            property.objectReferenceValue == null && property.objectReferenceInstanceIDValue != 0)
+                            issues.Add($"Referencia rota en '{node.name}': {property.propertyPath}.");
+                }
+            }
         }
 
         private static void CollectBatteryId(FlashlightController flashlight, HashSet<string> batteryIds, List<string> issues)

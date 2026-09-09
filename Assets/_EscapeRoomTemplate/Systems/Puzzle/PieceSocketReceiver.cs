@@ -121,7 +121,7 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         private static GrabbablePiece FindPiece(string pieceId)
         {
             if (string.IsNullOrEmpty(pieceId)) return null;
-            foreach (GrabbablePiece candidate in FindObjectsByType<GrabbablePiece>(FindObjectsSortMode.None))
+            foreach (GrabbablePiece candidate in FindObjectsByType<GrabbablePiece>())
                 if (candidate.PieceId == pieceId) return candidate;
             return null;
         }
@@ -199,6 +199,8 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         {
             if (grabbable == null) return false;
             if (PhysicsGrabber.Instance != null && PhysicsGrabber.Instance.CurrentHeldObject == grabbable) return true;
+            VRHardwareInteractor hardware = grabbable.GetComponentInParent<VRHardwareInteractor>();
+            if (hardware != null && hardware.IsHolding(grabbable)) return true;
             VRInteractionBridge bridge = grabbable.GetComponent<VRInteractionBridge>();
             return bridge != null && bridge.IsSelected;
         }

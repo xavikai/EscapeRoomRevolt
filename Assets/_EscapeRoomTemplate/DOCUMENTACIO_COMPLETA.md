@@ -1,5 +1,7 @@
 # Escape Room / Survival Horror Framework
 
+> Edició comercial en preparació: Escape Room PC/VR. Comença per la [guia pràctica de mecàniques](Documentation/ESCAPE_ROOM_QUICKSTART.md) i consulta [l'auditoria del 09/09/2026](AUDITORIA_ESCAPE_ROOM_2026-09-09.md). Aquest document conserva també la referència de Survival Horror; no implica que aquest mòdul estigui validat per a aquesta edició. La certificació funcional en visor físic continua pendent.
+
 ## Documentació completa de la plantilla
 
 Versió documentada: Unity 6.4 (`6000.4.9f1`)  
@@ -138,6 +140,8 @@ Per crear un Escape Room pur:
 1. Selecciona `Escape Room Framework > Configuration > Use Escape Room Profile`.
 2. Inicia Play de nou. El HUD d'`ESTABILIDAD`, la bateria de la llanterna i els controls de llanterna no apareixeran.
 3. Pots conservar els components de Survival Horror als prefabs i escenes: s'autodesactiven, de manera que no cal duplicar contingut.
+
+Les escenes de demostració `ShowcaseMuseum` i `ShowcaseMuseumVR` són una excepció intencionada: contenen una `SceneFeatureOverride` que activa només `Flashlight` perquè la sala 3 demostra la combinació de llanterna buida i bateries. Aquesta excepció no canvia el perfil global ni activa cordura, enemics o altres mecàniques de Survival Horror. Les escenes noves no tenen aquesta excepció i continuen respectant el perfil Escape Room.
 
 Per crear un Survival Horror, selecciona `Use Survival Horror Profile`. S'activen conjuntament llanterna, cordura i esdeveniments de terror.
 
@@ -1445,8 +1449,10 @@ Hi ha **tres nivells**, de menys a més invasiu. Fes servir sempre el més baix 
 Un `ScriptableObject` que reskineja el menú des de l'Inspector. És la via recomanada per canviar la marca del joc.
 
 1. Botó dret al Project: `Create > Escape Room Framework > Menu Theme Settings`.
-2. Selecciona el `GameObject` que té `UIToolkitMenuController` (a l'escena `MainMenu`).
-3. Arrossega l'asset al camp **`_theme`**.
+2. Selecciona el `GameObject` que té `UIToolkitMenuController` i arrossega l'asset al camp **`_theme`**.
+   - A `MainMenu.unity`, l'objecte és `MainMenuUI`.
+   - A les escenes jugables, el menú és `MenuUI`, dins del `GameManager` (o de la seva instància de prefab).
+3. Si el `GameManager` ja està instanciat en diverses escenes i alguna instància té un override, assigna el mateix asset també a aquella instància. Això garanteix que el menú principal, pausa, ajustos, Save/Load, crèdits i resultats comparteixin el tema.
 
 Camps disponibles:
 
@@ -1485,6 +1491,52 @@ Edita `UI/Toolkit/EscapeRoomMenu.uss` (menús) o `UI/Toolkit/GameplayHUD.uss` (H
 ```
 
 Compte amb l'ordre de prioritat: si tens un `MenuThemeSettings` assignat, els seus colors s'apliquen **per estil inline** i, per tant, **sobreescriuen l'USS** dels camps que cobreix. Si canvies un color a l'USS i no veus l'efecte, mira si el tema ja el controla.
+
+#### Botons dissenyats a partir d'imatges
+
+La versió actual de `MenuThemeSettings` exposa colors, fonts i logo, però no camps d'imatge per als estats dels botons. Per utilitzar un disseny gràfic propi, aplica les imatges des de `EscapeRoomMenu.uss`.
+
+Prepara, com a mínim, aquestes variants dins d'una carpeta del projecte, per exemple `Assets/UI/Menu/`:
+
+- `ButtonNormal.png`: estat normal;
+- `ButtonHover.png`: estat quan el cursor hi passa per sobre;
+- `ButtonPressed.png`: estat mentre es prem;
+- opcionalment, `ButtonDisabled.png`: estat desactivat.
+
+Recomanacions per a les imatges:
+
+- fes-les PNG amb transparència si el botó no ha de ser rectangular complet;
+- mantén la mateixa mida i proporció en totes les variants;
+- no hi incloguis el text del botó: el text el genera el controlador i el catàleg de localització;
+- importa-les amb `Texture Type = Sprite (2D and UI)` si vols editar-les còmodament des de la interfície d'Unity;
+- si tenen vores decoratives que s'han de conservar en mides diferents, utilitza una imatge preparada per a 9-slice i configura el mode de fons des de UI Builder.
+
+Hi ha dues maneres d'assignar-les:
+
+1. Obre `UI/Toolkit/EscapeRoomMenu.uss` amb UI Builder.
+2. Selecciona el selector `.menu-button`.
+3. A les propietats de fons, assigna `ButtonNormal` a **Background > Image**.
+4. Crea o selecciona el selector `.menu-button:hover` i assigna `ButtonHover`.
+5. Crea o selecciona `.menu-button:active` i assigna `ButtonPressed`.
+6. Si cal, fes el mateix amb `.menu-button:disabled`.
+
+Si edites l'USS com a text, conserva les referències d'asset que Unity escriu en desar el full d'estils. Com a base, el selector pot tenir aquest aspecte:
+
+```css
+.menu-button {
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    -unity-background-scale-mode: scale-and-crop;
+}
+
+.menu-button:hover {
+    background-color: rgba(0, 0, 0, 0);
+}
+```
+
+L'assignació de les imatges és preferible fer-la amb UI Builder, perquè Unity escriu automàticament la referència correcta al fitxer d'asset. El color de fons del `MenuThemeSettings` queda darrere de la imatge; si la imatge té transparència i es veu tenyida, posa `buttonBackground` i `buttonBackgroundHover` amb alfa 0 o utilitza un tema sense aquests colors.
+
+El text continua sent un element de UI Toolkit independent. No l'incrustis a la imatge si vols conservar els canvis d'idioma, el mode d'alt contrast i una accessibilitat correcta.
 
 #### Nivell 3 — UXML (estructura)
 

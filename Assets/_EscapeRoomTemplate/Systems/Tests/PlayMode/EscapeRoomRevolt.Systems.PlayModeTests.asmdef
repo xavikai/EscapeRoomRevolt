@@ -3,6 +3,7 @@
     "rootNamespace": "EscapeRoomRevolt.Systems.Tests",
     "references": [
         "EscapeRoomRevolt.Core",
+        "EscapeRoomRevolt.Player",
         "EscapeRoomRevolt.Systems",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner"

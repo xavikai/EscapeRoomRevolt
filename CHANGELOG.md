@@ -2,6 +2,37 @@
 
 All notable changes to Escape Room Revolt are documented here.
 
+## [0.1.0-beta.2] - 2026-09-09
+
+### Added
+
+- Comprehensive buyer quick-start guide: `Assets/_EscapeRoomTemplate/Documentation/ESCAPE_ROOM_QUICKSTART.md` accessible via editor menu `Escape Room Framework > Documentation > Open Escape Room Quick Start`.
+- September 2026 commercial audit and verification results (`AUDITORIA_ESCAPE_ROOM_2026-09-09.md` and `AUDIT_RESULTS_2026-09-09.json`).
+- `SaveRecoveryTests` suite covering corrupted saves, `.bak` file recovery, version validation and seed roundtrips (20 EditMode tests total).
+- `CommercialRegressionTests` suite covering VR hardware interaction grab collisions, socket ownership, and dual-hand locks (23 PlayMode tests total).
+- `SceneFeatureOverride` component to support scene-level feature toggling.
+
+### Fixed
+
+- Prevented physical sockets and socket receivers from snatching pieces currently held by `VRHardwareInteractor`.
+- Prevented dual-hand grabbing of the same physical object simultaneously in VR.
+- Blocked VR hardware interaction raycast when menus or pause are active, clearing focus and preventing interaction bleed-through.
+- Ensured `InteractableBase.CanInteract` checks `isActiveAndEnabled` so disabled components cannot be triggered.
+- Fixed `SaveManager` fallback recovery when the primary `.json` is missing or corrupted, and validated version/data integrity before restoration.
+- Fixed entity save state alignment so serialisation errors do not desynchronise keys and values.
+- Restored previous game flow state when scene loading fails or is aborted.
+- Handled empty sequence edge-case and restored input prefix in `SequencePuzzle`.
+- Prevented `StatePuzzle` from considering incomplete conditions as satisfied.
+- Reconstructed placed piece visuals idempotently upon game loading in `SocketPuzzle`.
+- Fixed missing GUID action references in the XRI simulator prefab.
+- Isolated desktop release builds so Windows standalone does not initialize VR runtime on startup.
+
+### Changed
+
+- Re-aligned `COMMERCIAL_READINESS.md` and `UserManual.md` with current verification scope.
+- Configured OpenXR on Android with `PrioritizeInputPolling`.
+- Updated release pipeline to package `v0.1.0-beta.2` standalone Windows and Meta Quest builds.
+
 ## [0.1.0-beta.1] - 2026-08-13
 
 ### Added

@@ -4,6 +4,7 @@ using System.IO;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
+using UnityEditor.XR.Management;
 using UnityEngine;
 
 namespace EscapeRoomRevolt.EditorTools
@@ -11,7 +12,7 @@ namespace EscapeRoomRevolt.EditorTools
     /// <summary>Reproducible release builds used for the downloadable PC and Quest packages.</summary>
     public static class ReleaseBuilder
     {
-        private const string Version = "v0.1.0-beta.1";
+        private const string Version = "v0.1.0-beta.2";
         private const string ReleaseRoot = "Builds/Release/" + Version;
 
         private static readonly string[] WindowsScenes =
@@ -19,8 +20,7 @@ namespace EscapeRoomRevolt.EditorTools
             "Assets/_EscapeRoomTemplate/Scenes/Intro.unity",
             "Assets/_EscapeRoomTemplate/Scenes/MainMenu.unity",
             "Assets/_EscapeRoomTemplate/Scenes/ShowcaseMuseum.unity",
-            "Assets/_EscapeRoomTemplate/Scenes/LockedOffice.unity",
-            "Assets/_EscapeRoomTemplate/Scenes/SurvivalHorrorDemo.unity"
+            "Assets/_EscapeRoomTemplate/Scenes/LockedOffice.unity"
         };
 
         private static readonly string[] QuestScenes =
@@ -33,6 +33,12 @@ namespace EscapeRoomRevolt.EditorTools
         {
             EnsureVersion();
             string output = Path.GetFullPath(Path.Combine(ReleaseRoot, "Windows", "EscapeRoomRevolt.exe"));
+            BuildWindowsAtPath(output);
+        }
+
+        /// <summary>Builds the desktop demo without initializing a headset runtime; restores authoring XR settings afterwards.</summary>
+        public static void BuildWindowsAtPath(string output)
+        {
             Directory.CreateDirectory(Path.GetDirectoryName(output) ?? ReleaseRoot);
             BuildPlayerOptions options = new BuildPlayerOptions
             {
@@ -42,7 +48,17 @@ namespace EscapeRoomRevolt.EditorTools
                 targetGroup = BuildTargetGroup.Standalone,
                 options = BuildOptions.None
             };
-            BuildOrThrow(options, "Windows");
+            var xr = XRGeneralSettingsPerBuildTarget.XRGeneralSettingsForBuildTarget(BuildTargetGroup.Standalone);
+            bool previousInitialize = xr != null && xr.InitManagerOnStart;
+            try
+            {
+                if (xr != null) { xr.InitManagerOnStart = false; EditorUtility.SetDirty(xr); AssetDatabase.SaveAssets(); }
+                BuildOrThrow(options, "Windows");
+            }
+            finally
+            {
+                if (xr != null) { xr.InitManagerOnStart = previousInitialize; EditorUtility.SetDirty(xr); AssetDatabase.SaveAssets(); }
+            }
         }
 
         [MenuItem("Escape Room Framework/Build/Release/Build Quest APK", priority = 901)]
@@ -50,7 +66,7 @@ namespace EscapeRoomRevolt.EditorTools
         {
             EnsureVersion();
             PlayerSettings.SetApplicationIdentifier(NamedBuildTarget.Android, "com.xavikai.escaperoomrevolt");
-            PlayerSettings.Android.bundleVersionCode = 1;
+            PlayerSettings.Android.bundleVersionCode = 2;
             PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
             PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel29;
             EditorUserBuildSettings.buildAppBundle = false;

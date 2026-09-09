@@ -121,7 +121,8 @@ namespace EscapeRoomRevolt.UI.Toolkit
             saveButton.SetEnabled(SurvivalDifficultyService.AllowsManualSaving);
             AddButton(Tr("Cargar partida"), ShowLoad);
             AddButton(Tr("Ajustes"), ShowSettings);
-            AddButton(Tr("Menú principal…"), () => ShowConfirmation(
+            if (GameFlowManager.EnsureInstance().CanReturnToMainMenu)
+                AddButton(Tr("Menú principal…"), () => ShowConfirmation(
                 "VOLVER AL MENÚ PRINCIPAL",
                 "La escena del menú principal se cargará al confirmar. El progreso que no hayas guardado se perderá.",
                 GameFlowManager.EnsureInstance().ReturnToMainMenu,
@@ -230,7 +231,8 @@ namespace EscapeRoomRevolt.UI.Toolkit
             message.AddToClassList("confirmation-message");
             _content.Add(message);
             AddButton("Reintentar", GameFlowManager.EnsureInstance().RestartCurrentScene);
-            AddButton("Menú principal", GameFlowManager.EnsureInstance().ReturnToMainMenu);
+            if (GameFlowManager.EnsureInstance().CanReturnToMainMenu)
+                AddButton("Menú principal", GameFlowManager.EnsureInstance().ReturnToMainMenu);
             AddButton("Salir", GameFlowManager.EnsureInstance().QuitGame, "menu-button menu-button--quiet");
         }
 

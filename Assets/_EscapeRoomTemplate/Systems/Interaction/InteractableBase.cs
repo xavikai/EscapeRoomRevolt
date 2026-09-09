@@ -47,7 +47,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
         // ── IInteractable ────────────────────────────────────────────────────
         public virtual string InteractionPrompt => _interactionPrompt;
         public virtual CursorType InteractionCursor => _cursorType;
-        public virtual bool CanInteract => this != null && _canInteract && gameObject.activeInHierarchy;
+        public virtual bool CanInteract => this != null && _canInteract && isActiveAndEnabled;
         public bool InteractionEnabled => _canInteract;
 
         public void Interact()
