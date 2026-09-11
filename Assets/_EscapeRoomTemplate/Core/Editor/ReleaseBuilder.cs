@@ -12,7 +12,7 @@ namespace EscapeRoomRevolt.EditorTools
     /// <summary>Reproducible release builds used for the downloadable PC and Quest packages.</summary>
     public static class ReleaseBuilder
     {
-        private const string Version = "v0.1.0-beta.2";
+        private const string Version = "v0.1.0-beta.3";
         private const string ReleaseRoot = "Builds/Release/" + Version;
 
         private static readonly string[] WindowsScenes =
@@ -66,7 +66,7 @@ namespace EscapeRoomRevolt.EditorTools
         {
             EnsureVersion();
             PlayerSettings.SetApplicationIdentifier(NamedBuildTarget.Android, "com.xavikai.escaperoomrevolt");
-            PlayerSettings.Android.bundleVersionCode = 2;
+            PlayerSettings.Android.bundleVersionCode = 3;
             PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
             PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel29;
             EditorUserBuildSettings.buildAppBundle = false;

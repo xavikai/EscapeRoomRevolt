@@ -2,12 +2,20 @@
 
 All notable changes to Escape Room Revolt are documented here.
 
-## Unreleased
+## [0.1.0-beta.3] - 2026-09-11
 
-- Added Room 14 (Linked Lights), a configurable circuit puzzle with a reusable prefab, progressive hints, saved partial progress, reset button and door reward.
-- Hardened hint/narrative zones with kinematic trigger bodies and player-parent tag detection; exiting an old hint zone no longer clears a newly entered zone's context.
-- Made the museum audio trigger replayable after exit/re-entry and cooldown; retained Once mode for authored narratives.
-- Added five PlayMode regression tests and authoring instructions in `Documentation/LINKED_LIGHTS_AND_HINT_ZONES.md`.
+### Added
+
+- Room 14 (Linked Lights): a configurable circuit puzzle with a reusable prefab, progressive hints, saved partial progress, reset button and door reward.
+- Five PlayMode regression tests covering circuit light toggling, solver reset, hint zone transitions and trigger re-entry (`HintAndCircuitTests`).
+- Authoring guide and documentation in `Assets/_EscapeRoomTemplate/Documentation/LINKED_LIGHTS_AND_HINT_ZONES.md`.
+
+### Changed & Improved
+
+- Hardened hint and narrative zones (`HintZoneTrigger`, `NarrativeTrigger`) with kinematic trigger bodies and player-parent tag detection.
+- Exiting an old hint zone no longer clears a newly entered zone's context.
+- Museum audio trigger is now replayable after player exit/re-entry and cooldown, while preserving `Once` mode for authored narrative sequences.
+
 
 ## [0.1.0-beta.2] - 2026-09-09
 
