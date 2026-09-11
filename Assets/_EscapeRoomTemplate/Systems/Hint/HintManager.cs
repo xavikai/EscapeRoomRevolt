@@ -55,10 +55,20 @@ namespace EscapeRoomRevolt.Systems.Hint
         public void SetActivePuzzle(HintData puzzleData)
         {
             if (_activePuzzleData == puzzleData) return;
+            if (_hideSubtitleCoroutine != null)
+            {
+                StopCoroutine(_hideSubtitleCoroutine);
+                _hideSubtitleCoroutine = null;
+            }
             
             _activePuzzleData = puzzleData;
             _timeInActivePuzzle = 0f;
             _currentHintIndex = 0;
+        }
+
+        private void OnDestroy()
+        {
+            if (Instance == this) Instance = null;
         }
 
         public void ClearActivePuzzle()

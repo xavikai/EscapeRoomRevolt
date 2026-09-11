@@ -32,6 +32,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
 
     [RequireComponent(typeof(BoxCollider))]
     [RequireComponent(typeof(AudioSource))]
+    [RequireComponent(typeof(Rigidbody))]
     public class NarrativeTrigger : MonoBehaviour, ISaveable
     {
         [Header("Save System")]
@@ -58,6 +59,10 @@ namespace EscapeRoomRevolt.Systems.Interaction
         {
             _audioSource = GetComponent<AudioSource>();
             GetComponent<BoxCollider>().isTrigger = true;
+            var body = GetComponent<Rigidbody>();
+            if (body == null) body = gameObject.AddComponent<Rigidbody>();
+            body.isKinematic = true;
+            body.useGravity = false;
         }
 
         private void Start()
@@ -72,7 +77,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("Player"))
+            if (PlayerTriggerUtility.IsPlayer(other))
             {
                 TryPlay();
             }
@@ -151,7 +156,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
             {
                 var myState = JsonUtility.FromJson<NarrativeState>(json);
                 _hasPlayedOnce = myState.hasPlayedOnce;
-                _currentSequenceIndex = myState.currentSequenceIndex;
+                _currentSequenceIndex = Mathf.Clamp(myState.currentSequenceIndex, 0, Mathf.Max(0, _sequences.Count - 1));
             }
         }
 

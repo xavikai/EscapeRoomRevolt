@@ -35,6 +35,8 @@ Not a single closed room — a reusable framework where rooms, puzzles, enemies 
 
 ## Demo scenes
 
+The museum now includes **Room 14: Linked Lights**, a configurable circuit with saved progress, reset and a reusable prefab. See the [room and hint-zone authoring guide](Assets/_EscapeRoomTemplate/Documentation/LINKED_LIGHTS_AND_HINT_ZONES.md).
+
 | Scene | Genre | What it shows |
 |---|---|---|
 | `Intro` | — | Optional logo/cutscene sequence before the menu. |

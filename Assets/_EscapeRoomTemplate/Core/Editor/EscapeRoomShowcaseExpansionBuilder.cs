@@ -19,6 +19,123 @@ namespace EscapeRoomRevolt.EditorTools
         private const string AssetFolder = "Assets/_EscapeRoomTemplate/ScriptableObjects/Puzzles";
         private const string ExpansionRootName = "EscapeRoomExpansion_Rooms11_13";
 
+        [MenuItem("Escape Room Framework/Demo/Add or Update Linked Lights Room", priority = 46)]
+        public static void BuildLinkedLightsRoom()
+        {
+            Scene scene = SceneManager.GetActiveScene();
+            if (scene.path != ScenePath || Application.isPlaying)
+            {
+                Debug.LogError("Open ShowcaseMuseum in Edit Mode first.");
+                return;
+            }
+            GameObject previous = GameObject.Find("Room14_LinkedLights");
+            if (previous != null) Object.DestroyImmediate(previous);
+            Transform room = CreateRoomShell(null, "Room14_LinkedLights", new Vector3(6f, 0f, 70f),
+                new Color(.12f, .4f, .35f), "14 · CIRCUIT DE LLUMS", "Encén les cinc llums · botons connectats");
+            var title = room.Find("RoomTitle").GetComponent<TextMeshPro>();
+            title.transform.localPosition = new Vector3(0f, 3.35f, 2.2f);
+            title.fontSize = 2f;
+            room.Find("RoomSubtitle").gameObject.SetActive(false);
+            // Leave a real opening behind the reward door.
+            var wall = room.Find("BackWall");
+            wall.localPosition = new Vector3(-1.65f, 1.35f, 2.42f);
+            wall.localScale = new Vector3(1.7f, 2.7f, .16f);
+            CreateBlock(room, "BackWallRight", new Vector3(1.65f, 1.35f, 2.42f), new Vector3(1.7f, 2.7f, .16f), new Color(.09f, .29f, .25f));
+            var fill = new GameObject("ConsoleFillLight").AddComponent<Light>();
+            fill.transform.SetParent(room, false);
+            fill.transform.localPosition = new Vector3(0f, 2.4f, -2.3f);
+            fill.type = LightType.Point; fill.range = 7f; fill.intensity = 7f;
+            var kit = new GameObject("LinkedLights_Kit");
+            kit.SetActive(false);
+            kit.transform.SetParent(room, false);
+            var puzzle = kit.AddComponent<LinkedLightsPuzzle>();
+            var so = new SerializedObject(puzzle);
+            var nodes = so.FindProperty("_nodes");
+            nodes.arraySize = 5;
+            // Reachable initial state: pressing 1, 3 and 5 produces the target.
+            for (int i = 0; i < 5; i++)
+            {
+                float x = (i - 2) * .76f;
+                var button = CreateBlock(kit.transform, "LightButton_" + (i + 1),
+                    new Vector3(x, 1.1f, -.3f), new Vector3(.55f, .45f, .35f), new Color(.07f, .1f, .14f));
+                var node = nodes.GetArrayElementAtIndex(i);
+                node.FindPropertyRelative("initiallyOn").boolValue = i == 1 || i == 3;
+                node.FindPropertyRelative("targetOn").boolValue = true;
+                node.FindPropertyRelative("indicator").objectReferenceValue = button.GetComponent<Renderer>();
+                var links = node.FindPropertyRelative("connections");
+                int first = Mathf.Max(0, i - 1), last = Mathf.Min(4, i + 1);
+                links.arraySize = last - first + 1;
+                for (int j = first; j <= last; j++) links.GetArrayElementAtIndex(j - first).intValue = j;
+                var control = button.AddComponent<LinkedLightButton>();
+                var controlSo = new SerializedObject(control);
+                controlSo.FindProperty("_puzzle").objectReferenceValue = puzzle;
+                controlSo.FindProperty("_index").intValue = i;
+                controlSo.ApplyModifiedPropertiesWithoutUndo();
+                CreateWorldText(kit.transform, "Number_" + (i + 1), new Vector3(x, 1.5f, -.49f),
+                    (i + 1).ToString(), 2f, Color.white).rectTransform.sizeDelta = new Vector2(.6f, .5f);
+            }
+            so.ApplyModifiedPropertiesWithoutUndo();
+            CreateBlock(kit.transform, "ConsoleBase", new Vector3(0f, .45f, -.3f), new Vector3(4.1f, .9f, .65f), new Color(.08f, .15f, .18f));
+            CreateWorldText(room, "Instructions", new Vector3(0f, 2.8f, 2.25f),
+                "Cada botó commuta la seva llum i les veïnes.\nObjectiu: totes enceses. Pots reiniciar l'intent.", 1.6f, Color.white);
+            AssignDefinition(puzzle, EnsureDefinition("Def_demo_linked_lights_puzzle", "demo_linked_lights", "Circuit de llums",
+                PuzzleCategory.Sequence, "Encén les cinc llums del circuit per obrir la porta.", new[] {
+                    "Cada botó canvia la seva llum i les llums immediatament veïnes.",
+                    "Prémer dues vegades el mateix botó desfà el canvi.",
+                    "Reinicia el panell i prem els botons 1, 3 i 5, en qualsevol ordre." }));
+            var reset = CreateBlock(kit.transform, "ResetButton", new Vector3(0f, .8f, -1f), new Vector3(.8f, .25f, .3f), new Color(.55f, .3f, .08f)).AddComponent<InteractableTrigger>();
+            var resetSo = new SerializedObject(reset);
+            resetSo.FindProperty("_prompt").stringValue = "Reiniciar circuit";
+            resetSo.ApplyModifiedPropertiesWithoutUndo();
+            CreateWorldText(kit.transform, "ResetLabel", new Vector3(0f, 1f, -1.19f), "REINICIAR", .9f, Color.white);
+            if (reset.OnInteractEvent == null) reset.OnInteractEvent = new UnityEngine.Events.UnityEvent();
+            UnityEventTools.AddVoidPersistentListener(reset.OnInteractEvent, puzzle.ResetPuzzle);
+            kit.SetActive(true);
+            // Save the reusable kit before adding scene-specific door connections.
+            const string materialFolder = "Assets/_EscapeRoomTemplate/Art/Materials/LinkedLights";
+            EnsureFolder(materialFolder);
+            foreach (var renderer in kit.GetComponentsInChildren<MeshRenderer>())
+            {
+                Material generated = renderer.sharedMaterial;
+                if (generated == null || AssetDatabase.Contains(generated)) continue;
+                string path = materialFolder + "/" + renderer.name + ".mat";
+                Material material = AssetDatabase.LoadAssetAtPath<Material>(path);
+                if (material == null) { material = new Material(generated); AssetDatabase.CreateAsset(material, path); }
+                else { material.CopyPropertiesFromMaterial(generated); EditorUtility.SetDirty(material); }
+                renderer.sharedMaterial = material;
+                Object.DestroyImmediate(generated);
+            }
+            PrefabUtility.SaveAsPrefabAsset(kit, "Assets/_EscapeRoomTemplate/Prefabs/LinkedLightsPuzzleKit.prefab");
+            Door door = CreatePayoffDoor(room, "LinkedLightsExitDoor", new Vector3(0f, 1.25f, 2.18f), new Color(.12f, .55f, .42f));
+            UnityEventTools.AddVoidPersistentListener(puzzle.OnSolvedEvent, door.Unlock);
+            UnityEventTools.AddVoidPersistentListener(puzzle.OnSolvedEvent, door.ForceOpen);
+            AddSolvedBeacon(room, puzzle, new Vector3(0f, 2.55f, 2.05f));
+            UnityEventTools.AddVoidPersistentListener(reset.OnInteractEvent, door.ForceClose);
+            UnityEventTools.AddVoidPersistentListener(reset.OnInteractEvent, door.Lock);
+            UnityEventTools.AddBoolPersistentListener(reset.OnInteractEvent, room.Find("SolvedBeacon").gameObject.SetActive, false);
+            var corridor = GameObject.Find("Environment/Central_Corridor");
+            if (corridor != null) { corridor.transform.position = new Vector3(0f, -.25f, 38f); corridor.transform.localScale = new Vector3(4f, .5f, 80f); }
+            var shell = GameObject.Find("Commercial_Atmosphere/Replaceable_PresentationShell");
+            if (shell != null) {
+                ExtendAlongZ(shell.transform.Find("Wall_Left"), 38f, 80f);
+                ExtendAlongZ(shell.transform.Find("Wall_Right"), 38f, 80f);
+                ExtendAlongZ(shell.transform.Find("Ceiling"), 38f, 80f);
+                var end = shell.transform.Find("EndCap_Final");
+                if (end != null) end.position = new Vector3(end.position.x, end.position.y, 78f);
+            }
+            // The museum is a repeatable demonstration; authored narrative triggers retain their Once option.
+            var audioArea = GameObject.Find("AudioTriggerArea");
+            if (audioArea != null) {
+                var narrative = audioArea.GetComponent<NarrativeTrigger>();
+                var audioSo = new SerializedObject(narrative);
+                audioSo.FindProperty("_playMode").enumValueIndex = (int)NarrativePlayMode.Always;
+                audioSo.ApplyModifiedPropertiesWithoutUndo();
+            }
+            EditorSceneManager.MarkSceneDirty(scene);
+            EditorSceneManager.SaveScene(scene);
+            AssetDatabase.SaveAssets();
+        }
+
         [MenuItem("Escape Room Framework/Demo/Add or Update Expansion Rooms", priority = 45)]
         public static void Build()
         {
