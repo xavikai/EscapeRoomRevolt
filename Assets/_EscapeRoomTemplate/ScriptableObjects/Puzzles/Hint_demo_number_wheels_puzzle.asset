@@ -15,9 +15,9 @@ MonoBehaviour:
   delayBeforeFirstHint: 45
   delayBetweenHints: 35
   hints:
-  - hintText: "Cada rodet avan\xE7a una xifra quan hi interactues."
+  - hintText: "Cada rodillo avanza una cifra cuando interact\xFAas con \xE9l."
     hintAudio: {fileID: 0}
-  - hintText: "Busca una combinaci\xF3 de quatre xifres."
+  - hintText: "Busca una combinaci\xF3n de cuatro cifras."
     hintAudio: {fileID: 0}
-  - hintText: "La combinaci\xF3 de demostraci\xF3 \xE9s 3142."
+  - hintText: "La combinaci\xF3n de demostraci\xF3n es 3142."
     hintAudio: {fileID: 0}

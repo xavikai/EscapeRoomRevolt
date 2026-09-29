@@ -429,7 +429,7 @@ namespace EscapeRoomRevolt.EditorTools
             for (int i = 0; i < 3; i++)
             {
                 SerializedProperty element = positions.GetArrayElementAtIndex(i);
-                element.FindPropertyRelative("prompt").stringValue = "Cycle";
+                element.FindPropertyRelative("prompt").stringValue = "Cambiar posición";
                 element.FindPropertyRelative("rotation").vector3Value = exampleAngles[i];
             }
             so.FindProperty("_visualTransform").objectReferenceValue = logicObj.transform;

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: MultiStageStatePuzzle
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Puzzle.PuzzleDefinition
   _persistentId: room11_levers_puzzle
-  _displayName: Palanques encadenades
+  _displayName: Palancas encadenadas
   _category: 2
-  _objective: Ajusta les tres palanques després de completar la seqüència.
+  _objective: "Ajusta las tres palancas despu\xE9s de completar la secuencia."
   _hints: {fileID: 11400000, guid: b99b9605918fc244796fe4f7254cf070, type: 2}
   _sanityPenalty: 5

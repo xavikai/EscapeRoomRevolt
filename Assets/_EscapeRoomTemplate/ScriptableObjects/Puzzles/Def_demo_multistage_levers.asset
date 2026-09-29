@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Def_demo_multistage_levers
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Puzzle.PuzzleDefinition
   _persistentId: demo_multistage_levers_stage
-  _displayName: 'Fase interna: palanques'
+  _displayName: "Fase interna: palancas"
   _category: 2
-  _objective: Configura les tres palanques de la segona fase.
+  _objective: Configura las tres palancas de la segunda fase.
   _hints: {fileID: 11400000, guid: f20fd85f58f54fb43b158e4e0d1711fc, type: 2}
   _sanityPenalty: 4

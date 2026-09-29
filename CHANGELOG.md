@@ -2,6 +2,38 @@
 
 All notable changes to Escape Room Revolt are documented here.
 
+## [Unreleased] - 2026-09-29 review
+
+### Fixed
+
+- Loading a game from the main menu (**Continue** / **Load**) or from the pause menu no longer leaves the player frozen. The menu and HUD now release `GameplayBlockState` when they are unloaded with a screen or panel open.
+- `StatePuzzle` now saves and restores the position of every lever/wheel it watches. Half-dialled combinations survive a load, and a solved lock reappears at its answer instead of at the starting index (older saves included).
+- `SteppedPositioner` keeps an index restored before `Start` (save/load, `PipeTileButton` sync) instead of snapping back to its starting index; new `IndexSynced` event so `NumberWheelView` digits refresh after a load.
+- `MultiStagePuzzle` re-synchronises with its children after the whole save is restored, so ordered groups no longer lock the wrong child after loading.
+- `PipeTileButton` no longer turns the tile art once the puzzle is solved (visual and logic stayed out of sync).
+- `PlacementPuzzle` only restores placements for a solved board. Loose pieces respawn at their start, so partial placements left "ghost" pieces in sockets.
+- `CodePanelPuzzle` restores a randomised code before re-applying a solved display.
+- `InteractableToggle` now saves its on/off state (optional `Invoke Event On Load`) and no longer drifts when a `Custom Pivot` is assigned.
+- `InteractableTrigger` saves its used/toggle state. A spent single-use trigger stays in the scene instead of being deleted on load.
+- `InteractionManager` and `PhysicsGrabber` remove only a duplicate component, never the player's camera object.
+- `HintManager` clears the previous scene's puzzle context when a new scene loads.
+- `ThrowTarget` repaints hit/solved colours after a load.
+
+### Added
+
+- `MenuThemeSettings.mainMenuTitle` and `MenuThemeSettings.creditsText` so a new game can set its own title and credits without code.
+- Every menu label, button, slider, toggle and confirmation now goes through `LocalizationService.Tr`, so adding a catalog entry is enough to translate it.
+- Six PlayMode regressions in `SaveRestoreRegressionTests`.
+- Interactive template guide (CA/ES/EN, three.js) in `docs/guia/index.html`, with a step-by-step recipe for every mechanic and room system (also as Markdown: `Documentation/RECEPTES.md`, `RECETAS.md`, `RECIPES.md`).
+- Full localization: `DefaultLocalizationCatalog` now covers menus, HUD, inventory, notes, keypad, VR panel, subtitles, hints, objectives, item texts, default prompts and save errors in Spanish, English and **Catalan** (~500 entries). New `SceneTextLocalizer` translates 3D signs (TextMeshPro/TextMesh) whose text is a catalog key. `LocalizationCatalog` gains `HasKey` and a dictionary lookup.
+- Catalan and English versions of `UserManual` and `ESCAPE_ROOM_QUICKSTART`.
+- Hints for the pipe, placement and sliding demo puzzles (their hint assets were empty).
+
+### Changed
+
+- Scene and data texts are unified in Spanish (the catalog key language): mixed Catalan/English prompts, signs, item names, hints and objectives in `ShowcaseMuseum`, `ShowcaseMuseumVR`, `LockedOffice` and the demo assets were rewritten. Prompts such as `[E] Open Cabinet` no longer produce a doubled `[E]` in the HUD.
+- Default prompts of interactables and puzzle helpers are Spanish catalog keys (`Interactuar`, `Abrir`, `Cerrar`...).
+
 ## [0.1.0-beta.3] - 2026-09-11
 
 ### Added

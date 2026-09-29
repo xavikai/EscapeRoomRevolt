@@ -16,7 +16,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
         [Header("Read In-Place Settings")]
         [TextArea(4, 12)]
         public string NoteContent = "Write your note content here...";
-        public string ReadPrompt = "Read Note";
+        public string ReadPrompt = "Leer nota";
         public bool DisappearAfterRead = false;
 
         [Header("Pickable Settings")]
@@ -32,7 +32,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
             {
                 if (IsPickable)
                 {
-                    return ItemData != null ? $"Pick up {ItemData.DisplayName}" : "Pick up Note";
+                    return ItemData != null ? $"{EscapeRoomRevolt.Core.Localization.LocalizationService.Tr("Recoger")} {EscapeRoomRevolt.Core.Localization.LocalizationService.Tr(ItemData.DisplayName)}" : "Recoger nota";
                 }
                 return ReadPrompt;
             }

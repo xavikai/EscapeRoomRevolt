@@ -15,9 +15,9 @@ MonoBehaviour:
   delayBeforeFirstHint: 45
   delayBetweenHints: 35
   hints:
-  - hintText: "Els colors s'han de pr\xE9mer en un ordre concret."
+  - hintText: Los colores deben pulsarse en un orden concreto.
     hintAudio: {fileID: 0}
-  - hintText: "L'ordre de la primera fase \xE9s vermell, verd i blau."
+  - hintText: El orden de la primera fase es rojo, verde y azul.
     hintAudio: {fileID: 0}
-  - hintText: A la segona fase, deixa les palanques en les posicions 2, 0 i 1.
+  - hintText: En la segunda fase, deja las palancas en las posiciones 2, 0 y 1.
     hintAudio: {fileID: 0}

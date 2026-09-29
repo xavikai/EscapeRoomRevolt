@@ -15,9 +15,9 @@ MonoBehaviour:
   delayBeforeFirstHint: 45
   delayBetweenHints: 35
   hints:
-  - hintText: "La melodia cont\xE9 quatre notes."
+  - hintText: "La melod\xEDa tiene cuatro notas."
     hintAudio: {fileID: 0}
-  - hintText: "Compara cada bot\xF3 amb la pista abans d'introduir la seq\xFC\xE8ncia."
+  - hintText: "Compara cada bot\xF3n con la pista antes de introducir la secuencia."
     hintAudio: {fileID: 0}
-  - hintText: "La seq\xFC\xE8ncia de demostraci\xF3 \xE9s C, A, D, B."
+  - hintText: "La secuencia de demostraci\xF3n es C, A, D, B."
     hintAudio: {fileID: 0}

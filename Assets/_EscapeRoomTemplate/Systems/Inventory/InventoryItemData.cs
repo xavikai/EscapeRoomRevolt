@@ -33,7 +33,7 @@ namespace EscapeRoomRevolt.Systems.Inventory
     {
         [Header("Identity")]
         [SerializeField] private string _itemId = "";
-        [SerializeField] private string _displayName = "New Item";
+        [SerializeField] private string _displayName = "Nuevo objeto";
         [TextArea(2, 4)]
         [SerializeField] private string _description = "";
 

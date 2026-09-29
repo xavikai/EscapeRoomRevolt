@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Def_demo_number_wheels_puzzle
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Puzzle.PuzzleDefinition
   _persistentId: demo_number_wheels
-  _displayName: Candau de rodets
+  _displayName: Candado de rodillos
   _category: 0
-  _objective: "Gira els quatre rodets fins a introduir la combinaci\xF3 correcta."
+  _objective: "Gira los cuatro rodillos hasta introducir la combinaci\xF3n correcta."
   _hints: {fileID: 11400000, guid: 91871c4bc940805419d6fd5cea0bc718, type: 2}
   _sanityPenalty: 4

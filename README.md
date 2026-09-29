@@ -1,6 +1,8 @@
 # Escape Room Revolt
 
-**Escape Room release preparation:** start with the [buyer quick start](Assets/_EscapeRoomTemplate/Documentation/ESCAPE_ROOM_QUICKSTART.md), then read the [September 2026 audit](Assets/_EscapeRoomTemplate/AUDITORIA_ESCAPE_ROOM_2026-09-09.md) and [release gates](Assets/_EscapeRoomTemplate/COMMERCIAL_READINESS.md). Survival Horror is outside this edition's commercial verification. VR hardware acceptance remains pending.
+**Interactive guide (CA/ES/EN):** open [`docs/guia/index.html`](docs/guia/index.html) in a browser for a hands-on tour of the mechanics, menus and PC/VR players.
+
+**Escape Room release preparation:** start with the buyer quick start ([castellano](Assets/_EscapeRoomTemplate/Documentation/ESCAPE_ROOM_QUICKSTART.md) · [català](Assets/_EscapeRoomTemplate/Documentation/ESCAPE_ROOM_QUICKSTART.ca.md) · [English](Assets/_EscapeRoomTemplate/Documentation/ESCAPE_ROOM_QUICKSTART.en.md)), then read the [September 2026 audit](Assets/_EscapeRoomTemplate/AUDITORIA_ESCAPE_ROOM_2026-09-09.md) and [release gates](Assets/_EscapeRoomTemplate/COMMERCIAL_READINESS.md). Survival Horror is outside this edition's commercial verification. VR hardware acceptance remains pending.
 
 A Unity 6 (URP) framework for building first-person **Escape Room** and **Survival Horror** games from the same codebase, for PC and VR (XR Interaction Toolkit).
 
@@ -26,7 +28,7 @@ Not a single closed room — a reusable framework where rooms, puzzles, enemies 
 
 - **Interaction & authoring** — raycast (PC) and XRI (VR) share one `InteractionDispatcher`; doors, drawers, cabinets, levers, switches, notes and pickables are all created from the `Escape Room Framework > Create` Editor menu with example data pre-filled.
 - **Inventory** — quantities, hotbar, guided combination, 3D examination with clickable `ExamineHotspot`s, equipment via `ModelSocket`.
-- **Nine puzzle controllers** — code panel, sequence, state, socket, throw, placement, chained puzzle groups, sliding and pipe (rotate-to-connect). A chained group keeps every child puzzle visible and can require free or ordered completion before firing one shared payoff. Melody is a presentation of the shared sequence solver. All share reset, persistence and progressive-hint integration; selected types support seeded variants.
+- **Ten puzzle controllers** — code panel, sequence, state, socket, throw, placement, chained puzzle groups, sliding, pipe (rotate-to-connect) and linked lights (a Lights Out circuit). A chained group keeps every child puzzle visible and can require free or ordered completion before firing one shared payoff. Melody is a presentation of the shared sequence solver. All share reset, persistence and progressive-hint integration; selected types support seeded variants.
 - **Independent fail-state mechanics** — a `MovingHazard` that travels between arbitrary 3D markers (wall, ceiling, floor, platform or water) and a separate optional `GameOverTimer` presented in the shared gameplay HUD.
 - **Save/Load** — three manual slots, quick save/load, thumbnails, atomic writes with backup recovery, versioned per-object state.
 - **Survival Horror** — modular flashlight and night-vision camcorder, sanity with visual/audio/haptic feedback, patrol/perception/chase AI with two enemy archetypes, hideable lockers/beds/containers with AI inspection, checkpoints, typed damage, PC/VR-shared traversal (vault/climb/ladder/squeeze), evasion (lean/look-back/slide), a tension director that rate-limits horror events, and data-driven difficulty presets.
@@ -35,7 +37,7 @@ Not a single closed room — a reusable framework where rooms, puzzles, enemies 
 
 ## Demo scenes
 
-The museum now includes **Room 14: Linked Lights**, a configurable circuit with saved progress, reset and a reusable prefab. See the [room and hint-zone authoring guide](Assets/_EscapeRoomTemplate/Documentation/LINKED_LIGHTS_AND_HINT_ZONES.md).
+The PC museum now includes **Room 14: Linked Lights**, a configurable circuit with saved progress, reset and a reusable prefab. See the [room and hint-zone authoring guide](Assets/_EscapeRoomTemplate/Documentation/LINKED_LIGHTS_AND_HINT_ZONES.md).
 
 | Scene | Genre | What it shows |
 |---|---|---|
@@ -64,12 +66,14 @@ The supported entry point is the **Escape Room Framework** Editor menu — legac
 ## Documentation
 
 - [`Assets/_EscapeRoomTemplate/ROADMAP.md`](Assets/_EscapeRoomTemplate/ROADMAP.md) — the living status document: what's verified, what's pending, in what order. Read this first for "where are we now."
-- [`Assets/_EscapeRoomTemplate/AUDITORIA_ESCAPE_ROOM_2026-08-09.md`](Assets/_EscapeRoomTemplate/AUDITORIA_ESCAPE_ROOM_2026-08-09.md) — current room-by-room closure audit for the Escape Room template.
+- [`Assets/_EscapeRoomTemplate/AUDITORIA_ESCAPE_ROOM_2026-09-09.md`](Assets/_EscapeRoomTemplate/AUDITORIA_ESCAPE_ROOM_2026-09-09.md) — current audit (tests, builds, scene inspection). The [August audit](Assets/_EscapeRoomTemplate/AUDITORIA_ESCAPE_ROOM_2026-08-09.md) keeps the historical room-by-room walkthrough.
+- [`docs/guia/index.html`](docs/guia/index.html) — interactive guide for people using the template (mechanics playground, menus, PC/VR player, feature tour).
 - [`Assets/_EscapeRoomTemplate/PROGRAMMING_GUIDE.md`](Assets/_EscapeRoomTemplate/PROGRAMMING_GUIDE.md) — API-level guide to the systems above, with code snippets.
 - [`Assets/_EscapeRoomTemplate/DOCUMENTACIO_COMPLETA.md`](Assets/_EscapeRoomTemplate/DOCUMENTACIO_COMPLETA.md) — exhaustive architecture and authoring reference.
-- [`Assets/_EscapeRoomTemplate/UserManual.md`](Assets/_EscapeRoomTemplate/UserManual.md) — end-player-facing controls and menu reference.
+- [`Assets/_EscapeRoomTemplate/UserManual.md`](Assets/_EscapeRoomTemplate/UserManual.md) — end-player-facing controls and menu reference ([català](Assets/_EscapeRoomTemplate/UserManual.ca.md) · [English](Assets/_EscapeRoomTemplate/UserManual.en.md)).
+- Step-by-step recipes for every mechanic: [català](Assets/_EscapeRoomTemplate/Documentation/RECEPTES.md) · [castellano](Assets/_EscapeRoomTemplate/Documentation/RECETAS.md) · [English](Assets/_EscapeRoomTemplate/Documentation/RECIPES.md).
 - [`CHANGELOG.md`](CHANGELOG.md) — version history and migration-impact summary.
 
 ## Known gaps before commercial release
 
-Tracked in detail in `ROADMAP.md`. In short: 12/12 EditMode and 14/14 PlayMode tests pass; PlayMode has exceeded its target, but EditMode still needs to reach 20. The Escape Room puzzle definitions and Pipe payoff are closed. Audio licenses remain to be confirmed in `ThirdPartyNotices.md`, localization is partial, a final human build playthrough is pending, and VR has not yet passed QA on real hardware.
+Tracked in detail in `ROADMAP.md`. In short: on 29 September 2026 the Test Runner passed **20/20 EditMode and 33/33 PlayMode** tests in Unity 6000.4.9f1 (including 6 save/restore regressions added in that review, `SaveRestoreRegressionTests`), with 0 compile errors. `ShowcaseMuseumVR` does not yet include Room 14 (Linked Lights). The Escape Room puzzle definitions and Pipe payoff are closed. Audio licenses remain to be confirmed in `ThirdPartyNotices.md`, localization covers ES/EN/CA, a final human build playthrough is pending, and VR has not yet passed QA on real hardware.

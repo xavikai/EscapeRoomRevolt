@@ -15,9 +15,9 @@ MonoBehaviour:
   delayBeforeFirstHint: 45
   delayBetweenHints: 35
   hints:
-  - hintText: "Aquesta \xE9s la primera fase de la cadena."
+  - hintText: Esta es la primera fase de la cadena.
     hintAudio: {fileID: 0}
-  - hintText: Prem els colors en ordre.
+  - hintText: Pulsa los colores en orden.
     hintAudio: {fileID: 0}
-  - hintText: "L'ordre \xE9s vermell, verd i blau."
+  - hintText: El orden es rojo, verde y azul.
     hintAudio: {fileID: 0}

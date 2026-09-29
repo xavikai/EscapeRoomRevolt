@@ -1,8 +1,10 @@
 # Manual de usuario - Escape Room Framework
 
-**Empieza aquí:** [guía práctica de Escape Room PC/VR](Documentation/ESCAPE_ROOM_QUICKSTART.md), con recetas de cada mecánica, guardado, preparación VR y matriz de aceptación. Consulta [la auditoría del 9 de septiembre de 2026](AUDITORIA_ESCAPE_ROOM_2026-09-09.md) para los resultados actuales; el informe de agosto es histórico.
+**Idioma:** castellano · [català](UserManual.ca.md) · [English](UserManual.en.md)
 
-Esta guía cubre el flujo de trabajo para diseñadores. La arquitectura y las APIs están documentadas en [PROGRAMMING_GUIDE.md](PROGRAMMING_GUIDE.md). La referencia exhaustiva, con tutoriales, ejemplos y resolución de problemas, está en [DOCUMENTACIO_COMPLETA.md](DOCUMENTACIO_COMPLETA.md). El estado verificado de cada sala se encuentra en [AUDITORIA_ESCAPE_ROOM_2026-08-09.md](AUDITORIA_ESCAPE_ROOM_2026-08-09.md).
+**Empieza aquí:** [guía práctica de Escape Room PC/VR](Documentation/ESCAPE_ROOM_QUICKSTART.md), las [recetas paso a paso de cada mecánica](Documentation/RECETAS.md), guardado, preparación VR y matriz de aceptación. Consulta [la auditoría del 9 de septiembre de 2026](AUDITORIA_ESCAPE_ROOM_2026-09-09.md) para los resultados actuales; el informe de agosto es histórico.
+
+Esta guía cubre el flujo de trabajo para diseñadores. La arquitectura y las APIs están documentadas en [PROGRAMMING_GUIDE.md](PROGRAMMING_GUIDE.md). La referencia exhaustiva, con tutoriales, ejemplos y resolución de problemas, está en [DOCUMENTACIO_COMPLETA.md](DOCUMENTACIO_COMPLETA.md). El recorrido histórico sala por sala está en [AUDITORIA_ESCAPE_ROOM_2026-08-09.md](AUDITORIA_ESCAPE_ROOM_2026-08-09.md). Para aprender la plantilla de forma práctica, abre la guía interactiva [`docs/guia/index.html`](../../docs/guia/index.html) (catalán, castellano e inglés).
 
 ## 1. Menú del framework
 
@@ -61,7 +63,8 @@ La pantalla final permite reintentar, volver al menú principal o salir.
 2. En el Inspector del nuevo asset, ajusta los colores (fondo del panel, acento, título, botones) y, si quieres, arrastra una fuente ya importada (`.ttf`/`.otf`) en `Title Font`/`Body Font` y una imagen en `Logo`.
 3. En `MainMenu.unity`, selecciona `MainMenuUI`. En una escena jugable, selecciona `MenuUI`, dentro del `GameManager`. Ambos tienen el componente `UI Toolkit Menu Controller`; arrastra tu asset a su campo `_theme`.
 4. Si tienes varias escenas jugables con instancias independientes del `GameManager`, asigna el mismo asset en cada una o en el prefab compartido.
-5. Entra en Play — el menú ya usa tu paleta, tipografías y logo. Sin asignar nada, el menú conserva el diseño original de la plantilla.
+5. Opcional: escribe en `Main Menu Title` el nombre de tu juego y en `Credits Text` los créditos (autores, asignatura, licencias). Vacíos, se mantienen los textos de la plantilla.
+6. Entra en Play — el menú ya usa tu paleta, tipografías, logo y textos. Sin asignar nada, el menú conserva el diseño original de la plantilla.
 
 Si prefieres editar directamente el archivo de estilos en vez de crear un asset, `EscapeRoomMenu.uss` tiene los colores más repetidos como variables al principio del fichero (`--color-accent`, `--color-text`...), así que cambiar la paleta base es editar unas pocas líneas en vez de buscar cada color suelto.
 
@@ -98,16 +101,18 @@ Es preferible asignar las imágenes desde UI Builder para que Unity escriba corr
 
 Mantén el texto separado de la imagen. Así seguirán funcionando las traducciones y el modo de alto contraste.
 
-### Cambiar los textos que aparecen
+### Cambiar los textos que aparecen e idiomas
 
-Los textos del menú principal y del menú de pausa (título de cada pantalla y sus botones) viven en un catálogo editable sin tocar código:
+Todos los textos que ve el jugador pasan por un único catálogo editable sin tocar código: menús, HUD, prompts de interacción (`[E] Abrir armario`), panel VR, subtítulos, pistas, objetivos, nombres y descripciones de objetos, notas y los carteles 3D de las escenas. El catálogo incluye **castellano (`es`), inglés (`en`) y catalán (`ca`)**; el jugador elige el idioma en Ajustes.
+
+La regla es simple: **escribe los textos en castellano** en el Inspector (prompts, nombres de objetos, pistas, carteles) y añade su traducción al catálogo.
 
 1. Selecciona `Assets/_EscapeRoomTemplate/Resources/DefaultLocalizationCatalog.asset`.
-2. En el Inspector verás una lista de entradas; cada una tiene una clave (el texto español original, por ejemplo `"Nueva partida"`) y una lista de traducciones por idioma.
-3. Para cambiar un texto, edita el campo `Text` de la fila `es` de la entrada correspondiente.
-4. Para añadir un idioma (o completar las traducciones al inglés que ya incluye), añade una fila nueva con su código (`en`, `fr`...) y su traducción — aparecerá automáticamente en el desplegable de idioma de Ajustes, sin tocar ningún script.
+2. Cada entrada tiene una clave (el texto castellano exacto, por ejemplo `"Abrir armario"`) y una fila por idioma.
+3. Para un texto nuevo, añade una entrada con la clave idéntica al texto del Inspector (mayúsculas, acentos y saltos de línea incluidos) y las filas `es`, `en` y `ca`.
+4. Para añadir un idioma, añade filas con su código (`fr`, `it`...). Aparece automáticamente en el desplegable de idioma de Ajustes.
 
-**Importante**: por ahora este catálogo solo cubre el menú principal y el de pausa. El resto de textos del juego (HUD, inventario, notas, mensajes de puzles, prompts de interacción como "Amagar-se" o "Sortir") todavía están escritos directamente en el código C# de cada sistema — cambiarlos significa editar ese texto en el script correspondiente. Ampliar el catálogo a todo el juego es trabajo pendiente (`P0-007` en `ROADMAP.md`).
+Si una clave no existe se muestra el texto tal cual, así que un texto sin traducir nunca desaparece: solo no cambia de idioma. Los carteles 3D (TextMeshPro o TextMesh) se traducen solos si su texto es una clave del catálogo (`SceneTextLocalizer`); los textos que un script cambia en tiempo de ejecución no se tocan.
 
 ## 5. Inventario
 

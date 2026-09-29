@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Def_demo_melody_puzzle
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Puzzle.PuzzleDefinition
   _persistentId: demo_melody_sequence
-  _displayName: "Seq\xFC\xE8ncia mel\xF2dica"
+  _displayName: "Secuencia mel\xF3dica"
   _category: 1
-  _objective: Escolta la pista i repeteix les quatre notes en el mateix ordre.
+  _objective: Escucha la pista y repite las cuatro notas en el mismo orden.
   _hints: {fileID: 11400000, guid: 5378c97bd0fa5084d9c198f218fad7fa, type: 2}
   _sanityPenalty: 4

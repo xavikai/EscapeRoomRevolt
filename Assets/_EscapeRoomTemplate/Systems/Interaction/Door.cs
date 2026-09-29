@@ -40,10 +40,10 @@ namespace EscapeRoomRevolt.Systems.Interaction
         [Header("Door Settings")]
         [SerializeField] private bool _isLocked;
         [SerializeField] private string _requiredItemId = "";
-        [SerializeField] private string _lockedPrompt = "Locked";
-        [SerializeField] private string _openPrompt = "Open";
-        [SerializeField] private string _closePrompt = "Close";
-        [SerializeField] private string _peekPrompt = "Open further";
+        [SerializeField] private string _lockedPrompt = "Cerrado con llave";
+        [SerializeField] private string _openPrompt = "Abrir";
+        [SerializeField] private string _closePrompt = "Cerrar";
+        [SerializeField] private string _peekPrompt = "Abrir más";
         [SerializeField] private ItemUsePolicy _itemUsePolicy = ItemUsePolicy.OfferCompatible;
         [SerializeField] private bool _consumeRequiredItem = true;
 
@@ -115,7 +115,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
             get
             {
                 if (_isLocked) return _lockedPrompt;
-                if (_isMoving) return _targetOpenAmount > _openAmount ? "Opening..." : "Closing...";
+                if (_isMoving) return _targetOpenAmount > _openAmount ? "Abriendo..." : "Cerrando...";
                 if (_openAmount >= .99f) return _closePrompt;
                 if (_openAmount > .01f && AdvancedOperationsEnabled) return _peekPrompt;
                 return _openPrompt;

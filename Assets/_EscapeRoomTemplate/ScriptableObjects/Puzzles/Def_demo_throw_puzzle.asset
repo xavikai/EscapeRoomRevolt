@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Def_demo_throw_puzzle
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Puzzle.PuzzleDefinition
   _persistentId: demo_throw_targets
-  _displayName: "Galeria de precisi\xF3"
+  _displayName: "Galer\xEDa de precisi\xF3n"
   _category: 4
-  _objective: "Encerta les tres dianes amb objectes llan\xE7ables."
+  _objective: Acierta en las tres dianas con objetos que se puedan lanzar.
   _hints: {fileID: 11400000, guid: 8b63db46b6260604984d7ee5e972b262, type: 2}
   _sanityPenalty: 4

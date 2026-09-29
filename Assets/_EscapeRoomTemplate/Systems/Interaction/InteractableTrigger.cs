@@ -10,7 +10,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
     public class InteractableTrigger : InteractableBase
     {
         [Header("Trigger Settings")]
-        [SerializeField] private string _prompt = "Use";
+        [SerializeField] private string _prompt = "Usar";
         [Tooltip("If true, it can only be clicked once.")]
         [SerializeField] private bool _singleUse = false;
         [Tooltip("If true, clicking alternates between On and Off events.")]
@@ -43,14 +43,33 @@ namespace EscapeRoomRevolt.Systems.Interaction
                 OnInteractEvent?.Invoke();
             }
 
-            if (_singleUse)
-            {
-                // Optionally disable the collider so it can't be interacted with again
-                var col = GetComponent<Collider>();
-                if (col != null) col.enabled = false;
-                
-                EscapeRoomRevolt.Core.Save.SaveManager.Instance?.MarkAsDestroyed(SaveId);
-            }
+            if (_singleUse) DisableAfterUse();
+        }
+
+        // A spent single-use trigger stays visible but stops responding. It used to be marked as
+        // destroyed, which made SaveManager delete the whole object (button, lever art and all)
+        // when the game was loaded.
+        private void DisableAfterUse()
+        {
+            SetInteractable(false);
+            var col = GetComponent<Collider>();
+            if (col != null) col.enabled = false;
+        }
+
+        [System.Serializable]
+        private sealed class TriggerSaveData { public bool hasBeenUsed; public bool isOn; }
+
+        public override string SaveData() =>
+            JsonUtility.ToJson(new TriggerSaveData { hasBeenUsed = _hasBeenUsed, isOn = _isOn });
+
+        /// <summary>Restores the used/toggle state without re-firing the events: the objects they drive restore their own state.</summary>
+        public override void LoadData(string json)
+        {
+            TriggerSaveData data = JsonUtility.FromJson<TriggerSaveData>(json);
+            if (data == null) return;
+            _hasBeenUsed = data.hasBeenUsed;
+            _isOn = data.isOn;
+            if (_singleUse && _hasBeenUsed) DisableAfterUse();
         }
     }
 }

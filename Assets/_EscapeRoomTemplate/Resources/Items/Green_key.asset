@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Green_key
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Inventory.InventoryItemData
   _itemId: Green_key_01
-  _displayName: clau verda
+  _displayName: Llave verde
   _description: 
   _icon: {fileID: 21300000, guid: be6ec5750acbca3459956b268226f218, type: 3}
   _worldPrefab: {fileID: 0}

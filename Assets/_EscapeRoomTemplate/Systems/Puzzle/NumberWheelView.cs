@@ -36,12 +36,15 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         private void OnEnable()
         {
             Positioner.OnPositionChanged?.AddListener(OnPositionChanged);
+            Positioner.IndexSynced += OnPositionChanged;
             Refresh();
         }
 
         private void OnDisable()
         {
-            if (_positioner != null) _positioner.OnPositionChanged?.RemoveListener(OnPositionChanged);
+            if (_positioner == null) return;
+            _positioner.OnPositionChanged?.RemoveListener(OnPositionChanged);
+            _positioner.IndexSynced -= OnPositionChanged;
         }
 
         private void OnPositionChanged(int _) => Refresh();

@@ -279,12 +279,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4ea5eed2d1bc044bf1b31d31aad53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.InteractableTrigger
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: e6cf214a-6018-4ca2-a609-f0624bd26480
   _cursorType: 1
   _enableOutline: 1
-  _prompt: Press Green
+  _prompt: Pulsar verde
   _singleUse: 0
   _isToggle: 0
   OnInteractEvent:
@@ -653,7 +653,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30d37536e06db7946a937cf9c78c4a93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.Door
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 827afbcb-2319-4437-84e4-63bd821022b4
   _cursorType: 1
@@ -661,9 +661,9 @@ MonoBehaviour:
   _isLocked: 1
   _requiredItemId: 
   _lockedPrompt: Cerrada. Acierta en las tres dianas.
-  _openPrompt: Open
-  _closePrompt: Close
-  _peekPrompt: Open further
+  _openPrompt: Abrir
+  _closePrompt: Cerrar
+  _peekPrompt: "Abrir m\xE1s"
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
   _enableAdvancedOperations: 1
@@ -726,17 +726,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30d37536e06db7946a937cf9c78c4a93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.Door
-  _interactionPrompt: '[E] Open Sliding Door'
+  _interactionPrompt: Abrir puerta corredera
   _canInteract: 1
   _saveId: cc9e0018-0bd9-431b-ac1c-136ec8f389b9
   _cursorType: 1
   _enableOutline: 1
   _isLocked: 0
   _requiredItemId: 
-  _lockedPrompt: Locked
-  _openPrompt: Open
-  _closePrompt: Close
-  _peekPrompt: Open further
+  _lockedPrompt: Cerrado con llave
+  _openPrompt: Abrir
+  _closePrompt: Cerrar
+  _peekPrompt: "Abrir m\xE1s"
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
   _enableAdvancedOperations: 1
@@ -1730,7 +1730,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0ef6e1a46b4004183912708252d86c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.InteractableCycler
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 89eb26b1-7fe3-4cb0-98a2-95c65c2292d3
   _cursorType: 1
@@ -1875,7 +1875,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b77bb8e9a5e3aed429fa8385e91291b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Puzzle.NumberWheelStepButton
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 2e8f3980-e9ff-4ba9-a747-2da96d016af8
   _cursorType: 1
@@ -2533,34 +2533,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.SteppedPositioner
   _positions:
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 0, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 36, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 72, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 108, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 144, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 180, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 216, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 252, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 288, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 324, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
   _startingIndex: 0
@@ -2688,7 +2688,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46feb01cb3add4048a48df71040ed53d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Puzzle.NumberWheelInteractable
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 5500f7ad-4bd5-4ef4-ac39-41ffd59a9ff0
   _cursorType: 1
@@ -3345,7 +3345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b77bb8e9a5e3aed429fa8385e91291b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Puzzle.NumberWheelStepButton
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 7ef5ac4f-ff38-4a65-a562-15cd9e770aa9
   _cursorType: 1
@@ -4392,17 +4392,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30d37536e06db7946a937cf9c78c4a93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.Door
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: fa449507-4e9f-4e74-ad6d-bcf36c130cee
   _cursorType: 1
   _enableOutline: 1
   _isLocked: 0
   _requiredItemId: 
-  _lockedPrompt: Locked
-  _openPrompt: Open
-  _closePrompt: Close
-  _peekPrompt: Open further
+  _lockedPrompt: Cerrado con llave
+  _openPrompt: Abrir
+  _closePrompt: Cerrar
+  _peekPrompt: "Abrir m\xE1s"
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
   _enableAdvancedOperations: 1
@@ -5192,7 +5192,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 735f4b165763a3749909f9cd00116643, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.PhysicsGrabbable
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 6c9bffa6-82a0-4a8c-91ff-46713962a1e9
   _cursorType: 1
@@ -5928,7 +5928,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30d37536e06db7946a937cf9c78c4a93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.Door
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: a75d0aa5-ea14-4496-87b0-7ff7ec175719
   _cursorType: 1
@@ -5936,9 +5936,9 @@ MonoBehaviour:
   _isLocked: 1
   _requiredItemId: 
   _lockedPrompt: Cerrada. Resuelve el puzle para abrirla.
-  _openPrompt: Open
-  _closePrompt: Close
-  _peekPrompt: Open further
+  _openPrompt: Abrir
+  _closePrompt: Cerrar
+  _peekPrompt: "Abrir m\xE1s"
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
   _enableAdvancedOperations: 1
@@ -6001,7 +6001,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30d37536e06db7946a937cf9c78c4a93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.Door
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 045430e5-bd3b-404f-93a4-03e34dd1f742
   _cursorType: 1
@@ -6009,9 +6009,9 @@ MonoBehaviour:
   _isLocked: 1
   _requiredItemId: 
   _lockedPrompt: Cerrada. Falta resolver el mecanismo.
-  _openPrompt: Open
-  _closePrompt: Close
-  _peekPrompt: Open further
+  _openPrompt: Abrir
+  _closePrompt: Cerrar
+  _peekPrompt: "Abrir m\xE1s"
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
   _enableAdvancedOperations: 1
@@ -6421,7 +6421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0ef6e1a46b4004183912708252d86c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.InteractableCycler
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 60e0fead-868b-4d57-b93b-190451273a96
   _cursorType: 1
@@ -6789,18 +6789,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb9ff754bb9a3594da7dcc627d1e3fd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.InteractableNote
-  _interactionPrompt: '[E] Read Note'
+  _interactionPrompt: Leer nota
   _canInteract: 1
   _saveId: 2c56dc60-074d-439f-b061-c4b8a8818683
   _cursorType: 1
   _enableOutline: 1
   IsPickable: 0
-  NoteContent: 'This note can be read directly in the world.
-
-
-    You just look
-    at it and press E.'
-  ReadPrompt: Read Note
+  NoteContent: "Esta nota se puede leer directamente en el mundo.\n\nSolo tienes que mirarla y pulsar E."
+  ReadPrompt: Leer nota
   DisappearAfterRead: 0
   ItemData: {fileID: 0}
   Quantity: 1
@@ -7149,7 +7145,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 161413823}
-  m_Text: 'Puertas y contenedores: cajon, armario y puerta con llave'
+  m_Text: "Puertas y contenedores: caj\xF3n, armario y puerta con llave"
   m_OffsetZ: 0
   m_CharacterSize: 0.05
   m_LineSpacing: 1
@@ -7533,7 +7529,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b77bb8e9a5e3aed429fa8385e91291b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Puzzle.NumberWheelStepButton
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 3af059bc-2cab-4833-a992-53417eb63b6a
   _cursorType: 1
@@ -7619,7 +7615,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 170056994}
-  m_Text: 'Colocacion: lleva cada pieza a su sitio'
+  m_Text: "Colocaci\xF3n: lleva cada pieza a su sitio"
   m_OffsetZ: 0
   m_CharacterSize: 0.05
   m_LineSpacing: 1
@@ -8245,7 +8241,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0ef6e1a46b4004183912708252d86c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.InteractableCycler
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 2842afed-7b44-4963-94f8-c3553a8fffb0
   _cursorType: 1
@@ -8477,7 +8473,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b2b66329e524574fabb9bbd4bd41793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.KeypadButton3D
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: a67c3a0a-7bf7-40df-9036-9781a4ad0c01
   _cursorType: 1
@@ -8859,7 +8855,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b2b66329e524574fabb9bbd4bd41793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.KeypadButton3D
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: b28256d1-08a6-40fe-bf77-809e2b06bf77
   _cursorType: 1
@@ -9163,9 +9159,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'ESQUERRA: interruptor del sostre
-
-    ENTRADA O DRETA: temporitzador HUD'
+  m_text: "IZQUIERDA: interruptor del techo\nENTRADA O DERECHA: temporizador HUD"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -10781,7 +10775,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 735f4b165763a3749909f9cd00116643, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.PhysicsGrabbable
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 47f69586-7422-4aeb-b228-c6a528a01f64
   _cursorType: 1
@@ -11940,17 +11934,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30d37536e06db7946a937cf9c78c4a93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.Door
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 0bfaede8-dac2-4b09-a206-aa182368cede
   _cursorType: 1
   _enableOutline: 1
   _isLocked: 1
   _requiredItemId: 
-  _lockedPrompt: It's firmly locked. A mechanism holds it.
-  _openPrompt: Open
-  _closePrompt: Close
-  _peekPrompt: Open further
+  _lockedPrompt: "Est\xE1 bien cerrada. La sujeta un mecanismo."
+  _openPrompt: Abrir
+  _closePrompt: Cerrar
+  _peekPrompt: "Abrir m\xE1s"
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
   _enableAdvancedOperations: 1
@@ -12268,7 +12262,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "PUZZLE 1 \xB7 SEQ\xDC\xC8NCIA"
+  m_text: "PUZLE 1 \xB7 SECUENCIA"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -12834,7 +12828,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3eefe16f26541514591d9a8b27779f46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.ItemReceiver
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 9d94f3e3-9c46-4d1b-b30c-041adeb270fe
   _cursorType: 1
@@ -12843,8 +12837,8 @@ MonoBehaviour:
   _consumeItem: 1
   _itemUsePolicy: 1
   _spawnLocation: {fileID: 0}
-  _missingItemMessage: "Necessito un objecte per posar aqu\xED."
-  _successMessage: Fet!
+  _missingItemMessage: "Necesito un objeto para colocar aqu\xED."
+  _successMessage: "\xA1Hecho!"
   _delayBeforeAcceptEvent: 0
   OnItemAccepted:
     m_PersistentCalls:
@@ -13948,34 +13942,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.SteppedPositioner
   _positions:
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 0, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 36, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 72, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 108, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 144, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 180, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 216, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 252, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 288, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 324, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
   _startingIndex: 0
@@ -14103,7 +14097,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46feb01cb3add4048a48df71040ed53d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Puzzle.NumberWheelInteractable
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: fe1b7fbc-9edb-4fdc-b6cd-b329309052aa
   _cursorType: 1
@@ -14301,12 +14295,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4ea5eed2d1bc044bf1b31d31aad53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.InteractableTrigger
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: d6cec299-dfc4-4ad8-91e7-9556b8509536
   _cursorType: 1
   _enableOutline: 1
-  _prompt: Iniciar temporitzador
+  _prompt: Iniciar temporizador
   _singleUse: 0
   _isToggle: 0
   OnInteractEvent:
@@ -14413,12 +14407,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4ea5eed2d1bc044bf1b31d31aad53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.InteractableTrigger
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: b5fb281f-47b4-46b4-8df1-518ec477843d
   _cursorType: 1
   _enableOutline: 1
-  _prompt: "Moure pe\xE7a"
+  _prompt: Mover pieza
   _singleUse: 0
   _isToggle: 0
   OnInteractEvent:
@@ -16460,17 +16454,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30d37536e06db7946a937cf9c78c4a93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.Door
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: f8e62514-7b0d-41da-8454-8c433bdccdd8
   _cursorType: 1
   _enableOutline: 1
   _isLocked: 1
   _requiredItemId: 
-  _lockedPrompt: Locked
-  _openPrompt: Open
-  _closePrompt: Close
-  _peekPrompt: Open further
+  _lockedPrompt: Cerrado con llave
+  _openPrompt: Abrir
+  _closePrompt: Cerrar
+  _peekPrompt: "Abrir m\xE1s"
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
   _enableAdvancedOperations: 1
@@ -17177,7 +17171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d7d467594b5e5943a3940815012560c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Inventory.PickableItem
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 8f5e211d-7abe-4f91-9954-e273bed6b720
   _cursorType: 1
@@ -17737,7 +17731,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 735f4b165763a3749909f9cd00116643, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.PhysicsGrabbable
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: a1c16ffb-7121-4e5b-bebc-832aced72969
   _cursorType: 1
@@ -18972,12 +18966,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4ea5eed2d1bc044bf1b31d31aad53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.InteractableTrigger
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 4e77448b-3eb8-4b56-a6cf-fb94d41e05e5
   _cursorType: 1
   _enableOutline: 1
-  _prompt: "Moure pe\xE7a"
+  _prompt: Mover pieza
   _singleUse: 0
   _isToggle: 0
   OnInteractEvent:
@@ -19231,7 +19225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0ef6e1a46b4004183912708252d86c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.InteractableCycler
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: de06aadb-e31a-4d1e-8a14-fbf95cc57d96
   _cursorType: 1
@@ -21395,7 +21389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b2b66329e524574fabb9bbd4bd41793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.KeypadButton3D
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 27b40839-5e3f-4838-9e16-4780389997bb
   _cursorType: 1
@@ -22055,7 +22049,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "BOTONS \u25B2 / \u25BC \xB7 CLIC DRET SURT"
+  m_text: "BOTONES \u25B2 / \u25BC \xB7 CLIC DERECHO PARA SALIR"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -23217,7 +23211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0ef6e1a46b4004183912708252d86c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.InteractableCycler
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 29e79ab1-c67f-4b16-9db4-78f3a413381a
   _cursorType: 1
@@ -23382,7 +23376,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b2b66329e524574fabb9bbd4bd41793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.KeypadButton3D
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 9324fdcd-bd23-488f-83b7-17ae7f80091b
   _cursorType: 1
@@ -23514,7 +23508,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a160f5be097e25e409ea0f97d172f66c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.InteractableKeypad
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: f4dd6cc0-9f00-44ed-aecc-cba2bceee58e
   _cursorType: 1
@@ -24873,7 +24867,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0ef6e1a46b4004183912708252d86c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.InteractableCycler
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 183e61ca-abd4-43cb-b509-4ab4028ed656
   _cursorType: 1
@@ -25238,7 +25232,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 741993388}
-  m_Text: 'Nota y codigo: lee la pista e introduce el codigo'
+  m_Text: "Nota y c\xF3digo: lee la pista e introduce el c\xF3digo"
   m_OffsetZ: 0
   m_CharacterSize: 0.05
   m_LineSpacing: 1
@@ -26264,12 +26258,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4ea5eed2d1bc044bf1b31d31aad53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.InteractableTrigger
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 929031a2-d408-4644-a74a-54d2ddf0f457
   _cursorType: 1
   _enableOutline: 1
-  _prompt: "Examinar combinaci\xF3"
+  _prompt: "Examinar combinaci\xF3n"
   _singleUse: 0
   _isToggle: 0
   OnInteractEvent:
@@ -28088,7 +28082,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Sostre m\xF2bil \xB7 temporitzador HUD separat"
+  m_text: "Techo m\xF3vil \xB7 temporizador HUD independiente"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -28381,7 +28375,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0ef6e1a46b4004183912708252d86c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.InteractableCycler
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 8a880c29-3471-4fe7-863a-c2e20e762d79
   _cursorType: 1
@@ -28641,17 +28635,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30d37536e06db7946a937cf9c78c4a93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.Door
-  _interactionPrompt: '[E] Open Pivot Door'
+  _interactionPrompt: Abrir puerta
   _canInteract: 1
   _saveId: 7939d5b3-f8c9-4d5a-9b68-63045c54d51e
   _cursorType: 1
   _enableOutline: 1
   _isLocked: 1
   _requiredItemId: key_office_01
-  _lockedPrompt: Locked
-  _openPrompt: Open
-  _closePrompt: Close
-  _peekPrompt: Open further
+  _lockedPrompt: Cerrado con llave
+  _openPrompt: Abrir
+  _closePrompt: Cerrar
+  _peekPrompt: "Abrir m\xE1s"
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
   _enableAdvancedOperations: 1
@@ -29638,17 +29632,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30d37536e06db7946a937cf9c78c4a93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.Door
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: b0ed1bb0-4907-4373-888f-638e95ea3fb6
   _cursorType: 1
   _enableOutline: 1
   _isLocked: 1
   _requiredItemId: 
-  _lockedPrompt: Locked
-  _openPrompt: Open
-  _closePrompt: Close
-  _peekPrompt: Open further
+  _lockedPrompt: Cerrado con llave
+  _openPrompt: Abrir
+  _closePrompt: Cerrar
+  _peekPrompt: "Abrir m\xE1s"
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
   _enableAdvancedOperations: 1
@@ -29764,7 +29758,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b2b66329e524574fabb9bbd4bd41793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.KeypadButton3D
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 007d35a4-e366-4143-bc3a-cf30165ec1fc
   _cursorType: 1
@@ -31337,7 +31331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b77bb8e9a5e3aed429fa8385e91291b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Puzzle.NumberWheelStepButton
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 6c1a8ab2-a4c1-4c01-b898-6bd646f2ef13
   _cursorType: 1
@@ -31522,12 +31516,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4ea5eed2d1bc044bf1b31d31aad53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.InteractableTrigger
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: a921ac87-aa42-47cd-8e60-4fb32ffe82eb
   _cursorType: 1
   _enableOutline: 1
-  _prompt: "Moure pe\xE7a"
+  _prompt: Mover pieza
   _singleUse: 0
   _isToggle: 0
   OnInteractEvent:
@@ -31784,12 +31778,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4ea5eed2d1bc044bf1b31d31aad53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.InteractableTrigger
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: ae81c53e-6c15-4e68-9b80-0cd18cd3880d
   _cursorType: 1
   _enableOutline: 1
-  _prompt: '[E] Toggle Light'
+  _prompt: Encender/apagar luz
   _singleUse: 0
   _isToggle: 1
   OnInteractEvent:
@@ -32389,7 +32383,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b2b66329e524574fabb9bbd4bd41793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.KeypadButton3D
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 7f72c66c-9517-40b6-aa86-a23c7e0bec9b
   _cursorType: 1
@@ -32629,7 +32623,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4ea5eed2d1bc044bf1b31d31aad53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.InteractableTrigger
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 92af153e-d05a-46dd-b1d2-71cc52128b14
   _cursorType: 1
@@ -32958,7 +32952,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4ea5eed2d1bc044bf1b31d31aad53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.InteractableTrigger
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 34608b3c-758b-48cc-81fc-41134bb34ac3
   _cursorType: 1
@@ -33076,7 +33070,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1014149803}
-  m_Text: 'Melodia: escucha la pista y repite las notas'
+  m_Text: "Melod\xEDa: escucha la pista y repite las notas"
   m_OffsetZ: 0
   m_CharacterSize: 0.05
   m_LineSpacing: 1
@@ -33501,7 +33495,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b2b66329e524574fabb9bbd4bd41793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.KeypadButton3D
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 06d66edb-0e33-4924-8a0a-4db6ee554889
   _cursorType: 1
@@ -33649,7 +33643,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b2b66329e524574fabb9bbd4bd41793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.KeypadButton3D
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 24a15676-f898-46c7-a227-09c36ea6c402
   _cursorType: 1
@@ -34263,7 +34257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 735f4b165763a3749909f9cd00116643, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.PhysicsGrabbable
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 1f503624-3182-4421-a46e-4b63cadd9e3a
   _cursorType: 1
@@ -35809,7 +35803,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "13 \xB7 NUMBER WHEELS"
+  m_text: "13 \xB7 RODILLOS NUM\xC9RICOS"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -36760,17 +36754,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30d37536e06db7946a937cf9c78c4a93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.Door
-  _interactionPrompt: '[E] Open Safe'
+  _interactionPrompt: Abrir caja fuerte
   _canInteract: 1
   _saveId: 1bbc4d2a-b4b4-412b-aa2e-344c860f8efc
   _cursorType: 1
   _enableOutline: 1
   _isLocked: 1
   _requiredItemId: 
-  _lockedPrompt: Locked electronically.
-  _openPrompt: Open
-  _closePrompt: Close
-  _peekPrompt: Open further
+  _lockedPrompt: "Cierre electr\xF3nico."
+  _openPrompt: Abrir
+  _closePrompt: Cerrar
+  _peekPrompt: "Abrir m\xE1s"
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
   _enableAdvancedOperations: 1
@@ -37233,17 +37227,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30d37536e06db7946a937cf9c78c4a93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.Door
-  _interactionPrompt: '[E] Open Drawer'
+  _interactionPrompt: "Abrir caj\xF3n"
   _canInteract: 1
   _saveId: 1567d74b-3ec3-4a82-8844-258279402a13
   _cursorType: 1
   _enableOutline: 1
   _isLocked: 0
   _requiredItemId: 
-  _lockedPrompt: Locked
-  _openPrompt: Open
-  _closePrompt: Close
-  _peekPrompt: Open further
+  _lockedPrompt: Cerrado con llave
+  _openPrompt: Abrir
+  _closePrompt: Cerrar
+  _peekPrompt: "Abrir m\xE1s"
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
   _enableAdvancedOperations: 1
@@ -37486,7 +37480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 735f4b165763a3749909f9cd00116643, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.PhysicsGrabbable
-  _interactionPrompt: "Agafar pe\xE7a"
+  _interactionPrompt: Coger pieza
   _canInteract: 1
   _saveId: 732502bf-c64d-4c99-b93e-02e287af5146
   _cursorType: 1
@@ -38086,34 +38080,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.SteppedPositioner
   _positions:
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 0, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 36, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 72, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 108, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 144, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 180, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 216, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 252, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 288, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 324, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
   _startingIndex: 0
@@ -38241,7 +38235,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46feb01cb3add4048a48df71040ed53d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Puzzle.NumberWheelInteractable
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 01a7be40-ff30-40ef-a259-8007d324eb92
   _cursorType: 1
@@ -38886,7 +38880,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b77bb8e9a5e3aed429fa8385e91291b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Puzzle.NumberWheelStepButton
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 5ea5deba-2f0c-424e-bda3-5a367a8486c3
   _cursorType: 1
@@ -40349,12 +40343,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4ea5eed2d1bc044bf1b31d31aad53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.InteractableTrigger
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 12dcb756-5493-47a1-8c46-6b1a8fac8ee7
   _cursorType: 1
   _enableOutline: 1
-  _prompt: Press Red
+  _prompt: Pulsar rojo
   _singleUse: 0
   _isToggle: 0
   OnInteractEvent:
@@ -40536,7 +40530,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1261018799}
-  m_Text: 'Tuberias: rota hasta conectar'
+  m_Text: "Tuber\xEDas: rota hasta conectar"
   m_OffsetZ: 0
   m_CharacterSize: 0.05
   m_LineSpacing: 1
@@ -40656,7 +40650,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Resol-los tots \xB7 ordre opcional"
+  m_text: "Resu\xE9lvelos todos \xB7 orden opcional"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -40933,7 +40927,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30d37536e06db7946a937cf9c78c4a93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.Door
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 2752c5ef-9840-406c-ac3a-c7a9b99c53a9
   _cursorType: 1
@@ -40941,9 +40935,9 @@ MonoBehaviour:
   _isLocked: 1
   _requiredItemId: 
   _lockedPrompt: Cerrada. Falta resolver el mecanismo.
-  _openPrompt: Open
-  _closePrompt: Close
-  _peekPrompt: Open further
+  _openPrompt: Abrir
+  _closePrompt: Cerrar
+  _peekPrompt: "Abrir m\xE1s"
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
   _enableAdvancedOperations: 1
@@ -41252,7 +41246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b2b66329e524574fabb9bbd4bd41793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.KeypadButton3D
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 11fa675b-9cde-47a2-bf79-24db32460182
   _cursorType: 1
@@ -41736,12 +41730,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4ea5eed2d1bc044bf1b31d31aad53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.InteractableTrigger
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 78e7d3aa-e40a-40b7-8fc3-fc13081e2bf6
   _cursorType: 1
   _enableOutline: 1
-  _prompt: "Moure pe\xE7a"
+  _prompt: Mover pieza
   _singleUse: 0
   _isToggle: 0
   OnInteractEvent:
@@ -42128,7 +42122,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "PUZZLE 2 \xB7 PALANQUES"
+  m_text: "PUZLE 2 \xB7 PALANCAS"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -42392,7 +42386,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b77bb8e9a5e3aed429fa8385e91291b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Puzzle.NumberWheelStepButton
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 226cd1c8-e776-4ec1-920a-e4ad3b0a9197
   _cursorType: 1
@@ -42819,7 +42813,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0ef6e1a46b4004183912708252d86c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.InteractableCycler
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: c03a7575-8d5b-4c67-a4e6-58144c5ef9f3
   _cursorType: 1
@@ -43060,17 +43054,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30d37536e06db7946a937cf9c78c4a93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.Door
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: demo_pipe_exit_door
   _cursorType: 1
   _enableOutline: 1
   _isLocked: 1
   _requiredItemId: 
-  _lockedPrompt: Locked
-  _openPrompt: Open
-  _closePrompt: Close
-  _peekPrompt: Open further
+  _lockedPrompt: Cerrado con llave
+  _openPrompt: Abrir
+  _closePrompt: Cerrar
+  _peekPrompt: "Abrir m\xE1s"
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
   _enableAdvancedOperations: 1
@@ -43169,7 +43163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d7d467594b5e5943a3940815012560c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Inventory.PickableItem
-  _interactionPrompt: '[E] Pick up Letter'
+  _interactionPrompt: Recoger carta
   _canInteract: 1
   _saveId: dbc65a44-0973-4720-ba26-4669a944e8d9
   _cursorType: 1
@@ -43332,7 +43326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b2b66329e524574fabb9bbd4bd41793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.KeypadButton3D
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 28e2fb5b-6a33-49a4-a790-63cfd188cbff
   _cursorType: 1
@@ -43489,7 +43483,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: CODI DE 4 XIFRES
+  m_text: "C\xD3DIGO DE 4 CIFRAS"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -44357,7 +44351,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: EXAMINAR CANDAU
+  m_text: EXAMINAR CANDADO
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -46581,12 +46575,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4ea5eed2d1bc044bf1b31d31aad53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.InteractableTrigger
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: f04d67ba-4cce-4ad5-add1-cc8010501893
   _cursorType: 1
   _enableOutline: 1
-  _prompt: Girar PipeB
+  _prompt: "Girar tuber\xEDa B"
   _singleUse: 0
   _isToggle: 0
   OnInteractEvent:
@@ -47059,7 +47053,7 @@ MonoBehaviour:
   _duration: 25
   _autoStart: 0
   _showInHud: 1
-  _hudLabel: TEMPS DE LA SALA
+  _hudLabel: TIEMPO DE LA SALA
   _ending: {fileID: 0}
   _onStarted:
     m_PersistentCalls:
@@ -48970,7 +48964,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "11 \xB7 PUZZLES ENCADENATS"
+  m_text: "11 \xB7 PUZLES ENCADENADOS"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -49724,12 +49718,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4ea5eed2d1bc044bf1b31d31aad53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.InteractableTrigger
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 8a4eabfa-1949-4e70-b8ff-7c537123dd62
   _cursorType: 1
   _enableOutline: 1
-  _prompt: "Moure pe\xE7a"
+  _prompt: Mover pieza
   _singleUse: 0
   _isToggle: 0
   OnInteractEvent:
@@ -50949,7 +50943,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 735f4b165763a3749909f9cd00116643, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.PhysicsGrabbable
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: d5fea6ad-29bc-4b16-bd1c-d731fa820d17
   _cursorType: 1
@@ -51475,7 +51469,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4ea5eed2d1bc044bf1b31d31aad53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.InteractableTrigger
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 9624e495-48ff-4e6f-bebc-357755eab5b7
   _cursorType: 1
@@ -52636,7 +52630,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4ea5eed2d1bc044bf1b31d31aad53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.InteractableTrigger
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: a2ac8e33-09e6-4cd1-adc8-aa3a26632916
   _cursorType: 1
@@ -53516,7 +53510,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1580537096}
-  m_Text: "Sostre m\xF2bil \xB7 temporitzador HUD separat"
+  m_Text: "Techo m\xF3vil \xB7 temporizador HUD independiente"
   m_OffsetZ: 0
   m_CharacterSize: 0.05
   m_LineSpacing: 1
@@ -54241,12 +54235,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4ea5eed2d1bc044bf1b31d31aad53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.InteractableTrigger
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 33af6905-0271-41ea-9eb3-9f904bb0a368
   _cursorType: 1
   _enableOutline: 1
-  _prompt: "Moure pe\xE7a"
+  _prompt: Mover pieza
   _singleUse: 0
   _isToggle: 0
   OnInteractEvent:
@@ -55734,7 +55728,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 735f4b165763a3749909f9cd00116643, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.PhysicsGrabbable
-  _interactionPrompt: "Agafar pe\xE7a"
+  _interactionPrompt: Coger pieza
   _canInteract: 1
   _saveId: 1040c714-4bb3-4d12-ba33-ae4ddbace0ec
   _cursorType: 1
@@ -56283,34 +56277,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.SteppedPositioner
   _positions:
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 0, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 36, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 72, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 108, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 144, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 180, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 216, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 252, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 288, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
-  - prompt: "Avan\xE7ar rodet"
+  - prompt: Avanzar rodillo
     rotation: {x: 324, y: 0, z: 90}
     position: {x: 0, y: 0, z: 0}
   _startingIndex: 0
@@ -56438,7 +56432,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46feb01cb3add4048a48df71040ed53d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Puzzle.NumberWheelInteractable
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: b10f8340-7514-4716-8c13-8c7ef0121fd8
   _cursorType: 1
@@ -57378,7 +57372,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d7d467594b5e5943a3940815012560c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Inventory.PickableItem
-  _interactionPrompt: '[E] Pick up Golden Key'
+  _interactionPrompt: Recoger llave dorada
   _canInteract: 1
   _saveId: c28f4a20-bd35-4e55-8fda-10dfa75265cb
   _cursorType: 1
@@ -57758,17 +57752,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30d37536e06db7946a937cf9c78c4a93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.Door
-  _interactionPrompt: '[E] Open Cabinet'
+  _interactionPrompt: Abrir armario
   _canInteract: 1
   _saveId: 30eb31ee-9cb6-4e2e-b789-110437712cb1
   _cursorType: 1
   _enableOutline: 1
   _isLocked: 0
   _requiredItemId: 
-  _lockedPrompt: Locked
-  _openPrompt: Open
-  _closePrompt: Close
-  _peekPrompt: Open further
+  _lockedPrompt: Cerrado con llave
+  _openPrompt: Abrir
+  _closePrompt: Cerrar
+  _peekPrompt: "Abrir m\xE1s"
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
   _enableAdvancedOperations: 1
@@ -58035,7 +58029,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1709528622}
-  m_Text: "Resol-los tots \xB7 ordre opcional"
+  m_Text: "Resu\xE9lvelos todos \xB7 orden opcional"
   m_OffsetZ: 0
   m_CharacterSize: 0.05
   m_LineSpacing: 1
@@ -58146,7 +58140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b2b66329e524574fabb9bbd4bd41793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.KeypadButton3D
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: abe23379-2a72-4876-98e6-8cd3ab1f1706
   _cursorType: 1
@@ -58294,12 +58288,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4ea5eed2d1bc044bf1b31d31aad53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.InteractableTrigger
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 678cc650-5ac1-4d8a-bd11-3484fba2bcc5
   _cursorType: 1
   _enableOutline: 1
-  _prompt: Press Blue
+  _prompt: Pulsar azul
   _singleUse: 0
   _isToggle: 0
   OnInteractEvent:
@@ -58610,12 +58604,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4ea5eed2d1bc044bf1b31d31aad53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.InteractableTrigger
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 39f8eaad-5981-4b1a-a1f1-0987008d444b
   _cursorType: 1
   _enableOutline: 1
-  _prompt: "Moure pe\xE7a"
+  _prompt: Mover pieza
   _singleUse: 0
   _isToggle: 0
   OnInteractEvent:
@@ -58992,7 +58986,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 735f4b165763a3749909f9cd00116643, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.PhysicsGrabbable
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: dca796db-049e-4864-a7bc-80701eb562ad
   _cursorType: 1
@@ -59691,7 +59685,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4ea5eed2d1bc044bf1b31d31aad53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.InteractableTrigger
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: a40b7b56-c074-443e-b5d2-53f1c5e5cb4c
   _cursorType: 1
@@ -60925,7 +60919,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "12 \xB7 INDEPENDENT HAZARDS"
+  m_text: "12 \xB7 PELIGROS INDEPENDIENTES"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -61553,7 +61547,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4ea5eed2d1bc044bf1b31d31aad53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.InteractableTrigger
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: bdbc2d2b-7487-4bbd-9453-f5f3e8807de3
   _cursorType: 1
@@ -61959,7 +61953,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30d37536e06db7946a937cf9c78c4a93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.Door
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 4e5e97cf-30ba-4200-916b-efc32beb1269
   _cursorType: 1
@@ -61967,9 +61961,9 @@ MonoBehaviour:
   _isLocked: 1
   _requiredItemId: 
   _lockedPrompt: Cerrada. Resuelve el puzle para abrirla.
-  _openPrompt: Open
-  _closePrompt: Close
-  _peekPrompt: Open further
+  _openPrompt: Abrir
+  _closePrompt: Cerrar
+  _peekPrompt: "Abrir m\xE1s"
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
   _enableAdvancedOperations: 1
@@ -65518,7 +65512,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d7d467594b5e5943a3940815012560c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Inventory.PickableItem
-  _interactionPrompt: '[E] Pick up Key'
+  _interactionPrompt: Recoger llave
   _canInteract: 1
   _saveId: d88f743d-283d-4da9-982b-b903c186d611
   _cursorType: 1
@@ -65683,12 +65677,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4ea5eed2d1bc044bf1b31d31aad53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.InteractableTrigger
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: fd9b1947-107e-42af-b76a-1740e68747b2
   _cursorType: 1
   _enableOutline: 1
-  _prompt: "Moure pe\xE7a"
+  _prompt: Mover pieza
   _singleUse: 0
   _isToggle: 0
   OnInteractEvent:
@@ -66095,7 +66089,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0ef6e1a46b4004183912708252d86c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.InteractableCycler
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: aa2a06e6-c685-4592-a556-8036d796b426
   _cursorType: 1
@@ -66241,7 +66235,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 735f4b165763a3749909f9cd00116643, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.PhysicsGrabbable
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 4d35615e-ce87-4b35-97d3-8b7aa9b7ca63
   _cursorType: 1
@@ -66744,12 +66738,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4ea5eed2d1bc044bf1b31d31aad53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.InteractableTrigger
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 122636ee-ce47-4def-b784-48819c813ce5
   _cursorType: 1
   _enableOutline: 1
-  _prompt: "Iniciar sostre m\xF2bil"
+  _prompt: "Iniciar techo m\xF3vil"
   _singleUse: 0
   _isToggle: 0
   OnInteractEvent:
@@ -66878,9 +66872,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1965945142}
-  m_Text: 'ESCAPE ROOM  /  SURVIVAL HORROR
-
-    SYSTEMS SHOWCASE'
+  m_Text: "ESCAPE ROOM  /  SURVIVAL HORROR\nMUESTRA DE SISTEMAS"
   m_OffsetZ: 0
   m_CharacterSize: 0.075
   m_LineSpacing: 1
@@ -67112,7 +67104,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Quatre xifres \xB7 combinaci\xF3 3142"
+  m_text: "Cuatro cifras \xB7 combinaci\xF3n 3142"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -67389,7 +67381,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1990274625}
-  m_Text: 'Fisica: lanza objetos a las dianas'
+  m_Text: "F\xEDsica: lanza objetos a las dianas"
   m_OffsetZ: 0
   m_CharacterSize: 0.05
   m_LineSpacing: 1
@@ -68273,7 +68265,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2030337463}
-  m_Text: 'Deslizante: reordena la cuadricula'
+  m_Text: "Deslizante: reordena la cuadr\xEDcula"
   m_OffsetZ: 0
   m_CharacterSize: 0.05
   m_LineSpacing: 1
@@ -68526,7 +68518,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2050146390}
-  m_Text: "Quatre xifres \xB7 combinaci\xF3 3142"
+  m_Text: "Cuatro cifras \xB7 combinaci\xF3n 3142"
   m_OffsetZ: 0
   m_CharacterSize: 0.05
   m_LineSpacing: 1
@@ -68655,12 +68647,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4ea5eed2d1bc044bf1b31d31aad53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.InteractableTrigger
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 7dceb41d-7c38-437c-9050-d6277c142651
   _cursorType: 1
   _enableOutline: 1
-  _prompt: Girar PipeA
+  _prompt: "Girar tuber\xEDa A"
   _singleUse: 0
   _isToggle: 0
   OnInteractEvent:
@@ -69370,7 +69362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b77bb8e9a5e3aed429fa8385e91291b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Puzzle.NumberWheelStepButton
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: e19cee74-1f5f-4e7d-b4bb-2c649fb0ed36
   _cursorType: 1
@@ -69835,7 +69827,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4ea5eed2d1bc044bf1b31d31aad53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.InteractableTrigger
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: a0b4daff-0eb7-4496-b008-3a35fda38bb9
   _cursorType: 1
@@ -70725,7 +70717,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d7d467594b5e5943a3940815012560c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Inventory.PickableItem
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 04dd75c3-e123-4782-94c1-31e21e993c88
   _cursorType: 1
@@ -71070,7 +71062,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b77bb8e9a5e3aed429fa8385e91291b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Puzzle.NumberWheelStepButton
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: a4e3afb9-cfc3-4047-8d70-d085b1e8eb23
   _cursorType: 1
@@ -71432,7 +71424,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4ea5eed2d1bc044bf1b31d31aad53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.InteractableTrigger
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: fe39df4f-803f-4ae4-a477-4ef331f6b491
   _cursorType: 1
@@ -71555,17 +71547,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30d37536e06db7946a937cf9c78c4a93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.Door
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: museum_melody_door
   _cursorType: 1
   _enableOutline: 1
   _isLocked: 1
   _requiredItemId: 
-  _lockedPrompt: Locked
-  _openPrompt: Open
-  _closePrompt: Close
-  _peekPrompt: Open further
+  _lockedPrompt: Cerrado con llave
+  _openPrompt: Abrir
+  _closePrompt: Cerrar
+  _peekPrompt: "Abrir m\xE1s"
   _itemUsePolicy: 1
   _consumeRequiredItem: 1
   _enableAdvancedOperations: 1

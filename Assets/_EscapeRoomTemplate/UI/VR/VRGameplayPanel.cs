@@ -10,6 +10,7 @@ using EscapeRoomRevolt.Systems.Puzzle;
 using TMPro;
 using UnityEngine;
 using UnityEngine.XR;
+using static EscapeRoomRevolt.Core.Localization.LocalizationService;
 
 namespace EscapeRoomRevolt.UI.VR
 {
@@ -146,7 +147,7 @@ namespace EscapeRoomRevolt.UI.VR
             if (_subtitleText == null || _subtitlePanel == null) return;
             ResolveHead();
             PlaceSubtitle();
-            _subtitleText.text = evt.text ?? string.Empty;
+            _subtitleText.text = Tr(evt.text ?? string.Empty);
             _subtitlePanel.SetActive(true);
             if (evt.holdSeconds > 0f) _subtitleHideRoutine = StartCoroutine(HideSubtitleAfter(evt.holdSeconds));
         }
@@ -286,10 +287,10 @@ namespace EscapeRoomRevolt.UI.VR
         {
             OpenPanel(PanelMode.Help);
             ClearContent();
-            CreateLabel("PROVA VR · SHOWCASE MUSEUM", new Vector2(0f, .34f), .055f, TextAnchor.MiddleCenter, Color.white);
-            CreateLabel("Y  ·  OBRIR INVENTARI\nB  ·  TANCAR / TORNAR\nGATELL  ·  INTERACTUAR\nJOYSTICK DRET ENDAVANT  ·  APUNTAR TELEPORT\nDEIXAR-LO ANAR  ·  TELEPORTAR\n\nLes notes i els keypads s'obren en aquest panell 3D.",
+            CreateLabel("PRUEBA VR · SHOWCASE MUSEUM", new Vector2(0f, .34f), .055f, TextAnchor.MiddleCenter, Color.white);
+            CreateLabel("Y  ·  ABRIR INVENTARIO\nB  ·  CERRAR / VOLVER\nGATILLO  ·  INTERACTUAR\nJOYSTICK DERECHO ADELANTE  ·  APUNTAR TELETRANSPORTE\nSOLTARLO  ·  TELETRANSPORTARSE\n\nLas notas y los teclados se abren en este panel 3D.",
                 new Vector2(-.48f, .19f), .036f, TextAnchor.UpperLeft, new Color(.82f, .9f, 1f));
-            CreateButton("COMENÇAR", new Vector2(0f, -.31f), new Vector2(.48f, .11f), ClosePanel);
+            CreateButton("EMPEZAR", new Vector2(0f, -.31f), new Vector2(.48f, .11f), ClosePanel);
         }
 
         private void OpenInventory()
@@ -306,13 +307,13 @@ namespace EscapeRoomRevolt.UI.VR
         {
             if (_mode != PanelMode.Inventory) return;
             ClearContent();
-            string title = _itemUseRequest == null ? "INVENTARI" : "TRIA UN OBJECTE PER UTILITZAR AQUÍ";
+            string title = _itemUseRequest == null ? "INVENTARIO" : "ELIGE UN OBJETO PARA USARLO AQUÍ";
             CreateLabel(title, new Vector2(0f, .37f), .045f, TextAnchor.MiddleCenter, Color.white);
-            CreateLabel("Y / B: tancar", new Vector2(.54f, .37f), .022f, TextAnchor.MiddleRight, new Color(.55f, .7f, .82f));
+            CreateLabel("Y / B: cerrar", new Vector2(.54f, .37f), .022f, TextAnchor.MiddleRight, new Color(.55f, .7f, .82f));
 
             if (_inventory?.Slots == null)
             {
-                CreateLabel("L'inventari encara no està disponible.", Vector2.zero, .04f, TextAnchor.MiddleCenter, Color.white);
+                CreateLabel("El inventario todavía no está disponible.", Vector2.zero, .04f, TextAnchor.MiddleCenter, Color.white);
                 return;
             }
 
@@ -336,25 +337,25 @@ namespace EscapeRoomRevolt.UI.VR
             }
 
             if (occupied.Count == 0)
-                CreateLabel(_itemUseRequest == null ? "L'inventari és buit." : "No portes cap objecte compatible.",
+                CreateLabel(_itemUseRequest == null ? "El inventario está vacío." : "No llevas ningún objeto compatible.",
                     new Vector2(-.36f, .08f), .035f, TextAnchor.MiddleCenter, Color.white);
 
             InventoryItemData selected = GetSelectedData();
-            string selectedName = selected != null ? selected.DisplayName.ToUpperInvariant() : "CAP OBJECTE SELECCIONAT";
-            string selectedDescription = selected != null ? selected.Description : "Recull un objecte i apareixerà aquí.";
-            if (_combineSourceIndex >= 0) selectedDescription = "Selecciona un segon objecte i prem COMBINAR.";
+            string selectedName = selected != null ? Tr(selected.DisplayName).ToUpperInvariant() : "NINGÚN OBJETO SELECCIONADO";
+            string selectedDescription = selected != null ? selected.Description : "Recoge un objeto y aparecerá aquí.";
+            if (_combineSourceIndex >= 0) selectedDescription = "Selecciona un segundo objeto y pulsa COMBINAR.";
             CreateLabel(Shorten(selectedName, 30), new Vector2(.29f, .25f), .035f, TextAnchor.MiddleCenter, new Color(1f, .78f, .28f));
             CreateLabel(Wrap(selectedDescription, 34), new Vector2(.04f, .18f), .024f, TextAnchor.UpperLeft, new Color(.86f, .9f, .94f));
 
-            CreateButton(_itemUseRequest == null ? PrimaryActionLabel(selected) : "UTILITZAR AQUÍ", new Vector2(.17f, -.12f), new Vector2(.30f, .09f), UseSelected);
+            CreateButton(_itemUseRequest == null ? PrimaryActionLabel(selected) : "USAR AQUÍ", new Vector2(.17f, -.12f), new Vector2(.30f, .09f), UseSelected);
             CreateButton("ACTIVAR", new Vector2(.49f, -.12f), new Vector2(.27f, .09f), ActivateSelected);
             CreateButton(_combineSourceIndex < 0 ? "COMBINAR" : "CONFIRMAR", new Vector2(.17f, -.24f), new Vector2(.30f, .09f), CombineSelected);
-            CreateButton($"RÀPID {_inventory.ActiveQuickIndex + 1}", new Vector2(.49f, -.24f), new Vector2(.27f, .09f), CycleQuickSlot);
+            CreateButton($"{Tr("RÁPIDO")} {_inventory.ActiveQuickIndex + 1}", new Vector2(.49f, -.24f), new Vector2(.27f, .09f), CycleQuickSlot);
 
             CreateButton("◀", new Vector2(-.53f, -.35f), new Vector2(.13f, .075f), () => ChangeInventoryPage(-1));
             CreateLabel($"{_inventoryPage + 1} / {pageCount}", new Vector2(-.36f, -.35f), .025f, TextAnchor.MiddleCenter, Color.white);
             CreateButton("▶", new Vector2(-.19f, -.35f), new Vector2(.13f, .075f), () => ChangeInventoryPage(1));
-            CreateButton("TANCAR", new Vector2(.42f, -.35f), new Vector2(.38f, .075f), ClosePanel, new Color(.32f, .10f, .12f));
+            CreateButton("CERRAR", new Vector2(.42f, -.35f), new Vector2(.38f, .075f), ClosePanel, new Color(.32f, .10f, .12f));
         }
 
         private List<int> GetVisibleInventoryIndices()
@@ -457,20 +458,20 @@ namespace EscapeRoomRevolt.UI.VR
         private static string PrimaryActionLabel(InventoryItemData data)
         {
             if (data == null) return "USAR";
-            if (data.IsReadable || data.PrimaryAction == InventoryPrimaryAction.Read) return "LLEGIR";
+            if (data.IsReadable || data.PrimaryAction == InventoryPrimaryAction.Read) return "LEER";
             if (data.PrimaryAction == InventoryPrimaryAction.Consume) return "CONSUMIR";
-            if (data.WorldPrefab != null) return "SOSTENIR";
+            if (data.WorldPrefab != null) return "SOSTENER";
             return "USAR";
         }
 
         private void OpenNote(string content)
         {
             _notePages.Clear();
-            string wrapped = Wrap(string.IsNullOrWhiteSpace(content) ? "(Nota buida)" : content, 58);
+            string wrapped = Wrap(string.IsNullOrWhiteSpace(content) ? "(Nota vacía)" : content, 58);
             string[] lines = wrapped.Split('\n');
             for (int start = 0; start < lines.Length; start += NoteLinesPerPage)
                 _notePages.Add(string.Join("\n", lines.Skip(start).Take(NoteLinesPerPage)));
-            if (_notePages.Count == 0) _notePages.Add("(Nota buida)");
+            if (_notePages.Count == 0) _notePages.Add("(Nota vacía)");
             _notePage = 0;
             OpenPanel(PanelMode.Note);
             BuildNote();
@@ -484,7 +485,7 @@ namespace EscapeRoomRevolt.UI.VR
             CreateButton("◀", new Vector2(-.42f, -.35f), new Vector2(.16f, .08f), () => ChangeNotePage(-1));
             CreateLabel($"{_notePage + 1} / {_notePages.Count}", new Vector2(-.20f, -.35f), .025f, TextAnchor.MiddleCenter, Color.white);
             CreateButton("▶", new Vector2(.02f, -.35f), new Vector2(.16f, .08f), () => ChangeNotePage(1));
-            CreateButton("TANCAR", new Vector2(.39f, -.35f), new Vector2(.38f, .08f), ClosePanel, new Color(.32f, .10f, .12f));
+            CreateButton("CERRAR", new Vector2(.39f, -.35f), new Vector2(.38f, .08f), ClosePanel, new Color(.32f, .10f, .12f));
         }
 
         private void ChangeNotePage(int direction)
@@ -504,7 +505,7 @@ namespace EscapeRoomRevolt.UI.VR
         {
             ClearContent();
             string display = _keypad == null ? "----" : (_keypad.IsSolved ? "OK" : _keypad.CurrentInput.PadRight(4, '-'));
-            CreateLabel("TECLAT NUMÈRIC", new Vector2(0f, .37f), .045f, TextAnchor.MiddleCenter, Color.white);
+            CreateLabel("TECLADO NUMÉRICO", new Vector2(0f, .37f), .045f, TextAnchor.MiddleCenter, Color.white);
             CreateLabel(display, new Vector2(0f, .27f), .065f, TextAnchor.MiddleCenter, new Color(.35f, 1f, .55f));
             string[] keys = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "C", "0", "OK" };
             for (int index = 0; index < keys.Length; index++)
@@ -517,7 +518,7 @@ namespace EscapeRoomRevolt.UI.VR
                 CreateButton(key, new Vector2(x, y), new Vector2(.18f, .10f), () => KeypadPress(key),
                     key == "OK" ? new Color(.08f, .34f, .17f) : key == "C" ? new Color(.36f, .11f, .10f) : new Color(.08f, .16f, .23f));
             }
-            CreateButton("TANCAR", new Vector2(.45f, -.35f), new Vector2(.30f, .08f), ClosePanel, new Color(.32f, .10f, .12f));
+            CreateButton("CERRAR", new Vector2(.45f, -.35f), new Vector2(.30f, .08f), ClosePanel, new Color(.32f, .10f, .12f));
         }
 
         private void KeypadPress(string key)
@@ -556,9 +557,9 @@ namespace EscapeRoomRevolt.UI.VR
         {
             if (_mode != PanelMode.NumberWheels) return;
             ClearContent();
-            CreateLabel("COMBINACIÓ DE RODETS", new Vector2(0f, .35f), .043f,
+            CreateLabel("COMBINACIÓN DE RODILLOS", new Vector2(0f, .35f), .043f,
                 TextAnchor.MiddleCenter, Color.white);
-            CreateLabel("Selecciona ▲ o ▼ per girar cada rodet", new Vector2(0f, .27f), .024f,
+            CreateLabel("Selecciona ▲ o ▼ para girar cada rodillo", new Vector2(0f, .27f), .024f,
                 TextAnchor.MiddleCenter, new Color(.7f, .82f, .94f));
 
             float spacing = Mathf.Min(.25f, 1.02f / Mathf.Max(1, _numberWheels.Count));
@@ -577,7 +578,7 @@ namespace EscapeRoomRevolt.UI.VR
                     () => StepNumberWheel(captured, -1));
             }
 
-            CreateButton("TANCAR", new Vector2(0f, -.35f), new Vector2(.38f, .08f), ClosePanel,
+            CreateButton("CERRAR", new Vector2(0f, -.35f), new Vector2(.38f, .08f), ClosePanel,
                 new Color(.32f, .10f, .12f));
         }
 
@@ -629,7 +630,7 @@ namespace EscapeRoomRevolt.UI.VR
 
             TextMeshPro mesh = label.AddComponent<TextMeshPro>();
             if (_font != null) mesh.font = _font;
-            mesh.text = text ?? string.Empty;
+            mesh.text = Tr(text ?? string.Empty);
             mesh.enableAutoSizing = true;
             mesh.fontSizeMin = Mathf.Max(.035f, characterSize * 1.5f);
             mesh.fontSizeMax = Mathf.Max(mesh.fontSizeMin, characterSize * 4.5f);

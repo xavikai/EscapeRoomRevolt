@@ -1,4 +1,5 @@
 using UnityEngine;
+using EscapeRoomRevolt.Core;
 using EscapeRoomRevolt.Systems.Interaction;
 
 namespace EscapeRoomRevolt.Systems.Puzzle
@@ -27,13 +28,17 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         {
             _renderer = GetComponent<Renderer>();
             if (_puzzle != null) _puzzle.OnSolvedEvent.AddListener(UpdateColor);
+            EventBus.Subscribe<OnGameLoaded>(HandleGameLoaded);
             UpdateColor();
         }
 
         private void OnDestroy()
         {
             if (_puzzle != null) _puzzle.OnSolvedEvent.RemoveListener(UpdateColor);
+            EventBus.Unsubscribe<OnGameLoaded>(HandleGameLoaded);
         }
+
+        private void HandleGameLoaded(OnGameLoaded _) => UpdateColor();
 
         private void OnCollisionEnter(Collision collision)
         {

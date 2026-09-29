@@ -46,7 +46,7 @@ namespace EscapeRoomRevolt.Core.Localization
         {
             if (string.IsNullOrEmpty(key)) return key;
 
-            LocalizationEntry entry = entries.Find(e => e.key == key);
+            LocalizationEntry entry = Find(key);
             if (entry == null) return key;
 
             LocalizedString match = entry.translations.Find(t => t.languageCode == languageCode);
@@ -54,5 +54,26 @@ namespace EscapeRoomRevolt.Core.Localization
                 match = entry.translations.Find(t => t.languageCode == fallbackLanguageCode);
             return match != null && !string.IsNullOrEmpty(match.text) ? match.text : key;
         }
+
+        /// <summary>True when the catalog has an entry for key. Used by SceneTextLocalizer to leave free text alone.</summary>
+        public bool HasKey(string key) => !string.IsNullOrEmpty(key) && Find(key) != null;
+
+        // Tr() runs every frame for HUD prompts, so lookups go through a dictionary instead of a linear search.
+        [System.NonSerialized] private Dictionary<string, LocalizationEntry> _index;
+        [System.NonSerialized] private int _indexedCount = -1;
+
+        private LocalizationEntry Find(string key)
+        {
+            if (_index == null || _indexedCount != entries.Count)
+            {
+                _index = new Dictionary<string, LocalizationEntry>();
+                foreach (LocalizationEntry e in entries)
+                    if (e != null && !string.IsNullOrEmpty(e.key) && !_index.ContainsKey(e.key)) _index.Add(e.key, e);
+                _indexedCount = entries.Count;
+            }
+            return _index.TryGetValue(key, out LocalizationEntry found) ? found : null;
+        }
+
+        private void OnValidate() => _index = null;
     }
 }

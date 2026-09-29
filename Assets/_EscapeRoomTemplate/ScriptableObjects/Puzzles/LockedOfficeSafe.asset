@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: LockedOfficeSafe
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Puzzle.PuzzleDefinition
   _persistentId: lockedoffice_safe
-  _displayName: Office Safe
+  _displayName: Caja fuerte de la oficina
   _category: 0
-  _objective: Discover the safe combination.
+  _objective: "Descubre la combinaci\xF3n de la caja fuerte."
   _hints: {fileID: 11400000, guid: f908457d6de615b4c9825043b6bb6517, type: 2}
   _sanityPenalty: 4

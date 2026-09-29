@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Fuse_15A
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Inventory.InventoryItemData
   _itemId: fuse_15A
-  _displayName: 15A Fuse
-  _description: A standard 15 amp fuse for an electrical panel.
+  _displayName: Fusible de 15 A
+  _description: "Un fusible est\xE1ndar de 15 amperios para un cuadro el\xE9ctrico."
   _icon: {fileID: 21300000, guid: 7a77b85595d8eba47856571ee96041a1, type: 3}
   _worldPrefab: {fileID: 0}
   _category: 0

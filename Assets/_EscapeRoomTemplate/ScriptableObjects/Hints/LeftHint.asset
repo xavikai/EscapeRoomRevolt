@@ -15,7 +15,7 @@ MonoBehaviour:
   delayBeforeFirstHint: 3
   delayBetweenHints: 3
   hints:
-  - hintText: Estic a la zona vermella.
+  - hintText: Estoy en la zona roja.
     hintAudio: {fileID: 0}
-  - hintText: Aquesta zona vermella m'inquieta molt.
+  - hintText: Esta zona roja me inquieta mucho.
     hintAudio: {fileID: 0}

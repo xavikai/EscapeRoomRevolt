@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Def_demo_linked_lights_puzzle
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Puzzle.PuzzleDefinition
   _persistentId: demo_linked_lights
-  _displayName: Circuit de llums
+  _displayName: Circuito de luces
   _category: 1
-  _objective: "Enc\xE9n les cinc llums del circuit per obrir la porta."
+  _objective: Enciende las cinco luces del circuito para abrir la puerta.
   _hints: {fileID: 11400000, guid: eb029d964fb193548a621a144506091a, type: 2}
   _sanityPenalty: 4

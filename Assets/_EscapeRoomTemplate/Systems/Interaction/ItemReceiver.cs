@@ -23,10 +23,10 @@ namespace EscapeRoomRevolt.Systems.Interaction
         [SerializeField] private Transform _spawnLocation;
 
         [Tooltip("Message shown if the player doesn't have the item.")]
-        [SerializeField] private string _missingItemMessage = "Necessito un objecte per posar aquí.";
+        [SerializeField] private string _missingItemMessage = "Necesito un objeto para colocar aquí.";
         
         [Tooltip("Message shown when the item is successfully used.")]
-        [SerializeField] private string _successMessage = "Fet!";
+        [SerializeField] private string _successMessage = "¡Hecho!";
 
         [Header("Events")]
         [Tooltip("How long to wait after placing the item before firing OnItemAccepted? (Useful to wait for a key turning animation to finish)")]

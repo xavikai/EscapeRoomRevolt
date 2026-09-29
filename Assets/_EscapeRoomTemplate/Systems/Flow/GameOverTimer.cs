@@ -22,7 +22,7 @@ namespace EscapeRoomRevolt.Systems.Flow
 
         [Header("HUD")]
         [SerializeField] private bool _showInHud = true;
-        [SerializeField] private string _hudLabel = "TEMPS RESTANT";
+        [SerializeField] private string _hudLabel = "TIEMPO RESTANTE";
 
         [Header("Failure")]
         [SerializeField] private EndingDefinition _ending;
@@ -121,7 +121,7 @@ namespace EscapeRoomRevolt.Systems.Flow
             EventBus.Publish(new OnGameOverTimerChanged
             {
                 timerId = SaveId,
-                label = string.IsNullOrWhiteSpace(_hudLabel) ? "TEMPS RESTANT" : _hudLabel,
+                label = string.IsNullOrWhiteSpace(_hudLabel) ? "TIEMPO RESTANTE" : _hudLabel,
                 secondsRemaining = TimeRemaining,
                 normalizedRemaining = NormalizedRemaining,
                 isRunning = _isRunning,

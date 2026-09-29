@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Def_demo_multistage_sequence
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Puzzle.PuzzleDefinition
   _persistentId: demo_multistage_sequence_stage
-  _displayName: "Fase interna: seq\xFC\xE8ncia"
+  _displayName: "Fase interna: secuencia"
   _category: 1
-  _objective: "Completa la seq\xFC\xE8ncia de colors de la primera fase."
+  _objective: Completa la secuencia de colores de la primera fase.
   _hints: {fileID: 11400000, guid: 8a6f2ede48d4f104f95adfe19427ef6b, type: 2}
   _sanityPenalty: 4

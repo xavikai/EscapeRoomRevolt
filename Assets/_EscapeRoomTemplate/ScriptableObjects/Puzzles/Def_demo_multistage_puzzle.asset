@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: Def_demo_multistage_puzzle
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Puzzle.PuzzleDefinition
   _persistentId: demo_multistage_chain
-  _displayName: Cadena de seguretat
+  _displayName: Cadena de seguridad
   _category: 1
-  _objective: "Resol la seq\xFC\xE8ncia de colors i despr\xE9s configura les tres
-    palanques."
+  _objective: "Resuelve la secuencia de colores y despu\xE9s configura las tres palancas."
   _hints: {fileID: 11400000, guid: 2c7d9c80e12ace7429b88b912669319c, type: 2}
   _sanityPenalty: 4

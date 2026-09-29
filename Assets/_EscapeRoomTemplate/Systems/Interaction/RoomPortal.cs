@@ -20,7 +20,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
         [Header("Lock (optional)")]
         [SerializeField] private bool _isLocked;
         [SerializeField] private string _requiredItemId = "";
-        [SerializeField] private string _lockedPrompt = "Locked";
+        [SerializeField] private string _lockedPrompt = "Cerrado con llave";
         [SerializeField] private ItemUsePolicy _itemUsePolicy = ItemUsePolicy.OfferCompatible;
         [SerializeField] private bool _consumeRequiredItem = true;
 

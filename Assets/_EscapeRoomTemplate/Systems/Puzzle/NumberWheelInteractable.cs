@@ -44,8 +44,8 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         }
 
         public override string InteractionPrompt => IsVirtualReality
-            ? "Girar rodet"
-            : "Utilitza els botons ▲ / ▼";
+            ? "Girar rodillo"
+            : "Usa los botones ▲ / ▼";
 
         protected override void Awake()
         {

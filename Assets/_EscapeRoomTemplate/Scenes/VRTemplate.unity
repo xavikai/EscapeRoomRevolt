@@ -873,14 +873,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc5d65b3952b2354b9a60defa614d11c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.InteractableToggle
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: 988b87f1-cc5b-4116-ac4b-1b6806d3ca3b
   _cursorType: 1
   _enableOutline: 1
   _isOn: 0
-  _promptOn: Turn Off
-  _promptOff: Turn On
+  _promptOn: Apagar
+  _promptOff: Encender
   _movementType: 0
   _transitionDuration: 0.2
   _visualTransform: {fileID: 1432744831}
@@ -1168,7 +1168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 735f4b165763a3749909f9cd00116643, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Interaction.PhysicsGrabbable
-  _interactionPrompt: Interact
+  _interactionPrompt: Interactuar
   _canInteract: 1
   _saveId: d70af055-bfd6-49f5-9cdf-5d85da340b49
   _cursorType: 1

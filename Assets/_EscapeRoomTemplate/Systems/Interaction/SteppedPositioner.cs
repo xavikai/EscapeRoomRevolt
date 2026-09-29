@@ -15,7 +15,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
     public sealed class SteppedPosition
     {
         [Tooltip("Interaction prompt shown while this is the current position.")]
-        public string prompt = "Interact";
+        public string prompt = "Interactuar";
         [Tooltip("Local euler angles for this position (used when Movement Type is Rotate).")]
         public Vector3 rotation = Vector3.zero;
         [Tooltip("Local position for this position (used when Movement Type is Slide).")]
@@ -52,22 +52,38 @@ namespace EscapeRoomRevolt.Systems.Interaction
         [Header("Events")]
         public UnityEvent<int> OnPositionChanged = new UnityEvent<int>();
 
+        /// <summary>
+        /// Raised when the index is placed without a player step (Start, a loaded save, a puzzle
+        /// syncing its visual). Unlike OnPositionChanged it never counts as a puzzle input, so
+        /// presentation (digit labels, lights) can refresh without re-evaluating any solution.
+        /// </summary>
+        public event System.Action<int> IndexSynced;
+
         public int CurrentIndex { get; private set; }
         public int PositionCount => _positions.Count;
-        public string CurrentPrompt => _positions.Count > 0 ? _positions[CurrentIndex].prompt : "Interact";
+        public string CurrentPrompt => _positions.Count > 0 ? _positions[CurrentIndex].prompt : "Interactuar";
 
         private Coroutine _transitionCoroutine;
+        // True once something external (a loaded save, a puzzle syncing its visual) has placed this
+        // object before Start ran. Start must not then snap it back to the authored starting index:
+        // SaveManager restores during sceneLoaded, which Unity runs after Awake but before Start.
+        private bool _indexSetExternally;
 
         private void Start()
         {
-            if (_visualTransform == null)
-            {
-                _visualTransform = transform.Find(gameObject.name.Replace("_Logic", "") + "_Visuals");
-                if (_visualTransform == null) _visualTransform = transform;
-            }
+            ResolveVisualTransform();
 
-            CurrentIndex = _positions.Count > 0 ? Mathf.Clamp(_startingIndex, 0, _positions.Count - 1) : 0;
+            if (!_indexSetExternally)
+                CurrentIndex = _positions.Count > 0 ? Mathf.Clamp(_startingIndex, 0, _positions.Count - 1) : 0;
             ApplyStateInstantly();
+            IndexSynced?.Invoke(CurrentIndex);
+        }
+
+        private void ResolveVisualTransform()
+        {
+            if (_visualTransform != null) return;
+            _visualTransform = transform.Find(gameObject.name.Replace("_Logic", "") + "_Visuals");
+            if (_visualTransform == null) _visualTransform = transform;
         }
 
         /// <summary>Advances to the next position (wrapping).</summary>
@@ -99,8 +115,15 @@ namespace EscapeRoomRevolt.Systems.Interaction
         {
             if (_positions.Count == 0) return;
             CurrentIndex = Mathf.Clamp(index, 0, _positions.Count - 1);
-            if (_visualTransform == null) _visualTransform = transform;
+            _indexSetExternally = true;
+            if (_transitionCoroutine != null)
+            {
+                StopCoroutine(_transitionCoroutine);
+                _transitionCoroutine = null;
+            }
+            ResolveVisualTransform();
             ApplyStateInstantly();
+            IndexSynced?.Invoke(CurrentIndex);
         }
 
         private void ApplyStateInstantly()

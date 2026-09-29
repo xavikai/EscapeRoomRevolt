@@ -14,7 +14,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
     public abstract class InteractableBase : MonoBehaviour, IInteractable, ISaveable
     {
         [Header("Interaction Settings")]
-        [SerializeField] private string _interactionPrompt = "Interact";
+        [SerializeField] private string _interactionPrompt = "Interactuar";
         [SerializeField] private bool _canInteract = true;
         [SerializeField] private string _saveId = "";
 

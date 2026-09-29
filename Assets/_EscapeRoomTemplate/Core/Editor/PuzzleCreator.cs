@@ -644,7 +644,7 @@ namespace EscapeRoomRevolt.EditorTools
             so.FindProperty("_duration").floatValue = Mathf.Max(.01f, duration);
             so.FindProperty("_autoStart").boolValue = autoStart;
             so.FindProperty("_showInHud").boolValue = showInHud;
-            so.FindProperty("_hudLabel").stringValue = string.IsNullOrWhiteSpace(hudLabel) ? "TEMPS RESTANT" : hudLabel;
+            so.FindProperty("_hudLabel").stringValue = string.IsNullOrWhiteSpace(hudLabel) ? "TIEMPO RESTANTE" : hudLabel;
             so.ApplyModifiedProperties();
             Finalize(root, $"Independent Game Over Timer created: {duration:0.##} seconds, HUD {(showInHud ? "enabled" : "disabled")}. "
                 + "Wire StartTimer to a trigger, puzzle, button or Timeline event.");

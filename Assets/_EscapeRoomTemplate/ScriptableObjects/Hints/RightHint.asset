@@ -15,7 +15,7 @@ MonoBehaviour:
   delayBeforeFirstHint: 3
   delayBetweenHints: 3
   hints:
-  - hintText: "Tot \xE9s blau en aquesta part."
+  - hintText: Todo es azul en esta parte.
     hintAudio: {fileID: 0}
-  - hintText: Tinc fred en aquesta zona blava... hauria de marxar.
+  - hintText: "Tengo fr\xEDo en esta zona azul... deber\xEDa irme."
     hintAudio: {fileID: 0}

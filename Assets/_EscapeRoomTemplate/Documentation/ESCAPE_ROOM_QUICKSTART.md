@@ -1,5 +1,7 @@
 # Escape Room: guía de creación y entrega
 
+**Idioma:** castellano · [català](ESCAPE_ROOM_QUICKSTART.ca.md) · [English](ESCAPE_ROOM_QUICKSTART.en.md) · Recetas paso a paso: [RECETAS.md](RECETAS.md)
+
 Esta guía está dirigida a quien usa el template para crear su propio juego. El alcance de esta edición es **Escape Room para PC y VR con mandos**. Survival Horror sigue en desarrollo y no forma parte de la validación comercial de esta edición. El resultado de las comprobaciones está en [la auditoría](../AUDITORIA_ESCAPE_ROOM_2026-09-09.md); la referencia extensa está en [DOCUMENTACIO_COMPLETA.md](../DOCUMENTACIO_COMPLETA.md).
 
 ## 1. Abrir el proyecto y jugar la muestra
@@ -11,7 +13,7 @@ Esta guía está dirigida a quien usa el template para crear su propio juego. El
 5. Ejecuta `Escape Room Framework > Validation > Run Framework Smoke Tests` y `Validate Current Scene`. Lee el resultado en Console, no solo la confirmación de que el menú se ha ejecutado.
 6. Pulsa Play. En PC, usa WASD y ratón, E para interactuar, I para inventario, H para pistas y Esc para cerrar el panel o pausar. F5/F9 guardan/cargan el slot rápido. Los tres slots manuales son independientes.
 
-El museo contiene 12 controladores de puzle en cada plataforma. Las ruedas numéricas utilizan `StatePuzzle`; la melodía utiliza `SequencePuzzle`. No son solvers separados. `LockedOffice` y `LockedOfficeVR` contienen una muestra alternativa con dos paneles de código.
+El museo PC contiene 13 controladores de puzle (el decimotercero es la sala 14, `LinkedLightsPuzzle`); `ShowcaseMuseumVR` contiene los 12 anteriores y todavía no incluye la sala 14. Para una visita guiada e interactiva de cada mecánica, abre [`docs/guia/index.html`](../../../docs/guia/index.html) en el navegador. Las ruedas numéricas utilizan `StatePuzzle`; la melodía utiliza `SequencePuzzle`. No son solvers separados. `LockedOffice` y `LockedOfficeVR` contienen una muestra alternativa con dos paneles de código.
 
 ## 2. Crear una habitación propia
 
@@ -41,19 +43,20 @@ Los nombres entre comillas invertidas son campos o métodos del componente. Pued
 |---|---|---|
 | Código: `CodePanelPuzzle` | Código, longitud, comprobación automática. Botones → `InputDigit`; confirmar → `SubmitCode`. | Error limpia el intento; acierto activa el evento una vez. |
 | Secuencia: `SequencePuzzle` | `Correct Sequence` con IDs ordenados. Cada botón/lever → `InputStep(id)` o un `SequenceStepButton`. | Un error reinicia el intento. Guardar tras el primer paso y cargar permite continuar por el segundo. |
-| Estados y ruedas: `StatePuzzle` | Lista `Conditions`: un `SteppedPositioner` y su `Required Index`, empezando en cero. | Todas las posiciones deben coincidir. Una referencia ausente impide resolver. |
+| Estados y ruedas: `StatePuzzle` | Lista `Conditions`: un `SteppedPositioner` y su `Required Index`, empezando en cero. | Todas las posiciones deben coincidir. Una referencia ausente impide resolver. El puzle guarda la posición de cada palanca/rueda: al cargar, la combinación a medias se conserva. |
 | Ruedas numéricas | `Create > Number Wheels Puzzle`; entre 2 y 8 ruedas. Edita con `NumberWheelsPuzzleAuthoring` y reconstruye desde su Inspector. | PC: entra en foco y pulsa ▲/▼. VR: botones físicos equivalentes. Revisa el código después de redimensionar. |
 | Ítem de inventario: `SocketPuzzle` | `Required Item Id`, consumo opcional y prefab visual con punto de colocación. Tu control de inventario llama a `TryInsertItem` tras comprobar que el jugador posee el ítem. | Rechaza un ID incorrecto; al cargar resuelto aparece una sola pieza visual. |
 | Receptor con UI: `ItemReceiver` | Asigna `Required Item`, política de selección y `On Item Accepted`. Es la opción de autoría con selección de inventario integrada. | Sin ítem no abre; usarlo consume solo cuando corresponda. No conectes dos consumos para una misma acción. |
 | Objetos físicos: `PhysicsGrabbable` + `PhysicsSocket` | Rigidbody, collider, `PickableItem.Data` y `Required Item Id` coincidentes; el socket tiene un trigger y punto de encaje. | Solo encaja al soltar. Un objeto fijado no vuelve a agarrarse. Este socket no implementa `ISaveable`: para un resultado persistente, conecta un estado guardable propio o utiliza el puzle de colocación. |
-| Colocación: `PlacementPuzzle` | Reglas `pieceId → correctSocketId`; piezas con `GrabbablePiece` y receptores `PieceSocketReceiver` enlazados al mismo puzle. | Prueba piezas intercambiadas, retirada antes de resolver y carga tras resolver. Los IDs de piezas y sockets deben coincidir exactamente. |
+| Colocación: `PlacementPuzzle` | Reglas `pieceId → correctSocketId`; piezas con `GrabbablePiece` y receptores `PieceSocketReceiver` enlazados al mismo puzle. | Prueba piezas intercambiadas, retirada antes de resolver y carga tras resolver. Los IDs de piezas y sockets deben coincidir exactamente. Las piezas sueltas no se guardan: al cargar un tablero sin resolver vuelven a su sitio inicial. |
 | Lanzamiento: `ThrowPuzzle` | Configura las dianas `ThrowTarget` requeridas y objetos físicos lanzables. | Deben acertarse todas las dianas requeridas. Asegura que las piezas puedan recuperarse. |
 | Deslizante: `SlidingPuzzle` | Filas, columnas, celda vacía, movimientos de mezcla; presentación con `SlidingBoardView` y `SlidingTileButton`. | Solo se mueve una ficha vecina del hueco; el estado cargado coincide con el guardado. |
 | Tuberías: `PipePuzzle` | Tiles con ID, fila, columna, conexiones y giro inicial; configura origen y destino. `PipeTileButton` → `RotateTile`. | Comprueba conectividad real de origen a destino, no solo el aspecto. El solver necesita una presentación interactiva. |
+| Circuito de luces: `LinkedLightsPuzzle` | Lista `Nodes`: estado inicial, estado objetivo, índices que conmuta cada botón e indicador. Cada botón → `Press(index)` (`LinkedLightButton`). | Guarda el progreso parcial; `ResetPuzzle` vuelve al estado inicial. Comprueba que el objetivo es alcanzable. |
 | Grupo: `MultiStagePuzzle` | Lista de puzles hijos y raíces de interacción; orden libre u obligatorio y bloqueo de futuros. | Los hijos permanecen visibles; el grupo resuelve una vez al completar todos. El premio final se conecta al grupo. |
 | Melodía: `MelodyPlayer` | Presentación sonora de pasos de una secuencia. | Añade una pista visual equivalente; evita depender únicamente de la audición. |
 | Notas y examen | `InteractableNote` para lectura; `InventoryItemData` con datos de lectura/examen y `ExamineHotspot` para zonas del modelo. | Texto legible, cerrar devuelve el control y un hotspot no se dispara a través de otro panel. |
-| Interruptores, puertas y cajones | `InteractableTrigger`, `InteractableToggle`, `SteppedPositioner`, `Door`; configura eventos y recorrido. | Sin duplicar eventos, sin atravesar límites, mismo uso en PC y VR. |
+| Interruptores, puertas y cajones | `InteractableTrigger`, `InteractableToggle`, `SteppedPositioner`, `Door`; configura eventos y recorrido. | Sin duplicar eventos, sin atravesar límites, mismo uso en PC y VR. `InteractableToggle` y `InteractableTrigger` guardan su estado; activa `Invoke Event On Load` en el interruptor si una luz sin guardado propio debe recuperar su estado. Para girar sobre una bisagra, usa como `Visual Transform` un objeto vacío situado en la bisagra. |
 | Pistas | `HintData` en la definición; zonas opcionales `HintZoneTrigger`. | Pistas pertinentes al puzle activo y retirada al resolver. |
 | Tiempo y peligro móvil | `GameOverTimer.StartTimer` y `MovingHazard.StartHazard`, activados por un botón o `EventTriggerZone`. Marcadores 3D definen el recorrido del peligro. | Pausa congela el avance, HUD refleja el tiempo, fallo muestra resultados. Son mecanismos independientes. |
 | Objetivos y final | `ObjectiveSet`/`ObjectiveManager`, prerrequisitos sin ciclos; `GameEndTrigger` y `EndingDefinition`. | No se termina antes del último objetivo; Reintentar permite volver a recoger los objetos. |

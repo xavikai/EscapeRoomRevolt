@@ -15,9 +15,9 @@ MonoBehaviour:
   delayBeforeFirstHint: 45
   delayBetweenHints: 35
   hints:
-  - hintText: "Aquesta fase s'activa despr\xE9s de la seq\xFC\xE8ncia."
+  - hintText: "Esta fase se activa despu\xE9s de la secuencia."
     hintAudio: {fileID: 0}
-  - hintText: "Cada palanca t\xE9 tres posicions."
+  - hintText: Cada palanca tiene tres posiciones.
     hintAudio: {fileID: 0}
-  - hintText: "Les posicions s\xF3n 2, 0 i 1."
+  - hintText: Las posiciones son 2, 0 y 1.
     hintAudio: {fileID: 0}

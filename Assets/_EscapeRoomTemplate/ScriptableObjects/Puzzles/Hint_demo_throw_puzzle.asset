@@ -15,9 +15,9 @@ MonoBehaviour:
   delayBeforeFirstHint: 45
   delayBetweenHints: 35
   hints:
-  - hintText: "Els objectes f\xEDsics nom\xE9s compten si colpegen una diana."
+  - hintText: "Los objetos f\xEDsicos solo cuentan si golpean una diana."
     hintAudio: {fileID: 0}
-  - hintText: "Cada diana nom\xE9s s'ha d'activar una vegada."
+  - hintText: Cada diana solo tiene que activarse una vez.
     hintAudio: {fileID: 0}
-  - hintText: Encerta target1, target2 i target3 en qualsevol ordre.
+  - hintText: Acierta en target1, target2 y target3 en cualquier orden.
     hintAudio: {fileID: 0}

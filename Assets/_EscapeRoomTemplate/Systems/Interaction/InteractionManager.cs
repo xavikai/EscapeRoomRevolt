@@ -41,8 +41,15 @@ namespace EscapeRoomRevolt.Systems.Interaction
         // ── Unity Lifecycle ──────────────────────────────────────────────────
         private void Awake()
         {
-            if (Instance == null) Instance = this;
-            else Destroy(gameObject);
+            // A duplicate removes only itself. Destroying its GameObject would take the player's
+            // camera with it when a second player or manager is dropped into the scene by mistake.
+            if (Instance != null && Instance != this)
+            {
+                Debug.LogWarning("[InteractionManager] A second InteractionManager was found and disabled. Keep a single player per scene.", this);
+                Destroy(this);
+                return;
+            }
+            Instance = this;
 
             _mainCamera = GetComponent<Camera>();
             if (_mainCamera == null)
@@ -83,6 +90,11 @@ namespace EscapeRoomRevolt.Systems.Interaction
                 if (routedInput || pointerClick)
                     TriggerInteraction();
             }
+        }
+
+        private void OnDestroy()
+        {
+            if (Instance == this) Instance = null;
         }
 
         // ── Private Methods ──────────────────────────────────────────────────

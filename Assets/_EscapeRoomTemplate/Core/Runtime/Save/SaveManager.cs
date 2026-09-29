@@ -182,7 +182,7 @@ namespace EscapeRoomRevolt.Core.Save
             if (string.IsNullOrWhiteSpace(slotId)) slotId = DefaultSlotId;
             if (GameFeatures.IsEnabled(OptionalGameFeature.PlayerVitals) && !ManualSaveGate())
             {
-                const string message = "Manual saving is disabled by the active Survival Horror difficulty.";
+                const string message = "La dificultad Survival Horror activa no permite guardar manualmente.";
                 Debug.LogWarning($"[SaveManager] {message}");
                 OperationFailed?.Invoke(slotId, message);
                 return;

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using EscapeRoomRevolt.Core;
 using EscapeRoomRevolt.Systems.Interaction;
 using UnityEngine;
 
@@ -47,13 +48,20 @@ namespace EscapeRoomRevolt.Systems.Puzzle
             base.Awake();
             SubscribeToChildren();
             SynchronizeFromChildren();
+            EventBus.Subscribe<OnGameLoaded>(HandleGameLoaded);
         }
 
         protected override void OnDestroy()
         {
+            EventBus.Unsubscribe<OnGameLoaded>(HandleGameLoaded);
             UnsubscribeFromChildren();
             base.OnDestroy();
         }
+
+        // SaveManager restores saveables in no guaranteed order, so this group may load before its
+        // children. Re-reading them once the whole snapshot is in place keeps the "current" child
+        // and its interaction locks correct instead of locking the next puzzle after a reload.
+        private void HandleGameLoaded(OnGameLoaded _) => SynchronizeFromChildren();
 
         private void SubscribeToChildren()
         {

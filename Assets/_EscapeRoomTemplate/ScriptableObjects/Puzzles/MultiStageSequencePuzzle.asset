@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: MultiStageSequencePuzzle
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Puzzle.PuzzleDefinition
   _persistentId: room11_sequence_puzzle
-  _displayName: Seqüència cromàtica encadenada
+  _displayName: "Secuencia crom\xE1tica encadenada"
   _category: 1
-  _objective: Resol la seqüència de colors abans d'activar el segon puzle.
+  _objective: Resuelve la secuencia de colores antes de activar el segundo puzle.
   _hints: {fileID: 11400000, guid: fa072bf286549fa45ae3db3d224ce292, type: 2}
   _sanityPenalty: 4

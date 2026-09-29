@@ -16,7 +16,7 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         private bool _isPressing;
 
         public override bool CanInteract => base.CanInteract && _wheel != null && _wheel.CanUseStepButtons;
-        public override string InteractionPrompt => _direction > 0 ? "Pujar número" : "Baixar número";
+        public override string InteractionPrompt => _direction > 0 ? "Subir número" : "Bajar número";
 
         protected override void Awake()
         {

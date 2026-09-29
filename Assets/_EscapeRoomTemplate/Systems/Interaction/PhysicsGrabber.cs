@@ -29,8 +29,13 @@ namespace EscapeRoomRevolt.Systems.Interaction
 
         private void Awake()
         {
-            if (Instance == null) Instance = this;
-            else Destroy(gameObject);
+            if (Instance != null && Instance != this)
+            {
+                // Remove only the duplicate component, never the camera/player it sits on.
+                Destroy(this);
+                return;
+            }
+            Instance = this;
 
             _holdPoint = new GameObject("PhysicsHoldPoint").transform;
             _holdPoint.parent = transform;
@@ -38,6 +43,11 @@ namespace EscapeRoomRevolt.Systems.Interaction
 
             // Fetch player colliders to ignore them when holding objects
             _playerColliders = transform.root.GetComponentsInChildren<Collider>();
+        }
+
+        private void OnDestroy()
+        {
+            if (Instance == this) Instance = null;
         }
 
         private void Update()
