@@ -2,7 +2,14 @@
 
 All notable changes to Escape Room Revolt are documented here.
 
-## [Unreleased] - 2026-09-29 review
+## [0.1.0-beta.5] - 2026-09-30
+
+### Changed
+
+- Synchronized the release source with the default branch and tracked Unity metadata for the new documentation and localization script.
+- Updated the Windows and Quest release builder version identifiers to `v0.1.0-beta.5`. No new binaries are attached to this source release.
+
+## [0.1.0-beta.4] - 2026-09-29 review
 
 ### Fixed
 
