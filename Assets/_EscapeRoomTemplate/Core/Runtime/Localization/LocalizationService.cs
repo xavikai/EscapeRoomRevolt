@@ -52,6 +52,8 @@ namespace EscapeRoomRevolt.Core.Localization
             LanguageChanged?.Invoke();
         }
 
+        public bool HasKey(string key) => _catalog != null && _catalog.HasKey(key);
+
         public string Get(string key) => _catalog != null ? _catalog.Get(key, _languageCode) : key;
 
         /// <summary>Shorthand for Instance.Get(key); returns the key itself if no service exists yet (e.g. an isolated test scene), so a missing service degrades to the original literal instead of throwing.</summary>

@@ -20,93 +20,4053 @@ MonoBehaviour:
       text: "EXPEDIENTE DE INVESTIGACI\xD3N"
     - languageCode: en
       text: INVESTIGATION FILE
+    - languageCode: ca
+      text: "EXPEDIENT D'INVESTIGACI\xD3"
   - key: ARCHIVO DE INCIDENTE
     translations:
     - languageCode: es
       text: ARCHIVO DE INCIDENTE
     - languageCode: en
       text: INCIDENT REPORT
+    - languageCode: ca
+      text: "ARXIU D'INCIDENT"
   - key: "ARCHIVAR INVESTIGACI\xD3N"
     translations:
     - languageCode: es
       text: "ARCHIVAR INVESTIGACI\xD3N"
     - languageCode: en
       text: ARCHIVE INVESTIGATION
+    - languageCode: ca
+      text: "ARXIVAR INVESTIGACI\xD3"
   - key: CINTAS DE SEGURIDAD
     translations:
     - languageCode: es
       text: CINTAS DE SEGURIDAD
     - languageCode: en
       text: SECURITY TAPES
+    - languageCode: ca
+      text: CINTES DE SEGURETAT
   - key: PANEL DE MANTENIMIENTO
     translations:
     - languageCode: es
       text: PANEL DE MANTENIMIENTO
     - languageCode: en
       text: MAINTENANCE PANEL
+    - languageCode: ca
+      text: PANELL DE MANTENIMENT
   - key: "CR\xC9DITOS"
     translations:
     - languageCode: es
       text: "CR\xC9DITOS"
     - languageCode: en
       text: CREDITS
+    - languageCode: ca
+      text: "CR\xC8DITS"
   - key: "CONFIRMAR OPERACI\xD3N"
     translations:
     - languageCode: es
       text: "CONFIRMAR OPERACI\xD3N"
     - languageCode: en
       text: CONFIRM OPERATION
+    - languageCode: ca
+      text: "CONFIRMAR OPERACI\xD3"
   - key: "VOLVER AL MEN\xDA PRINCIPAL"
     translations:
     - languageCode: es
       text: "VOLVER AL MEN\xDA PRINCIPAL"
     - languageCode: en
       text: RETURN TO MAIN MENU
+    - languageCode: ca
+      text: "TORNAR AL MEN\xDA PRINCIPAL"
   - key: Continuar
     translations:
     - languageCode: es
       text: Continuar
     - languageCode: en
       text: Continue
+    - languageCode: ca
+      text: Continuar
   - key: Nueva partida
     translations:
     - languageCode: es
       text: Nueva partida
     - languageCode: en
       text: New game
+    - languageCode: ca
+      text: Nova partida
   - key: Cargar partida
     translations:
     - languageCode: es
       text: Cargar partida
     - languageCode: en
       text: Load game
+    - languageCode: ca
+      text: Carregar partida
   - key: Ajustes
     translations:
     - languageCode: es
       text: Ajustes
     - languageCode: en
       text: Settings
+    - languageCode: ca
+      text: Ajustos
   - key: Salir
     translations:
     - languageCode: es
       text: Salir
     - languageCode: en
       text: Quit
+    - languageCode: ca
+      text: Sortir
   - key: "Reanudar investigaci\xF3n"
     translations:
     - languageCode: es
       text: "Reanudar investigaci\xF3n"
     - languageCode: en
       text: Resume investigation
+    - languageCode: ca
+      text: "Reprendre la investigaci\xF3"
   - key: Guardar partida
     translations:
     - languageCode: es
       text: Guardar partida
     - languageCode: en
       text: Save game
+    - languageCode: ca
+      text: Desar partida
   - key: "Men\xFA principal\u2026"
     translations:
     - languageCode: es
       text: "Men\xFA principal\u2026"
     - languageCode: en
       text: "Main menu\u2026"
+    - languageCode: ca
+      text: "Men\xFA principal\u2026"
+  - key: "Cr\xE9ditos"
+    translations:
+    - languageCode: es
+      text: "Cr\xE9ditos"
+    - languageCode: en
+      text: Credits
+    - languageCode: ca
+      text: "Cr\xE8dits"
+  - key: "Men\xFA principal"
+    translations:
+    - languageCode: es
+      text: "Men\xFA principal"
+    - languageCode: en
+      text: Main menu
+    - languageCode: ca
+      text: "Men\xFA principal"
+  - key: Volver
+    translations:
+    - languageCode: es
+      text: Volver
+    - languageCode: en
+      text: Back
+    - languageCode: ca
+      text: Tornar
+  - key: Reintentar
+    translations:
+    - languageCode: es
+      text: Reintentar
+    - languageCode: en
+      text: Retry
+    - languageCode: ca
+      text: Tornar-ho a provar
+  - key: CANCELAR
+    translations:
+    - languageCode: es
+      text: CANCELAR
+    - languageCode: en
+      text: CANCEL
+    - languageCode: ca
+      text: "CANCEL\xB7LAR"
+  - key: CONFIRMAR
+    translations:
+    - languageCode: es
+      text: CONFIRMAR
+    - languageCode: en
+      text: CONFIRM
+    - languageCode: ca
+      text: CONFIRMAR
+  - key: "VOLVER AL MEN\xDA"
+    translations:
+    - languageCode: es
+      text: "VOLVER AL MEN\xDA"
+    - languageCode: en
+      text: BACK TO MENU
+    - languageCode: ca
+      text: "TORNAR AL MEN\xDA"
+  - key: "\xBFIniciar una nueva investigaci\xF3n? Las partidas guardadas no se borrar\xE1n."
+    translations:
+    - languageCode: es
+      text: "\xBFIniciar una nueva investigaci\xF3n? Las partidas guardadas no se borrar\xE1n."
+    - languageCode: en
+      text: "Start a new investigation? Saved games will not be deleted."
+    - languageCode: ca
+      text: "Vols comen\xE7ar una investigaci\xF3 nova? Les partides desades no s'esborraran."
+  - key: "\xBFSalir del juego?"
+    translations:
+    - languageCode: es
+      text: "\xBFSalir del juego?"
+    - languageCode: en
+      text: "Quit the game?"
+    - languageCode: ca
+      text: "Vols sortir del joc?"
+  - key: "La escena del men\xFA principal se cargar\xE1 al confirmar. El progreso que no hayas guardado se perder\xE1."
+    translations:
+    - languageCode: es
+      text: "La escena del men\xFA principal se cargar\xE1 al confirmar. El progreso que no hayas guardado se perder\xE1."
+    - languageCode: en
+      text: The main menu will load when you confirm. Unsaved progress will be lost.
+    - languageCode: ca
+      text: "En confirmar es carregar\xE0 el men\xFA principal. Es perdr\xE0 el progr\xE9s que no hagis desat."
+  - key: "\xBFSobrescribir este expediente?"
+    translations:
+    - languageCode: es
+      text: "\xBFSobrescribir este expediente?"
+    - languageCode: en
+      text: "Overwrite this file?"
+    - languageCode: ca
+      text: "Vols sobreescriure aquest expedient?"
+  - key: "\xBFEliminar definitivamente este expediente?"
+    translations:
+    - languageCode: es
+      text: "\xBFEliminar definitivamente este expediente?"
+    - languageCode: en
+      text: "Delete this file permanently?"
+    - languageCode: ca
+      text: "Vols eliminar aquest expedient definitivament?"
+  - key: "A\xF1ade aqu\xED los cr\xE9ditos de tu proyecto y las licencias de terceros."
+    translations:
+    - languageCode: es
+      text: "A\xF1ade aqu\xED los cr\xE9ditos de tu proyecto y las licencias de terceros."
+    - languageCode: en
+      text: Add your project credits and third-party licences here.
+    - languageCode: ca
+      text: "Afegeix aqu\xED els cr\xE8dits del teu projecte i les llic\xE8ncies de tercers."
+  - key: EXPEDIENTE
+    translations:
+    - languageCode: es
+      text: EXPEDIENTE
+    - languageCode: en
+      text: FILE
+    - languageCode: ca
+      text: EXPEDIENT
+  - key: SIN REGISTRO
+    translations:
+    - languageCode: es
+      text: SIN REGISTRO
+    - languageCode: en
+      text: NO RECORD
+    - languageCode: ca
+      text: SENSE REGISTRE
+  - key: Escena desconocida
+    translations:
+    - languageCode: es
+      text: Escena desconocida
+    - languageCode: en
+      text: Unknown scene
+    - languageCode: ca
+      text: Escena desconeguda
+  - key: TIEMPO
+    translations:
+    - languageCode: es
+      text: TIEMPO
+    - languageCode: en
+      text: TIME
+    - languageCode: ca
+      text: TEMPS
+  - key: FECHA DESCONOCIDA
+    translations:
+    - languageCode: es
+      text: FECHA DESCONOCIDA
+    - languageCode: en
+      text: UNKNOWN DATE
+    - languageCode: ca
+      text: DATA DESCONEGUDA
+  - key: GUARDAR
+    translations:
+    - languageCode: es
+      text: GUARDAR
+    - languageCode: en
+      text: SAVE
+    - languageCode: ca
+      text: DESAR
+  - key: SOBRESCRIBIR
+    translations:
+    - languageCode: es
+      text: SOBRESCRIBIR
+    - languageCode: en
+      text: OVERWRITE
+    - languageCode: ca
+      text: SOBREESCRIURE
+  - key: CARGAR
+    translations:
+    - languageCode: es
+      text: CARGAR
+    - languageCode: en
+      text: LOAD
+    - languageCode: ca
+      text: CARREGAR
+  - key: BORRAR
+    translations:
+    - languageCode: es
+      text: BORRAR
+    - languageCode: en
+      text: DELETE
+    - languageCode: ca
+      text: ESBORRAR
+  - key: EXPEDIENTE ARCHIVADO
+    translations:
+    - languageCode: es
+      text: EXPEDIENTE ARCHIVADO
+    - languageCode: en
+      text: FILE ARCHIVED
+    - languageCode: ca
+      text: EXPEDIENT ARXIVAT
+  - key: EXPEDIENTE ELIMINADO
+    translations:
+    - languageCode: es
+      text: EXPEDIENTE ELIMINADO
+    - languageCode: en
+      text: FILE DELETED
+    - languageCode: ca
+      text: EXPEDIENT ELIMINAT
+  - key: "El sistema de archivo no est\xE1 disponible."
+    translations:
+    - languageCode: es
+      text: "El sistema de archivo no est\xE1 disponible."
+    - languageCode: en
+      text: The save system is not available.
+    - languageCode: ca
+      text: "El sistema de desat no est\xE0 disponible."
+  - key: "El guardado manual est\xE1 desactivado por la dificultad activa."
+    translations:
+    - languageCode: es
+      text: "El guardado manual est\xE1 desactivado por la dificultad activa."
+    - languageCode: en
+      text: Manual saving is disabled by the current difficulty.
+    - languageCode: ca
+      text: "El desat manual est\xE0 desactivat per la dificultat actual."
+  - key: No disponible
+    translations:
+    - languageCode: es
+      text: No disponible
+    - languageCode: en
+      text: Not available
+    - languageCode: ca
+      text: No disponible
+  - key: NO DISPONIBLE
+    translations:
+    - languageCode: es
+      text: NO DISPONIBLE
+    - languageCode: en
+      text: NOT AVAILABLE
+    - languageCode: ca
+      text: NO DISPONIBLE
+  - key: "PULSA UNA TECLA...  [ESC CANCELA]"
+    translations:
+    - languageCode: es
+      text: "PULSA UNA TECLA...  [ESC CANCELA]"
+    - languageCode: en
+      text: "PRESS A KEY...  [ESC CANCELS]"
+    - languageCode: ca
+      text: "PREM UNA TECLA...  [ESC CANCEL\xB7LA]"
+  - key: Idioma
+    translations:
+    - languageCode: es
+      text: Idioma
+    - languageCode: en
+      text: Language
+    - languageCode: ca
+      text: Idioma
+  - key: "Calidad gr\xE1fica"
+    translations:
+    - languageCode: es
+      text: "Calidad gr\xE1fica"
+    - languageCode: en
+      text: Graphics quality
+    - languageCode: ca
+      text: "Qualitat gr\xE0fica"
+  - key: Dificultad
+    translations:
+    - languageCode: es
+      text: Dificultad
+    - languageCode: en
+      text: Difficulty
+    - languageCode: ca
+      text: Dificultat
+  - key: Volumen maestro
+    translations:
+    - languageCode: es
+      text: Volumen maestro
+    - languageCode: en
+      text: Master volume
+    - languageCode: ca
+      text: Volum general
+  - key: "Volumen de m\xFAsica"
+    translations:
+    - languageCode: es
+      text: "Volumen de m\xFAsica"
+    - languageCode: en
+      text: Music volume
+    - languageCode: ca
+      text: "Volum de la m\xFAsica"
+  - key: Volumen de efectos
+    translations:
+    - languageCode: es
+      text: Volumen de efectos
+    - languageCode: en
+      text: Effects volume
+    - languageCode: ca
+      text: Volum dels efectes
+  - key: Sensibilidad
+    translations:
+    - languageCode: es
+      text: Sensibilidad
+    - languageCode: en
+      text: Sensitivity
+    - languageCode: ca
+      text: Sensibilitat
+  - key: Pantalla completa
+    translations:
+    - languageCode: es
+      text: Pantalla completa
+    - languageCode: en
+      text: Full screen
+    - languageCode: ca
+      text: Pantalla completa
+  - key: "Subt\xEDtulos"
+    translations:
+    - languageCode: es
+      text: "Subt\xEDtulos"
+    - languageCode: en
+      text: Subtitles
+    - languageCode: ca
+      text: "Subt\xEDtols"
+  - key: Reducir destellos
+    translations:
+    - languageCode: es
+      text: Reducir destellos
+    - languageCode: en
+      text: Reduce flashes
+    - languageCode: ca
+      text: Reduir els flaixos
+  - key: "Reducir temblor de c\xE1mara"
+    translations:
+    - languageCode: es
+      text: "Reducir temblor de c\xE1mara"
+    - languageCode: en
+      text: Reduce camera shake
+    - languageCode: ca
+      text: "Reduir el tremolor de c\xE0mera"
+  - key: Reducir sonidos fuertes
+    translations:
+    - languageCode: es
+      text: Reducir sonidos fuertes
+    - languageCode: en
+      text: Reduce loud sounds
+    - languageCode: ca
+      text: Reduir els sons forts
+  - key: Reducir gore
+    translations:
+    - languageCode: es
+      text: Reducir gore
+    - languageCode: en
+      text: Reduce gore
+    - languageCode: ca
+      text: Reduir el gore
+  - key: "Reducir balanceo de c\xE1mara"
+    translations:
+    - languageCode: es
+      text: "Reducir balanceo de c\xE1mara"
+    - languageCode: en
+      text: Reduce head bob
+    - languageCode: ca
+      text: "Reduir el balanceig de c\xE0mera"
+  - key: Modo de alto contraste
+    translations:
+    - languageCode: es
+      text: Modo de alto contraste
+    - languageCode: en
+      text: High contrast mode
+    - languageCode: ca
+      text: "Mode d'alt contrast"
+  - key: Asistencia en persecuciones
+    translations:
+    - languageCode: es
+      text: Asistencia en persecuciones
+    - languageCode: en
+      text: Chase assistance
+    - languageCode: ca
+      text: "Assist\xE8ncia en persecucions"
+  - key: CONTROLES
+    translations:
+    - languageCode: es
+      text: CONTROLES
+    - languageCode: en
+      text: CONTROLS
+    - languageCode: ca
+      text: CONTROLS
+  - key: Restablecer controles
+    translations:
+    - languageCode: es
+      text: Restablecer controles
+    - languageCode: en
+      text: Reset controls
+    - languageCode: ca
+      text: Restablir els controls
+  - key: Avanzar
+    translations:
+    - languageCode: es
+      text: Avanzar
+    - languageCode: en
+      text: Move forward
+    - languageCode: ca
+      text: "Avan\xE7ar"
+  - key: Retroceder
+    translations:
+    - languageCode: es
+      text: Retroceder
+    - languageCode: en
+      text: Move back
+    - languageCode: ca
+      text: Retrocedir
+  - key: Moverse a la izquierda
+    translations:
+    - languageCode: es
+      text: Moverse a la izquierda
+    - languageCode: en
+      text: Move left
+    - languageCode: ca
+      text: "Moure's a l'esquerra"
+  - key: Moverse a la derecha
+    translations:
+    - languageCode: es
+      text: Moverse a la derecha
+    - languageCode: en
+      text: Move right
+    - languageCode: ca
+      text: "Moure's a la dreta"
+  - key: Interactuar
+    translations:
+    - languageCode: es
+      text: Interactuar
+    - languageCode: en
+      text: Interact
+    - languageCode: ca
+      text: Interactuar
+  - key: Correr
+    translations:
+    - languageCode: es
+      text: Correr
+    - languageCode: en
+      text: Sprint
+    - languageCode: ca
+      text: "C\xF3rrer"
+  - key: Agacharse
+    translations:
+    - languageCode: es
+      text: Agacharse
+    - languageCode: en
+      text: Crouch
+    - languageCode: ca
+      text: Ajupir-se
+  - key: Saltar
+    translations:
+    - languageCode: es
+      text: Saltar
+    - languageCode: en
+      text: Jump
+    - languageCode: ca
+      text: Saltar
+  - key: Inventario
+    translations:
+    - languageCode: es
+      text: Inventario
+    - languageCode: en
+      text: Inventory
+    - languageCode: ca
+      text: Inventari
+  - key: Inclinarse (mantener + A/D)
+    translations:
+    - languageCode: es
+      text: Inclinarse (mantener + A/D)
+    - languageCode: en
+      text: Lean (hold + A/D)
+    - languageCode: ca
+      text: Inclinar-se (mantenir + A/D)
+  - key: "Mirar atr\xE1s"
+    translations:
+    - languageCode: es
+      text: "Mirar atr\xE1s"
+    - languageCode: en
+      text: Look back
+    - languageCode: ca
+      text: Mirar enrere
+  - key: Deslizarse
+    translations:
+    - languageCode: es
+      text: Deslizarse
+    - languageCode: en
+      text: Slide
+    - languageCode: ca
+      text: Lliscar
+  - key: "Interacci\xF3n cuidadosa (mantener)"
+    translations:
+    - languageCode: es
+      text: "Interacci\xF3n cuidadosa (mantener)"
+    - languageCode: en
+      text: Careful interaction (hold)
+    - languageCode: ca
+      text: "Interacci\xF3 curosa (mantenir)"
+  - key: Linterna
+    translations:
+    - languageCode: es
+      text: Linterna
+    - languageCode: en
+      text: Flashlight
+    - languageCode: ca
+      text: Llanterna
+  - key: Recargar
+    translations:
+    - languageCode: es
+      text: Recargar
+    - languageCode: en
+      text: Reload
+    - languageCode: ca
+      text: Recarregar
+  - key: "Subir/bajar c\xE1mara"
+    translations:
+    - languageCode: es
+      text: "Subir/bajar c\xE1mara"
+    - languageCode: en
+      text: Raise/lower camera
+    - languageCode: ca
+      text: "Pujar/baixar c\xE0mera"
+  - key: "Visi\xF3n nocturna"
+    translations:
+    - languageCode: es
+      text: "Visi\xF3n nocturna"
+    - languageCode: en
+      text: Night vision
+    - languageCode: ca
+      text: "Visi\xF3 nocturna"
+  - key: "Bater\xEDa de c\xE1mara"
+    translations:
+    - languageCode: es
+      text: "Bater\xEDa de c\xE1mara"
+    - languageCode: en
+      text: Camera battery
+    - languageCode: ca
+      text: "Bateria de c\xE0mera"
+  - key: "Zoom de c\xE1mara"
+    translations:
+    - languageCode: es
+      text: "Zoom de c\xE1mara"
+    - languageCode: en
+      text: Camera zoom
+    - languageCode: ca
+      text: "Zoom de c\xE0mera"
+  - key: Grabar evidencia
+    translations:
+    - languageCode: es
+      text: Grabar evidencia
+    - languageCode: en
+      text: Record evidence
+    - languageCode: ca
+      text: "Enregistrar evid\xE8ncia"
+  - key: Soltar equipado
+    translations:
+    - languageCode: es
+      text: Soltar equipado
+    - languageCode: en
+      text: Drop equipped item
+    - languageCode: ca
+      text: "Deixar l'equipat"
+  - key: Pista
+    translations:
+    - languageCode: es
+      text: Pista
+    - languageCode: en
+      text: Hint
+    - languageCode: ca
+      text: Pista
+  - key: Has escapado
+    translations:
+    - languageCode: es
+      text: Has escapado
+    - languageCode: en
+      text: You escaped
+    - languageCode: ca
+      text: Has escapat
+  - key: HAS ESCAPADO
+    translations:
+    - languageCode: es
+      text: HAS ESCAPADO
+    - languageCode: en
+      text: YOU ESCAPED
+    - languageCode: ca
+      text: HAS ESCAPAT
+  - key: "La investigaci\xF3n ha terminado."
+    translations:
+    - languageCode: es
+      text: "La investigaci\xF3n ha terminado."
+    - languageCode: en
+      text: The investigation is over.
+    - languageCode: ca
+      text: "La investigaci\xF3 s'ha acabat."
+  - key: "Fin de la investigaci\xF3n"
+    translations:
+    - languageCode: es
+      text: "Fin de la investigaci\xF3n"
+    - languageCode: en
+      text: End of the investigation
+    - languageCode: ca
+      text: "Fi de la investigaci\xF3"
+  - key: "La investigaci\xF3n no pudo continuar."
+    translations:
+    - languageCode: es
+      text: "La investigaci\xF3n no pudo continuar."
+    - languageCode: en
+      text: The investigation could not continue.
+    - languageCode: ca
+      text: "La investigaci\xF3 no ha pogut continuar."
+  - key: TIEMPO RESTANTE
+    translations:
+    - languageCode: es
+      text: TIEMPO RESTANTE
+    - languageCode: en
+      text: TIME LEFT
+    - languageCode: ca
+      text: TEMPS RESTANT
+  - key: TIEMPO DE LA SALA
+    translations:
+    - languageCode: es
+      text: TIEMPO DE LA SALA
+    - languageCode: en
+      text: ROOM TIME
+    - languageCode: ca
+      text: TEMPS DE LA SALA
+  - key: INQUIETO
+    translations:
+    - languageCode: es
+      text: INQUIETO
+    - languageCode: en
+      text: UNEASY
+    - languageCode: ca
+      text: INQUIET
+  - key: ALTERADO
+    translations:
+    - languageCode: es
+      text: ALTERADO
+    - languageCode: en
+      text: DISTRESSED
+    - languageCode: ca
+      text: ALTERAT
+  - key: "CR\xCDTICO"
+    translations:
+    - languageCode: es
+      text: "CR\xCDTICO"
+    - languageCode: en
+      text: CRITICAL
+    - languageCode: ca
+      text: "CR\xCDTIC"
+  - key: ESTABLE
+    translations:
+    - languageCode: es
+      text: ESTABLE
+    - languageCode: en
+      text: STABLE
+    - languageCode: ca
+      text: ESTABLE
+  - key: "CR\xCDTICA"
+    translations:
+    - languageCode: es
+      text: "CR\xCDTICA"
+    - languageCode: en
+      text: CRITICAL
+    - languageCode: ca
+      text: "CR\xCDTICA"
+  - key: BAJA
+    translations:
+    - languageCode: es
+      text: BAJA
+    - languageCode: en
+      text: LOW
+    - languageCode: ca
+      text: BAIXA
+  - key: ACTIVA
+    translations:
+    - languageCode: es
+      text: ACTIVA
+    - languageCode: en
+      text: "ON"
+    - languageCode: ca
+      text: ACTIVA
+  - key: ESPERA
+    translations:
+    - languageCode: es
+      text: ESPERA
+    - languageCode: en
+      text: STANDBY
+    - languageCode: ca
+      text: ESPERA
+  - key: "[CLIC] LANZAR   [BOT\xD3N DERECHO] ROTAR   [Q] SOLTAR   [E] GUARDAR"
+    translations:
+    - languageCode: es
+      text: "[CLIC] LANZAR   [BOT\xD3N DERECHO] ROTAR   [Q] SOLTAR   [E] GUARDAR"
+    - languageCode: en
+      text: "[CLICK] THROW   [RIGHT BUTTON] ROTATE   [Q] DROP   [E] STORE"
+    - languageCode: ca
+      text: "[CLIC] LLAN\xC7AR   [BOT\xD3 DRET] GIRAR   [Q] DEIXAR   [E] DESAR"
+  - key: "[CLIC] LANZAR   [BOT\xD3N DERECHO] ROTAR   [Q] SOLTAR"
+    translations:
+    - languageCode: es
+      text: "[CLIC] LANZAR   [BOT\xD3N DERECHO] ROTAR   [Q] SOLTAR"
+    - languageCode: en
+      text: "[CLICK] THROW   [RIGHT BUTTON] ROTATE   [Q] DROP"
+    - languageCode: ca
+      text: "[CLIC] LLAN\xC7AR   [BOT\xD3 DRET] GIRAR   [Q] DEIXAR"
+  - key: "RANURA VAC\xCDA"
+    translations:
+    - languageCode: es
+      text: "RANURA VAC\xCDA"
+    - languageCode: en
+      text: EMPTY SLOT
+    - languageCode: ca
+      text: RANURA BUIDA
+  - key: "Este objeto es compatible. Confirma para usarlo aqu\xED."
+    translations:
+    - languageCode: es
+      text: "Este objeto es compatible. Confirma para usarlo aqu\xED."
+    - languageCode: en
+      text: This item is compatible. Confirm to use it here.
+    - languageCode: ca
+      text: "Aquest objecte \xE9s compatible. Confirma per fer-lo servir aqu\xED."
+  - key: Selecciona un segundo objeto y pulsa COMBINAR.
+    translations:
+    - languageCode: es
+      text: Selecciona un segundo objeto y pulsa COMBINAR.
+    - languageCode: en
+      text: Select a second item and press COMBINE.
+    - languageCode: ca
+      text: Selecciona un segon objecte i prem COMBINAR.
+  - key: Combinar este objeto con el elemento marcado.
+    translations:
+    - languageCode: es
+      text: Combinar este objeto con el elemento marcado.
+    - languageCode: en
+      text: Combine this item with the marked one.
+    - languageCode: ca
+      text: "Combinar aquest objecte amb l'element marcat."
+  - key: "No hay ning\xFAn objeto almacenado en esta posici\xF3n."
+    translations:
+    - languageCode: es
+      text: "No hay ning\xFAn objeto almacenado en esta posici\xF3n."
+    - languageCode: en
+      text: There is no item stored in this slot.
+    - languageCode: ca
+      text: "No hi ha cap objecte desat en aquesta posici\xF3."
+  - key: COMBINAR
+    translations:
+    - languageCode: es
+      text: COMBINAR
+    - languageCode: en
+      text: COMBINE
+    - languageCode: ca
+      text: COMBINAR
+  - key: "CANCELAR COMBINACI\xD3N"
+    translations:
+    - languageCode: es
+      text: "CANCELAR COMBINACI\xD3N"
+    - languageCode: en
+      text: CANCEL COMBINATION
+    - languageCode: ca
+      text: "CANCEL\xB7LAR COMBINACI\xD3"
+  - key: COMBINAR OBJETOS
+    translations:
+    - languageCode: es
+      text: COMBINAR OBJETOS
+    - languageCode: en
+      text: COMBINE ITEMS
+    - languageCode: ca
+      text: COMBINAR OBJECTES
+  - key: COMBINAR CON OBJETO ACTIVO
+    translations:
+    - languageCode: es
+      text: COMBINAR CON OBJETO ACTIVO
+    - languageCode: en
+      text: COMBINE WITH ACTIVE ITEM
+    - languageCode: ca
+      text: "COMBINAR AMB L'OBJECTE ACTIU"
+  - key: "ACCESO R\xC1PIDO"
+    translations:
+    - languageCode: es
+      text: "ACCESO R\xC1PIDO"
+    - languageCode: en
+      text: QUICK ACCESS
+    - languageCode: ca
+      text: "ACC\xC9S R\xC0PID"
+  - key: "Combinaci\xF3n completada. El resultado se ha a\xF1adido al inventario."
+    translations:
+    - languageCode: es
+      text: "Combinaci\xF3n completada. El resultado se ha a\xF1adido al inventario."
+    - languageCode: en
+      text: Combination complete. The result was added to the inventory.
+    - languageCode: ca
+      text: "Combinaci\xF3 completada. El resultat s'ha afegit a l'inventari."
+  - key: Estos objetos no pueden combinarse.
+    translations:
+    - languageCode: es
+      text: Estos objetos no pueden combinarse.
+    - languageCode: en
+      text: These items cannot be combined.
+    - languageCode: ca
+      text: Aquests objectes no es poden combinar.
+  - key: "USAR AQU\xCD"
+    translations:
+    - languageCode: es
+      text: "USAR AQU\xCD"
+    - languageCode: en
+      text: USE HERE
+    - languageCode: ca
+      text: "FER SERVIR AQU\xCD"
+  - key: USAR
+    translations:
+    - languageCode: es
+      text: USAR
+    - languageCode: en
+      text: USE
+    - languageCode: ca
+      text: FER SERVIR
+  - key: LEER
+    translations:
+    - languageCode: es
+      text: LEER
+    - languageCode: en
+      text: READ
+    - languageCode: ca
+      text: LLEGIR
+  - key: CONSUMIR
+    translations:
+    - languageCode: es
+      text: CONSUMIR
+    - languageCode: en
+      text: CONSUME
+    - languageCode: ca
+      text: CONSUMIR
+  - key: EQUIPAR / SOSTENER
+    translations:
+    - languageCode: es
+      text: EQUIPAR / SOSTENER
+    - languageCode: en
+      text: EQUIP / HOLD
+    - languageCode: ca
+      text: EQUIPAR / SOSTENIR
+  - key: USAR / EQUIPAR
+    translations:
+    - languageCode: es
+      text: USAR / EQUIPAR
+    - languageCode: en
+      text: USE / EQUIP
+    - languageCode: ca
+      text: FER SERVIR / EQUIPAR
+  - key: SOSTENER
+    translations:
+    - languageCode: es
+      text: SOSTENER
+    - languageCode: en
+      text: HOLD
+    - languageCode: ca
+      text: SOSTENIR
+  - key: EXAMINAR
+    translations:
+    - languageCode: es
+      text: EXAMINAR
+    - languageCode: en
+      text: EXAMINE
+    - languageCode: ca
+      text: EXAMINAR
+  - key: SOLTAR
+    translations:
+    - languageCode: es
+      text: SOLTAR
+    - languageCode: en
+      text: DROP
+    - languageCode: ca
+      text: DEIXAR
+  - key: "SIN SELECCI\xD3N"
+    translations:
+    - languageCode: es
+      text: "SIN SELECCI\xD3N"
+    - languageCode: en
+      text: NOTHING SELECTED
+    - languageCode: ca
+      text: "CAP SELECCI\xD3"
+  - key: INVENTARIO DE EVIDENCIAS
+    translations:
+    - languageCode: es
+      text: INVENTARIO DE EVIDENCIAS
+    - languageCode: en
+      text: EVIDENCE INVENTORY
+    - languageCode: ca
+      text: "INVENTARI D'EVID\xC8NCIES"
+  - key: "CERRAR  [ESC]"
+    translations:
+    - languageCode: es
+      text: "CERRAR  [ESC]"
+    - languageCode: en
+      text: "CLOSE  [ESC]"
+    - languageCode: ca
+      text: "TANCAR  [ESC]"
+  - key: "CANCELAR  [ESC]"
+    translations:
+    - languageCode: es
+      text: "CANCELAR  [ESC]"
+    - languageCode: en
+      text: "CANCEL  [ESC]"
+    - languageCode: ca
+      text: "CANCEL\xB7LAR  [ESC]"
+  - key: DOCUMENTO RECUPERADO
+    translations:
+    - languageCode: es
+      text: DOCUMENTO RECUPERADO
+    - languageCode: en
+      text: RECOVERED DOCUMENT
+    - languageCode: ca
+      text: DOCUMENT RECUPERAT
+  - key: CONTROL DE ACCESO
+    translations:
+    - languageCode: es
+      text: CONTROL DE ACCESO
+    - languageCode: en
+      text: ACCESS CONTROL
+    - languageCode: ca
+      text: "CONTROL D'ACC\xC9S"
+  - key: "AN\xC1LISIS DE OBJETO"
+    translations:
+    - languageCode: es
+      text: "AN\xC1LISIS DE OBJETO"
+    - languageCode: en
+      text: ITEM ANALYSIS
+    - languageCode: ca
+      text: "AN\xC0LISI D'OBJECTE"
+  - key: "ARRASTRAR: ROTAR  //  RUEDA: ZOOM"
+    translations:
+    - languageCode: es
+      text: "ARRASTRAR: ROTAR  //  RUEDA: ZOOM"
+    - languageCode: en
+      text: "DRAG: ROTATE  //  WHEEL: ZOOM"
+    - languageCode: ca
+      text: "ARROSSEGAR: GIRAR  //  RODA: ZOOM"
+  - key: LINTERNA // BAT-01
+    translations:
+    - languageCode: es
+      text: LINTERNA // BAT-01
+    - languageCode: en
+      text: FLASHLIGHT // BAT-01
+    - languageCode: ca
+      text: LLANTERNA // BAT-01
+  - key: "[F] LUZ   [R] BATER\xCDA   [G] SOLTAR"
+    translations:
+    - languageCode: es
+      text: "[F] LUZ   [R] BATER\xCDA   [G] SOLTAR"
+    - languageCode: en
+      text: "[F] LIGHT   [R] BATTERY   [G] DROP"
+    - languageCode: ca
+      text: "[F] LLUM   [R] BATERIA   [G] DEIXAR"
+  - key: ESTABILIDAD // PSI-02
+    translations:
+    - languageCode: es
+      text: ESTABILIDAD // PSI-02
+    - languageCode: en
+      text: STABILITY // PSI-02
+    - languageCode: ca
+      text: ESTABILITAT // PSI-02
+  - key: "ESTADO F\xCDSICO // SURV-01"
+    translations:
+    - languageCode: es
+      text: "ESTADO F\xCDSICO // SURV-01"
+    - languageCode: en
+      text: PHYSICAL STATE // SURV-01
+    - languageCode: ca
+      text: "ESTAT F\xCDSIC // SURV-01"
+  - key: SALUD
+    translations:
+    - languageCode: es
+      text: SALUD
+    - languageCode: en
+      text: HEALTH
+    - languageCode: ca
+      text: SALUT
+  - key: RESIST.
+    translations:
+    - languageCode: es
+      text: RESIST.
+    - languageCode: en
+      text: STAMINA
+    - languageCode: ca
+      text: RESIST.
+  - key: "C\xC1MARA // NV-03"
+    translations:
+    - languageCode: es
+      text: "C\xC1MARA // NV-03"
+    - languageCode: en
+      text: CAMERA // NV-03
+    - languageCode: ca
+      text: "C\xC0MERA // NV-03"
+  - key: BAJADA
+    translations:
+    - languageCode: es
+      text: BAJADA
+    - languageCode: en
+      text: LOWERED
+    - languageCode: ca
+      text: ABAIXADA
+  - key: SUJETO // NINGUNO
+    translations:
+    - languageCode: es
+      text: SUJETO // NINGUNO
+    - languageCode: en
+      text: SUBJECT // NONE
+    - languageCode: ca
+      text: SUBJECTE // CAP
+  - key: "[C] C\xC1MARA  [N] NV  [B] BATER\xCDA  [RMB] ZOOM  [LMB] GRABAR"
+    translations:
+    - languageCode: es
+      text: "[C] C\xC1MARA  [N] NV  [B] BATER\xCDA  [RMB] ZOOM  [LMB] GRABAR"
+    - languageCode: en
+      text: "[C] CAMERA  [N] NV  [B] BATTERY  [RMB] ZOOM  [LMB] RECORD"
+    - languageCode: ca
+      text: "[C] C\xC0MERA  [N] VN  [B] BATERIA  [RMB] ZOOM  [LMB] ENREGISTRAR"
+  - key: "PRUEBA VR \xB7 SHOWCASE MUSEUM"
+    translations:
+    - languageCode: es
+      text: "PRUEBA VR \xB7 SHOWCASE MUSEUM"
+    - languageCode: en
+      text: "VR TEST \xB7 SHOWCASE MUSEUM"
+    - languageCode: ca
+      text: "PROVA VR \xB7 SHOWCASE MUSEUM"
+  - key: "Y  \xB7  ABRIR INVENTARIO\nB  \xB7  CERRAR / VOLVER\nGATILLO  \xB7  INTERACTUAR\nJOYSTICK DERECHO ADELANTE  \xB7  APUNTAR TELETRANSPORTE\nSOLTARLO  \xB7  TELETRANSPORTARSE\n\nLas notas y los teclados se abren en este panel 3D."
+    translations:
+    - languageCode: es
+      text: "Y  \xB7  ABRIR INVENTARIO\nB  \xB7  CERRAR / VOLVER\nGATILLO  \xB7  INTERACTUAR\nJOYSTICK DERECHO ADELANTE  \xB7  APUNTAR TELETRANSPORTE\nSOLTARLO  \xB7  TELETRANSPORTARSE\n\nLas notas y los teclados se abren en este panel 3D."
+    - languageCode: en
+      text: "Y  \xB7  OPEN INVENTORY\nB  \xB7  CLOSE / BACK\nTRIGGER  \xB7  INTERACT\nRIGHT STICK FORWARD  \xB7  AIM TELEPORT\nRELEASE  \xB7  TELEPORT\n\nNotes and keypads open in this 3D panel."
+    - languageCode: ca
+      text: "Y  \xB7  OBRIR INVENTARI\nB  \xB7  TANCAR / TORNAR\nGATELL  \xB7  INTERACTUAR\nJOYSTICK DRET ENDAVANT  \xB7  APUNTAR TELEPORT\nDEIXAR-LO ANAR  \xB7  TELEPORTAR\n\nLes notes i els teclats s'obren en aquest panell 3D."
+  - key: EMPEZAR
+    translations:
+    - languageCode: es
+      text: EMPEZAR
+    - languageCode: en
+      text: START
+    - languageCode: ca
+      text: "COMEN\xC7AR"
+  - key: INVENTARIO
+    translations:
+    - languageCode: es
+      text: INVENTARIO
+    - languageCode: en
+      text: INVENTORY
+    - languageCode: ca
+      text: INVENTARI
+  - key: "ELIGE UN OBJETO PARA USARLO AQU\xCD"
+    translations:
+    - languageCode: es
+      text: "ELIGE UN OBJETO PARA USARLO AQU\xCD"
+    - languageCode: en
+      text: CHOOSE AN ITEM TO USE HERE
+    - languageCode: ca
+      text: "TRIA UN OBJECTE PER FER-LO SERVIR AQU\xCD"
+  - key: "Y / B: cerrar"
+    translations:
+    - languageCode: es
+      text: "Y / B: cerrar"
+    - languageCode: en
+      text: "Y / B: close"
+    - languageCode: ca
+      text: "Y / B: tancar"
+  - key: "El inventario todav\xEDa no est\xE1 disponible."
+    translations:
+    - languageCode: es
+      text: "El inventario todav\xEDa no est\xE1 disponible."
+    - languageCode: en
+      text: The inventory is not available yet.
+    - languageCode: ca
+      text: "L'inventari encara no est\xE0 disponible."
+  - key: "El inventario est\xE1 vac\xEDo."
+    translations:
+    - languageCode: es
+      text: "El inventario est\xE1 vac\xEDo."
+    - languageCode: en
+      text: The inventory is empty.
+    - languageCode: ca
+      text: "L'inventari \xE9s buit."
+  - key: "No llevas ning\xFAn objeto compatible."
+    translations:
+    - languageCode: es
+      text: "No llevas ning\xFAn objeto compatible."
+    - languageCode: en
+      text: You are not carrying a compatible item.
+    - languageCode: ca
+      text: No portes cap objecte compatible.
+  - key: "NING\xDAN OBJETO SELECCIONADO"
+    translations:
+    - languageCode: es
+      text: "NING\xDAN OBJETO SELECCIONADO"
+    - languageCode: en
+      text: NO ITEM SELECTED
+    - languageCode: ca
+      text: CAP OBJECTE SELECCIONAT
+  - key: "Recoge un objeto y aparecer\xE1 aqu\xED."
+    translations:
+    - languageCode: es
+      text: "Recoge un objeto y aparecer\xE1 aqu\xED."
+    - languageCode: en
+      text: Pick up an item and it will appear here.
+    - languageCode: ca
+      text: "Recull un objecte i apareixer\xE0 aqu\xED."
+  - key: ACTIVAR
+    translations:
+    - languageCode: es
+      text: ACTIVAR
+    - languageCode: en
+      text: ACTIVATE
+    - languageCode: ca
+      text: ACTIVAR
+  - key: "R\xC1PIDO"
+    translations:
+    - languageCode: es
+      text: "R\xC1PIDO"
+    - languageCode: en
+      text: QUICK
+    - languageCode: ca
+      text: "R\xC0PID"
+  - key: CERRAR
+    translations:
+    - languageCode: es
+      text: CERRAR
+    - languageCode: en
+      text: CLOSE
+    - languageCode: ca
+      text: TANCAR
+  - key: NOTA
+    translations:
+    - languageCode: es
+      text: NOTA
+    - languageCode: en
+      text: NOTE
+    - languageCode: ca
+      text: NOTA
+  - key: "(Nota vac\xEDa)"
+    translations:
+    - languageCode: es
+      text: "(Nota vac\xEDa)"
+    - languageCode: en
+      text: "(Empty note)"
+    - languageCode: ca
+      text: "(Nota buida)"
+  - key: "TECLADO NUM\xC9RICO"
+    translations:
+    - languageCode: es
+      text: "TECLADO NUM\xC9RICO"
+    - languageCode: en
+      text: KEYPAD
+    - languageCode: ca
+      text: "TECLAT NUM\xC8RIC"
+  - key: "COMBINACI\xD3N DE RODILLOS"
+    translations:
+    - languageCode: es
+      text: "COMBINACI\xD3N DE RODILLOS"
+    - languageCode: en
+      text: WHEEL COMBINATION
+    - languageCode: ca
+      text: "COMBINACI\xD3 DE RODETS"
+  - key: "Selecciona \u25B2 o \u25BC para girar cada rodillo"
+    translations:
+    - languageCode: es
+      text: "Selecciona \u25B2 o \u25BC para girar cada rodillo"
+    - languageCode: en
+      text: "Select \u25B2 or \u25BC to turn each wheel"
+    - languageCode: ca
+      text: "Selecciona \u25B2 o \u25BC per girar cada rodet"
+  - key: Abrir
+    translations:
+    - languageCode: es
+      text: Abrir
+    - languageCode: en
+      text: Open
+    - languageCode: ca
+      text: Obrir
+  - key: Cerrar
+    translations:
+    - languageCode: es
+      text: Cerrar
+    - languageCode: en
+      text: Close
+    - languageCode: ca
+      text: Tancar
+  - key: "Abrir m\xE1s"
+    translations:
+    - languageCode: es
+      text: "Abrir m\xE1s"
+    - languageCode: en
+      text: Open further
+    - languageCode: ca
+      text: "Obrir m\xE9s"
+  - key: Abriendo...
+    translations:
+    - languageCode: es
+      text: Abriendo...
+    - languageCode: en
+      text: Opening...
+    - languageCode: ca
+      text: Obrint...
+  - key: Cerrando...
+    translations:
+    - languageCode: es
+      text: Cerrando...
+    - languageCode: en
+      text: Closing...
+    - languageCode: ca
+      text: Tancant...
+  - key: Cerrado con llave
+    translations:
+    - languageCode: es
+      text: Cerrado con llave
+    - languageCode: en
+      text: Locked
+    - languageCode: ca
+      text: Tancat amb clau
+  - key: Usar
+    translations:
+    - languageCode: es
+      text: Usar
+    - languageCode: en
+      text: Use
+    - languageCode: ca
+      text: Fer servir
+  - key: Usar teclado
+    translations:
+    - languageCode: es
+      text: Usar teclado
+    - languageCode: en
+      text: Use keypad
+    - languageCode: ca
+      text: Fer servir el teclat
+  - key: Resuelto
+    translations:
+    - languageCode: es
+      text: Resuelto
+    - languageCode: en
+      text: Solved
+    - languageCode: ca
+      text: Resolt
+  - key: Encender
+    translations:
+    - languageCode: es
+      text: Encender
+    - languageCode: en
+      text: Turn on
+    - languageCode: ca
+      text: Encendre
+  - key: Apagar
+    translations:
+    - languageCode: es
+      text: Apagar
+    - languageCode: en
+      text: Turn off
+    - languageCode: ca
+      text: Apagar
+  - key: "Cambiar posici\xF3n"
+    translations:
+    - languageCode: es
+      text: "Cambiar posici\xF3n"
+    - languageCode: en
+      text: Change position
+    - languageCode: ca
+      text: "Canviar de posici\xF3"
+  - key: Recoger
+    translations:
+    - languageCode: es
+      text: Recoger
+    - languageCode: en
+      text: Pick up
+    - languageCode: ca
+      text: Agafar
+  - key: Recoger nota
+    translations:
+    - languageCode: es
+      text: Recoger nota
+    - languageCode: en
+      text: Pick up note
+    - languageCode: ca
+      text: Agafar la nota
+  - key: Leer nota
+    translations:
+    - languageCode: es
+      text: Leer nota
+    - languageCode: en
+      text: Read note
+    - languageCode: ca
+      text: Llegir la nota
+  - key: "Necesito un objeto para colocar aqu\xED."
+    translations:
+    - languageCode: es
+      text: "Necesito un objeto para colocar aqu\xED."
+    - languageCode: en
+      text: I need an item to place here.
+    - languageCode: ca
+      text: "Necessito un objecte per posar aqu\xED."
+  - key: "\xA1Hecho!"
+    translations:
+    - languageCode: es
+      text: "\xA1Hecho!"
+    - languageCode: en
+      text: "Done!"
+    - languageCode: ca
+      text: "Fet!"
+  - key: Conmutar luz
+    translations:
+    - languageCode: es
+      text: Conmutar luz
+    - languageCode: en
+      text: Toggle light
+    - languageCode: ca
+      text: Commutar llum
+  - key: encendida
+    translations:
+    - languageCode: es
+      text: encendida
+    - languageCode: en
+      text: "on"
+    - languageCode: ca
+      text: encesa
+  - key: apagada
+    translations:
+    - languageCode: es
+      text: apagada
+    - languageCode: en
+      text: "off"
+    - languageCode: ca
+      text: apagada
+  - key: Girar rodillo
+    translations:
+    - languageCode: es
+      text: Girar rodillo
+    - languageCode: en
+      text: Turn wheel
+    - languageCode: ca
+      text: Girar el rodet
+  - key: "Usa los botones \u25B2 / \u25BC"
+    translations:
+    - languageCode: es
+      text: "Usa los botones \u25B2 / \u25BC"
+    - languageCode: en
+      text: "Use the \u25B2 / \u25BC buttons"
+    - languageCode: ca
+      text: "Fes servir els botons \u25B2 / \u25BC"
+  - key: "Subir n\xFAmero"
+    translations:
+    - languageCode: es
+      text: "Subir n\xFAmero"
+    - languageCode: en
+      text: Number up
+    - languageCode: ca
+      text: "Pujar n\xFAmero"
+  - key: "Bajar n\xFAmero"
+    translations:
+    - languageCode: es
+      text: "Bajar n\xFAmero"
+    - languageCode: en
+      text: Number down
+    - languageCode: ca
+      text: "Baixar n\xFAmero"
+  - key: Pulsar
+    translations:
+    - languageCode: es
+      text: Pulsar
+    - languageCode: en
+      text: Press
+    - languageCode: ca
+      text: "Pr\xE9mer"
+  - key: Mover palanca
+    translations:
+    - languageCode: es
+      text: Mover palanca
+    - languageCode: en
+      text: Move lever
+    - languageCode: ca
+      text: Moure la palanca
+  - key: Coger pieza
+    translations:
+    - languageCode: es
+      text: Coger pieza
+    - languageCode: en
+      text: Pick up piece
+    - languageCode: ca
+      text: "Agafar la pe\xE7a"
+  - key: Mover pieza
+    translations:
+    - languageCode: es
+      text: Mover pieza
+    - languageCode: en
+      text: Move piece
+    - languageCode: ca
+      text: "Moure la pe\xE7a"
+  - key: Esconderse
+    translations:
+    - languageCode: es
+      text: Esconderse
+    - languageCode: en
+      text: Hide
+    - languageCode: ca
+      text: Amagar-se
+  - key: "Parece haber algo m\xE1s aqu\xED. Toca para examinarlo."
+    translations:
+    - languageCode: es
+      text: "Parece haber algo m\xE1s aqu\xED. Toca para examinarlo."
+    - languageCode: en
+      text: There seems to be something else here. Tap to examine it.
+    - languageCode: ca
+      text: "Sembla que aqu\xED hi ha alguna cosa m\xE9s. Toca per examinar-la."
+  - key: Has encontrado algo.
+    translations:
+    - languageCode: es
+      text: Has encontrado algo.
+    - languageCode: en
+      text: You found something.
+    - languageCode: ca
+      text: Has trobat alguna cosa.
+  - key: Abrir armario
+    translations:
+    - languageCode: es
+      text: Abrir armario
+    - languageCode: en
+      text: Open cabinet
+    - languageCode: ca
+      text: "Obrir l'armari"
+  - key: "Abrir caj\xF3n"
+    translations:
+    - languageCode: es
+      text: "Abrir caj\xF3n"
+    - languageCode: en
+      text: Open drawer
+    - languageCode: ca
+      text: Obrir el calaix
+  - key: Abrir puerta
+    translations:
+    - languageCode: es
+      text: Abrir puerta
+    - languageCode: en
+      text: Open door
+    - languageCode: ca
+      text: Obrir la porta
+  - key: Abrir caja fuerte
+    translations:
+    - languageCode: es
+      text: Abrir caja fuerte
+    - languageCode: en
+      text: Open safe
+    - languageCode: ca
+      text: Obrir la caixa forta
+  - key: Abrir puerta corredera
+    translations:
+    - languageCode: es
+      text: Abrir puerta corredera
+    - languageCode: en
+      text: Open sliding door
+    - languageCode: ca
+      text: Obrir la porta corredissa
+  - key: Recoger llave dorada
+    translations:
+    - languageCode: es
+      text: Recoger llave dorada
+    - languageCode: en
+      text: Pick up golden key
+    - languageCode: ca
+      text: Agafar la clau daurada
+  - key: Recoger llave
+    translations:
+    - languageCode: es
+      text: Recoger llave
+    - languageCode: en
+      text: Pick up key
+    - languageCode: ca
+      text: Agafar la clau
+  - key: Recoger carta
+    translations:
+    - languageCode: es
+      text: Recoger carta
+    - languageCode: en
+      text: Pick up letter
+    - languageCode: ca
+      text: Agafar la carta
+  - key: Encender/apagar luz
+    translations:
+    - languageCode: es
+      text: Encender/apagar luz
+    - languageCode: en
+      text: Toggle light
+    - languageCode: ca
+      text: Encendre/apagar el llum
+  - key: "Est\xE1 bien cerrada. La sujeta un mecanismo."
+    translations:
+    - languageCode: es
+      text: "Est\xE1 bien cerrada. La sujeta un mecanismo."
+    - languageCode: en
+      text: "It's firmly locked. A mechanism holds it."
+    - languageCode: ca
+      text: "Est\xE0 ben tancada. La subjecta un mecanisme."
+  - key: "Cierre electr\xF3nico."
+    translations:
+    - languageCode: es
+      text: "Cierre electr\xF3nico."
+    - languageCode: en
+      text: Locked electronically.
+    - languageCode: ca
+      text: "Tancament electr\xF2nic."
+  - key: Cerrada. Acierta en las tres dianas.
+    translations:
+    - languageCode: es
+      text: Cerrada. Acierta en las tres dianas.
+    - languageCode: en
+      text: Locked. Hit all three targets.
+    - languageCode: ca
+      text: Tancada. Encerta les tres dianes.
+  - key: Cerrada. Falta resolver el mecanismo.
+    translations:
+    - languageCode: es
+      text: Cerrada. Falta resolver el mecanismo.
+    - languageCode: en
+      text: Locked. The mechanism is still unsolved.
+    - languageCode: ca
+      text: Tancada. Encara falta resoldre el mecanisme.
+  - key: Cerrada. Resuelve el puzle para abrirla.
+    translations:
+    - languageCode: es
+      text: Cerrada. Resuelve el puzle para abrirla.
+    - languageCode: en
+      text: Locked. Solve the puzzle to open it.
+    - languageCode: ca
+      text: Tancada. Resol el puzle per obrir-la.
+  - key: "Escuchar la melod\xEDa"
+    translations:
+    - languageCode: es
+      text: "Escuchar la melod\xEDa"
+    - languageCode: en
+      text: Listen to the melody
+    - languageCode: ca
+      text: Escoltar la melodia
+  - key: "Examinar combinaci\xF3n"
+    translations:
+    - languageCode: es
+      text: "Examinar combinaci\xF3n"
+    - languageCode: en
+      text: Examine combination
+    - languageCode: ca
+      text: "Examinar la combinaci\xF3"
+  - key: "Girar tuber\xEDa A"
+    translations:
+    - languageCode: es
+      text: "Girar tuber\xEDa A"
+    - languageCode: en
+      text: Turn pipe A
+    - languageCode: ca
+      text: Girar la canonada A
+  - key: "Girar tuber\xEDa B"
+    translations:
+    - languageCode: es
+      text: "Girar tuber\xEDa B"
+    - languageCode: en
+      text: Turn pipe B
+    - languageCode: ca
+      text: Girar la canonada B
+  - key: "Iniciar techo m\xF3vil"
+    translations:
+    - languageCode: es
+      text: "Iniciar techo m\xF3vil"
+    - languageCode: en
+      text: Start moving ceiling
+    - languageCode: ca
+      text: "Iniciar el sostre m\xF2bil"
+  - key: Iniciar temporizador
+    translations:
+    - languageCode: es
+      text: Iniciar temporizador
+    - languageCode: en
+      text: Start timer
+    - languageCode: ca
+      text: Iniciar el temporitzador
+  - key: Pulsar azul
+    translations:
+    - languageCode: es
+      text: Pulsar azul
+    - languageCode: en
+      text: Press blue
+    - languageCode: ca
+      text: "Pr\xE9mer el blau"
+  - key: Pulsar verde
+    translations:
+    - languageCode: es
+      text: Pulsar verde
+    - languageCode: en
+      text: Press green
+    - languageCode: ca
+      text: "Pr\xE9mer el verd"
+  - key: Pulsar rojo
+    translations:
+    - languageCode: es
+      text: Pulsar rojo
+    - languageCode: en
+      text: Press red
+    - languageCode: ca
+      text: "Pr\xE9mer el vermell"
+  - key: Reiniciar circuito
+    translations:
+    - languageCode: es
+      text: Reiniciar circuito
+    - languageCode: en
+      text: Reset circuit
+    - languageCode: ca
+      text: Reiniciar el circuit
+  - key: Tocar nota
+    translations:
+    - languageCode: es
+      text: Tocar nota
+    - languageCode: en
+      text: Play note
+    - languageCode: ca
+      text: Tocar la nota
+  - key: Esta nota se puede leer directamente en el mundo.
+    translations:
+    - languageCode: es
+      text: Esta nota se puede leer directamente en el mundo.
+    - languageCode: en
+      text: This note can be read directly in the world.
+    - languageCode: ca
+      text: "Aquesta nota es pot llegir directament al m\xF3n."
+  - key: "Escribe aqu\xED el contenido de la nota..."
+    translations:
+    - languageCode: es
+      text: "Escribe aqu\xED el contenido de la nota..."
+    - languageCode: en
+      text: Write the note content here...
+    - languageCode: ca
+      text: "Escriu aqu\xED el contingut de la nota..."
+  - key: Nuevo objeto
+    translations:
+    - languageCode: es
+      text: Nuevo objeto
+    - languageCode: en
+      text: New item
+    - languageCode: ca
+      text: Objecte nou
+  - key: Nuevo objetivo
+    translations:
+    - languageCode: es
+      text: Nuevo objetivo
+    - languageCode: en
+      text: New objective
+    - languageCode: ca
+      text: Objectiu nou
+  - key: Nuevo puzle
+    translations:
+    - languageCode: es
+      text: Nuevo puzle
+    - languageCode: en
+      text: New puzzle
+    - languageCode: ca
+      text: Puzle nou
+  - key: "Encuentra una soluci\xF3n."
+    translations:
+    - languageCode: es
+      text: "Encuentra una soluci\xF3n."
+    - languageCode: en
+      text: Find a solution.
+    - languageCode: ca
+      text: "Troba una soluci\xF3."
+  - key: Llave maestra
+    translations:
+    - languageCode: es
+      text: Llave maestra
+    - languageCode: en
+      text: Master key
+    - languageCode: ca
+      text: Clau mestra
+  - key: Llave verde
+    translations:
+    - languageCode: es
+      text: Llave verde
+    - languageCode: en
+      text: Green key
+    - languageCode: ca
+      text: Clau verda
+  - key: Dinero
+    translations:
+    - languageCode: es
+      text: Dinero
+    - languageCode: en
+      text: Money
+    - languageCode: ca
+      text: Diners
+  - key: Nota secreta
+    translations:
+    - languageCode: es
+      text: Nota secreta
+    - languageCode: en
+      text: Secret note
+    - languageCode: ca
+      text: Nota secreta
+  - key: Esta es una nota que se puede recoger.
+    translations:
+    - languageCode: es
+      text: Esta es una nota que se puede recoger.
+    - languageCode: en
+      text: This is a note you can pick up.
+    - languageCode: ca
+      text: "Aquesta \xE9s una nota que es pot recollir."
+  - key: Pilas
+    translations:
+    - languageCode: es
+      text: Pilas
+    - languageCode: en
+      text: Batteries
+    - languageCode: ca
+      text: Piles
+  - key: "Un juego de pilas compatible con la linterna y la c\xE1mara. Pulsa R para recargar la linterna o B para recargar la c\xE1mara."
+    translations:
+    - languageCode: es
+      text: "Un juego de pilas compatible con la linterna y la c\xE1mara. Pulsa R para recargar la linterna o B para recargar la c\xE1mara."
+    - languageCode: en
+      text: A set of batteries for the flashlight and the camera. Press R to reload the flashlight or B to reload the camera.
+    - languageCode: ca
+      text: "Un joc de piles compatible amb la llanterna i la c\xE0mera. Prem R per recarregar la llanterna o B per recarregar la c\xE0mera."
+  - key: "Bater\xEDa espec\xEDfica para la visi\xF3n nocturna de la c\xE1mara."
+    translations:
+    - languageCode: es
+      text: "Bater\xEDa espec\xEDfica para la visi\xF3n nocturna de la c\xE1mara."
+    - languageCode: en
+      text: "A battery for the camera's night vision."
+    - languageCode: ca
+      text: "Bateria espec\xEDfica per a la visi\xF3 nocturna de la c\xE0mera."
+  - key: Linterna sin pilas
+    translations:
+    - languageCode: es
+      text: Linterna sin pilas
+    - languageCode: en
+      text: Flashlight without batteries
+    - languageCode: ca
+      text: Llanterna sense piles
+  - key: "El cuerpo est\xE1 intacto, pero necesita pilas. Comb\xEDnala con unas desde el inventario."
+    translations:
+    - languageCode: es
+      text: "El cuerpo est\xE1 intacto, pero necesita pilas. Comb\xEDnala con unas desde el inventario."
+    - languageCode: en
+      text: The body is intact but it needs batteries. Combine it with some from the inventory.
+    - languageCode: ca
+      text: "El cos est\xE0 intacte, per\xF2 necessita piles. Combina-la amb unes des de l'inventari."
+  - key: Linterna operativa
+    translations:
+    - languageCode: es
+      text: Linterna operativa
+    - languageCode: en
+      text: Working flashlight
+    - languageCode: ca
+      text: Llanterna operativa
+  - key: "Una linterna modular lista para usar. Equ\xEDpala y pulsa F para encenderla; pulsa R para consumir unas pilas y recargarla."
+    translations:
+    - languageCode: es
+      text: "Una linterna modular lista para usar. Equ\xEDpala y pulsa F para encenderla; pulsa R para consumir unas pilas y recargarla."
+    - languageCode: en
+      text: "A modular flashlight ready to use. Equip it and press F to switch it on; press R to use batteries and reload it."
+    - languageCode: ca
+      text: "Una llanterna modular a punt per fer servir. Equipa-la i prem F per encendre-la; prem R per gastar unes piles i recarregar-la."
+  - key: Fusible de 15 A
+    translations:
+    - languageCode: es
+      text: Fusible de 15 A
+    - languageCode: en
+      text: 15A fuse
+    - languageCode: ca
+      text: Fusible de 15 A
+  - key: "Un fusible est\xE1ndar de 15 amperios para un cuadro el\xE9ctrico."
+    translations:
+    - languageCode: es
+      text: "Un fusible est\xE1ndar de 15 amperios para un cuadro el\xE9ctrico."
+    - languageCode: en
+      text: A standard 15 amp fuse for an electrical panel.
+    - languageCode: ca
+      text: "Un fusible est\xE0ndard de 15 ampers per a un quadre el\xE8ctric."
+  - key: "Llave extra\xF1a"
+    translations:
+    - languageCode: es
+      text: "Llave extra\xF1a"
+    - languageCode: en
+      text: Strange key
+    - languageCode: ca
+      text: Clau estranya
+  - key: Una llave de aspecto muy raro.
+    translations:
+    - languageCode: es
+      text: Una llave de aspecto muy raro.
+    - languageCode: en
+      text: A very odd-looking key.
+    - languageCode: ca
+      text: "Una clau d'aspecte molt estrany."
+  - key: Llave oxidada
+    translations:
+    - languageCode: es
+      text: Llave oxidada
+    - languageCode: en
+      text: Rusty key
+    - languageCode: ca
+      text: Clau rovellada
+  - key: "Una llave vieja. Probablemente abre un caj\xF3n."
+    translations:
+    - languageCode: es
+      text: "Una llave vieja. Probablemente abre un caj\xF3n."
+    - languageCode: en
+      text: An old key. It probably opens a drawer.
+    - languageCode: ca
+      text: Una clau vella. Probablement obre un calaix.
+  - key: Llave dorada
+    translations:
+    - languageCode: es
+      text: Llave dorada
+    - languageCode: en
+      text: Golden key
+    - languageCode: ca
+      text: Clau daurada
+  - key: Una llave dorada y brillante.
+    translations:
+    - languageCode: es
+      text: Una llave dorada y brillante.
+    - languageCode: en
+      text: A shiny golden key.
+    - languageCode: ca
+      text: Una clau daurada i brillant.
+  - key: Carta misteriosa
+    translations:
+    - languageCode: es
+      text: Carta misteriosa
+    - languageCode: en
+      text: Mysterious letter
+    - languageCode: ca
+      text: Carta misteriosa
+  - key: Una carta arrugada que he encontrado.
+    translations:
+    - languageCode: es
+      text: Una carta arrugada que he encontrado.
+    - languageCode: en
+      text: A crumpled letter I found.
+    - languageCode: ca
+      text: Una carta arrugada que he trobat.
+  - key: La zona verde parece tranquila.
+    translations:
+    - languageCode: es
+      text: La zona verde parece tranquila.
+    - languageCode: en
+      text: The green area looks calm.
+    - languageCode: ca
+      text: "La zona verda sembla tranquil\xB7la."
+  - key: "Aqu\xED se est\xE1 muy bien, me quedar\xEDa a vivir."
+    translations:
+    - languageCode: es
+      text: "Aqu\xED se est\xE1 muy bien, me quedar\xEDa a vivir."
+    - languageCode: en
+      text: It feels good here, I could live here.
+    - languageCode: ca
+      text: "Aqu\xED s'hi est\xE0 molt b\xE9, m'hi quedaria a viure."
+  - key: Estoy en la zona roja.
+    translations:
+    - languageCode: es
+      text: Estoy en la zona roja.
+    - languageCode: en
+      text: "I'm in the red area."
+    - languageCode: ca
+      text: Soc a la zona vermella.
+  - key: Esta zona roja me inquieta mucho.
+    translations:
+    - languageCode: es
+      text: Esta zona roja me inquieta mucho.
+    - languageCode: en
+      text: This red area makes me very uneasy.
+    - languageCode: ca
+      text: "Aquesta zona vermella m'inquieta molt."
+  - key: Todo es azul en esta parte.
+    translations:
+    - languageCode: es
+      text: Todo es azul en esta parte.
+    - languageCode: en
+      text: Everything is blue over here.
+    - languageCode: ca
+      text: "Tot \xE9s blau en aquesta part."
+  - key: "Tengo fr\xEDo en esta zona azul... deber\xEDa irme."
+    translations:
+    - languageCode: es
+      text: "Tengo fr\xEDo en esta zona azul... deber\xEDa irme."
+    - languageCode: en
+      text: "I'm cold in this blue area... I should leave."
+    - languageCode: ca
+      text: Tinc fred en aquesta zona blava... hauria de marxar.
+  - key: "El c\xF3digo no est\xE1 en el teclado. Busca una nota o una secuencia de cuatro cifras en la sala."
+    translations:
+    - languageCode: es
+      text: "El c\xF3digo no est\xE1 en el teclado. Busca una nota o una secuencia de cuatro cifras en la sala."
+    - languageCode: en
+      text: The code is not on the keypad. Look for a note or a four-digit sequence in the room.
+    - languageCode: ca
+      text: "El codi no \xE9s al teclat. Busca una nota o una seq\xFC\xE8ncia de quatre xifres a la sala."
+  - key: Las marcas del entorno deben leerse de izquierda a derecha.
+    translations:
+    - languageCode: es
+      text: Las marcas del entorno deben leerse de izquierda a derecha.
+    - languageCode: en
+      text: Read the marks around you from left to right.
+    - languageCode: ca
+      text: "Les marques de l'entorn s'han de llegir d'esquerra a dreta."
+  - key: Introduce 1 - 2 - 3 - 4 en el panel.
+    translations:
+    - languageCode: es
+      text: Introduce 1 - 2 - 3 - 4 en el panel.
+    - languageCode: en
+      text: Enter 1 - 2 - 3 - 4 on the panel.
+    - languageCode: ca
+      text: Introdueix 1 - 2 - 3 - 4 al panell.
+  - key: Los pulsadores recuerdan el orden. Observa primero los colores del entorno.
+    translations:
+    - languageCode: es
+      text: Los pulsadores recuerdan el orden. Observa primero los colores del entorno.
+    - languageCode: en
+      text: The buttons remember the order. Look at the colours around you first.
+    - languageCode: ca
+      text: "Els polsadors recorden l'ordre. Observa primer els colors de l'entorn."
+  - key: "Empieza por el color c\xE1lido, contin\xFAa por el intermedio y termina con el fr\xEDo."
+    translations:
+    - languageCode: es
+      text: "Empieza por el color c\xE1lido, contin\xFAa por el intermedio y termina con el fr\xEDo."
+    - languageCode: en
+      text: Start with the warm colour, continue with the middle one and finish with the cold one.
+    - languageCode: ca
+      text: "Comen\xE7a pel color c\xE0lid, continua per l'intermedi i acaba amb el fred."
+  - key: Pulsa Rojo, Verde y Azul, en ese orden.
+    translations:
+    - languageCode: es
+      text: Pulsa Rojo, Verde y Azul, en ese orden.
+    - languageCode: en
+      text: Press Red, Green and Blue, in that order.
+    - languageCode: ca
+      text: Prem Vermell, Verd i Blau, en aquest ordre.
+  - key: "Cada palanca y cada interruptor representan una posici\xF3n del patr\xF3n. No todos deben quedar activados."
+    translations:
+    - languageCode: es
+      text: "Cada palanca y cada interruptor representan una posici\xF3n del patr\xF3n. No todos deben quedar activados."
+    - languageCode: en
+      text: Each lever and switch is one position of the pattern. Not all of them must end up on.
+    - languageCode: ca
+      text: "Cada palanca i cada interruptor representen una posici\xF3 del patr\xF3. No tots han de quedar activats."
+  - key: "Las tres palancas forman un patr\xF3n alterno; los interruptores usan el patr\xF3n opuesto."
+    translations:
+    - languageCode: es
+      text: "Las tres palancas forman un patr\xF3n alterno; los interruptores usan el patr\xF3n opuesto."
+    - languageCode: en
+      text: "The three levers form an alternating pattern; the switches use the opposite one."
+    - languageCode: ca
+      text: "Les tres palanques formen un patr\xF3 altern; els interruptors fan servir el patr\xF3 oposat."
+  - key: "Palancas: ON, OFF, ON. Interruptores: OFF, ON, OFF."
+    translations:
+    - languageCode: es
+      text: "Palancas: ON, OFF, ON. Interruptores: OFF, ON, OFF."
+    - languageCode: en
+      text: "Levers: ON, OFF, ON. Switches: OFF, ON, OFF."
+    - languageCode: ca
+      text: "Palanques: ON, OFF, ON. Interruptors: OFF, ON, OFF."
+  - key: Circuito de luces
+    translations:
+    - languageCode: es
+      text: Circuito de luces
+    - languageCode: en
+      text: Linked lights
+    - languageCode: ca
+      text: Circuit de llums
+  - key: Enciende las cinco luces del circuito para abrir la puerta.
+    translations:
+    - languageCode: es
+      text: Enciende las cinco luces del circuito para abrir la puerta.
+    - languageCode: en
+      text: Turn on all five lights of the circuit to open the door.
+    - languageCode: ca
+      text: "Enc\xE9n les cinc llums del circuit per obrir la porta."
+  - key: "Secuencia mel\xF3dica"
+    translations:
+    - languageCode: es
+      text: "Secuencia mel\xF3dica"
+    - languageCode: en
+      text: Melodic sequence
+    - languageCode: ca
+      text: "Seq\xFC\xE8ncia mel\xF2dica"
+  - key: Escucha la pista y repite las cuatro notas en el mismo orden.
+    translations:
+    - languageCode: es
+      text: Escucha la pista y repite las cuatro notas en el mismo orden.
+    - languageCode: en
+      text: Listen to the clue and repeat the four notes in the same order.
+    - languageCode: ca
+      text: Escolta la pista i repeteix les quatre notes en el mateix ordre.
+  - key: "Fase interna: palancas"
+    translations:
+    - languageCode: es
+      text: "Fase interna: palancas"
+    - languageCode: en
+      text: "Inner stage: levers"
+    - languageCode: ca
+      text: "Fase interna: palanques"
+  - key: Configura las tres palancas de la segunda fase.
+    translations:
+    - languageCode: es
+      text: Configura las tres palancas de la segunda fase.
+    - languageCode: en
+      text: Set the three levers of the second stage.
+    - languageCode: ca
+      text: Configura les tres palanques de la segona fase.
+  - key: Cadena de seguridad
+    translations:
+    - languageCode: es
+      text: Cadena de seguridad
+    - languageCode: en
+      text: Security chain
+    - languageCode: ca
+      text: Cadena de seguretat
+  - key: "Resuelve la secuencia de colores y despu\xE9s configura las tres palancas."
+    translations:
+    - languageCode: es
+      text: "Resuelve la secuencia de colores y despu\xE9s configura las tres palancas."
+    - languageCode: en
+      text: Solve the colour sequence, then set the three levers.
+    - languageCode: ca
+      text: "Resol la seq\xFC\xE8ncia de colors i despr\xE9s configura les tres palanques."
+  - key: "Fase interna: secuencia"
+    translations:
+    - languageCode: es
+      text: "Fase interna: secuencia"
+    - languageCode: en
+      text: "Inner stage: sequence"
+    - languageCode: ca
+      text: "Fase interna: seq\xFC\xE8ncia"
+  - key: Completa la secuencia de colores de la primera fase.
+    translations:
+    - languageCode: es
+      text: Completa la secuencia de colores de la primera fase.
+    - languageCode: en
+      text: Complete the colour sequence of the first stage.
+    - languageCode: ca
+      text: "Completa la seq\xFC\xE8ncia de colors de la primera fase."
+  - key: Candado de rodillos
+    translations:
+    - languageCode: es
+      text: Candado de rodillos
+    - languageCode: en
+      text: Wheel lock
+    - languageCode: ca
+      text: Candau de rodets
+  - key: "Gira los cuatro rodillos hasta introducir la combinaci\xF3n correcta."
+    translations:
+    - languageCode: es
+      text: "Gira los cuatro rodillos hasta introducir la combinaci\xF3n correcta."
+    - languageCode: en
+      text: Turn the four wheels until you enter the right combination.
+    - languageCode: ca
+      text: "Gira els quatre rodets fins a introduir la combinaci\xF3 correcta."
+  - key: "Tuber\xEDa de derivaci\xF3n"
+    translations:
+    - languageCode: es
+      text: "Tuber\xEDa de derivaci\xF3n"
+    - languageCode: en
+      text: Bypass pipe
+    - languageCode: ca
+      text: "Canonada de derivaci\xF3"
+  - key: "Gira las tuber\xEDas hasta conectar el origen con el destino."
+    translations:
+    - languageCode: es
+      text: "Gira las tuber\xEDas hasta conectar el origen con el destino."
+    - languageCode: en
+      text: Rotate the pipes until the source connects to the destination.
+    - languageCode: ca
+      text: "Gira les canonades fins a connectar l'origen amb la destinaci\xF3."
+  - key: Piezas encajables
+    translations:
+    - languageCode: es
+      text: Piezas encajables
+    - languageCode: en
+      text: Fitting pieces
+    - languageCode: ca
+      text: Peces encaixables
+  - key: "Coloca cada pieza en su posici\xF3n correcta."
+    translations:
+    - languageCode: es
+      text: "Coloca cada pieza en su posici\xF3n correcta."
+    - languageCode: en
+      text: Place each piece in its correct position.
+    - languageCode: ca
+      text: "Col\xB7loca cada pe\xE7a a la seva posici\xF3 correcta."
+  - key: Rompecabezas deslizante
+    translations:
+    - languageCode: es
+      text: Rompecabezas deslizante
+    - languageCode: en
+      text: Sliding puzzle
+    - languageCode: ca
+      text: Trencaclosques lliscant
+  - key: Ordena las fichas hasta reconstruir la secuencia.
+    translations:
+    - languageCode: es
+      text: Ordena las fichas hasta reconstruir la secuencia.
+    - languageCode: en
+      text: Order the tiles until the sequence is rebuilt.
+    - languageCode: ca
+      text: "Ordena les fitxes fins a reconstruir la seq\xFC\xE8ncia."
+  - key: "Galer\xEDa de precisi\xF3n"
+    translations:
+    - languageCode: es
+      text: "Galer\xEDa de precisi\xF3n"
+    - languageCode: en
+      text: Shooting gallery
+    - languageCode: ca
+      text: "Galeria de precisi\xF3"
+  - key: Acierta en las tres dianas con objetos que se puedan lanzar.
+    translations:
+    - languageCode: es
+      text: Acierta en las tres dianas con objetos que se puedan lanzar.
+    - languageCode: en
+      text: Hit the three targets with throwable objects.
+    - languageCode: ca
+      text: "Encerta les tres dianes amb objectes llan\xE7ables."
+  - key: Cerradura de archivo
+    translations:
+    - languageCode: es
+      text: Cerradura de archivo
+    - languageCode: en
+      text: Archive lock
+    - languageCode: ca
+      text: "Pany de l'arxiu"
+  - key: "Descubre el c\xF3digo de cuatro cifras y abre el archivo sellado."
+    translations:
+    - languageCode: es
+      text: "Descubre el c\xF3digo de cuatro cifras y abre el archivo sellado."
+    - languageCode: en
+      text: Find the four-digit code and open the sealed archive.
+    - languageCode: ca
+      text: "Descobreix el codi de quatre xifres i obre l'arxiu segellat."
+  - key: "Secuencia crom\xE1tica"
+    translations:
+    - languageCode: es
+      text: "Secuencia crom\xE1tica"
+    - languageCode: en
+      text: Colour sequence
+    - languageCode: ca
+      text: "Seq\xFC\xE8ncia crom\xE0tica"
+  - key: Reconstruye el orden correcto de los tres pulsadores.
+    translations:
+    - languageCode: es
+      text: Reconstruye el orden correcto de los tres pulsadores.
+    - languageCode: en
+      text: Work out the right order of the three buttons.
+    - languageCode: ca
+      text: "Reconstrueix l'ordre correcte dels tres polsadors."
+  - key: "Panel de distribuci\xF3n"
+    translations:
+    - languageCode: es
+      text: "Panel de distribuci\xF3n"
+    - languageCode: en
+      text: Distribution panel
+    - languageCode: ca
+      text: "Quadre de distribuci\xF3"
+  - key: "Ajusta las palancas y los interruptores seg\xFAn el patr\xF3n oculto."
+    translations:
+    - languageCode: es
+      text: "Ajusta las palancas y los interruptores seg\xFAn el patr\xF3n oculto."
+    - languageCode: en
+      text: Set the levers and switches to the hidden pattern.
+    - languageCode: ca
+      text: "Ajusta les palanques i els interruptors segons el patr\xF3 amagat."
+  - key: Teclado de seguridad
+    translations:
+    - languageCode: es
+      text: Teclado de seguridad
+    - languageCode: en
+      text: Security keypad
+    - languageCode: ca
+      text: Teclat de seguretat
+  - key: "Encuentra el c\xF3digo de acceso de cuatro cifras."
+    translations:
+    - languageCode: es
+      text: "Encuentra el c\xF3digo de acceso de cuatro cifras."
+    - languageCode: en
+      text: Find the four-digit access code.
+    - languageCode: ca
+      text: "Troba el codi d'acc\xE9s de quatre xifres."
+  - key: Caja fuerte de la oficina
+    translations:
+    - languageCode: es
+      text: Caja fuerte de la oficina
+    - languageCode: en
+      text: Office safe
+    - languageCode: ca
+      text: "Caixa forta de l'oficina"
+  - key: "Descubre la combinaci\xF3n de la caja fuerte."
+    translations:
+    - languageCode: es
+      text: "Descubre la combinaci\xF3n de la caja fuerte."
+    - languageCode: en
+      text: Discover the safe combination.
+    - languageCode: ca
+      text: "Descobreix la combinaci\xF3 de la caixa forta."
+  - key: "Secuencia crom\xE1tica encadenada"
+    translations:
+    - languageCode: es
+      text: "Secuencia crom\xE1tica encadenada"
+    - languageCode: en
+      text: Chained colour sequence
+    - languageCode: ca
+      text: "Seq\xFC\xE8ncia crom\xE0tica encadenada"
+  - key: Resuelve la secuencia de colores antes de activar el segundo puzle.
+    translations:
+    - languageCode: es
+      text: Resuelve la secuencia de colores antes de activar el segundo puzle.
+    - languageCode: en
+      text: Solve the colour sequence before the second puzzle activates.
+    - languageCode: ca
+      text: "Resol la seq\xFC\xE8ncia de colors abans d'activar el segon puzle."
+  - key: Palancas encadenadas
+    translations:
+    - languageCode: es
+      text: Palancas encadenadas
+    - languageCode: en
+      text: Chained levers
+    - languageCode: ca
+      text: Palanques encadenades
+  - key: "Ajusta las tres palancas despu\xE9s de completar la secuencia."
+    translations:
+    - languageCode: es
+      text: "Ajusta las tres palancas despu\xE9s de completar la secuencia."
+    - languageCode: en
+      text: Set the three levers after completing the sequence.
+    - languageCode: ca
+      text: "Ajusta les tres palanques despr\xE9s de completar la seq\xFC\xE8ncia."
+  - key: "Cada bot\xF3n cambia su luz y las luces inmediatamente vecinas."
+    translations:
+    - languageCode: es
+      text: "Cada bot\xF3n cambia su luz y las luces inmediatamente vecinas."
+    - languageCode: en
+      text: Each button toggles its own light and the ones right next to it.
+    - languageCode: ca
+      text: "Cada bot\xF3 canvia la seva llum i les llums immediatament ve\xEFnes."
+  - key: "Pulsar dos veces el mismo bot\xF3n deshace el cambio."
+    translations:
+    - languageCode: es
+      text: "Pulsar dos veces el mismo bot\xF3n deshace el cambio."
+    - languageCode: en
+      text: Pressing the same button twice undoes the change.
+    - languageCode: ca
+      text: "Pr\xE9mer dues vegades el mateix bot\xF3 desf\xE0 el canvi."
+  - key: Reinicia el panel y pulsa los botones 1, 3 y 5, en cualquier orden.
+    translations:
+    - languageCode: es
+      text: Reinicia el panel y pulsa los botones 1, 3 y 5, en cualquier orden.
+    - languageCode: en
+      text: Reset the panel and press buttons 1, 3 and 5, in any order.
+    - languageCode: ca
+      text: Reinicia el panell i prem els botons 1, 3 i 5, en qualsevol ordre.
+  - key: "La melod\xEDa tiene cuatro notas."
+    translations:
+    - languageCode: es
+      text: "La melod\xEDa tiene cuatro notas."
+    - languageCode: en
+      text: The melody has four notes.
+    - languageCode: ca
+      text: "La melodia cont\xE9 quatre notes."
+  - key: "Compara cada bot\xF3n con la pista antes de introducir la secuencia."
+    translations:
+    - languageCode: es
+      text: "Compara cada bot\xF3n con la pista antes de introducir la secuencia."
+    - languageCode: en
+      text: Compare each button with the clue before entering the sequence.
+    - languageCode: ca
+      text: "Compara cada bot\xF3 amb la pista abans d'introduir la seq\xFC\xE8ncia."
+  - key: "La secuencia de demostraci\xF3n es C, A, D, B."
+    translations:
+    - languageCode: es
+      text: "La secuencia de demostraci\xF3n es C, A, D, B."
+    - languageCode: en
+      text: The demo sequence is C, A, D, B.
+    - languageCode: ca
+      text: "La seq\xFC\xE8ncia de demostraci\xF3 \xE9s C, A, D, B."
+  - key: "Esta fase se activa despu\xE9s de la secuencia."
+    translations:
+    - languageCode: es
+      text: "Esta fase se activa despu\xE9s de la secuencia."
+    - languageCode: en
+      text: This stage unlocks after the sequence.
+    - languageCode: ca
+      text: "Aquesta fase s'activa despr\xE9s de la seq\xFC\xE8ncia."
+  - key: Cada palanca tiene tres posiciones.
+    translations:
+    - languageCode: es
+      text: Cada palanca tiene tres posiciones.
+    - languageCode: en
+      text: Each lever has three positions.
+    - languageCode: ca
+      text: "Cada palanca t\xE9 tres posicions."
+  - key: Las posiciones son 2, 0 y 1.
+    translations:
+    - languageCode: es
+      text: Las posiciones son 2, 0 y 1.
+    - languageCode: en
+      text: The positions are 2, 0 and 1.
+    - languageCode: ca
+      text: "Les posicions s\xF3n 2, 0 i 1."
+  - key: Los colores deben pulsarse en un orden concreto.
+    translations:
+    - languageCode: es
+      text: Los colores deben pulsarse en un orden concreto.
+    - languageCode: en
+      text: The colours must be pressed in a set order.
+    - languageCode: ca
+      text: "Els colors s'han de pr\xE9mer en un ordre concret."
+  - key: El orden de la primera fase es rojo, verde y azul.
+    translations:
+    - languageCode: es
+      text: El orden de la primera fase es rojo, verde y azul.
+    - languageCode: en
+      text: The order of the first stage is red, green and blue.
+    - languageCode: ca
+      text: "L'ordre de la primera fase \xE9s vermell, verd i blau."
+  - key: En la segunda fase, deja las palancas en las posiciones 2, 0 y 1.
+    translations:
+    - languageCode: es
+      text: En la segunda fase, deja las palancas en las posiciones 2, 0 y 1.
+    - languageCode: en
+      text: In the second stage, leave the levers in positions 2, 0 and 1.
+    - languageCode: ca
+      text: A la segona fase, deixa les palanques en les posicions 2, 0 i 1.
+  - key: Esta es la primera fase de la cadena.
+    translations:
+    - languageCode: es
+      text: Esta es la primera fase de la cadena.
+    - languageCode: en
+      text: This is the first stage of the chain.
+    - languageCode: ca
+      text: "Aquesta \xE9s la primera fase de la cadena."
+  - key: Pulsa los colores en orden.
+    translations:
+    - languageCode: es
+      text: Pulsa los colores en orden.
+    - languageCode: en
+      text: Press the colours in order.
+    - languageCode: ca
+      text: Prem els colors en ordre.
+  - key: El orden es rojo, verde y azul.
+    translations:
+    - languageCode: es
+      text: El orden es rojo, verde y azul.
+    - languageCode: en
+      text: The order is red, green and blue.
+    - languageCode: ca
+      text: "L'ordre \xE9s vermell, verd i blau."
+  - key: "Cada rodillo avanza una cifra cuando interact\xFAas con \xE9l."
+    translations:
+    - languageCode: es
+      text: "Cada rodillo avanza una cifra cuando interact\xFAas con \xE9l."
+    - languageCode: en
+      text: Each wheel moves one digit when you use it.
+    - languageCode: ca
+      text: "Cada rodet avan\xE7a una xifra quan hi interactues."
+  - key: "Busca una combinaci\xF3n de cuatro cifras."
+    translations:
+    - languageCode: es
+      text: "Busca una combinaci\xF3n de cuatro cifras."
+    - languageCode: en
+      text: Look for a four-digit combination.
+    - languageCode: ca
+      text: "Busca una combinaci\xF3 de quatre xifres."
+  - key: "La combinaci\xF3n de demostraci\xF3n es 3142."
+    translations:
+    - languageCode: es
+      text: "La combinaci\xF3n de demostraci\xF3n es 3142."
+    - languageCode: en
+      text: The demo combination is 3142.
+    - languageCode: ca
+      text: "La combinaci\xF3 de demostraci\xF3 \xE9s 3142."
+  - key: "Los objetos f\xEDsicos solo cuentan si golpean una diana."
+    translations:
+    - languageCode: es
+      text: "Los objetos f\xEDsicos solo cuentan si golpean una diana."
+    - languageCode: en
+      text: Physics objects only count if they hit a target.
+    - languageCode: ca
+      text: "Els objectes f\xEDsics nom\xE9s compten si colpegen una diana."
+  - key: Cada diana solo tiene que activarse una vez.
+    translations:
+    - languageCode: es
+      text: Cada diana solo tiene que activarse una vez.
+    - languageCode: en
+      text: Each target only needs to be hit once.
+    - languageCode: ca
+      text: "Cada diana nom\xE9s s'ha d'activar una vegada."
+  - key: Acierta en target1, target2 y target3 en cualquier orden.
+    translations:
+    - languageCode: es
+      text: Acierta en target1, target2 y target3 en cualquier orden.
+    - languageCode: en
+      text: Hit target1, target2 and target3 in any order.
+    - languageCode: ca
+      text: Encerta target1, target2 i target3 en qualsevol ordre.
+  - key: "Colocaci\xF3n: lleva cada pieza a su sitio"
+    translations:
+    - languageCode: es
+      text: "Colocaci\xF3n: lleva cada pieza a su sitio"
+    - languageCode: en
+      text: "Placement: take each piece to its place"
+    - languageCode: ca
+      text: "Col\xB7locaci\xF3: porta cada pe\xE7a al seu lloc"
+  - key: "IZQUIERDA: interruptor del techo\nENTRADA O DERECHA: temporizador HUD"
+    translations:
+    - languageCode: es
+      text: "IZQUIERDA: interruptor del techo\nENTRADA O DERECHA: temporizador HUD"
+    - languageCode: en
+      text: "LEFT: ceiling switch\nENTRANCE OR RIGHT: HUD timer"
+    - languageCode: ca
+      text: "ESQUERRA: interruptor del sostre\nENTRADA O DRETA: temporitzador HUD"
+  - key: "Cada bot\xF3n conmuta su luz y las vecinas.\nObjetivo: todas encendidas. Puedes reiniciar el intento."
+    translations:
+    - languageCode: es
+      text: "Cada bot\xF3n conmuta su luz y las vecinas.\nObjetivo: todas encendidas. Puedes reiniciar el intento."
+    - languageCode: en
+      text: "Each button toggles its light and its neighbours.\nGoal: all on. You can reset the attempt."
+    - languageCode: ca
+      text: "Cada bot\xF3 commuta la seva llum i les ve\xEFnes.\nObjectiu: totes enceses. Pots reiniciar l'intent."
+  - key: "ESCAPE ROOM  /  SURVIVAL HORROR\nMUESTRA DE SISTEMAS"
+    translations:
+    - languageCode: es
+      text: "ESCAPE ROOM  /  SURVIVAL HORROR\nMUESTRA DE SISTEMAS"
+    - languageCode: en
+      text: "ESCAPE ROOM  /  SURVIVAL HORROR\nSYSTEMS SHOWCASE"
+    - languageCode: ca
+      text: "ESCAPE ROOM  /  SURVIVAL HORROR\nMOSTRA DE SISTEMES"
+  - key: "\xA1Has recogido una nota!\n\nPuedes leerla desde el inventario cuando quieras."
+    translations:
+    - languageCode: es
+      text: "\xA1Has recogido una nota!\n\nPuedes leerla desde el inventario cuando quieras."
+    - languageCode: en
+      text: "This is a note you picked up!\n\nYou can read it from your inventory anytime."
+    - languageCode: ca
+      text: "Has recollit una nota!\n\nLa pots llegir des de l'inventari quan vulguis."
+  - key: El agua sale del origen verde y tiene que llegar al destino sin cortes.
+    translations:
+    - languageCode: es
+      text: El agua sale del origen verde y tiene que llegar al destino sin cortes.
+    - languageCode: en
+      text: Water leaves the green source and must reach the end without gaps.
+    - languageCode: ca
+      text: "L'aigua surt de l'origen verd i ha d'arribar a la destinaci\xF3 sense talls."
+  - key: "Cada clic gira el tramo 90\xB0. F\xEDjate en qu\xE9 lados tienen abertura."
+    translations:
+    - languageCode: es
+      text: "Cada clic gira el tramo 90\xB0. F\xEDjate en qu\xE9 lados tienen abertura."
+    - languageCode: en
+      text: "Each click turns the segment 90\xB0. Check which sides are open."
+    - languageCode: ca
+      text: "Cada clic gira el tram 90\xB0. Fixa't en quins costats tenen obertura."
+  - key: Gira cada tramo hasta que sus aberturas se toquen con las del tramo vecino.
+    translations:
+    - languageCode: es
+      text: Gira cada tramo hasta que sus aberturas se toquen con las del tramo vecino.
+    - languageCode: en
+      text: "Turn each segment until its openings meet the next segment's."
+    - languageCode: ca
+      text: "Gira cada tram fins que les seves obertures toquin les del tram ve\xED."
+  - key: "Hay tres soportes y solo dos piezas: uno de ellos es un se\xF1uelo."
+    translations:
+    - languageCode: es
+      text: "Hay tres soportes y solo dos piezas: uno de ellos es un se\xF1uelo."
+    - languageCode: en
+      text: "There are three holders and only two pieces: one is a decoy."
+    - languageCode: ca
+      text: "Hi ha tres suports i nom\xE9s dues peces: un d'ells \xE9s un esquer."
+  - key: "Suelta la pieza dentro del soporte; el im\xE1n la termina de encajar."
+    translations:
+    - languageCode: es
+      text: "Suelta la pieza dentro del soporte; el im\xE1n la termina de encajar."
+    - languageCode: en
+      text: "Drop the piece inside the holder; the magnet seats it."
+    - languageCode: ca
+      text: "Deixa anar la pe\xE7a dins del suport; l'imant l'acaba d'encaixar."
+  - key: Si no se abre, vuelve a coger una pieza y prueba el otro soporte.
+    translations:
+    - languageCode: es
+      text: Si no se abre, vuelve a coger una pieza y prueba el otro soporte.
+    - languageCode: en
+      text: If nothing opens, pick a piece up again and try the other holder.
+    - languageCode: ca
+      text: "Si no s'obre, torna a agafar una pe\xE7a i prova l'altre suport."
+  - key: Solo se mueve una ficha que toque el hueco.
+    translations:
+    - languageCode: es
+      text: Solo se mueve una ficha que toque el hueco.
+    - languageCode: en
+      text: Only a tile next to the gap can move.
+    - languageCode: ca
+      text: "Nom\xE9s es mou una fitxa que toqui el forat."
+  - key: Ordena las fichas del 1 al 8 empezando arriba a la izquierda.
+    translations:
+    - languageCode: es
+      text: Ordena las fichas del 1 al 8 empezando arriba a la izquierda.
+    - languageCode: en
+      text: Order the tiles 1 to 8 starting at the top left.
+    - languageCode: ca
+      text: "Ordena les fitxes de l'1 al 8 comen\xE7ant a dalt a l'esquerra."
+  - key: "Completa primero la fila de arriba y no la vuelvas a tocar; despu\xE9s, la del medio."
+    translations:
+    - languageCode: es
+      text: "Completa primero la fila de arriba y no la vuelvas a tocar; despu\xE9s, la del medio."
+    - languageCode: en
+      text: "Finish the top row first and leave it alone; then the middle one."
+    - languageCode: ca
+      text: "Completa primer la fila de dalt i no la tornis a tocar; despr\xE9s, la del mig."
+  - key: "Deslizante: reordena la cuadr\xEDcula"
+    translations:
+    - languageCode: es
+      text: "Deslizante: reordena la cuadr\xEDcula"
+    - languageCode: en
+      text: "Sliding: rearrange the grid"
+    - languageCode: ca
+      text: "Lliscant: reordena la quadr\xEDcula"
+  - key: "F\xEDsica: lanza objetos a las dianas"
+    translations:
+    - languageCode: es
+      text: "F\xEDsica: lanza objetos a las dianas"
+    - languageCode: en
+      text: "Physics: throw objects at the targets"
+    - languageCode: ca
+      text: "F\xEDsica: llan\xE7a objectes a les dianes"
+  - key: "Melod\xEDa: escucha la pista y repite las notas"
+    translations:
+    - languageCode: es
+      text: "Melod\xEDa: escucha la pista y repite las notas"
+    - languageCode: en
+      text: "Melody: listen to the clue and repeat the notes"
+    - languageCode: ca
+      text: "Melodia: escolta la pista i repeteix les notes"
+  - key: "Nota y c\xF3digo: lee la pista e introduce el c\xF3digo"
+    translations:
+    - languageCode: es
+      text: "Nota y c\xF3digo: lee la pista e introduce el c\xF3digo"
+    - languageCode: en
+      text: "Note and code: read the clue and enter the code"
+    - languageCode: ca
+      text: "Nota i codi: llegeix la pista i introdueix el codi"
+  - key: "Puertas y contenedores: caj\xF3n, armario y puerta con llave"
+    translations:
+    - languageCode: es
+      text: "Puertas y contenedores: caj\xF3n, armario y puerta con llave"
+    - languageCode: en
+      text: "Doors and containers: drawer, cabinet and locked door"
+    - languageCode: ca
+      text: "Portes i contenidors: calaix, armari i porta amb clau"
+  - key: "Tuber\xEDas: rota hasta conectar"
+    translations:
+    - languageCode: es
+      text: "Tuber\xEDas: rota hasta conectar"
+    - languageCode: en
+      text: "Pipes: rotate until connected"
+    - languageCode: ca
+      text: "Canonades: gira fins a connectar"
+  - key: "Enciende las cinco luces \xB7 botones conectados"
+    translations:
+    - languageCode: es
+      text: "Enciende las cinco luces \xB7 botones conectados"
+    - languageCode: en
+      text: "Turn on all five lights \xB7 linked buttons"
+    - languageCode: ca
+      text: "Enc\xE9n els cinc llums \xB7 botons connectats"
+  - key: "Cuatro cifras \xB7 combinaci\xF3n 3142"
+    translations:
+    - languageCode: es
+      text: "Cuatro cifras \xB7 combinaci\xF3n 3142"
+    - languageCode: en
+      text: "Four digits \xB7 combination 3142"
+    - languageCode: ca
+      text: "Quatre xifres \xB7 combinaci\xF3 3142"
+  - key: "Resu\xE9lvelos todos \xB7 orden opcional"
+    translations:
+    - languageCode: es
+      text: "Resu\xE9lvelos todos \xB7 orden opcional"
+    - languageCode: en
+      text: "Solve them all \xB7 any order"
+    - languageCode: ca
+      text: "Resol-los tots \xB7 ordre opcional"
+  - key: "Techo m\xF3vil \xB7 temporizador HUD independiente"
+    translations:
+    - languageCode: es
+      text: "Techo m\xF3vil \xB7 temporizador HUD independiente"
+    - languageCode: en
+      text: "Moving ceiling \xB7 separate HUD timer"
+    - languageCode: ca
+      text: "Sostre m\xF2bil \xB7 temporitzador HUD separat"
+  - key: "11 \xB7 PUZLES ENCADENADOS"
+    translations:
+    - languageCode: es
+      text: "11 \xB7 PUZLES ENCADENADOS"
+    - languageCode: en
+      text: "11 \xB7 CHAINED PUZZLES"
+    - languageCode: ca
+      text: "11 \xB7 PUZZLES ENCADENATS"
+  - key: "12 \xB7 PELIGROS INDEPENDIENTES"
+    translations:
+    - languageCode: es
+      text: "12 \xB7 PELIGROS INDEPENDIENTES"
+    - languageCode: en
+      text: "12 \xB7 INDEPENDENT HAZARDS"
+    - languageCode: ca
+      text: "12 \xB7 PERILLS INDEPENDENTS"
+  - key: "13 \xB7 RODILLOS NUM\xC9RICOS"
+    translations:
+    - languageCode: es
+      text: "13 \xB7 RODILLOS NUM\xC9RICOS"
+    - languageCode: en
+      text: "13 \xB7 NUMBER WHEELS"
+    - languageCode: ca
+      text: "13 \xB7 RODETS NUM\xC8RICS"
+  - key: "14 \xB7 CIRCUITO DE LUCES"
+    translations:
+    - languageCode: es
+      text: "14 \xB7 CIRCUITO DE LUCES"
+    - languageCode: en
+      text: "14 \xB7 LIGHT CIRCUIT"
+    - languageCode: ca
+      text: "14 \xB7 CIRCUIT DE LLUMS"
+  - key: "BOTONES \u25B2 / \u25BC \xB7 CLIC DERECHO PARA SALIR"
+    translations:
+    - languageCode: es
+      text: "BOTONES \u25B2 / \u25BC \xB7 CLIC DERECHO PARA SALIR"
+    - languageCode: en
+      text: "\u25B2 / \u25BC BUTTONS \xB7 RIGHT CLICK TO EXIT"
+    - languageCode: ca
+      text: "BOTONS \u25B2 / \u25BC \xB7 CLIC DRET PER SORTIR"
+  - key: "C\xD3DIGO DE 4 CIFRAS"
+    translations:
+    - languageCode: es
+      text: "C\xD3DIGO DE 4 CIFRAS"
+    - languageCode: en
+      text: 4-DIGIT CODE
+    - languageCode: ca
+      text: CODI DE 4 XIFRES
+  - key: "Cada bot\xF3n conmuta su luz y las vecinas.\nObjetivo: todas encendidas."
+    translations:
+    - languageCode: es
+      text: "Cada bot\xF3n conmuta su luz y las vecinas.\nObjetivo: todas encendidas."
+    - languageCode: en
+      text: "Each button toggles its light and its neighbours.\nGoal: all lights on."
+    - languageCode: ca
+      text: "Cada bot\xF3 commuta la seva llum i les ve\xEFnes.\nObjectiu: totes enceses."
+  - key: EXAMINAR CANDADO
+    translations:
+    - languageCode: es
+      text: EXAMINAR CANDADO
+    - languageCode: en
+      text: EXAMINE PADLOCK
+    - languageCode: ca
+      text: EXAMINAR CANDAU
+  - key: "PUZLE 1 \xB7 SECUENCIA"
+    translations:
+    - languageCode: es
+      text: "PUZLE 1 \xB7 SECUENCIA"
+    - languageCode: en
+      text: "PUZZLE 1 \xB7 SEQUENCE"
+    - languageCode: ca
+      text: "PUZZLE 1 \xB7 SEQ\xDC\xC8NCIA"
+  - key: "PUZLE 2 \xB7 PALANCAS"
+    translations:
+    - languageCode: es
+      text: "PUZLE 2 \xB7 PALANCAS"
+    - languageCode: en
+      text: "PUZZLE 2 \xB7 LEVERS"
+    - languageCode: ca
+      text: "PUZZLE 2 \xB7 PALANQUES"
+  - key: Avanzar rodillo
+    translations:
+    - languageCode: es
+      text: Avanzar rodillo
+    - languageCode: en
+      text: Advance wheel
+    - languageCode: ca
+      text: "Avan\xE7ar rodet"
+  - key: "Esta nota se puede leer directamente en el mundo.\n\nSolo tienes que mirarla y pulsar E."
+    translations:
+    - languageCode: es
+      text: "Esta nota se puede leer directamente en el mundo.\n\nSolo tienes que mirarla y pulsar E."
+    - languageCode: en
+      text: "This note can be read directly in the world.\n\nJust look at it and press E."
+    - languageCode: ca
+      text: "Aquesta nota es pot llegir directament al m\xF3n.\n\nNom\xE9s cal que la miris i premis E."
+  - key: "Interruptores: binario y de N posiciones"
+    translations:
+    - languageCode: es
+      text: "Interruptores: binario y de N posiciones"
+    - languageCode: en
+      text: "Switches: binary and N-position"
+    - languageCode: ca
+      text: "Interruptors: binari i de N posicions"
+  - key: "Receptores: coloca un objeto y combina dos"
+    translations:
+    - languageCode: es
+      text: "Receptores: coloca un objeto y combina dos"
+    - languageCode: en
+      text: "Receivers: place an object and combine two"
+    - languageCode: ca
+      text: "Receptors: col\xB7loca un objecte i combina'n dos"
+  - key: "Secuencia: pulsa en el orden correcto"
+    translations:
+    - languageCode: es
+      text: "Secuencia: pulsa en el orden correcto"
+    - languageCode: en
+      text: "Sequence: press in the right order"
+    - languageCode: ca
+      text: "Seq\xFC\xE8ncia: prem en l'ordre correcte"
+  - key: REINICIAR
+    translations:
+    - languageCode: es
+      text: REINICIAR
+    - languageCode: en
+      text: RESET
+    - languageCode: ca
+      text: REINICIAR
+  - key: "Girar tuber\xEDa"
+    translations:
+    - languageCode: es
+      text: "Girar tuber\xEDa"
+    - languageCode: en
+      text: Rotate pipe
+    - languageCode: ca
+      text: Girar canonada
+  - key: "Posici\xF3n 1"
+    translations:
+    - languageCode: es
+      text: "Posici\xF3n 1"
+    - languageCode: en
+      text: Position 1
+    - languageCode: ca
+      text: "Posici\xF3 1"
+  - key: "Posici\xF3n 2"
+    translations:
+    - languageCode: es
+      text: "Posici\xF3n 2"
+    - languageCode: en
+      text: Position 2
+    - languageCode: ca
+      text: "Posici\xF3 2"
+  - key: "Posici\xF3n 3"
+    translations:
+    - languageCode: es
+      text: "Posici\xF3n 3"
+    - languageCode: en
+      text: Position 3
+    - languageCode: ca
+      text: "Posici\xF3 3"
+  - key: La dificultad Survival Horror activa no permite guardar manualmente.
+    translations:
+    - languageCode: es
+      text: La dificultad Survival Horror activa no permite guardar manualmente.
+    - languageCode: en
+      text: The active Survival Horror difficulty does not allow manual saving.
+    - languageCode: ca
+      text: La dificultat Survival Horror activa no permet desar manualment.
+  - key: No se ha encontrado la partida.
+    translations:
+    - languageCode: es
+      text: No se ha encontrado la partida.
+    - languageCode: en
+      text: Saved game not found.
+    - languageCode: ca
+      text: "No s'ha trobat la partida."
+  - key: "La estructura de la partida guardada no es v\xE1lida."
+    translations:
+    - languageCode: es
+      text: "La estructura de la partida guardada no es v\xE1lida."
+    - languageCode: en
+      text: The saved game structure is not valid.
+    - languageCode: ca
+      text: "L'estructura de la partida desada no \xE9s v\xE0lida."
+  - key: "La partida guardada est\xE1 da\xF1ada y no se pudo recuperar ni desde su copia de seguridad."
+    translations:
+    - languageCode: es
+      text: "La partida guardada est\xE1 da\xF1ada y no se pudo recuperar ni desde su copia de seguridad."
+    - languageCode: en
+      text: The saved game is corrupted and could not be recovered, not even from its backup.
+    - languageCode: ca
+      text: "La partida desada est\xE0 malmesa i no s'ha pogut recuperar ni des de la c\xF2pia de seguretat."
+  - key: "La escena guardada no est\xE1 incluida en esta versi\xF3n del juego."
+    translations:
+    - languageCode: es
+      text: "La escena guardada no est\xE1 incluida en esta versi\xF3n del juego."
+    - languageCode: en
+      text: The saved scene is not included in this version of the game.
+    - languageCode: ca
+      text: "L'escena desada no est\xE0 inclosa en aquesta versi\xF3 del joc."
+  - key: Unity no pudo iniciar la carga de la escena guardada.
+    translations:
+    - languageCode: es
+      text: Unity no pudo iniciar la carga de la escena guardada.
+    - languageCode: en
+      text: Unity could not start loading the saved scene.
+    - languageCode: ca
+      text: "Unity no ha pogut iniciar la c\xE0rrega de l'escena desada."
+  - key: Interact
+    translations:
+    - languageCode: es
+      text: Interactuar
+    - languageCode: en
+      text: Interact
+    - languageCode: ca
+      text: Interactuar
+  - key: Close
+    translations:
+    - languageCode: es
+      text: Cerrar
+    - languageCode: en
+      text: Close
+    - languageCode: ca
+      text: Tancar
+  - key: Open
+    translations:
+    - languageCode: es
+      text: Abrir
+    - languageCode: en
+      text: Open
+    - languageCode: ca
+      text: Obrir
+  - key: Open further
+    translations:
+    - languageCode: es
+      text: "Abrir m\xE1s"
+    - languageCode: en
+      text: Open further
+    - languageCode: ca
+      text: "Obrir m\xE9s"
+  - key: Locked
+    translations:
+    - languageCode: es
+      text: Cerrado con llave
+    - languageCode: en
+      text: Locked
+    - languageCode: ca
+      text: Tancat amb clau
+  - key: Opening...
+    translations:
+    - languageCode: es
+      text: Abriendo...
+    - languageCode: en
+      text: Opening...
+    - languageCode: ca
+      text: Obrint...
+  - key: Closing...
+    translations:
+    - languageCode: es
+      text: Cerrando...
+    - languageCode: en
+      text: Closing...
+    - languageCode: ca
+      text: Tancant...
+  - key: Use
+    translations:
+    - languageCode: es
+      text: Usar
+    - languageCode: en
+      text: Use
+    - languageCode: ca
+      text: Fer servir
+  - key: Use Keypad
+    translations:
+    - languageCode: es
+      text: Usar teclado
+    - languageCode: en
+      text: Use keypad
+    - languageCode: ca
+      text: Fer servir el teclat
+  - key: Solved
+    translations:
+    - languageCode: es
+      text: Resuelto
+    - languageCode: en
+      text: Solved
+    - languageCode: ca
+      text: Resolt
+  - key: Turn On
+    translations:
+    - languageCode: es
+      text: Encender
+    - languageCode: en
+      text: Turn on
+    - languageCode: ca
+      text: Encendre
+  - key: Turn Off
+    translations:
+    - languageCode: es
+      text: Apagar
+    - languageCode: en
+      text: Turn off
+    - languageCode: ca
+      text: Apagar
+  - key: Cycle
+    translations:
+    - languageCode: es
+      text: "Cambiar posici\xF3n"
+    - languageCode: en
+      text: Change position
+    - languageCode: ca
+      text: "Canviar de posici\xF3"
+  - key: Pick up
+    translations:
+    - languageCode: es
+      text: Recoger
+    - languageCode: en
+      text: Pick up
+    - languageCode: ca
+      text: Agafar
+  - key: Pick up Note
+    translations:
+    - languageCode: es
+      text: Recoger nota
+    - languageCode: en
+      text: Pick up note
+    - languageCode: ca
+      text: Agafar la nota
+  - key: Read Note
+    translations:
+    - languageCode: es
+      text: Leer nota
+    - languageCode: en
+      text: Read note
+    - languageCode: ca
+      text: Llegir la nota
+  - key: "[E] Read Note"
+    translations:
+    - languageCode: es
+      text: Leer nota
+    - languageCode: en
+      text: Read note
+    - languageCode: ca
+      text: Llegir la nota
+  - key: This note can be read directly in the world
+    translations:
+    - languageCode: es
+      text: Esta nota se puede leer directamente en el mundo.
+    - languageCode: en
+      text: This note can be read directly in the world.
+    - languageCode: ca
+      text: "Aquesta nota es pot llegir directament al m\xF3n."
+  - key: Write your note content here...
+    translations:
+    - languageCode: es
+      text: "Escribe aqu\xED el contenido de la nota..."
+    - languageCode: en
+      text: Write the note content here...
+    - languageCode: ca
+      text: "Escriu aqu\xED el contingut de la nota..."
+  - key: TEMPS RESTANT
+    translations:
+    - languageCode: es
+      text: TIEMPO RESTANTE
+    - languageCode: en
+      text: TIME LEFT
+    - languageCode: ca
+      text: TEMPS RESTANT
+  - key: TEMPS DE LA SALA
+    translations:
+    - languageCode: es
+      text: TIEMPO DE LA SALA
+    - languageCode: en
+      text: ROOM TIME
+    - languageCode: ca
+      text: TEMPS DE LA SALA
+  - key: "Agafar pe\xE7a"
+    translations:
+    - languageCode: es
+      text: Coger pieza
+    - languageCode: en
+      text: Pick up piece
+    - languageCode: ca
+      text: "Agafar la pe\xE7a"
+  - key: "Moure pe\xE7a"
+    translations:
+    - languageCode: es
+      text: Mover pieza
+    - languageCode: en
+      text: Move piece
+    - languageCode: ca
+      text: "Moure la pe\xE7a"
+  - key: "[E] Open Cabinet"
+    translations:
+    - languageCode: es
+      text: Abrir armario
+    - languageCode: en
+      text: Open cabinet
+    - languageCode: ca
+      text: "Obrir l'armari"
+  - key: "[E] Open Drawer"
+    translations:
+    - languageCode: es
+      text: "Abrir caj\xF3n"
+    - languageCode: en
+      text: Open drawer
+    - languageCode: ca
+      text: Obrir el calaix
+  - key: "[E] Open Pivot Door"
+    translations:
+    - languageCode: es
+      text: Abrir puerta
+    - languageCode: en
+      text: Open door
+    - languageCode: ca
+      text: Obrir la porta
+  - key: "[E] Open Safe"
+    translations:
+    - languageCode: es
+      text: Abrir caja fuerte
+    - languageCode: en
+      text: Open safe
+    - languageCode: ca
+      text: Obrir la caixa forta
+  - key: "[E] Open Sliding Door"
+    translations:
+    - languageCode: es
+      text: Abrir puerta corredera
+    - languageCode: en
+      text: Open sliding door
+    - languageCode: ca
+      text: Obrir la porta corredissa
+  - key: "[E] Pick up Golden Key"
+    translations:
+    - languageCode: es
+      text: Recoger llave dorada
+    - languageCode: en
+      text: Pick up golden key
+    - languageCode: ca
+      text: Agafar la clau daurada
+  - key: "[E] Pick up Key"
+    translations:
+    - languageCode: es
+      text: Recoger llave
+    - languageCode: en
+      text: Pick up key
+    - languageCode: ca
+      text: Agafar la clau
+  - key: "[E] Pick up Letter"
+    translations:
+    - languageCode: es
+      text: Recoger carta
+    - languageCode: en
+      text: Pick up letter
+    - languageCode: ca
+      text: Agafar la carta
+  - key: "[E] Toggle Light"
+    translations:
+    - languageCode: es
+      text: Encender/apagar luz
+    - languageCode: en
+      text: Toggle light
+    - languageCode: ca
+      text: Encendre/apagar el llum
+  - key: "It's firmly locked. A mechanism holds it."
+    translations:
+    - languageCode: es
+      text: "Est\xE1 bien cerrada. La sujeta un mecanismo."
+    - languageCode: en
+      text: "It's firmly locked. A mechanism holds it."
+    - languageCode: ca
+      text: "Est\xE0 ben tancada. La subjecta un mecanisme."
+  - key: Locked electronically.
+    translations:
+    - languageCode: es
+      text: "Cierre electr\xF3nico."
+    - languageCode: en
+      text: Locked electronically.
+    - languageCode: ca
+      text: "Tancament electr\xF2nic."
+  - key: "Necessito un objecte per posar aqu\xED."
+    translations:
+    - languageCode: es
+      text: "Necesito un objeto para colocar aqu\xED."
+    - languageCode: en
+      text: I need an item to place here.
+    - languageCode: ca
+      text: "Necessito un objecte per posar aqu\xED."
+  - key: "Fet!"
+    translations:
+    - languageCode: es
+      text: "\xA1Hecho!"
+    - languageCode: en
+      text: "Done!"
+    - languageCode: ca
+      text: "Fet!"
+  - key: "Examinar combinaci\xF3"
+    translations:
+    - languageCode: es
+      text: "Examinar combinaci\xF3n"
+    - languageCode: en
+      text: Examine combination
+    - languageCode: ca
+      text: "Examinar la combinaci\xF3"
+  - key: Girar PipeA
+    translations:
+    - languageCode: es
+      text: "Girar tuber\xEDa A"
+    - languageCode: en
+      text: Turn pipe A
+    - languageCode: ca
+      text: Girar la canonada A
+  - key: Girar PipeB
+    translations:
+    - languageCode: es
+      text: "Girar tuber\xEDa B"
+    - languageCode: en
+      text: Turn pipe B
+    - languageCode: ca
+      text: Girar la canonada B
+  - key: "Iniciar sostre m\xF2bil"
+    translations:
+    - languageCode: es
+      text: "Iniciar techo m\xF3vil"
+    - languageCode: en
+      text: Start moving ceiling
+    - languageCode: ca
+      text: "Iniciar el sostre m\xF2bil"
+  - key: Iniciar temporitzador
+    translations:
+    - languageCode: es
+      text: Iniciar temporizador
+    - languageCode: en
+      text: Start timer
+    - languageCode: ca
+      text: Iniciar el temporitzador
+  - key: Press Blue
+    translations:
+    - languageCode: es
+      text: Pulsar azul
+    - languageCode: en
+      text: Press blue
+    - languageCode: ca
+      text: "Pr\xE9mer el blau"
+  - key: Press Green
+    translations:
+    - languageCode: es
+      text: Pulsar verde
+    - languageCode: en
+      text: Press green
+    - languageCode: ca
+      text: "Pr\xE9mer el verd"
+  - key: Press Red
+    translations:
+    - languageCode: es
+      text: Pulsar rojo
+    - languageCode: en
+      text: Press red
+    - languageCode: ca
+      text: "Pr\xE9mer el vermell"
+  - key: Reiniciar circuit
+    translations:
+    - languageCode: es
+      text: Reiniciar circuito
+    - languageCode: en
+      text: Reset circuit
+    - languageCode: ca
+      text: Reiniciar el circuit
+  - key: Amagar-se
+    translations:
+    - languageCode: es
+      text: Esconderse
+    - languageCode: en
+      text: Hide
+    - languageCode: ca
+      text: Amagar-se
+  - key: Sortir
+    translations:
+    - languageCode: es
+      text: Salir
+    - languageCode: en
+      text: Quit
+    - languageCode: ca
+      text: Sortir
+  - key: Girar rodet
+    translations:
+    - languageCode: es
+      text: Girar rodillo
+    - languageCode: en
+      text: Turn wheel
+    - languageCode: ca
+      text: Girar el rodet
+  - key: "Pujar n\xFAmero"
+    translations:
+    - languageCode: es
+      text: "Subir n\xFAmero"
+    - languageCode: en
+      text: Number up
+    - languageCode: ca
+      text: "Pujar n\xFAmero"
+  - key: "Baixar n\xFAmero"
+    translations:
+    - languageCode: es
+      text: "Bajar n\xFAmero"
+    - languageCode: en
+      text: Number down
+    - languageCode: ca
+      text: "Baixar n\xFAmero"
+  - key: "Colocacion: lleva cada pieza a su sitio"
+    translations:
+    - languageCode: es
+      text: "Colocaci\xF3n: lleva cada pieza a su sitio"
+    - languageCode: en
+      text: "Placement: take each piece to its place"
+    - languageCode: ca
+      text: "Col\xB7locaci\xF3: porta cada pe\xE7a al seu lloc"
+  - key: "Deslizante: reordena la cuadricula"
+    translations:
+    - languageCode: es
+      text: "Deslizante: reordena la cuadr\xEDcula"
+    - languageCode: en
+      text: "Sliding: rearrange the grid"
+    - languageCode: ca
+      text: "Lliscant: reordena la quadr\xEDcula"
+  - key: "Fisica: lanza objetos a las dianas"
+    translations:
+    - languageCode: es
+      text: "F\xEDsica: lanza objetos a las dianas"
+    - languageCode: en
+      text: "Physics: throw objects at the targets"
+    - languageCode: ca
+      text: "F\xEDsica: llan\xE7a objectes a les dianes"
+  - key: "Melodia: escucha la pista y repite las notas"
+    translations:
+    - languageCode: es
+      text: "Melod\xEDa: escucha la pista y repite las notas"
+    - languageCode: en
+      text: "Melody: listen to the clue and repeat the notes"
+    - languageCode: ca
+      text: "Melodia: escolta la pista i repeteix les notes"
+  - key: "Nota y codigo: lee la pista e introduce el codigo"
+    translations:
+    - languageCode: es
+      text: "Nota y c\xF3digo: lee la pista e introduce el c\xF3digo"
+    - languageCode: en
+      text: "Note and code: read the clue and enter the code"
+    - languageCode: ca
+      text: "Nota i codi: llegeix la pista i introdueix el codi"
+  - key: "Puertas y contenedores: cajon, armario y puerta con llave"
+    translations:
+    - languageCode: es
+      text: "Puertas y contenedores: caj\xF3n, armario y puerta con llave"
+    - languageCode: en
+      text: "Doors and containers: drawer, cabinet and locked door"
+    - languageCode: ca
+      text: "Portes i contenidors: calaix, armari i porta amb clau"
+  - key: "Tuberias: rota hasta conectar"
+    translations:
+    - languageCode: es
+      text: "Tuber\xEDas: rota hasta conectar"
+    - languageCode: en
+      text: "Pipes: rotate until connected"
+    - languageCode: ca
+      text: "Canonades: gira fins a connectar"
+  - key: "Enc\xE9n les cinc llums \xB7 botons connectats"
+    translations:
+    - languageCode: es
+      text: "Enciende las cinco luces \xB7 botones conectados"
+    - languageCode: en
+      text: "Turn on all five lights \xB7 linked buttons"
+    - languageCode: ca
+      text: "Enc\xE9n els cinc llums \xB7 botons connectats"
+  - key: "Quatre xifres \xB7 combinaci\xF3 3142"
+    translations:
+    - languageCode: es
+      text: "Cuatro cifras \xB7 combinaci\xF3n 3142"
+    - languageCode: en
+      text: "Four digits \xB7 combination 3142"
+    - languageCode: ca
+      text: "Quatre xifres \xB7 combinaci\xF3 3142"
+  - key: "Resol-los tots \xB7 ordre opcional"
+    translations:
+    - languageCode: es
+      text: "Resu\xE9lvelos todos \xB7 orden opcional"
+    - languageCode: en
+      text: "Solve them all \xB7 any order"
+    - languageCode: ca
+      text: "Resol-los tots \xB7 ordre opcional"
+  - key: "Sostre m\xF2bil \xB7 temporitzador HUD separat"
+    translations:
+    - languageCode: es
+      text: "Techo m\xF3vil \xB7 temporizador HUD independiente"
+    - languageCode: en
+      text: "Moving ceiling \xB7 separate HUD timer"
+    - languageCode: ca
+      text: "Sostre m\xF2bil \xB7 temporitzador HUD separat"
+  - key: "11 \xB7 PUZZLES ENCADENATS"
+    translations:
+    - languageCode: es
+      text: "11 \xB7 PUZLES ENCADENADOS"
+    - languageCode: en
+      text: "11 \xB7 CHAINED PUZZLES"
+    - languageCode: ca
+      text: "11 \xB7 PUZZLES ENCADENATS"
+  - key: "12 \xB7 INDEPENDENT HAZARDS"
+    translations:
+    - languageCode: es
+      text: "12 \xB7 PELIGROS INDEPENDIENTES"
+    - languageCode: en
+      text: "12 \xB7 INDEPENDENT HAZARDS"
+    - languageCode: ca
+      text: "12 \xB7 PERILLS INDEPENDENTS"
+  - key: "13 \xB7 NUMBER WHEELS"
+    translations:
+    - languageCode: es
+      text: "13 \xB7 RODILLOS NUM\xC9RICOS"
+    - languageCode: en
+      text: "13 \xB7 NUMBER WHEELS"
+    - languageCode: ca
+      text: "13 \xB7 RODETS NUM\xC8RICS"
+  - key: "14 \xB7 CIRCUIT DE LLUMS"
+    translations:
+    - languageCode: es
+      text: "14 \xB7 CIRCUITO DE LUCES"
+    - languageCode: en
+      text: "14 \xB7 LIGHT CIRCUIT"
+    - languageCode: ca
+      text: "14 \xB7 CIRCUIT DE LLUMS"
+  - key: "BOTONS \u25B2 / \u25BC \xB7 CLIC DRET SURT"
+    translations:
+    - languageCode: es
+      text: "BOTONES \u25B2 / \u25BC \xB7 CLIC DERECHO PARA SALIR"
+    - languageCode: en
+      text: "\u25B2 / \u25BC BUTTONS \xB7 RIGHT CLICK TO EXIT"
+    - languageCode: ca
+      text: "BOTONS \u25B2 / \u25BC \xB7 CLIC DRET PER SORTIR"
+  - key: CODI DE 4 XIFRES
+    translations:
+    - languageCode: es
+      text: "C\xD3DIGO DE 4 CIFRAS"
+    - languageCode: en
+      text: 4-DIGIT CODE
+    - languageCode: ca
+      text: CODI DE 4 XIFRES
+  - key: "Cada bot\xF3 commuta la seva llum i les ve\xEFnes.\nObjectiu: totes enceses."
+    translations:
+    - languageCode: es
+      text: "Cada bot\xF3n conmuta su luz y las vecinas.\nObjetivo: todas encendidas."
+    - languageCode: en
+      text: "Each button toggles its light and its neighbours.\nGoal: all lights on."
+    - languageCode: ca
+      text: "Cada bot\xF3 commuta la seva llum i les ve\xEFnes.\nObjectiu: totes enceses."
+  - key: EXAMINAR CANDAU
+    translations:
+    - languageCode: es
+      text: EXAMINAR CANDADO
+    - languageCode: en
+      text: EXAMINE PADLOCK
+    - languageCode: ca
+      text: EXAMINAR CANDAU
+  - key: "PUZZLE 1 \xB7 SEQ\xDC\xC8NCIA"
+    translations:
+    - languageCode: es
+      text: "PUZLE 1 \xB7 SECUENCIA"
+    - languageCode: en
+      text: "PUZZLE 1 \xB7 SEQUENCE"
+    - languageCode: ca
+      text: "PUZZLE 1 \xB7 SEQ\xDC\xC8NCIA"
+  - key: "PUZZLE 2 \xB7 PALANQUES"
+    translations:
+    - languageCode: es
+      text: "PUZLE 2 \xB7 PALANCAS"
+    - languageCode: en
+      text: "PUZZLE 2 \xB7 LEVERS"
+    - languageCode: ca
+      text: "PUZZLE 2 \xB7 PALANQUES"
+  - key: "Avan\xE7ar rodet"
+    translations:
+    - languageCode: es
+      text: Avanzar rodillo
+    - languageCode: en
+      text: Advance wheel
+    - languageCode: ca
+      text: "Avan\xE7ar rodet"
+  - key: "This note can be read directly in the world.\n\nYou just look at it and press E."
+    translations:
+    - languageCode: es
+      text: "Esta nota se puede leer directamente en el mundo.\n\nSolo tienes que mirarla y pulsar E."
+    - languageCode: en
+      text: "This note can be read directly in the world.\n\nJust look at it and press E."
+    - languageCode: ca
+      text: "Aquesta nota es pot llegir directament al m\xF3n.\n\nNom\xE9s cal que la miris i premis E."
+  - key: clau_mestra
+    translations:
+    - languageCode: es
+      text: Llave maestra
+    - languageCode: en
+      text: Master key
+    - languageCode: ca
+      text: Clau mestra
+  - key: clau verda
+    translations:
+    - languageCode: es
+      text: Llave verde
+    - languageCode: en
+      text: Green key
+    - languageCode: ca
+      text: Clau verda
+  - key: Money
+    translations:
+    - languageCode: es
+      text: Dinero
+    - languageCode: en
+      text: Money
+    - languageCode: ca
+      text: Diners
+  - key: "Aixo \xE9s una nota recol\xB7lectable"
+    translations:
+    - languageCode: es
+      text: Esta es una nota que se puede recoger.
+    - languageCode: en
+      text: This is a note you can pick up.
+    - languageCode: ca
+      text: "Aquesta \xE9s una nota que es pot recollir."
+  - key: "Un joc de piles compatible amb la llanterna i la c\xE0mera. Prem R per recarregar la llanterna o B per recarregar la c\xE0mera."
+    translations:
+    - languageCode: es
+      text: "Un juego de pilas compatible con la linterna y la c\xE1mara. Pulsa R para recargar la linterna o B para recargar la c\xE1mara."
+    - languageCode: en
+      text: A set of batteries for the flashlight and the camera. Press R to reload the flashlight or B to reload the camera.
+    - languageCode: ca
+      text: "Un joc de piles compatible amb la llanterna i la c\xE0mera. Prem R per recarregar la llanterna o B per recarregar la c\xE0mera."
+  - key: "Bateria de c\xE0mera"
+    translations:
+    - languageCode: es
+      text: "Bater\xEDa de c\xE1mara"
+    - languageCode: en
+      text: Camera battery
+    - languageCode: ca
+      text: "Bateria de c\xE0mera"
+  - key: "Bateria espec\xEDfica per a la visi\xF3 nocturna de la c\xE0mera."
+    translations:
+    - languageCode: es
+      text: "Bater\xEDa espec\xEDfica para la visi\xF3n nocturna de la c\xE1mara."
+    - languageCode: en
+      text: "A battery for the camera's night vision."
+    - languageCode: ca
+      text: "Bateria espec\xEDfica per a la visi\xF3 nocturna de la c\xE0mera."
+  - key: 15A Fuse
+    translations:
+    - languageCode: es
+      text: Fusible de 15 A
+    - languageCode: en
+      text: 15A fuse
+    - languageCode: ca
+      text: Fusible de 15 A
+  - key: A standard 15 amp fuse for an electrical panel.
+    translations:
+    - languageCode: es
+      text: "Un fusible est\xE1ndar de 15 amperios para un cuadro el\xE9ctrico."
+    - languageCode: en
+      text: A standard 15 amp fuse for an electrical panel.
+    - languageCode: ca
+      text: "Un fusible est\xE0ndard de 15 ampers per a un quadre el\xE8ctric."
+  - key: Strange Key
+    translations:
+    - languageCode: es
+      text: "Llave extra\xF1a"
+    - languageCode: en
+      text: Strange key
+    - languageCode: ca
+      text: Clau estranya
+  - key: A very odd looking key.
+    translations:
+    - languageCode: es
+      text: Una llave de aspecto muy raro.
+    - languageCode: en
+      text: A very odd-looking key.
+    - languageCode: ca
+      text: "Una clau d'aspecte molt estrany."
+  - key: Rusty Key
+    translations:
+    - languageCode: es
+      text: Llave oxidada
+    - languageCode: en
+      text: Rusty key
+    - languageCode: ca
+      text: Clau rovellada
+  - key: An old key. Probably opens a drawer.
+    translations:
+    - languageCode: es
+      text: "Una llave vieja. Probablemente abre un caj\xF3n."
+    - languageCode: en
+      text: An old key. It probably opens a drawer.
+    - languageCode: ca
+      text: Una clau vella. Probablement obre un calaix.
+  - key: Golden Key
+    translations:
+    - languageCode: es
+      text: Llave dorada
+    - languageCode: en
+      text: Golden key
+    - languageCode: ca
+      text: Clau daurada
+  - key: A shiny golden key.
+    translations:
+    - languageCode: es
+      text: Una llave dorada y brillante.
+    - languageCode: en
+      text: A shiny golden key.
+    - languageCode: ca
+      text: Una clau daurada i brillant.
+  - key: Mysterious Letter
+    translations:
+    - languageCode: es
+      text: Carta misteriosa
+    - languageCode: en
+      text: Mysterious letter
+    - languageCode: ca
+      text: Carta misteriosa
+  - key: A crumpled letter I found.
+    translations:
+    - languageCode: es
+      text: Una carta arrugada que he encontrado.
+    - languageCode: en
+      text: A crumpled letter I found.
+    - languageCode: ca
+      text: Una carta arrugada que he trobat.
+  - key: "La zona verda sembla tranquil\xB7la."
+    translations:
+    - languageCode: es
+      text: La zona verde parece tranquila.
+    - languageCode: en
+      text: The green area looks calm.
+    - languageCode: ca
+      text: "La zona verda sembla tranquil\xB7la."
+  - key: "Aqu\xED s'hi est\xE0 molt b\xE9, m'hi quedaria a viure."
+    translations:
+    - languageCode: es
+      text: "Aqu\xED se est\xE1 muy bien, me quedar\xEDa a vivir."
+    - languageCode: en
+      text: It feels good here, I could live here.
+    - languageCode: ca
+      text: "Aqu\xED s'hi est\xE0 molt b\xE9, m'hi quedaria a viure."
+  - key: Estic a la zona vermella.
+    translations:
+    - languageCode: es
+      text: Estoy en la zona roja.
+    - languageCode: en
+      text: "I'm in the red area."
+    - languageCode: ca
+      text: Soc a la zona vermella.
+  - key: "Aquesta zona vermella m'inquieta molt."
+    translations:
+    - languageCode: es
+      text: Esta zona roja me inquieta mucho.
+    - languageCode: en
+      text: This red area makes me very uneasy.
+    - languageCode: ca
+      text: "Aquesta zona vermella m'inquieta molt."
+  - key: "Tot \xE9s blau en aquesta part."
+    translations:
+    - languageCode: es
+      text: Todo es azul en esta parte.
+    - languageCode: en
+      text: Everything is blue over here.
+    - languageCode: ca
+      text: "Tot \xE9s blau en aquesta part."
+  - key: Tinc fred en aquesta zona blava... hauria de marxar.
+    translations:
+    - languageCode: es
+      text: "Tengo fr\xEDo en esta zona azul... deber\xEDa irme."
+    - languageCode: en
+      text: "I'm cold in this blue area... I should leave."
+    - languageCode: ca
+      text: Tinc fred en aquesta zona blava... hauria de marxar.
+  - key: Circuit de llums
+    translations:
+    - languageCode: es
+      text: Circuito de luces
+    - languageCode: en
+      text: Linked lights
+    - languageCode: ca
+      text: Circuit de llums
+  - key: "Enc\xE9n les cinc llums del circuit per obrir la porta."
+    translations:
+    - languageCode: es
+      text: Enciende las cinco luces del circuito para abrir la puerta.
+    - languageCode: en
+      text: Turn on all five lights of the circuit to open the door.
+    - languageCode: ca
+      text: "Enc\xE9n les cinc llums del circuit per obrir la porta."
+  - key: "Seq\xFC\xE8ncia mel\xF2dica"
+    translations:
+    - languageCode: es
+      text: "Secuencia mel\xF3dica"
+    - languageCode: en
+      text: Melodic sequence
+    - languageCode: ca
+      text: "Seq\xFC\xE8ncia mel\xF2dica"
+  - key: Escolta la pista i repeteix les quatre notes en el mateix ordre.
+    translations:
+    - languageCode: es
+      text: Escucha la pista y repite las cuatro notas en el mismo orden.
+    - languageCode: en
+      text: Listen to the clue and repeat the four notes in the same order.
+    - languageCode: ca
+      text: Escolta la pista i repeteix les quatre notes en el mateix ordre.
+  - key: "Fase interna: palanques"
+    translations:
+    - languageCode: es
+      text: "Fase interna: palancas"
+    - languageCode: en
+      text: "Inner stage: levers"
+    - languageCode: ca
+      text: "Fase interna: palanques"
+  - key: Configura les tres palanques de la segona fase.
+    translations:
+    - languageCode: es
+      text: Configura las tres palancas de la segunda fase.
+    - languageCode: en
+      text: Set the three levers of the second stage.
+    - languageCode: ca
+      text: Configura les tres palanques de la segona fase.
+  - key: Cadena de seguretat
+    translations:
+    - languageCode: es
+      text: Cadena de seguridad
+    - languageCode: en
+      text: Security chain
+    - languageCode: ca
+      text: Cadena de seguretat
+  - key: "Resol la seq\xFC\xE8ncia de colors i despr\xE9s configura les tres palanques."
+    translations:
+    - languageCode: es
+      text: "Resuelve la secuencia de colores y despu\xE9s configura las tres palancas."
+    - languageCode: en
+      text: Solve the colour sequence, then set the three levers.
+    - languageCode: ca
+      text: "Resol la seq\xFC\xE8ncia de colors i despr\xE9s configura les tres palanques."
+  - key: "Fase interna: seq\xFC\xE8ncia"
+    translations:
+    - languageCode: es
+      text: "Fase interna: secuencia"
+    - languageCode: en
+      text: "Inner stage: sequence"
+    - languageCode: ca
+      text: "Fase interna: seq\xFC\xE8ncia"
+  - key: "Completa la seq\xFC\xE8ncia de colors de la primera fase."
+    translations:
+    - languageCode: es
+      text: Completa la secuencia de colores de la primera fase.
+    - languageCode: en
+      text: Complete the colour sequence of the first stage.
+    - languageCode: ca
+      text: "Completa la seq\xFC\xE8ncia de colors de la primera fase."
+  - key: Candau de rodets
+    translations:
+    - languageCode: es
+      text: Candado de rodillos
+    - languageCode: en
+      text: Wheel lock
+    - languageCode: ca
+      text: Candau de rodets
+  - key: "Gira els quatre rodets fins a introduir la combinaci\xF3 correcta."
+    translations:
+    - languageCode: es
+      text: "Gira los cuatro rodillos hasta introducir la combinaci\xF3n correcta."
+    - languageCode: en
+      text: Turn the four wheels until you enter the right combination.
+    - languageCode: ca
+      text: "Gira els quatre rodets fins a introduir la combinaci\xF3 correcta."
+  - key: "Galeria de precisi\xF3"
+    translations:
+    - languageCode: es
+      text: "Galer\xEDa de precisi\xF3n"
+    - languageCode: en
+      text: Shooting gallery
+    - languageCode: ca
+      text: "Galeria de precisi\xF3"
+  - key: "Encerta les tres dianes amb objectes llan\xE7ables."
+    translations:
+    - languageCode: es
+      text: Acierta en las tres dianas con objetos que se puedan lanzar.
+    - languageCode: en
+      text: Hit the three targets with throwable objects.
+    - languageCode: ca
+      text: "Encerta les tres dianes amb objectes llan\xE7ables."
+  - key: Security Keypad
+    translations:
+    - languageCode: es
+      text: Teclado de seguridad
+    - languageCode: en
+      text: Security keypad
+    - languageCode: ca
+      text: Teclat de seguretat
+  - key: Find the four-digit access code.
+    translations:
+    - languageCode: es
+      text: "Encuentra el c\xF3digo de acceso de cuatro cifras."
+    - languageCode: en
+      text: Find the four-digit access code.
+    - languageCode: ca
+      text: "Troba el codi d'acc\xE9s de quatre xifres."
+  - key: Office Safe
+    translations:
+    - languageCode: es
+      text: Caja fuerte de la oficina
+    - languageCode: en
+      text: Office safe
+    - languageCode: ca
+      text: "Caixa forta de l'oficina"
+  - key: Discover the safe combination.
+    translations:
+    - languageCode: es
+      text: "Descubre la combinaci\xF3n de la caja fuerte."
+    - languageCode: en
+      text: Discover the safe combination.
+    - languageCode: ca
+      text: "Descobreix la combinaci\xF3 de la caixa forta."
+  - key: "Seq\xFC\xE8ncia crom\xE0tica encadenada"
+    translations:
+    - languageCode: es
+      text: "Secuencia crom\xE1tica encadenada"
+    - languageCode: en
+      text: Chained colour sequence
+    - languageCode: ca
+      text: "Seq\xFC\xE8ncia crom\xE0tica encadenada"
+  - key: "Resol la seq\xFC\xE8ncia de colors abans d'activar el segon puzle."
+    translations:
+    - languageCode: es
+      text: Resuelve la secuencia de colores antes de activar el segundo puzle.
+    - languageCode: en
+      text: Solve the colour sequence before the second puzzle activates.
+    - languageCode: ca
+      text: "Resol la seq\xFC\xE8ncia de colors abans d'activar el segon puzle."
+  - key: Palanques encadenades
+    translations:
+    - languageCode: es
+      text: Palancas encadenadas
+    - languageCode: en
+      text: Chained levers
+    - languageCode: ca
+      text: Palanques encadenades
+  - key: "Ajusta les tres palanques despr\xE9s de completar la seq\xFC\xE8ncia."
+    translations:
+    - languageCode: es
+      text: "Ajusta las tres palancas despu\xE9s de completar la secuencia."
+    - languageCode: en
+      text: Set the three levers after completing the sequence.
+    - languageCode: ca
+      text: "Ajusta les tres palanques despr\xE9s de completar la seq\xFC\xE8ncia."
+  - key: "Cada bot\xF3 canvia la seva llum i les llums immediatament ve\xEFnes."
+    translations:
+    - languageCode: es
+      text: "Cada bot\xF3n cambia su luz y las luces inmediatamente vecinas."
+    - languageCode: en
+      text: Each button toggles its own light and the ones right next to it.
+    - languageCode: ca
+      text: "Cada bot\xF3 canvia la seva llum i les llums immediatament ve\xEFnes."
+  - key: "Pr\xE9mer dues vegades el mateix bot\xF3 desf\xE0 el canvi."
+    translations:
+    - languageCode: es
+      text: "Pulsar dos veces el mismo bot\xF3n deshace el cambio."
+    - languageCode: en
+      text: Pressing the same button twice undoes the change.
+    - languageCode: ca
+      text: "Pr\xE9mer dues vegades el mateix bot\xF3 desf\xE0 el canvi."
+  - key: Reinicia el panell i prem els botons 1, 3 i 5, en qualsevol ordre.
+    translations:
+    - languageCode: es
+      text: Reinicia el panel y pulsa los botones 1, 3 y 5, en cualquier orden.
+    - languageCode: en
+      text: Reset the panel and press buttons 1, 3 and 5, in any order.
+    - languageCode: ca
+      text: Reinicia el panell i prem els botons 1, 3 i 5, en qualsevol ordre.
+  - key: "La melodia cont\xE9 quatre notes."
+    translations:
+    - languageCode: es
+      text: "La melod\xEDa tiene cuatro notas."
+    - languageCode: en
+      text: The melody has four notes.
+    - languageCode: ca
+      text: "La melodia cont\xE9 quatre notes."
+  - key: "Compara cada bot\xF3 amb la pista abans d'introduir la seq\xFC\xE8ncia."
+    translations:
+    - languageCode: es
+      text: "Compara cada bot\xF3n con la pista antes de introducir la secuencia."
+    - languageCode: en
+      text: Compare each button with the clue before entering the sequence.
+    - languageCode: ca
+      text: "Compara cada bot\xF3 amb la pista abans d'introduir la seq\xFC\xE8ncia."
+  - key: "La seq\xFC\xE8ncia de demostraci\xF3 \xE9s C, A, D, B."
+    translations:
+    - languageCode: es
+      text: "La secuencia de demostraci\xF3n es C, A, D, B."
+    - languageCode: en
+      text: The demo sequence is C, A, D, B.
+    - languageCode: ca
+      text: "La seq\xFC\xE8ncia de demostraci\xF3 \xE9s C, A, D, B."
+  - key: "Aquesta fase s'activa despr\xE9s de la seq\xFC\xE8ncia."
+    translations:
+    - languageCode: es
+      text: "Esta fase se activa despu\xE9s de la secuencia."
+    - languageCode: en
+      text: This stage unlocks after the sequence.
+    - languageCode: ca
+      text: "Aquesta fase s'activa despr\xE9s de la seq\xFC\xE8ncia."
+  - key: "Cada palanca t\xE9 tres posicions."
+    translations:
+    - languageCode: es
+      text: Cada palanca tiene tres posiciones.
+    - languageCode: en
+      text: Each lever has three positions.
+    - languageCode: ca
+      text: "Cada palanca t\xE9 tres posicions."
+  - key: "Les posicions s\xF3n 2, 0 i 1."
+    translations:
+    - languageCode: es
+      text: Las posiciones son 2, 0 y 1.
+    - languageCode: en
+      text: The positions are 2, 0 and 1.
+    - languageCode: ca
+      text: "Les posicions s\xF3n 2, 0 i 1."
+  - key: "Els colors s'han de pr\xE9mer en un ordre concret."
+    translations:
+    - languageCode: es
+      text: Los colores deben pulsarse en un orden concreto.
+    - languageCode: en
+      text: The colours must be pressed in a set order.
+    - languageCode: ca
+      text: "Els colors s'han de pr\xE9mer en un ordre concret."
+  - key: "L'ordre de la primera fase \xE9s vermell, verd i blau."
+    translations:
+    - languageCode: es
+      text: El orden de la primera fase es rojo, verde y azul.
+    - languageCode: en
+      text: The order of the first stage is red, green and blue.
+    - languageCode: ca
+      text: "L'ordre de la primera fase \xE9s vermell, verd i blau."
+  - key: A la segona fase, deixa les palanques en les posicions 2, 0 i 1.
+    translations:
+    - languageCode: es
+      text: En la segunda fase, deja las palancas en las posiciones 2, 0 y 1.
+    - languageCode: en
+      text: In the second stage, leave the levers in positions 2, 0 and 1.
+    - languageCode: ca
+      text: A la segona fase, deixa les palanques en les posicions 2, 0 i 1.
+  - key: "Aquesta \xE9s la primera fase de la cadena."
+    translations:
+    - languageCode: es
+      text: Esta es la primera fase de la cadena.
+    - languageCode: en
+      text: This is the first stage of the chain.
+    - languageCode: ca
+      text: "Aquesta \xE9s la primera fase de la cadena."
+  - key: Prem els colors en ordre.
+    translations:
+    - languageCode: es
+      text: Pulsa los colores en orden.
+    - languageCode: en
+      text: Press the colours in order.
+    - languageCode: ca
+      text: Prem els colors en ordre.
+  - key: "L'ordre \xE9s vermell, verd i blau."
+    translations:
+    - languageCode: es
+      text: El orden es rojo, verde y azul.
+    - languageCode: en
+      text: The order is red, green and blue.
+    - languageCode: ca
+      text: "L'ordre \xE9s vermell, verd i blau."
+  - key: "Cada rodet avan\xE7a una xifra quan hi interactues."
+    translations:
+    - languageCode: es
+      text: "Cada rodillo avanza una cifra cuando interact\xFAas con \xE9l."
+    - languageCode: en
+      text: Each wheel moves one digit when you use it.
+    - languageCode: ca
+      text: "Cada rodet avan\xE7a una xifra quan hi interactues."
+  - key: "Busca una combinaci\xF3 de quatre xifres."
+    translations:
+    - languageCode: es
+      text: "Busca una combinaci\xF3n de cuatro cifras."
+    - languageCode: en
+      text: Look for a four-digit combination.
+    - languageCode: ca
+      text: "Busca una combinaci\xF3 de quatre xifres."
+  - key: "La combinaci\xF3 de demostraci\xF3 \xE9s 3142."
+    translations:
+    - languageCode: es
+      text: "La combinaci\xF3n de demostraci\xF3n es 3142."
+    - languageCode: en
+      text: The demo combination is 3142.
+    - languageCode: ca
+      text: "La combinaci\xF3 de demostraci\xF3 \xE9s 3142."
+  - key: "Els objectes f\xEDsics nom\xE9s compten si colpegen una diana."
+    translations:
+    - languageCode: es
+      text: "Los objetos f\xEDsicos solo cuentan si golpean una diana."
+    - languageCode: en
+      text: Physics objects only count if they hit a target.
+    - languageCode: ca
+      text: "Els objectes f\xEDsics nom\xE9s compten si colpegen una diana."
+  - key: "Cada diana nom\xE9s s'ha d'activar una vegada."
+    translations:
+    - languageCode: es
+      text: Cada diana solo tiene que activarse una vez.
+    - languageCode: en
+      text: Each target only needs to be hit once.
+    - languageCode: ca
+      text: "Cada diana nom\xE9s s'ha d'activar una vegada."
+  - key: Encerta target1, target2 i target3 en qualsevol ordre.
+    translations:
+    - languageCode: es
+      text: Acierta en target1, target2 y target3 en cualquier orden.
+    - languageCode: en
+      text: Hit target1, target2 and target3 in any order.
+    - languageCode: ca
+      text: Encerta target1, target2 i target3 en qualsevol ordre.
+  - key: "ESQUERRA: interruptor del sostre\nENTRADA O DRETA: temporitzador HUD"
+    translations:
+    - languageCode: es
+      text: "IZQUIERDA: interruptor del techo\nENTRADA O DERECHA: temporizador HUD"
+    - languageCode: en
+      text: "LEFT: ceiling switch\nENTRANCE OR RIGHT: HUD timer"
+    - languageCode: ca
+      text: "ESQUERRA: interruptor del sostre\nENTRADA O DRETA: temporitzador HUD"
+  - key: "Cada bot\xF3 commuta la seva llum i les ve\xEFnes.\nObjectiu: totes enceses. Pots reiniciar l'intent."
+    translations:
+    - languageCode: es
+      text: "Cada bot\xF3n conmuta su luz y las vecinas.\nObjetivo: todas encendidas. Puedes reiniciar el intento."
+    - languageCode: en
+      text: "Each button toggles its light and its neighbours.\nGoal: all on. You can reset the attempt."
+    - languageCode: ca
+      text: "Cada bot\xF3 commuta la seva llum i les ve\xEFnes.\nObjectiu: totes enceses. Pots reiniciar l'intent."
+  - key: "ESCAPE ROOM  /  SURVIVAL HORROR\nSYSTEMS SHOWCASE"
+    translations:
+    - languageCode: es
+      text: "ESCAPE ROOM  /  SURVIVAL HORROR\nMUESTRA DE SISTEMAS"
+    - languageCode: en
+      text: "ESCAPE ROOM  /  SURVIVAL HORROR\nSYSTEMS SHOWCASE"
+    - languageCode: ca
+      text: "ESCAPE ROOM  /  SURVIVAL HORROR\nMOSTRA DE SISTEMES"
+  - key: "This is a note you picked up!\n\nYou can read it from your inventory anytime."
+    translations:
+    - languageCode: es
+      text: "\xA1Has recogido una nota!\n\nPuedes leerla desde el inventario cuando quieras."
+    - languageCode: en
+      text: "This is a note you picked up!\n\nYou can read it from your inventory anytime."
+    - languageCode: ca
+      text: "Has recollit una nota!\n\nLa pots llegir des de l'inventari quan vulguis."

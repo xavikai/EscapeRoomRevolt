@@ -17,7 +17,7 @@ namespace EscapeRoomRevolt.Core.Flow
     public sealed class ObjectiveDefinition : ScriptableObject
     {
         [SerializeField] private string _objectiveId = "objective";
-        [SerializeField] private string _title = "New objective";
+        [SerializeField] private string _title = "Nuevo objetivo";
         [TextArea(2, 5)] [SerializeField] private string _description;
         [SerializeField] private bool _hiddenUntilAvailable;
         [SerializeField] private ObjectiveTrigger _trigger = ObjectiveTrigger.Manual;

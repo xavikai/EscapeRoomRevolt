@@ -14,4 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Hint.HintData
   delayBeforeFirstHint: 120
   delayBetweenHints: 60
-  hints: []
+  hints:
+  - hintText: "Hay tres soportes y solo dos piezas: uno de ellos es un se\xF1uelo."
+    hintAudio: {fileID: 0}
+  - hintText: "Suelta la pieza dentro del soporte; el im\xE1n la termina de encajar."
+    hintAudio: {fileID: 0}
+  - hintText: Si no se abre, vuelve a coger una pieza y prueba el otro soporte.
+    hintAudio: {fileID: 0}

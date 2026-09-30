@@ -14,6 +14,7 @@ namespace EscapeRoomRevolt.EditorTools
     public static class GameFlowSetup
     {
         private const string Root = "Escape Room Framework/";
+        private const string IntroPath = "Assets/_EscapeRoomTemplate/Scenes/Intro.unity";
         private const string MainMenuPath = "Assets/_EscapeRoomTemplate/Scenes/MainMenu.unity";
         private const string MenuUxmlPath = "Assets/_EscapeRoomTemplate/UI/Toolkit/EscapeRoomMenu.uxml";
         private const string PanelSettingsPath = "Assets/_EscapeRoomTemplate/UI/Toolkit/EscapeRoomPanelSettings.asset";
@@ -61,9 +62,10 @@ namespace EscapeRoomRevolt.EditorTools
             root.AddComponent<UIToolkitMenuController>();
 
             EditorSceneManager.SaveScene(scene, MainMenuPath);
-            EnsureFirstBuildScene(MainMenuPath);
+            EnsureBuildSceneOrder(MainMenuPath);
             Selection.activeGameObject = root;
-            Debug.Log("[Escape Room Framework] MainMenu scene created and placed first in Build Settings.", root);
+            Debug.Log("[Escape Room Framework] MainMenu scene created and registered in Build Settings. "
+                + "An enabled Intro scene remains first when present.", root);
         }
 
         [MenuItem(Root + "Create/Flow/Objective Manager", priority = 250)]
@@ -106,13 +108,17 @@ namespace EscapeRoomRevolt.EditorTools
             AssetDatabase.SaveAssets();
         }
 
-        private static void EnsureFirstBuildScene(string path)
+        private static void EnsureBuildSceneOrder(string path)
         {
-            var scenes = new List<EditorBuildSettingsScene>
-            {
-                new EditorBuildSettingsScene(path, true)
-            };
-            scenes.AddRange(EditorBuildSettings.scenes.Where(scene => scene.path != path));
+            List<EditorBuildSettingsScene> current = EditorBuildSettings.scenes.ToList();
+            EditorBuildSettingsScene intro = current.FirstOrDefault(scene => scene.path == IntroPath && scene.enabled);
+            var scenes = new List<EditorBuildSettingsScene>();
+
+            if (intro != null)
+                scenes.Add(intro);
+
+            scenes.Add(new EditorBuildSettingsScene(path, true));
+            scenes.AddRange(current.Where(scene => scene.path != path && scene != intro));
             EditorBuildSettings.scenes = scenes.ToArray();
         }
     }

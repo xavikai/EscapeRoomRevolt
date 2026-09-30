@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using EscapeRoomRevolt.Core;
 
 namespace EscapeRoomRevolt.Systems.Interaction
@@ -40,8 +41,15 @@ namespace EscapeRoomRevolt.Systems.Interaction
         // ── Unity Lifecycle ──────────────────────────────────────────────────
         private void Awake()
         {
-            if (Instance == null) Instance = this;
-            else Destroy(gameObject);
+            // A duplicate removes only itself. Destroying its GameObject would take the player's
+            // camera with it when a second player or manager is dropped into the scene by mistake.
+            if (Instance != null && Instance != this)
+            {
+                Debug.LogWarning("[InteractionManager] A second InteractionManager was found and disabled. Keep a single player per scene.", this);
+                Destroy(this);
+                return;
+            }
+            Instance = this;
 
             _mainCamera = GetComponent<Camera>();
             if (_mainCamera == null)
@@ -76,9 +84,17 @@ namespace EscapeRoomRevolt.Systems.Interaction
             {
                 bool routedInput = EscapeRoomRevolt.Core.Input.InputRouter.Instance != null
                     && EscapeRoomRevolt.Core.Input.InputRouter.Instance.InteractPressed;
-                if (routedInput)
+                bool pointerClick = (Cursor.lockState == CursorLockMode.None || Cursor.visible)
+                    && Mouse.current != null
+                    && Mouse.current.leftButton.wasPressedThisFrame;
+                if (routedInput || pointerClick)
                     TriggerInteraction();
             }
+        }
+
+        private void OnDestroy()
+        {
+            if (Instance == this) Instance = null;
         }
 
         // ── Private Methods ──────────────────────────────────────────────────
@@ -91,7 +107,10 @@ namespace EscapeRoomRevolt.Systems.Interaction
             if (Cursor.lockState == CursorLockMode.None || Cursor.visible)
             {
                 // Mouse is free, raycast from pointer
-                ray = activeCamera.ScreenPointToRay(Input.mousePosition);
+                Vector2 pointerPosition = Mouse.current != null
+                    ? Mouse.current.position.ReadValue()
+                    : new Vector2(Screen.width * .5f, Screen.height * .5f);
+                ray = activeCamera.ScreenPointToRay(pointerPosition);
             }
             else
             {

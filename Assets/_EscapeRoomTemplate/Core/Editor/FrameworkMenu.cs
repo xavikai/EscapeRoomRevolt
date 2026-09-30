@@ -20,6 +20,7 @@ namespace EscapeRoomRevolt.EditorTools
         private const string ShowcaseScene = "Assets/_EscapeRoomTemplate/Scenes/ShowcaseMuseum.unity";
         private const string ExampleScene = "Assets/_EscapeRoomTemplate/Scenes/LockedOffice.unity";
         private const string ManualPath = "Assets/_EscapeRoomTemplate/UserManual.md";
+        private const string QuickStartPath = "Assets/_EscapeRoomTemplate/Documentation/ESCAPE_ROOM_QUICKSTART.md";
         private const string ProgrammingGuidePath = "Assets/_EscapeRoomTemplate/PROGRAMMING_GUIDE.md";
         private const string CompleteDocumentationPath = "Assets/_EscapeRoomTemplate/DOCUMENTACIO_COMPLETA.md";
 
@@ -109,6 +110,9 @@ namespace EscapeRoomRevolt.EditorTools
         {
             OpenDocumentation(ManualPath, "User Manual");
         }
+
+        [MenuItem(Root + "Documentation/Open Escape Room Quick Start", priority = 900)]
+        public static void OpenQuickStart() => OpenDocumentation(QuickStartPath, "Escape Room Quick Start");
 
         [MenuItem(Root + "Documentation/Open Programming Guide", priority = 903)]
         public static void OpenProgrammingGuide()

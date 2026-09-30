@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: CamcorderBattery
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Inventory.InventoryItemData
   _itemId: camcorder_battery
-  _displayName: "Bateria de c\xE0mera"
-  _description: "Bateria espec\xEDfica per a la visi\xF3 nocturna de la c\xE0mera."
+  _displayName: "Bater\xEDa de c\xE1mara"
+  _description: "Bater\xEDa espec\xEDfica para la visi\xF3n nocturna de la c\xE1mara."
   _icon: {fileID: 21300000, guid: 0e03f80e5df4c6442b23ad38bfd915fa, type: 3}
   _worldPrefab: {fileID: 0}
   _category: 3

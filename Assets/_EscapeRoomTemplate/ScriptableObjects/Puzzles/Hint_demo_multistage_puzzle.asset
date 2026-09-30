@@ -12,6 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43a161e7bcc449b4fb8271d772b6054a, type: 3}
   m_Name: Hint_demo_multistage_puzzle
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Hint.HintData
-  delayBeforeFirstHint: 120
-  delayBetweenHints: 60
-  hints: []
+  delayBeforeFirstHint: 45
+  delayBetweenHints: 35
+  hints:
+  - hintText: Los colores deben pulsarse en un orden concreto.
+    hintAudio: {fileID: 0}
+  - hintText: El orden de la primera fase es rojo, verde y azul.
+    hintAudio: {fileID: 0}
+  - hintText: En la segunda fase, deja las palancas en las posiciones 2, 0 y 1.
+    hintAudio: {fileID: 0}

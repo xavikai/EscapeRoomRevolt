@@ -26,6 +26,7 @@ namespace EscapeRoomRevolt.Systems.Hint
             {
                 Instance = this;
                 DontDestroyOnLoad(gameObject);
+                UnityEngine.SceneManagement.SceneManager.sceneLoaded += HandleSceneLoaded;
             }
             else
             {
@@ -55,10 +56,29 @@ namespace EscapeRoomRevolt.Systems.Hint
         public void SetActivePuzzle(HintData puzzleData)
         {
             if (_activePuzzleData == puzzleData) return;
+            if (_hideSubtitleCoroutine != null)
+            {
+                StopCoroutine(_hideSubtitleCoroutine);
+                _hideSubtitleCoroutine = null;
+            }
             
             _activePuzzleData = puzzleData;
             _timeInActivePuzzle = 0f;
             _currentHintIndex = 0;
+        }
+
+        private void OnDestroy()
+        {
+            if (Instance != this) return;
+            UnityEngine.SceneManagement.SceneManager.sceneLoaded -= HandleSceneLoaded;
+            Instance = null;
+        }
+
+        // This manager survives scene loads. Without resetting here, the hint timer of a puzzle
+        // left in the previous scene kept running in the main menu or in a reloaded room.
+        private void HandleSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
+        {
+            if (mode == UnityEngine.SceneManagement.LoadSceneMode.Single) ClearActivePuzzle();
         }
 
         public void ClearActivePuzzle()
@@ -94,7 +114,7 @@ namespace EscapeRoomRevolt.Systems.Hint
             int shownIndex = _currentHintIndex;
             
             // Format as character thoughts (italics)
-            string formattedText = $"<i>{currentHint.hintText}</i>";
+            string formattedText = $"<i>{EscapeRoomRevolt.Core.Localization.LocalizationService.Tr(currentHint.hintText)}</i>";
             
             EventBus.Publish(new RequestShowSubtitle { text = formattedText });
             

@@ -22,8 +22,8 @@ namespace EscapeRoomRevolt.Systems.Survival
         [SerializeField] private Transform _inspectionAnchor;
         [SerializeField] private HidingSpotKind _kind = HidingSpotKind.Locker;
         [SerializeField] private bool _forceCrouchedPose;
-        [SerializeField] private string _enterPrompt = "Amagar-se";
-        [SerializeField] private string _exitPrompt = "Sortir";
+        [SerializeField] private string _enterPrompt = "Esconderse";
+        [SerializeField] private string _exitPrompt = "Salir";
         [SerializeField, Min(0f)] private float _minimumStayTime = .25f;
         [SerializeField, Min(0f)] private float _exposureDamage = 30f;
         [Header("Breathing signal")]

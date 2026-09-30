@@ -20,6 +20,7 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         [SerializeField] private Transform _itemPlacementPoint;
         [Tooltip("The visual prefab to spawn when solved (if any)")]
         [SerializeField] private GameObject _placedItemPrefab;
+        private GameObject _placedItemInstance;
 
         /// <summary>
         /// Attempts to insert an item into the socket.
@@ -38,11 +39,6 @@ namespace EscapeRoomRevolt.Systems.Puzzle
                     InventoryManager.Instance.UseItem(itemId);
                 }
 
-                if (_placedItemPrefab != null && _itemPlacementPoint != null)
-                {
-                    Instantiate(_placedItemPrefab, _itemPlacementPoint.position, _itemPlacementPoint.rotation, _itemPlacementPoint);
-                }
-                
                 Solve();
                 return true;
             }
@@ -51,6 +47,25 @@ namespace EscapeRoomRevolt.Systems.Puzzle
                 Fail("Wrong item inserted");
                 return false;
             }
+        }
+
+        protected override void OnPuzzleCompleted()
+        {
+            if (_placedItemInstance == null && _placedItemPrefab != null && _itemPlacementPoint != null)
+                _placedItemInstance = Instantiate(_placedItemPrefab, _itemPlacementPoint.position,
+                    _itemPlacementPoint.rotation, _itemPlacementPoint);
+        }
+
+        protected override void OnPuzzleReset()
+        {
+            if (_placedItemInstance != null) Destroy(_placedItemInstance);
+            _placedItemInstance = null;
+        }
+
+        public override void LoadData(string json)
+        {
+            base.LoadData(json);
+            if (!IsSolved) OnPuzzleReset();
         }
 
         // Note: You can expose a method here to be called by an IInteractable

@@ -27,7 +27,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
             get
             {
                 if (_puzzle == null) _puzzle = GetComponent<CodePanelPuzzle>();
-                return _puzzle != null && _puzzle.IsSolved ? "Solved" : "Use Keypad";
+                return _puzzle != null && _puzzle.IsSolved ? "Resuelto" : "Usar teclado";
             }
         }
 

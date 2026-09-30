@@ -32,7 +32,7 @@ namespace EscapeRoomRevolt.EditorTools
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
 
             // The camera is what the video step renders onto, so it has to exist even for stills.
-            Camera camera = Object.FindFirstObjectByType<Camera>();
+            Camera camera = Object.FindAnyObjectByType<Camera>();
             if (camera == null)
             {
                 var cameraObject = new GameObject("Main Camera");

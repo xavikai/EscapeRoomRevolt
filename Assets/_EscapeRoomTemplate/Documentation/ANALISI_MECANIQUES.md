@@ -126,7 +126,9 @@ Ve del generador `TemplateSceneBuilder`, on la crida que pinta el rètol i la qu
 
 **Conseqüència metodològica:** qualsevol anàlisi de redundància feta llegint els rètols és inservible. La taula següent està feta inspeccionant els components reals de cada sala, no la retolació.
 
-### 3.2 El diagnòstic
+### 3.2 Diagnòstic històric (abans de la reorganització)
+
+La proposta d'aquesta secció ja s'ha aplicat en gran part: el museu visible actual té 10 sales. La taula conserva la numeració antiga perquè explica l'origen de les fusions; per a l'estat real sala per sala consulta [l'auditoria de tancament de 2026-08-09](../AUDITORIA_ESCAPE_ROOM_2026-08-09.md).
 
 El criteri útil no és "quines mecàniques sobren" sinó **quantes sales comparteixen el mateix verb del jugador**.
 
@@ -208,7 +210,7 @@ Aquestes semblen semblants però són verbs genuïnament diferents; fusionar-les
 
 ---
 
-## 4. Nota sobre la numeració actual
+## 4. Nota sobre la numeració interna encara pendent
 
 Hi ha un desfasament heretat entre el número pintat al terra i el nom dels objectes de dins:
 
@@ -216,6 +218,6 @@ Hi ha un desfasament heretat entre el número pintat al terra i el nom dels obje
 |---|---|
 | `Room11_Audio` | `Room12_AudioTest` |
 | `Room12_Hints` | `Room13_HintTest` |
-| `Room13_Physics` | `PhysicsPuzzle_Logic` |
+| `Room06_Physics` | `Room06_ThrowPuzzle_Logic` |
 
-Ve d'una renumeració antiga (`Room4` es va eliminar i no es van reanomenar els continguts). Si fas la reorganització de la secció 3, aprofita per unificar-ho: convé que el número del terra i el nom de l'objecte coincideixin abans de vendre la plantilla.
+La migració de tancament ha assignat definicions explícites abans de renomenar: ara les arrels són `Room07_PlacementPuzzle`, `Room08_SlidingPuzzle`, `Room09_MelodyPuzzle` i `Room10_PipePuzzle`, sense canviar els IDs persistents.

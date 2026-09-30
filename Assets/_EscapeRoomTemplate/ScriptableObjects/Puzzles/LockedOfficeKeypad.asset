@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: LockedOfficeKeypad
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Puzzle.PuzzleDefinition
   _persistentId: lockedoffice_keypad
-  _displayName: Security Keypad
+  _displayName: Teclado de seguridad
   _category: 0
-  _objective: Find the four-digit access code.
+  _objective: "Encuentra el c\xF3digo de acceso de cuatro cifras."
   _hints: {fileID: 11400000, guid: f908457d6de615b4c9825043b6bb6517, type: 2}
   _sanityPenalty: 4

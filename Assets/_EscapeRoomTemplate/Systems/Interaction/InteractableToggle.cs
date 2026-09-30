@@ -19,8 +19,8 @@ namespace EscapeRoomRevolt.Systems.Interaction
     {
         [Header("Toggle Settings")]
         [SerializeField] private bool _isOn = false;
-        [SerializeField] private string _promptOn = "Turn Off";
-        [SerializeField] private string _promptOff = "Turn On";
+        [SerializeField] private string _promptOn = "Apagar";
+        [SerializeField] private string _promptOff = "Encender";
 
         [Header("Movement Settings")]
         [SerializeField] private ToggleMovementType _movementType = ToggleMovementType.Rotate;
@@ -43,6 +43,8 @@ namespace EscapeRoomRevolt.Systems.Interaction
 
         [Header("Events")]
         public UnityEvent<bool> OnStateToggled;
+        [Tooltip("When a saved game is loaded, invoke On State Toggled with the restored state so lights or other listeners that have no save of their own match the lever. Leave off when a listener is a puzzle input, which restores itself.")]
+        [SerializeField] private bool _invokeEventOnLoad;
         
         public bool IsOn => _isOn;
         
@@ -83,22 +85,35 @@ namespace EscapeRoomRevolt.Systems.Interaction
         {
             if (_movementType == ToggleMovementType.Rotate)
             {
-                if (_customPivot != null)
-                {
-                    _visualTransform.RotateAround(_customPivot.position, _customPivot.right, _isOn ? _onAngles.x : _offAngles.x);
-                    // Note: A simpler approach is just to make _customPivot the _visualTransform itself.
-                    // For full robustness we just rotate the transform directly.
-                    _visualTransform.localRotation = Quaternion.Euler(_isOn ? _onAngles : _offAngles);
-                }
-                else
-                {
-                    _visualTransform.localRotation = Quaternion.Euler(_isOn ? _onAngles : _offAngles);
-                }
+                    // The hinge is the visual's own pivot. The previous RotateAround call on _customPivot
+                // moved the lever's position a little further on every state change and then had
+                // its rotation overwritten anyway; to hinge elsewhere, parent the visual under an
+                // empty placed at the hinge and assign that empty as Visual Transform.
+                _visualTransform.localRotation = Quaternion.Euler(_isOn ? _onAngles : _offAngles);
             }
             else
             {
                 _visualTransform.localPosition = _isOn ? _onPosition : _offPosition;
             }
+        }
+
+        [System.Serializable]
+        private sealed class ToggleSaveData { public bool isOn; }
+
+        public override string SaveData() => JsonUtility.ToJson(new ToggleSaveData { isOn = _isOn });
+
+        public override void LoadData(string json)
+        {
+            ToggleSaveData data = JsonUtility.FromJson<ToggleSaveData>(json);
+            if (data == null) return;
+            _isOn = data.isOn;
+            if (_transitionCoroutine != null)
+            {
+                StopCoroutine(_transitionCoroutine);
+                _transitionCoroutine = null;
+            }
+            if (_visualTransform != null) ApplyStateInstantly();
+            if (_invokeEventOnLoad) OnStateToggled?.Invoke(_isOn);
         }
 
         private IEnumerator TransitionRoutine()
@@ -111,7 +126,6 @@ namespace EscapeRoomRevolt.Systems.Interaction
             Vector3 startPos = _visualTransform.localPosition;
             Vector3 endPos = _isOn ? _onPosition : _offPosition;
 
-            Vector3 pivotPos = _customPivot != null ? _customPivot.position : _visualTransform.position;
 
             while (elapsed < _transitionDuration)
             {

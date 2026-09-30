@@ -18,15 +18,21 @@ Inventory of every non-authored asset bundled with this template, its origin and
 
 ## Fuentes
 
-No hay ninguna fuente propia del proyecto en uso — ningún `Font`/`FontAsset` está asignado en el menú (`MenuThemeSettings.titleFont`/`bodyFont` quedan vacíos por defecto) ni en el HUD. Las únicas fuentes `.ttf` presentes en el repositorio (`Assets/TextMesh Pro/Examples & Extras/Fonts/*`, `Assets/TextMesh Pro/Fonts/LiberationSans.ttf`) forman parte del paquete oficial de Unity TextMesh Pro (importado como Essentials/Examples) y no son contenido de terceros — se rigen por la licencia del propio paquete de Unity. Si nunca se les asigna un uso real, considera eliminar la carpeta `Examples & Extras` para reducir el tamaño del paquete publicado.
+El proyecto incluye recursos de TextMesh Pro y fuentes de sus muestras. Estar dentro de una muestra de Unity no demuestra que un recurso carezca de condiciones propias. Conserva los avisos incluidos, entre ellos `Assets/TextMesh Pro/Examples & Extras/Fonts/Roboto-Bold - License.txt`, e inventaría las fuentes y atlas que realmente exportes. La revisión de procedencia de toda la entrega sigue pendiente.
 
 ## Paquetes de Unity
 
-Todas las dependencias en `Packages/manifest.json` son paquetes oficiales `com.unity.*`, cubiertos por la licencia de Unity y no requieren aviso de terceros independiente:
+El manifiesto incluye estos paquetes oficiales `com.unity.*`. Conserva los archivos de licencia y avisos de terceros que acompañen a cada paquete y revisa también sus muestras importadas; esta lista no sustituye esa revisión:
 
 `com.unity.ai.navigation`, `com.unity.inputsystem`, `com.unity.multiplayer.center`, `com.unity.render-pipelines.universal`, `com.unity.ugui`, `com.unity.xr.interaction.toolkit`, `com.unity.xr.management`, `com.unity.xr.openxr`, más los módulos estándar del motor.
 
 **Excepción a eliminar antes de empaquetar:** `com.coplaydev.unity-mcp` es una dependencia de desarrollo (el puente MCP usado para editar el proyecto asistido por IA durante esta sesión). No aporta nada al comprador final y no debería ir incluida en el paquete comercial — quitarla de `manifest.json` antes de exportar.
+
+La exclusión de MCP se hace en la copia de distribución, conservando la conexión del proyecto de desarrollo. Mantén las dependencias XR en la edición PC mientras el ensamblado Player las referencie.
+
+### Muestras XRI modificadas
+
+El 09/09/2026 se corrigieron nueve referencias al asset de acciones de manos en `Assets/Samples/XR Interaction Toolkit/3.3.0/XR Interaction Simulator/XR Interaction Simulator.prefab`. Es una modificación local de la muestra importada, no un recurso original del template. Conserva su procedencia y los avisos del paquete XRI en la distribución que la incluya.
 
 ## Modelos 3D
 

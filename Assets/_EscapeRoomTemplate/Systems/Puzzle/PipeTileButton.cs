@@ -21,8 +21,10 @@ namespace EscapeRoomRevolt.Systems.Puzzle
 
         public void Rotate()
         {
-            _puzzle.RotateTile(_tileId);
-            _visualPositioner?.Advance();
+            // Only turn the visual when the puzzle accepted the rotation: once solved (or with a
+            // wrong tile id) RotateTile refuses, and advancing anyway desynchronised art and logic.
+            if (_puzzle == null || !_puzzle.RotateTile(_tileId)) return;
+            if (_visualPositioner != null) _visualPositioner.Advance();
         }
     }
 }

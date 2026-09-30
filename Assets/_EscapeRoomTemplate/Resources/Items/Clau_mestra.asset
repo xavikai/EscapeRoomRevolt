@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Clau_mestra
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Inventory.InventoryItemData
   _itemId: clau_mestra
-  _displayName: clau_mestra
+  _displayName: Llave maestra
   _description: 
   _icon: {fileID: 21300000, guid: 8edebb4d686d87e44b40639eab24866b, type: 3}
   _worldPrefab: {fileID: 5758558780192995299, guid: 043a7774e9dc4704fbeed20340458e02, type: 3}

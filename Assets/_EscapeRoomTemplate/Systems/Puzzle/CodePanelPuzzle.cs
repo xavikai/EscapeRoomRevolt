@@ -201,9 +201,11 @@ namespace EscapeRoomRevolt.Systems.Puzzle
 
         public override void LoadData(string json)
         {
-            base.LoadData(json);
+            // Restore the rolled code first: base.LoadData runs OnPuzzleCompleted for a solved
+            // panel, which writes the correct code on the display.
             CodePanelSaveData data = JsonUtility.FromJson<CodePanelSaveData>(json);
             if (data != null && !string.IsNullOrEmpty(data.chosenCode)) _correctCode = data.chosenCode;
+            base.LoadData(json);
         }
     }
 }

@@ -68,6 +68,8 @@ namespace EscapeRoomRevolt.Systems.Interaction
         private static bool IsCurrentlyHeld(PhysicsGrabbable grabbable)
         {
             if (PhysicsGrabber.Instance != null && PhysicsGrabber.Instance.CurrentHeldObject == grabbable) return true;
+            VRHardwareInteractor hardware = grabbable.GetComponentInParent<VRHardwareInteractor>();
+            if (hardware != null && hardware.IsHolding(grabbable)) return true;
             VRInteractionBridge bridge = grabbable.GetComponent<VRInteractionBridge>();
             return bridge != null && bridge.IsSelected;
         }
@@ -80,9 +82,12 @@ namespace EscapeRoomRevolt.Systems.Interaction
             var rb = grabbable.GetComponent<Rigidbody>();
             if (rb != null)
             {
+                if (!rb.isKinematic)
+                {
+                    rb.linearVelocity = Vector3.zero;
+                    rb.angularVelocity = Vector3.zero;
+                }
                 rb.isKinematic = true;
-                rb.linearVelocity = Vector3.zero;
-                rb.angularVelocity = Vector3.zero;
             }
 
             // Disable its grabbable script so player can't steal it back while snapping

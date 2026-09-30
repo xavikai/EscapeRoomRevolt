@@ -14,4 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Hint.HintData
   delayBeforeFirstHint: 120
   delayBetweenHints: 60
-  hints: []
+  hints:
+  - hintText: Solo se mueve una ficha que toque el hueco.
+    hintAudio: {fileID: 0}
+  - hintText: Ordena las fichas del 1 al 8 empezando arriba a la izquierda.
+    hintAudio: {fileID: 0}
+  - hintText: "Completa primero la fila de arriba y no la vuelvas a tocar; despu\xE9s, la del medio."
+    hintAudio: {fileID: 0}

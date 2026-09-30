@@ -11,7 +11,7 @@ namespace EscapeRoomRevolt.Systems.Puzzle
     {
         [Header("Sequence Settings")]
         [Tooltip("The correct sequence of IDs that the player must input")]
-        [SerializeField] private List<string> _correctSequence;
+        [SerializeField] private List<string> _correctSequence = new List<string>();
         [Tooltip("Shuffles the order of the steps above each playthrough (same steps, seeded from SaveManager.RunSeed), instead of always requiring the authored order.")]
         [SerializeField] private bool _randomizeOrder;
 
@@ -20,7 +20,7 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         protected override void Awake()
         {
             base.Awake();
-            if (_randomizeOrder) ShuffleSequence(new System.Random(ResolveVariantSeed()));
+            if (_randomizeOrder && _correctSequence != null) ShuffleSequence(new System.Random(ResolveVariantSeed()));
         }
 
         private void ShuffleSequence(System.Random random)
@@ -36,6 +36,7 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         public void InputStep(string stepId)
         {
             if (IsSolved) return;
+            if (_correctSequence == null || _correctSequence.Count == 0) return;
 
             SetInProgress();
             _currentSequence.Add(stepId);
@@ -70,11 +71,12 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         {
             public int stateIndex;
             public List<string> chosenOrder;
+            public List<string> currentSequence;
         }
 
         public override string SaveData()
         {
-            return JsonUtility.ToJson(new SequenceSaveData { stateIndex = (int)State, chosenOrder = _correctSequence });
+            return JsonUtility.ToJson(new SequenceSaveData { stateIndex = (int)State, chosenOrder = _correctSequence, currentSequence = _currentSequence });
         }
 
         public override void LoadData(string json)
@@ -82,6 +84,16 @@ namespace EscapeRoomRevolt.Systems.Puzzle
             base.LoadData(json);
             SequenceSaveData data = JsonUtility.FromJson<SequenceSaveData>(json);
             if (data?.chosenOrder != null && data.chosenOrder.Count > 0) _correctSequence = data.chosenOrder;
+            _currentSequence.Clear();
+            if (!IsSolved && data?.currentSequence != null && _correctSequence != null &&
+                data.currentSequence.Count < _correctSequence.Count)
+            {
+                for (int i = 0; i < data.currentSequence.Count; i++)
+                {
+                    if (data.currentSequence[i] != _correctSequence[i]) { _currentSequence.Clear(); break; }
+                    _currentSequence.Add(data.currentSequence[i]);
+                }
+            }
         }
     }
 }

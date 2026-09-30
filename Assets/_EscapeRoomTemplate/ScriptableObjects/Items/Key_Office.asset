@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Key_Office
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Inventory.InventoryItemData
   _itemId: key_office_01
-  _displayName: Rusty Key
-  _description: An old key. Probably opens a drawer.
+  _displayName: Llave oxidada
+  _description: "Una llave vieja. Probablemente abre un caj\xF3n."
   _icon: {fileID: 21300000, guid: d382e65de8a1b734abb2e78436269089, type: 3}
   _worldPrefab: {fileID: 5758558780192995299, guid: 043a7774e9dc4704fbeed20340458e02, type: 3}
   _category: 0

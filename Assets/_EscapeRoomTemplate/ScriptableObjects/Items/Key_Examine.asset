@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Key_Examine
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Inventory.InventoryItemData
   _itemId: key_examine_01
-  _displayName: Strange Key
-  _description: A very odd looking key.
+  _displayName: "Llave extra\xF1a"
+  _description: Una llave de aspecto muy raro.
   _icon: {fileID: 21300000, guid: 3dc6dbc98d9b47240b5aea9161bd1f04, type: 3}
   _worldPrefab: {fileID: 5758558780192995299, guid: 043a7774e9dc4704fbeed20340458e02, type: 3}
   _category: 0

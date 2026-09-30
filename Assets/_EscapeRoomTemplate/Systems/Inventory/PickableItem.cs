@@ -25,7 +25,7 @@ namespace EscapeRoomRevolt.Systems.Inventory
         [SerializeField] private AudioClip _pickupSound;
 
         public override string InteractionPrompt =>
-            _itemData != null ? $"Pick up {_itemData.DisplayName}" : "Pick up";
+            _itemData != null ? $"{EscapeRoomRevolt.Core.Localization.LocalizationService.Tr("Recoger")} {EscapeRoomRevolt.Core.Localization.LocalizationService.Tr(_itemData.DisplayName)}" : "Recoger";
 
         protected override void Awake()
         {

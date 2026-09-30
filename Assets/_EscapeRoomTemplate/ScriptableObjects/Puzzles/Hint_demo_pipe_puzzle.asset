@@ -14,4 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Hint.HintData
   delayBeforeFirstHint: 120
   delayBetweenHints: 60
-  hints: []
+  hints:
+  - hintText: El agua sale del origen verde y tiene que llegar al destino sin cortes.
+    hintAudio: {fileID: 0}
+  - hintText: "Cada clic gira el tramo 90\xB0. F\xEDjate en qu\xE9 lados tienen abertura."
+    hintAudio: {fileID: 0}
+  - hintText: Gira cada tramo hasta que sus aberturas se toquen con las del tramo vecino.
+    hintAudio: {fileID: 0}

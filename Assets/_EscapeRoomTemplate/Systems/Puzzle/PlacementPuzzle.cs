@@ -145,7 +145,11 @@ namespace EscapeRoomRevolt.Systems.Puzzle
                 }
             }
 
-            if (data.connections == null) return;
+            // Loose pieces are not saved (they respawn at their start). Restoring partial connections
+            // would leave sockets "occupied" by pieces lying elsewhere and could auto-complete the
+            // puzzle with a piece that is not there. Only a solved board keeps its layout, which
+            // PieceSocketReceiver then locks into place.
+            if (!IsSolved || data.connections == null) return;
             foreach (ConnectionEntry entry in data.connections) _connections[entry.pieceId] = entry.socketId;
         }
     }

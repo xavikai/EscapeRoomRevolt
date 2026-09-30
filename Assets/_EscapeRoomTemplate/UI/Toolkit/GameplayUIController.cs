@@ -10,6 +10,8 @@ using EscapeRoomRevolt.Systems.Survival;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using EscapeRoomRevolt.Core.Localization;
+using static EscapeRoomRevolt.Core.Localization.LocalizationService;
 
 namespace EscapeRoomRevolt.UI.Toolkit
 {
@@ -40,6 +42,11 @@ namespace EscapeRoomRevolt.UI.Toolkit
         private Label _sanityState;
         private VisualElement _hotbar;
         private Label _subtitle;
+        private VisualElement _gameOverTimerHud;
+        private Label _gameOverTimerTitle;
+        private Label _gameOverTimerValue;
+        private VisualElement _gameOverTimerFill;
+        private string _activeGameOverTimerId;
         private VisualElement _modalLayer;
         private VisualElement _inventoryPanel;
         private VisualElement _inventoryGrid;
@@ -104,6 +111,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
         private void OnEnable()
         {
             CacheElements();
+            LocalizeStaticTexts();
             RegisterCallbacks();
             HideAll();
             EventBus.Subscribe<RequestShowSubtitle>(HandleShowSubtitleRequest);
@@ -112,10 +120,37 @@ namespace EscapeRoomRevolt.UI.Toolkit
             EventBus.Subscribe<RequestCloseTopPanel>(HandleCloseTopPanelRequest);
             EventBus.Subscribe<RequestShowNoteReader>(HandleShowNoteReaderRequest);
             EventBus.Subscribe<RequestShowKeypad>(HandleShowKeypadRequest);
+            EventBus.Subscribe<OnGameOverTimerChanged>(HandleGameOverTimerChanged);
+        }
+
+        // Static labels authored in GameplayHUD.uxml are Spanish keys of the localization catalog.
+        // The original key is remembered so the HUD can be re-translated when the language changes.
+        private readonly System.Collections.Generic.Dictionary<TextElement, string> _staticTextKeys =
+            new System.Collections.Generic.Dictionary<TextElement, string>();
+        private bool _listeningForLanguage;
+
+        private void LocalizeStaticTexts()
+        {
+            if (_root == null) return;
+            _root.Query<TextElement>().ForEach(element =>
+            {
+                if (!_staticTextKeys.TryGetValue(element, out string key))
+                {
+                    key = element.text;
+                    _staticTextKeys[element] = key;
+                }
+                if (!string.IsNullOrEmpty(key)) element.text = Tr(key);
+            });
+            if (!_listeningForLanguage && LocalizationService.Instance != null)
+            {
+                LocalizationService.Instance.LanguageChanged += LocalizeStaticTexts;
+                _listeningForLanguage = true;
+            }
         }
 
         private void Start()
         {
+            LocalizeStaticTexts();
             BindServices();
             RefreshInventory();
             RefreshFlashlight();
@@ -133,12 +168,15 @@ namespace EscapeRoomRevolt.UI.Toolkit
         private void OnDisable()
         {
             UnbindServices();
+            // Release the cached block flag if this HUD goes away with a panel open (scene load).
+            if (_modal != GameplayModal.None) SetModal(GameplayModal.None);
             EventBus.Unsubscribe<RequestShowSubtitle>(HandleShowSubtitleRequest);
             EventBus.Unsubscribe<RequestHideSubtitle>(HandleHideSubtitleRequest);
             EventBus.Unsubscribe<RequestToggleInventory>(HandleToggleInventoryRequest);
             EventBus.Unsubscribe<RequestCloseTopPanel>(HandleCloseTopPanelRequest);
             EventBus.Unsubscribe<RequestShowNoteReader>(HandleShowNoteReaderRequest);
             EventBus.Unsubscribe<RequestShowKeypad>(HandleShowKeypadRequest);
+            EventBus.Unsubscribe<OnGameOverTimerChanged>(HandleGameOverTimerChanged);
         }
 
         private void HandleShowSubtitleRequest(RequestShowSubtitle evt) => ShowSubtitle(evt.text, evt.holdSeconds);
@@ -147,6 +185,31 @@ namespace EscapeRoomRevolt.UI.Toolkit
         private void HandleCloseTopPanelRequest(RequestCloseTopPanel evt) => CloseTopPanel();
         private void HandleShowNoteReaderRequest(RequestShowNoteReader evt) => ShowNote(evt.content);
 
+        private void HandleGameOverTimerChanged(OnGameOverTimerChanged evt)
+        {
+            if (_gameOverTimerHud == null) return;
+            if (!evt.isVisible)
+            {
+                if (string.IsNullOrEmpty(_activeGameOverTimerId) || _activeGameOverTimerId == evt.timerId)
+                {
+                    _activeGameOverTimerId = null;
+                    SetVisible(_gameOverTimerHud, false);
+                }
+                return;
+            }
+
+            _activeGameOverTimerId = evt.timerId;
+            if (_gameOverTimerTitle != null) _gameOverTimerTitle.text = Tr(string.IsNullOrEmpty(evt.label) ? "TIEMPO RESTANTE" : evt.label);
+            int seconds = Mathf.Max(0, Mathf.CeilToInt(evt.secondsRemaining));
+            if (_gameOverTimerValue != null) _gameOverTimerValue.text = $"{seconds / 60:00}:{seconds % 60:00}";
+            if (_gameOverTimerFill != null)
+                _gameOverTimerFill.style.width = Length.Percent(Mathf.Clamp01(evt.normalizedRemaining) * 100f);
+
+            _gameOverTimerHud.EnableInClassList("gameover-timer-hud--warning", seconds <= 10 && seconds > 5);
+            _gameOverTimerHud.EnableInClassList("gameover-timer-hud--critical", seconds <= 5 || evt.hasExpired);
+            SetVisible(_gameOverTimerHud, true);
+        }
+
         private void HandleShowKeypadRequest(RequestShowKeypad evt)
         {
             if (evt.puzzle is CodePanelPuzzle puzzle) ShowKeypad(puzzle);
@@ -154,6 +217,8 @@ namespace EscapeRoomRevolt.UI.Toolkit
 
         private void OnDestroy()
         {
+            if (_listeningForLanguage && LocalizationService.Instance != null)
+                LocalizationService.Instance.LanguageChanged -= LocalizeStaticTexts;
             if (_subtitleRoutine != null) StopCoroutine(_subtitleRoutine);
             DestroyExaminedModel();
             if (_examineRig != null) Destroy(_examineRig);
@@ -176,6 +241,10 @@ namespace EscapeRoomRevolt.UI.Toolkit
             _sanityState = _root.Q<Label>("sanity-state");
             _hotbar = _root.Q<VisualElement>("hotbar");
             _subtitle = _root.Q<Label>("subtitle");
+            _gameOverTimerHud = _root.Q<VisualElement>("gameover-timer-hud");
+            _gameOverTimerTitle = _root.Q<Label>("gameover-timer-title");
+            _gameOverTimerValue = _root.Q<Label>("gameover-timer-value");
+            _gameOverTimerFill = _root.Q<VisualElement>("gameover-timer-fill");
             _modalLayer = _root.Q<VisualElement>("modal-layer");
 
             _inventoryPanel = _root.Q<VisualElement>("inventory-panel");
@@ -311,10 +380,10 @@ namespace EscapeRoomRevolt.UI.Toolkit
             _sanityPercent.text = $"{Mathf.RoundToInt(normalized * 100f)}%";
             _sanityState.text = _sanity.Stage switch
             {
-                SanityStage.Uneasy => "INQUIETO",
-                SanityStage.Distressed => "ALTERADO",
-                SanityStage.Critical => "CRÍTICO",
-                _ => "ESTABLE"
+                SanityStage.Uneasy => Tr("INQUIETO"),
+                SanityStage.Distressed => Tr("ALTERADO"),
+                SanityStage.Critical => Tr("CRÍTICO"),
+                _ => Tr("ESTABLE")
             };
             _sanityHud.RemoveFromClassList("sanity-hud--uneasy");
             _sanityHud.RemoveFromClassList("sanity-hud--distressed");
@@ -359,8 +428,8 @@ namespace EscapeRoomRevolt.UI.Toolkit
                 {
                     bool canStore = heldObject != null && heldObject.GetComponent<PickableItem>() != null;
                     _interactionPrompt.text = canStore
-                        ? "[CLIC] LANZAR   [BOTÓN DERECHO] ROTAR   [Q] SOLTAR   [E] GUARDAR"
-                        : "[CLIC] LANZAR   [BOTÓN DERECHO] ROTAR   [Q] SOLTAR";
+                        ? Tr("[CLIC] LANZAR   [BOTÓN DERECHO] ROTAR   [Q] SOLTAR   [E] GUARDAR")
+                        : Tr("[CLIC] LANZAR   [BOTÓN DERECHO] ROTAR   [Q] SOLTAR");
                     _displayedHeldObject = heldObject;
                     _displayedPromptTarget = null;
                 }
@@ -371,7 +440,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
             bool show = target.IsAlive() && target.CanInteract && UnityEngine.Cursor.lockState == CursorLockMode.Locked;
             if (show && !ReferenceEquals(target, _displayedPromptTarget))
             {
-                _interactionPrompt.text = $"[E] {target.InteractionPrompt}";
+                _interactionPrompt.text = $"[E] {Tr(target.InteractionPrompt)}";
                 _displayedPromptTarget = target;
                 _displayedHeldObject = null;
             }
@@ -426,14 +495,14 @@ namespace EscapeRoomRevolt.UI.Toolkit
             if (charge <= .15f)
             {
                 _flashlightFill.AddToClassList("battery-fill--critical");
-                _flashlightState.text = "CRÍTICA";
+                _flashlightState.text = Tr("CRÍTICA");
             }
             else if (charge <= .35f)
             {
                 _flashlightFill.AddToClassList("battery-fill--low");
-                _flashlightState.text = "BAJA";
+                _flashlightState.text = Tr("BAJA");
             }
-            else _flashlightState.text = _flashlight.IsOn ? "ACTIVA" : "ESPERA";
+            else _flashlightState.text = Tr(_flashlight.IsOn ? "ACTIVA" : "ESPERA");
         }
 
         public void ShowHotbarTemporarily(float seconds = 3f)
@@ -520,22 +589,22 @@ namespace EscapeRoomRevolt.UI.Toolkit
             InventorySlot selected = slots[_selectedInventoryIndex];
             InventoryItemData data = selected.IsEmpty ? null : selected.Data;
             _inventoryDetailIcon.sprite = data?.Icon;
-            _inventoryDetailName.text = data != null ? data.DisplayName : "RANURA VACÍA";
+            _inventoryDetailName.text = data != null ? Tr(data.DisplayName) : Tr("RANURA VACÍA");
             _inventoryDetailDescription.RemoveFromClassList("combine-guidance");
             _inventoryDetailDescription.RemoveFromClassList("combine-failure");
             if (_itemUseRequest != null && data != null)
             {
-                _inventoryDetailDescription.text = "Este objeto es compatible. Confirma para usarlo aquí.";
+                _inventoryDetailDescription.text = Tr("Este objeto es compatible. Confirma para usarlo aquí.");
                 _inventoryDetailDescription.AddToClassList("combine-guidance");
             }
             else if (_combineSourceIndex >= 0)
             {
                 _inventoryDetailDescription.text = _selectedInventoryIndex == _combineSourceIndex
-                    ? "Selecciona un segundo objeto y pulsa COMBINAR."
-                    : "Combinar este objeto con el elemento marcado.";
+                    ? Tr("Selecciona un segundo objeto y pulsa COMBINAR.")
+                    : Tr("Combinar este objeto con el elemento marcado.");
                 _inventoryDetailDescription.AddToClassList("combine-guidance");
             }
-            else _inventoryDetailDescription.text = data != null ? data.Description : "No hay ningún objeto almacenado en esta posición.";
+            else _inventoryDetailDescription.text = data != null ? Tr(data.Description) : Tr("No hay ningún objeto almacenado en esta posición.");
             bool normalActions = _combineSourceIndex < 0;
             bool compatibleRequest = _itemUseRequest == null || (data != null && _itemUseRequest.IsCompatible(data.ItemId));
             _inventoryUse.SetEnabled(data != null && normalActions && compatibleRequest);
@@ -543,11 +612,11 @@ namespace EscapeRoomRevolt.UI.Toolkit
             _inventoryExamine.SetEnabled(data != null && data.CanExamine && normalActions && _itemUseRequest == null);
             _inventoryDrop.SetEnabled(data != null && data.CanDrop && normalActions && _itemUseRequest == null);
             _inventoryCombine.SetEnabled(data != null && _itemUseRequest == null);
-            _inventoryCombine.text = _combineSourceIndex < 0 ? "COMBINAR" : (_selectedInventoryIndex == _combineSourceIndex ? "CANCELAR COMBINACIÓN" : "COMBINAR OBJETOS");
+            _inventoryCombine.text = Tr(_combineSourceIndex < 0 ? "COMBINAR" : (_selectedInventoryIndex == _combineSourceIndex ? "CANCELAR COMBINACIÓN" : "COMBINAR OBJETOS"));
             if (_inventoryQuickAssign != null)
             {
                 _inventoryQuickAssign.SetEnabled(data != null && normalActions && _itemUseRequest == null);
-                _inventoryQuickAssign.text = $"ACCESO RÁPIDO {_inventory.ActiveQuickIndex + 1}";
+                _inventoryQuickAssign.text = $"{Tr("ACCESO RÁPIDO")} {_inventory.ActiveQuickIndex + 1}";
             }
         }
 
@@ -594,8 +663,8 @@ namespace EscapeRoomRevolt.UI.Toolkit
             bool combined = target != null && _inventory.TryCombine(sourceIndex, _selectedInventoryIndex);
             RefreshInventoryModal();
             _inventoryDetailDescription.text = combined
-                ? "Combinación completada. El resultado se ha añadido al inventario."
-                : "Estos objetos no pueden combinarse.";
+                ? Tr("Combinación completada. El resultado se ha añadido al inventario.")
+                : Tr("Estos objetos no pueden combinarse.");
             _inventoryDetailDescription.AddToClassList(combined ? "combine-guidance" : "combine-failure");
         }
 
@@ -623,12 +692,12 @@ namespace EscapeRoomRevolt.UI.Toolkit
 
         private string GetPrimaryActionLabel(InventoryItemData data)
         {
-            if (_itemUseRequest != null) return "USAR AQUÍ";
-            if (data == null) return "USAR";
-            if (data.PrimaryAction == InventoryPrimaryAction.Read || (data.PrimaryAction == InventoryPrimaryAction.Automatic && data.IsReadable)) return "LEER";
-            if (data.PrimaryAction == InventoryPrimaryAction.Consume) return "CONSUMIR";
-            if (data.PrimaryAction == InventoryPrimaryAction.EquipOrHold || data.WorldPrefab != null) return "EQUIPAR / SOSTENER";
-            return "USAR";
+            if (_itemUseRequest != null) return Tr("USAR AQUÍ");
+            if (data == null) return Tr("USAR");
+            if (data.PrimaryAction == InventoryPrimaryAction.Read || (data.PrimaryAction == InventoryPrimaryAction.Automatic && data.IsReadable)) return Tr("LEER");
+            if (data.PrimaryAction == InventoryPrimaryAction.Consume) return Tr("CONSUMIR");
+            if (data.PrimaryAction == InventoryPrimaryAction.EquipOrHold || data.WorldPrefab != null) return Tr("EQUIPAR / SOSTENER");
+            return Tr("USAR");
         }
 
         private void AssignSelectedToQuickAccess()
@@ -660,7 +729,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
         public void ShowNote(string content)
         {
             OpenModal(GameplayModal.Note, _notePanel);
-            _noteContent.text = content ?? string.Empty;
+            _noteContent.text = Tr(content ?? string.Empty);
         }
 
         public void ShowKeypad(CodePanelPuzzle puzzle)
@@ -724,8 +793,8 @@ namespace EscapeRoomRevolt.UI.Toolkit
             if (data == null) return;
             _examinedData = data;
             OpenModal(GameplayModal.Examiner, _examinerPanel);
-            _examinerTitle.text = data.DisplayName.ToUpperInvariant();
-            _examinerBaseDescription = data.Description;
+            _examinerTitle.text = Tr(data.DisplayName).ToUpperInvariant();
+            _examinerBaseDescription = Tr(data.Description);
             _examinerDescription.text = _examinerBaseDescription;
             _hoveredHotspot = null;
             CreateExaminedModel(data);
@@ -859,15 +928,15 @@ namespace EscapeRoomRevolt.UI.Toolkit
 
             if (hotspot == null) { _examinerDescription.text = _examinerBaseDescription; return; }
             _examinerDescription.text = hotspot.IsRevealed(_examinedData.ItemId)
-                ? hotspot.RevealedDescription
-                : hotspot.UnrevealedPrompt;
+                ? Tr(hotspot.RevealedDescription)
+                : Tr(hotspot.UnrevealedPrompt);
         }
 
         private void HandleExaminerClick(Vector2 pointerPosition)
         {
             if (!TryRaycastHotspot(pointerPosition, out ExamineHotspot hotspot) || _examinedData == null) return;
             hotspot.Reveal(_examinedData.ItemId);
-            _examinerDescription.text = hotspot.RevealedDescription;
+            _examinerDescription.text = Tr(hotspot.RevealedDescription);
         }
 
         private bool TryRaycastHotspot(Vector2 pointerPosition, out ExamineHotspot hotspot)
@@ -1019,6 +1088,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
             SetVisible(_interactionPrompt, false);
             SetVisible(_flashlightHud, false);
             SetVisible(_sanityHud, false);
+            SetVisible(_gameOverTimerHud, false);
             SetVisible(_subtitle, false);
         }
 

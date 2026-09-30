@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Money
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Inventory.InventoryItemData
   _itemId: moneda_01
-  _displayName: Money
+  _displayName: Dinero
   _description: 
   _icon: {fileID: 21300000, guid: 543664dcf1f88c1429d1c26b145ed9b2, type: 3}
   _worldPrefab: {fileID: 0}

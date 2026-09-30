@@ -82,6 +82,18 @@ namespace EscapeRoomRevolt.Core
         public string message;
     }
 
+    /// <summary>Published by an independent GameOverTimer so the gameplay HUD can present it without a Systems-to-UI dependency.</summary>
+    public struct OnGameOverTimerChanged
+    {
+        public string timerId;
+        public string label;
+        public float secondsRemaining;
+        public float normalizedRemaining;
+        public bool isRunning;
+        public bool isVisible;
+        public bool hasExpired;
+    }
+
     /// <summary>Fired when the game is saved.</summary>
     public struct OnGameSaved
     {
@@ -149,6 +161,12 @@ namespace EscapeRoomRevolt.Core
 
     /// <summary>Requests the gameplay UI to open the keypad modal for a specific puzzle component.</summary>
     public struct RequestShowKeypad
+    {
+        public Component puzzle;
+    }
+
+    /// <summary>Requests the VR gameplay panel to open the bidirectional number-wheels modal.</summary>
+    public struct RequestShowNumberWheels
     {
         public Component puzzle;
     }

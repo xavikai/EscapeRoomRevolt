@@ -56,5 +56,29 @@ namespace EscapeRoomRevolt.Core.Tests
             Assert.AreEqual("es", languages[0]);
             CollectionAssert.AreEquivalent(new[] { "es", "en" }, languages);
         }
+
+        [Test]
+        public void HasKey_SeesEntriesAddedAfterTheFirstLookup()
+        {
+            Assert.IsTrue(_catalog.HasKey("Continuar"));
+            Assert.IsFalse(_catalog.HasKey("Salir"));
+
+            var entry = new LocalizationEntry { key = "Salir" };
+            entry.translations.Add(new LocalizedString { languageCode = "en", text = "Quit" });
+            _catalog.entries.Add(entry);
+
+            Assert.IsTrue(_catalog.HasKey("Salir"));
+            Assert.AreEqual("Quit", _catalog.Get("Salir", "en"));
+        }
+
+        [Test]
+        public void DefaultCatalog_HasSpanishEnglishAndCatalan()
+        {
+            var shipped = UnityEngine.Resources.Load<LocalizationCatalog>("DefaultLocalizationCatalog");
+            Assert.IsNotNull(shipped);
+            CollectionAssert.IsSubsetOf(new[] { "es", "en", "ca" }, shipped.AvailableLanguages());
+            Assert.AreEqual("Open cabinet", shipped.Get("Abrir armario", "en"));
+            Assert.AreEqual("Obrir l'armari", shipped.Get("Abrir armario", "ca"));
+        }
     }
 }

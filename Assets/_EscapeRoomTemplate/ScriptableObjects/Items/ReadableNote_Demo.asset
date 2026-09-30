@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: ReadableNote_Demo
   m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Inventory.InventoryItemData
   _itemId: note_demo_01
-  _displayName: Mysterious Letter
-  _description: A crumpled letter I found.
+  _displayName: Carta misteriosa
+  _description: Una carta arrugada que he encontrado.
   _icon: {fileID: 21300000, guid: 8f641ec7d517cd645a1233e8a02289b7, type: 3}
   _worldPrefab: {fileID: 0}
   _category: 0
@@ -25,9 +25,5 @@ MonoBehaviour:
   _canDrop: 1
   _canExamine: 1
   _isReadable: 1
-  _noteContent: 'This is a note you picked up!
-
-
-    You can read it from your inventory
-    anytime.'
+  _noteContent: "\xA1Has recogido una nota!\n\nPuedes leerla desde el inventario cuando quieras."
   _combinations: []

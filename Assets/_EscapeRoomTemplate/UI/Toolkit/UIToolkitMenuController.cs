@@ -57,6 +57,8 @@ namespace EscapeRoomRevolt.UI.Toolkit
 
         private void OnEnable()
         {
+            // A duplicate destroys itself in Awake; Destroy is deferred, so skip its OnEnable.
+            if (Instance != this || _document == null) return;
             _root = _document.rootVisualElement;
             _title = _root.Q<Label>("title");
             _content = _root.Q<VisualElement>("screen-content");
@@ -68,7 +70,20 @@ namespace EscapeRoomRevolt.UI.Toolkit
             EventBus.Subscribe<RequestTogglePause>(HandleTogglePauseRequest);
         }
 
-        private void OnDisable() => EventBus.Unsubscribe<RequestTogglePause>(HandleTogglePauseRequest);
+        private void OnDisable()
+        {
+            EventBus.Unsubscribe<RequestTogglePause>(HandleTogglePauseRequest);
+            if (GameFlowManager.Instance != null)
+            {
+                GameFlowManager.Instance.StateChanged -= HandleFlowStateChanged;
+                GameFlowManager.Instance.GameEnded -= ShowResults;
+            }
+            // GameplayBlockState caches the last published value and outlives this scene. Loading a
+            // game from the main or pause menu unloads this controller while a screen is open; the
+            // next scene's controller starts Hidden and never publishes, so without this release the
+            // player stayed frozen (no movement, no interaction) after Continue or Load.
+            if (_screen != MenuScreen.Hidden) SetScreen(MenuScreen.Hidden);
+        }
 
         private void HandleTogglePauseRequest(RequestTogglePause evt) => TogglePause();
 
@@ -95,7 +110,9 @@ namespace EscapeRoomRevolt.UI.Toolkit
         public void ShowMain()
         {
             Time.timeScale = 1f;
-            Show(MenuScreen.Main, "EXPEDIENTE DE INVESTIGACIÓN");
+            Show(MenuScreen.Main, _theme != null && !string.IsNullOrWhiteSpace(_theme.mainMenuTitle)
+                ? _theme.mainMenuTitle
+                : "EXPEDIENTE DE INVESTIGACIÓN");
             GameFlowManager flow = GameFlowManager.EnsureInstance();
             Button continueButton = AddButton(Tr("Continuar"), flow.ContinueGame);
             continueButton.SetEnabled(flow.CanContinue());
@@ -121,7 +138,8 @@ namespace EscapeRoomRevolt.UI.Toolkit
             saveButton.SetEnabled(SurvivalDifficultyService.AllowsManualSaving);
             AddButton(Tr("Cargar partida"), ShowLoad);
             AddButton(Tr("Ajustes"), ShowSettings);
-            AddButton(Tr("Menú principal…"), () => ShowConfirmation(
+            if (GameFlowManager.EnsureInstance().CanReturnToMainMenu)
+                AddButton(Tr("Menú principal…"), () => ShowConfirmation(
                 "VOLVER AL MENÚ PRINCIPAL",
                 "La escena del menú principal se cargará al confirmar. El progreso que no hayas guardado se perderá.",
                 GameFlowManager.EnsureInstance().ReturnToMainMenu,
@@ -219,18 +237,21 @@ namespace EscapeRoomRevolt.UI.Toolkit
         {
             _backScreen = MenuScreen.Main;
             Show(MenuScreen.Credits, "CRÉDITOS");
-            AddLabel("Añade aquí los créditos de tu proyecto y las licencias de terceros.");
+            AddLabel(_theme != null && !string.IsNullOrWhiteSpace(_theme.creditsText)
+                ? _theme.creditsText
+                : "Añade aquí los créditos de tu proyecto y las licencias de terceros.");
             AddButton("Volver", ShowMain, "menu-button menu-button--quiet");
         }
 
         public void ShowResults(GameResult result)
         {
             Show(MenuScreen.Results, result.Title);
-            var message = new Label(result.Message);
+            var message = new Label(Tr(result.Message));
             message.AddToClassList("confirmation-message");
             _content.Add(message);
             AddButton("Reintentar", GameFlowManager.EnsureInstance().RestartCurrentScene);
-            AddButton("Menú principal", GameFlowManager.EnsureInstance().ReturnToMainMenu);
+            if (GameFlowManager.EnsureInstance().CanReturnToMainMenu)
+                AddButton("Menú principal", GameFlowManager.EnsureInstance().ReturnToMainMenu);
             AddButton("Salir", GameFlowManager.EnsureInstance().QuitGame, "menu-button menu-button--quiet");
         }
 
@@ -274,7 +295,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
 
         private Button AddButton(string text, Action clicked, string classes = "menu-button")
         {
-            var button = new Button(clicked) { text = text };
+            var button = new Button(clicked) { text = Tr(text) };
             foreach (string className in classes.Split(' '))
                 if (!string.IsNullOrWhiteSpace(className)) button.AddToClassList(className);
             ApplyButtonTheme(button);
@@ -390,21 +411,21 @@ namespace EscapeRoomRevolt.UI.Toolkit
 
             var information = new VisualElement();
             information.AddToClassList("save-slot-info");
-            var heading = new Label($"EXPEDIENTE {index:00}");
+            var heading = new Label($"{Tr("EXPEDIENTE")} {index:00}");
             heading.AddToClassList("save-slot-title");
             information.Add(heading);
 
             if (metadata == null)
             {
-                var empty = new Label("SIN REGISTRO");
+                var empty = new Label(Tr("SIN REGISTRO"));
                 empty.AddToClassList("save-slot-empty");
                 information.Add(empty);
             }
             else
             {
-                information.Add(CreateMetaLabel(string.IsNullOrEmpty(metadata.sceneName) ? "Escena desconocida" : metadata.sceneName));
+                information.Add(CreateMetaLabel(string.IsNullOrEmpty(metadata.sceneName) ? Tr("Escena desconocida") : metadata.sceneName));
                 information.Add(CreateMetaLabel(FormatDate(metadata.savedAtUtc)));
-                information.Add(CreateMetaLabel($"TIEMPO  {FormatDuration(metadata.playTimeSeconds)}"));
+                information.Add(CreateMetaLabel($"{Tr("TIEMPO")}  {FormatDuration(metadata.playTimeSeconds)}"));
             }
             card.Add(information);
 
@@ -468,7 +489,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
 
         private Button CreateActionButton(string text, Action clicked, bool danger)
         {
-            var button = new Button(clicked) { text = text };
+            var button = new Button(clicked) { text = Tr(text) };
             button.AddToClassList("slot-action");
             if (danger) button.AddToClassList("slot-action--danger");
             ApplyButtonTheme(button);
@@ -512,7 +533,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
         private void ShowConfirmation(string title, string message, Action confirm, Action cancel, string confirmLabel)
         {
             Show(MenuScreen.Confirmation, title);
-            var warning = new Label(message);
+            var warning = new Label(Tr(message));
             warning.AddToClassList("confirmation-message");
             _content.Add(warning);
             AddButton(confirmLabel, confirm, "menu-button menu-button--danger");
@@ -521,7 +542,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
 
         private void AddStatus(string message)
         {
-            var status = new Label(message);
+            var status = new Label(Tr(message));
             status.AddToClassList("operation-status");
             _content.Add(status);
         }
@@ -530,7 +551,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
         {
             return DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out DateTime date)
                 ? date.ToLocalTime().ToString("dd/MM/yyyy  HH:mm")
-                : "FECHA DESCONOCIDA";
+                : Tr("FECHA DESCONOCIDA");
         }
 
         private static string FormatDuration(float seconds)
@@ -546,7 +567,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
             _runtimePreviews.Clear();
         }
 
-        private void AddLabel(string text) => _content.Add(new Label(text));
+        private void AddLabel(string text) => _content.Add(new Label(Tr(text)));
 
         private void NavigateBack()
         {
@@ -564,6 +585,8 @@ namespace EscapeRoomRevolt.UI.Toolkit
                 new GameObject("SaveManager").AddComponent<SaveManager>();
             if (GameSettingsService.Instance == null)
                 new GameObject("GameSettingsService").AddComponent<GameSettingsService>();
+            if (LocalizationService.Instance == null)
+                new GameObject("LocalizationService").AddComponent<LocalizationService>();
             if (InputRouter.Instance == null)
                 new GameObject("InputRouter").AddComponent<InputRouter>();
             if (GameFeatures.IsEnabled(OptionalGameFeature.PlayerVitals) && SurvivalDifficultyService.Instance == null)
@@ -593,7 +616,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
         private void AddSlider(string label, float value, Action<float> changed, float low = 0f, float high = 1f)
         {
             var row = new VisualElement(); row.AddToClassList("setting-row");
-            var rowLabel = new Label(label); rowLabel.AddToClassList("setting-row-label"); row.Add(rowLabel);
+            var rowLabel = new Label(Tr(label)); rowLabel.AddToClassList("setting-row-label"); row.Add(rowLabel);
             var slider = new Slider(low, high) { value = value }; slider.RegisterValueChangedCallback(evt => changed(evt.newValue));
             // The row already shows its own Label; collapse the Slider's own (empty) reserved label
             // gutter so the track isn't squeezed into whatever width is left over.
@@ -603,7 +626,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
 
         private void AddToggle(string label, bool value, Action<bool> changed)
         {
-            var toggle = new Toggle(label) { value = value }; toggle.RegisterValueChangedCallback(evt => changed(evt.newValue));
+            var toggle = new Toggle(Tr(label)) { value = value }; toggle.RegisterValueChangedCallback(evt => changed(evt.newValue));
             _content.Add(toggle);
         }
 
@@ -611,6 +634,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
         {
             { "es", "Español" },
             { "en", "English" },
+            { "ca", "Català" },
         };
 
         private void AddLanguageSelector(GameSettingsData settings)
@@ -625,7 +649,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
             int current = codes.IndexOf(localization.CurrentLanguage);
             if (current < 0) current = 0;
 
-            var dropdown = new DropdownField("Idioma", choices, current);
+            var dropdown = new DropdownField(Tr("Idioma"), choices, current);
             dropdown.RegisterValueChangedCallback(evt =>
             {
                 int index = choices.IndexOf(evt.newValue);
@@ -645,7 +669,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
                 ? settings.qualityLevel
                 : QualitySettings.GetQualityLevel();
             var choices = new List<string>(names);
-            var dropdown = new DropdownField("Calidad gráfica", choices, currentLevel);
+            var dropdown = new DropdownField(Tr("Calidad gráfica"), choices, currentLevel);
             dropdown.RegisterValueChangedCallback(evt =>
             {
                 int index = choices.IndexOf(evt.newValue);
@@ -669,7 +693,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
                 choices.Add(profile != null ? profile.DisplayName : "No disponible");
                 if (profile != null && service.ActiveProfile == profile) selected = index;
             }
-            var dropdown = new DropdownField("Dificultad", choices, selected);
+            var dropdown = new DropdownField(Tr("Dificultad"), choices, selected);
             dropdown.RegisterValueChangedCallback(evt =>
             {
                 int index = choices.IndexOf(evt.newValue);
@@ -681,7 +705,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
 
         private void AddSectionLabel(string text)
         {
-            var label = new Label(text);
+            var label = new Label(Tr(text));
             label.AddToClassList("settings-section");
             _content.Add(label);
         }
@@ -697,17 +721,17 @@ namespace EscapeRoomRevolt.UI.Toolkit
 
             var row = new VisualElement();
             row.AddToClassList("binding-row");
-            var description = new Label(label);
+            var description = new Label(Tr(label));
             description.AddToClassList("binding-label");
             row.Add(description);
 
             var bindingButton = new Button();
             bindingButton.AddToClassList("binding-button");
-            bindingButton.text = router != null ? router.GetBindingDisplay(actionName, bindingIndex) : "NO DISPONIBLE";
+            bindingButton.text = router != null ? router.GetBindingDisplay(actionName, bindingIndex) : Tr("NO DISPONIBLE");
             bindingButton.SetEnabled(router != null && bindingIndex >= 0);
             bindingButton.clicked += () =>
             {
-                bindingButton.text = "PULSA UNA TECLA...  [ESC CANCELA]";
+                bindingButton.text = Tr("PULSA UNA TECLA...  [ESC CANCELA]");
                 bindingButton.SetEnabled(false);
                 bool started = router != null && router.StartInteractiveRebind(
                     actionName,
@@ -726,7 +750,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
                     });
                 if (!started)
                 {
-                    bindingButton.text = "NO DISPONIBLE";
+                    bindingButton.text = Tr("NO DISPONIBLE");
                     bindingButton.SetEnabled(false);
                 }
             };

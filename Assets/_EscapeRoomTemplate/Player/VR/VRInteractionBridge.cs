@@ -58,6 +58,7 @@ namespace EscapeRoomRevolt.Player.VR
 
         public void Select()
         {
+            if (EscapeRoomRevolt.Core.GameplayBlockState.IsBlocking || Time.timeScale <= 0f) return;
             Resolve();
             InteractionDispatcher.TryPerform(_interactable, _hand);
         }

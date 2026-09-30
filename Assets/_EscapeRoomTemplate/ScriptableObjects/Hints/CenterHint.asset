@@ -15,7 +15,7 @@ MonoBehaviour:
   delayBeforeFirstHint: 3
   delayBetweenHints: 3
   hints:
-  - hintText: "La zona verda sembla tranquil\xB7la."
+  - hintText: La zona verde parece tranquila.
     hintAudio: {fileID: 0}
-  - hintText: "Aqu\xED s'hi est\xE0 molt b\xE9, m'hi quedaria a viure."
+  - hintText: "Aqu\xED se est\xE1 muy bien, me quedar\xEDa a vivir."
     hintAudio: {fileID: 0}

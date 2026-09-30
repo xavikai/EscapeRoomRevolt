@@ -4,7 +4,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
 {
     /// <summary>
     /// Optional re-skin for UIToolkitMenuController: panel color, accent border, title/button
-    /// colors, two fonts and a logo, all assignable from the Inspector without touching USS or
+    /// colors, two fonts, a logo, the main-menu title and the credits text, all assignable from the Inspector without touching USS or
     /// code. Defaults match the shipped look exactly, so creating one and leaving it untouched
     /// changes nothing; assign it on UIToolkitMenuController's "_theme" field to activate it.
     /// Leaving that field empty (the default) keeps using the static EscapeRoomMenu.uss values.
@@ -35,5 +35,11 @@ namespace EscapeRoomRevolt.UI.Toolkit
         [Header("Marca")]
         [Tooltip("Se muestra encima del título en todas las pantallas del menú. Vacío = no se muestra nada.")]
         public Sprite logo;
+
+        [Header("Textos propios")]
+        [Tooltip("Título de la pantalla principal (por ejemplo, el nombre de tu juego). Vacío = título original de la plantilla. Si añades la misma cadena como clave en el catálogo de localización, también se traduce.")]
+        public string mainMenuTitle = "";
+        [Tooltip("Texto de la pantalla Créditos: autores, asignatura, licencias de terceros. Vacío = texto de ejemplo de la plantilla.")]
+        [TextArea(3, 12)] public string creditsText = "";
     }
 }

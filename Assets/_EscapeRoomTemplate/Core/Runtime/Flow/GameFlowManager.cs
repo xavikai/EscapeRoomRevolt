@@ -58,6 +58,7 @@ namespace EscapeRoomRevolt.Core.Flow
         public bool IsMainMenuScene => MatchesScene(SceneManager.GetActiveScene(), MainMenuScene);
         public string MainMenuScene => _settings != null ? _settings.MainMenuScene : "MainMenu";
         public string FirstGameplayScene => _settings != null ? _settings.FirstGameplayScene : "ShowcaseMuseum";
+        public bool CanReturnToMainMenu => Application.CanStreamedLevelBeLoaded(MainMenuScene);
 
         public static GameFlowManager EnsureInstance()
         {
@@ -90,7 +91,7 @@ namespace EscapeRoomRevolt.Core.Flow
 
         public void StartNewGame()
         {
-            if (_transitionInProgress) return;
+            if (_transitionInProgress || !CanLoadScene(FirstGameplayScene)) return;
             _lastResult = null;
             SaveManager.Instance?.ResetSession();
             GameContext.ResetForNewSession();
@@ -109,31 +110,43 @@ namespace EscapeRoomRevolt.Core.Flow
             SaveManager save = SaveManager.Instance;
             string slot = save != null ? ResolveContinueSlot(save) : null;
             if (save == null || string.IsNullOrEmpty(slot)) return;
-            _lastResult = null;
-            SetState(GameFlowState.Loading);
-            save.LoadGame(slot);
+            LoadSlot(slot);
         }
 
         public void LoadSlot(string slotId)
         {
             if (_transitionInProgress || SaveManager.Instance == null) return;
+            GameFlowState previousState = _state;
+            GameResult? previousResult = _lastResult;
+            SaveManager save = SaveManager.Instance;
+            void Failed(string failedSlot, string message)
+            {
+                _lastResult = previousResult;
+                SetState(previousState);
+            }
+            save.OperationFailed += Failed;
             _lastResult = null;
             SetState(GameFlowState.Loading);
-            SaveManager.Instance.LoadGame(slotId);
+            try { save.LoadGame(slotId); }
+            finally { save.OperationFailed -= Failed; }
         }
 
         public void ReturnToMainMenu()
         {
-            if (_transitionInProgress) return;
+            if (_transitionInProgress || !CanLoadScene(MainMenuScene)) return;
             Time.timeScale = 1f;
             LoadScene(MainMenuScene);
         }
 
         public void RestartCurrentScene()
         {
-            if (_transitionInProgress) return;
+            string scenePath = SceneManager.GetActiveScene().path;
+            if (_transitionInProgress || !CanLoadScene(scenePath)) return;
+            _lastResult = null;
+            SaveManager.Instance?.ResetSession();
+            GameContext.ResetForNewSession();
             Time.timeScale = 1f;
-            LoadScene(SceneManager.GetActiveScene().path);
+            LoadScene(scenePath);
         }
 
         /// <summary>
@@ -146,11 +159,7 @@ namespace EscapeRoomRevolt.Core.Flow
         public void TransitionToRoom(string targetScene, string targetSpawnId, RoomLoadMode mode)
         {
             if (_transitionInProgress) return;
-            if (string.IsNullOrWhiteSpace(targetScene))
-            {
-                Debug.LogError("[GameFlow] TransitionToRoom called with no target scene.");
-                return;
-            }
+            if (!CanLoadScene(targetScene)) return;
 
             if (mode == RoomLoadMode.Additive)
             {
@@ -175,7 +184,8 @@ namespace EscapeRoomRevolt.Core.Flow
             }
             while (!operation.isDone) yield return null;
 
-            Scene loaded = SceneManager.GetSceneByName(targetScene);
+            Scene loaded = SceneManager.GetSceneByPath(targetScene);
+            if (!loaded.IsValid()) loaded = SceneManager.GetSceneByName(targetScene);
             PositionPlayerAtSpawn(loaded, targetSpawnId);
             _transitionInProgress = false;
         }
@@ -230,12 +240,15 @@ namespace EscapeRoomRevolt.Core.Flow
 
         private void LoadScene(string scene)
         {
-            if (string.IsNullOrWhiteSpace(scene))
-            {
-                Debug.LogError("[GameFlow] No scene is configured for this transition.");
-                return;
-            }
+            if (!CanLoadScene(scene)) return;
             StartCoroutine(LoadSceneRoutine(scene));
+        }
+
+        private static bool CanLoadScene(string scene)
+        {
+            if (!string.IsNullOrWhiteSpace(scene) && Application.CanStreamedLevelBeLoaded(scene)) return true;
+            Debug.LogWarning($"[GameFlow] Scene '{scene}' is not available. Include it in the build scene list.");
+            return false;
         }
 
         private IEnumerator LoadSceneRoutine(string scene)

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace EscapeRoomRevolt.Core.Settings
@@ -82,6 +83,7 @@ namespace EscapeRoomRevolt.Core.Settings
         private const string ResourcePath = "GenreFeatureSettings";
         private static GenreFeatureSettings _settings;
         private static bool _loadAttempted;
+        private static readonly HashSet<SceneFeatureOverride> SceneOverrides = new();
 
         public static GenreFeatureSettings Settings
         {
@@ -100,15 +102,40 @@ namespace EscapeRoomRevolt.Core.Settings
 
         public static GameGenre Genre => Settings != null ? Settings.Genre : GameGenre.EscapeRoom;
         public static OptionalGameFeature ActiveFeatures =>
-            Settings != null ? Settings.ActiveFeatures : GenreFeatureSettings.EscapeRoomFeatures;
+            (Settings != null ? Settings.ActiveFeatures : GenreFeatureSettings.EscapeRoomFeatures)
+            | ActiveSceneOverrides;
 
         public static bool IsEnabled(OptionalGameFeature feature) => (ActiveFeatures & feature) == feature;
+
+        internal static void RegisterSceneOverride(SceneFeatureOverride sceneOverride)
+        {
+            if (sceneOverride != null) SceneOverrides.Add(sceneOverride);
+        }
+
+        internal static void UnregisterSceneOverride(SceneFeatureOverride sceneOverride)
+        {
+            if (sceneOverride != null) SceneOverrides.Remove(sceneOverride);
+        }
+
+        private static OptionalGameFeature ActiveSceneOverrides
+        {
+            get
+            {
+                OptionalGameFeature features = OptionalGameFeature.None;
+                foreach (SceneFeatureOverride sceneOverride in SceneOverrides)
+                {
+                    if (sceneOverride != null) features |= sceneOverride.EnabledFeatures;
+                }
+                return features;
+            }
+        }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         private static void ResetStatics()
         {
             _settings = null;
             _loadAttempted = false;
+            SceneOverrides.Clear();
         }
     }
 }
