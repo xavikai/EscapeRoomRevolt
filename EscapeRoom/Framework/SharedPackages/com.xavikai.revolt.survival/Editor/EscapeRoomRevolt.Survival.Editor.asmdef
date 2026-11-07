@@ -1,0 +1,15 @@
+{
+    "name": "EscapeRoomRevolt.Survival.Editor",
+    "references": [
+        "EscapeRoomRevolt.Core",
+        "EscapeRoomRevolt.Player",
+        "EscapeRoomRevolt.Systems",
+        "EscapeRoomRevolt.Survival",
+        "Unity.AI.Navigation",
+        "EscapeRoomRevolt.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "autoReferenced": true
+}

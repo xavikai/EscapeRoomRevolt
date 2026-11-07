@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-26",
+  "revision": "0.2.0-pcfix-2026-10-26",
+  "applicationControlResumed": false,
+  "unityRerun": false,
+  "method": "Package previously verified portable snapshots unchanged; read back every ZIP file entry and compare SHA-256, exact file list and safe relative paths. Manual QA remains pending.",
+  "products": {
+    "EscapeRoom": {
+      "result": "Passed",
+      "archive": "Distributions/Deliveries/EscapeRoom-0.2.0-pcfix-2026-10-26-delivery.zip",
+      "bytes": 9659565,
+      "archiveSha256": "c4d615564c25ccffef702e3bf5bca125b3c7eb7067bc49758a81aa93b4bb2f87",
+      "sourceExport": "Distributions/EscapeRoom-0.2.0-pcfix-2026-10-26",
+      "sourceExportSha256": "af15bb43602feb5ffebe97767c478817873adb734d475a8efc19ebf7785d0ff1",
+      "sourceUnchanged": true,
+      "packagedProjectMatchesValidatedExport": true,
+      "zipFilesVerified": 1246,
+      "manualCasesPending": 28,
+      "priorEditModePassed": 26,
+      "priorPlayModePassed": 34,
+      "priorWindowsBuild": "Succeeded"
+    },
+    "Survival": {
+      "result": "Passed",
+      "archive": "Distributions/Deliveries/Survival-0.2.0-pcfix-2026-10-26-delivery.zip",
+      "bytes": 8931104,
+      "archiveSha256": "326ee35a94246d52564ef04f64a56ffa2d935a4f5261b75f8a16250a81f6d36b",
+      "sourceExport": "Distributions/Survival-0.2.0-pcfix-2026-10-26",
+      "sourceExportSha256": "fa15be2c6aec21d0615e2f89a33659514698808d2cb9ae1e2f11d454964fa9a1",
+      "sourceUnchanged": true,
+      "packagedProjectMatchesValidatedExport": true,
+      "zipFilesVerified": 1281,
+      "manualCasesPending": 25,
+      "priorEditModePassed": 26,
+      "priorPlayModePassed": 38,
+      "priorWindowsBuild": "Succeeded"
+    }
+  }
+}

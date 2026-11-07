@@ -1,0 +1,278 @@
+{
+  "date": "2026-10-26",
+  "applicationControlResumed": false,
+  "unityRerun": false,
+  "method": "Filesystem relocation within the repository; updated consumer local UPM paths. Static product isolation/GUID validation, tool syntax and path resolution checks, archive SHA-256 and full portable export digest comparison against historical evidence. Historical evidence and delivery contents preserved.",
+  "moves": [
+    {
+      "source": "Projects/EscapeRoom",
+      "destination": "EscapeRoom/Unity"
+    },
+    {
+      "source": "Projects/Survival",
+      "destination": "Survival/Unity"
+    },
+    {
+      "source": "Distributions/EscapeRoom-0.2.0",
+      "destination": "EscapeRoom/Exportacions/EscapeRoom-0.2.0"
+    },
+    {
+      "source": "Distributions/EscapeRoom-0.2.0-pcfix-2026-10-26",
+      "destination": "EscapeRoom/Exportacions/EscapeRoom-0.2.0-pcfix-2026-10-26"
+    },
+    {
+      "source": "Distributions/Deliveries/EscapeRoom-0.2.0-pcfix-2026-10-26-delivery",
+      "destination": "EscapeRoom/PaquetsFonts/EscapeRoom-0.2.0-pcfix-2026-10-26-delivery"
+    },
+    {
+      "source": "Distributions/Deliveries/EscapeRoom-0.2.0-pcfix-2026-10-26-delivery.zip",
+      "destination": "EscapeRoom/PaquetsFonts/EscapeRoom-0.2.0-pcfix-2026-10-26-delivery.zip"
+    },
+    {
+      "source": "Distributions/Deliveries/EscapeRoom-0.2.0-pcfix-2026-10-26-delivery.zip.sha256",
+      "destination": "EscapeRoom/PaquetsFonts/EscapeRoom-0.2.0-pcfix-2026-10-26-delivery.zip.sha256"
+    },
+    {
+      "source": "Distributions/WindowsDemos/EscapeRoom-0.2.0-pcfix-2026-10-26-windows",
+      "destination": "EscapeRoom/Windows/EscapeRoom-0.2.0-pcfix-2026-10-26-windows"
+    },
+    {
+      "source": "Distributions/WindowsDemos/EscapeRoom-0.2.0-pcfix-2026-10-26-windows.zip",
+      "destination": "EscapeRoom/Windows/EscapeRoom-0.2.0-pcfix-2026-10-26-windows.zip"
+    },
+    {
+      "source": "Distributions/WindowsDemos/EscapeRoom-0.2.0-pcfix-2026-10-26-windows.zip.sha256",
+      "destination": "EscapeRoom/Windows/EscapeRoom-0.2.0-pcfix-2026-10-26-windows.zip.sha256"
+    },
+    {
+      "source": "Distributions/Survival-0.2.0",
+      "destination": "Survival/Exportacions/Survival-0.2.0"
+    },
+    {
+      "source": "Distributions/Survival-0.2.0-pcfix-2026-10-26",
+      "destination": "Survival/Exportacions/Survival-0.2.0-pcfix-2026-10-26"
+    },
+    {
+      "source": "Distributions/Deliveries/Survival-0.2.0-pcfix-2026-10-26-delivery",
+      "destination": "Survival/PaquetsFonts/Survival-0.2.0-pcfix-2026-10-26-delivery"
+    },
+    {
+      "source": "Distributions/Deliveries/Survival-0.2.0-pcfix-2026-10-26-delivery.zip",
+      "destination": "Survival/PaquetsFonts/Survival-0.2.0-pcfix-2026-10-26-delivery.zip"
+    },
+    {
+      "source": "Distributions/Deliveries/Survival-0.2.0-pcfix-2026-10-26-delivery.zip.sha256",
+      "destination": "Survival/PaquetsFonts/Survival-0.2.0-pcfix-2026-10-26-delivery.zip.sha256"
+    },
+    {
+      "source": "Distributions/WindowsDemos/Survival-0.2.0-pcfix-2026-10-26-windows",
+      "destination": "Survival/Windows/Survival-0.2.0-pcfix-2026-10-26-windows"
+    },
+    {
+      "source": "Distributions/WindowsDemos/Survival-0.2.0-pcfix-2026-10-26-windows.zip",
+      "destination": "Survival/Windows/Survival-0.2.0-pcfix-2026-10-26-windows.zip"
+    },
+    {
+      "source": "Distributions/WindowsDemos/Survival-0.2.0-pcfix-2026-10-26-windows.zip.sha256",
+      "destination": "Survival/Windows/Survival-0.2.0-pcfix-2026-10-26-windows.zip.sha256"
+    },
+    {
+      "source": ".utmp",
+      "destination": "EscapeRoom/Framework/.utmp"
+    },
+    {
+      "source": "Assets",
+      "destination": "EscapeRoom/Framework/Assets"
+    },
+    {
+      "source": "build",
+      "destination": "EscapeRoom/Framework/build"
+    },
+    {
+      "source": "Builds",
+      "destination": "EscapeRoom/Framework/Builds"
+    },
+    {
+      "source": "docs",
+      "destination": "EscapeRoom/Framework/docs"
+    },
+    {
+      "source": "Library",
+      "destination": "EscapeRoom/Framework/Library"
+    },
+    {
+      "source": "Logs",
+      "destination": "EscapeRoom/Framework/Logs"
+    },
+    {
+      "source": "Packages",
+      "destination": "EscapeRoom/Framework/Packages"
+    },
+    {
+      "source": "ProjectSettings",
+      "destination": "EscapeRoom/Framework/ProjectSettings"
+    },
+    {
+      "source": "SharedPackages",
+      "destination": "EscapeRoom/Framework/SharedPackages"
+    },
+    {
+      "source": "tools",
+      "destination": "EscapeRoom/Framework/tools"
+    },
+    {
+      "source": "UserSettings",
+      "destination": "EscapeRoom/Framework/UserSettings"
+    },
+    {
+      "source": "build_quest.log",
+      "destination": "EscapeRoom/Framework/build_quest.log"
+    },
+    {
+      "source": "build_windows.log",
+      "destination": "EscapeRoom/Framework/build_windows.log"
+    },
+    {
+      "source": "CHANGELOG.md",
+      "destination": "EscapeRoom/Framework/CHANGELOG.md"
+    },
+    {
+      "source": "codex_museum_awake.png",
+      "destination": "EscapeRoom/Framework/codex_museum_awake.png"
+    },
+    {
+      "source": "codex_museum_original_replaced.png",
+      "destination": "EscapeRoom/Framework/codex_museum_original_replaced.png"
+    },
+    {
+      "source": "codex_museum_repaired.png",
+      "destination": "EscapeRoom/Framework/codex_museum_repaired.png"
+    },
+    {
+      "source": "codex_museum.png",
+      "destination": "EscapeRoom/Framework/codex_museum.png"
+    },
+    {
+      "source": "codex_room13_current.png",
+      "destination": "EscapeRoom/Framework/codex_room13_current.png"
+    },
+    {
+      "source": "codex_room13_unity.png",
+      "destination": "EscapeRoom/Framework/codex_room13_unity.png"
+    },
+    {
+      "source": "museum-diagnostics.log",
+      "destination": "EscapeRoom/Framework/museum-diagnostics.log"
+    },
+    {
+      "source": "museum-quest-build.log",
+      "destination": "EscapeRoom/Framework/museum-quest-build.log"
+    },
+    {
+      "source": "museum-repair-build-retry.log",
+      "destination": "EscapeRoom/Framework/museum-repair-build-retry.log"
+    },
+    {
+      "source": "museum-repair-build.log",
+      "destination": "EscapeRoom/Framework/museum-repair-build.log"
+    },
+    {
+      "source": "museum-replace-original-build.log",
+      "destination": "EscapeRoom/Framework/museum-replace-original-build.log"
+    },
+    {
+      "source": "quest-build.log",
+      "destination": "EscapeRoom/Framework/quest-build.log"
+    },
+    {
+      "source": "README.md",
+      "destination": "EscapeRoom/Framework/README.md"
+    },
+    {
+      "source": "RELEASE_NOTES_v0.1.0-beta.1.md",
+      "destination": "EscapeRoom/Framework/RELEASE_NOTES_v0.1.0-beta.1.md"
+    },
+    {
+      "source": "RELEASE_NOTES_v0.1.0-beta.2.md",
+      "destination": "EscapeRoom/Framework/RELEASE_NOTES_v0.1.0-beta.2.md"
+    },
+    {
+      "source": "RELEASE_NOTES_v0.1.0-beta.3.md",
+      "destination": "EscapeRoom/Framework/RELEASE_NOTES_v0.1.0-beta.3.md"
+    },
+    {
+      "source": "RELEASE_NOTES_v0.1.0-beta.5.md",
+      "destination": "EscapeRoom/Framework/RELEASE_NOTES_v0.1.0-beta.5.md"
+    },
+    {
+      "source": "Projects",
+      "destination": "EscapeRoom/Framework/.utmp/PreviousEmptyProjects"
+    },
+    {
+      "source": "Distributions",
+      "destination": "EscapeRoom/Framework/.utmp/PreviousEmptyDistributions"
+    }
+  ],
+  "exports": [
+    {
+      "sha256": "14d5a12b1d84cf1e57368d33dd9bbdcd5fa35e175d21a05f15da733e921e5c47",
+      "previousPath": "Distributions/EscapeRoom-0.2.0",
+      "unchanged": true,
+      "product": "EscapeRoom",
+      "currentPath": "EscapeRoom/Exportacions/EscapeRoom-0.2.0"
+    },
+    {
+      "sha256": "eae95263a8b2749de5b08482943bbe1fdd54e20826cfe740bbc92c08ef919678",
+      "previousPath": "Distributions/Survival-0.2.0",
+      "unchanged": true,
+      "product": "Survival",
+      "currentPath": "Survival/Exportacions/Survival-0.2.0"
+    },
+    {
+      "sha256": "af15bb43602feb5ffebe97767c478817873adb734d475a8efc19ebf7785d0ff1",
+      "previousPath": "Distributions/EscapeRoom-0.2.0-pcfix-2026-10-26",
+      "unchanged": true,
+      "product": "EscapeRoom",
+      "currentPath": "EscapeRoom/Exportacions/EscapeRoom-0.2.0-pcfix-2026-10-26"
+    },
+    {
+      "sha256": "fa15be2c6aec21d0615e2f89a33659514698808d2cb9ae1e2f11d454964fa9a1",
+      "previousPath": "Distributions/Survival-0.2.0-pcfix-2026-10-26",
+      "unchanged": true,
+      "product": "Survival",
+      "currentPath": "Survival/Exportacions/Survival-0.2.0-pcfix-2026-10-26"
+    }
+  ],
+  "archives": [
+    {
+      "sha256": "c4d615564c25ccffef702e3bf5bca125b3c7eb7067bc49758a81aa93b4bb2f87",
+      "previousPath": "Distributions/Deliveries/EscapeRoom-0.2.0-pcfix-2026-10-26-delivery.zip",
+      "unchanged": true,
+      "product": "EscapeRoom",
+      "currentPath": "EscapeRoom/PaquetsFonts/EscapeRoom-0.2.0-pcfix-2026-10-26-delivery.zip"
+    },
+    {
+      "sha256": "326ee35a94246d52564ef04f64a56ffa2d935a4f5261b75f8a16250a81f6d36b",
+      "previousPath": "Distributions/Deliveries/Survival-0.2.0-pcfix-2026-10-26-delivery.zip",
+      "unchanged": true,
+      "product": "Survival",
+      "currentPath": "Survival/PaquetsFonts/Survival-0.2.0-pcfix-2026-10-26-delivery.zip"
+    },
+    {
+      "sha256": "801629dae6a1fd670440a8f4086c9472db90cf348294712e42968c9cb5620e7f",
+      "previousPath": "Distributions/WindowsDemos/EscapeRoom-0.2.0-pcfix-2026-10-26-windows.zip",
+      "unchanged": true,
+      "product": "EscapeRoom",
+      "currentPath": "EscapeRoom/Windows/EscapeRoom-0.2.0-pcfix-2026-10-26-windows.zip"
+    },
+    {
+      "sha256": "e6e341504c58184c46c367b825a428237e17dbb34b94bc071d711d85e9221a57",
+      "previousPath": "Distributions/WindowsDemos/Survival-0.2.0-pcfix-2026-10-26-windows.zip",
+      "unchanged": true,
+      "product": "Survival",
+      "currentPath": "Survival/Windows/Survival-0.2.0-pcfix-2026-10-26-windows.zip"
+    }
+  ],
+  "staticProductValidation": "Passed",
+  "toolSyntax": "Passed"
+}

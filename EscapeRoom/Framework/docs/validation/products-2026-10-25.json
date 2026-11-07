@@ -1,0 +1,111 @@
+{
+  "date": "2026-10-25",
+  "unityVersion": "6000.4.9f1",
+  "sourcePackages": [
+    {
+      "name": "com.xavikai.revolt.common",
+      "version": "0.2.0"
+    },
+    {
+      "name": "com.xavikai.revolt.survival",
+      "version": "0.2.0"
+    }
+  ],
+  "products": {
+    "EscapeRoom": {
+      "project": "Projects/EscapeRoom",
+      "productId": "escaperoom-revolt",
+      "firstGameplayScene": "ShowcaseMuseum",
+      "assemblyValidation": "Passed",
+      "survivalAssemblyPresent": false,
+      "scenes": [
+        "Assets/_EscapeRoomTemplate/Scenes/Intro.unity",
+        "Assets/_EscapeRoomTemplate/Scenes/MainMenu.unity",
+        "Assets/_EscapeRoomTemplate/Scenes/ShowcaseMuseum.unity",
+        "Assets/_EscapeRoomTemplate/Scenes/LockedOffice.unity",
+        "Assets/_EscapeRoomTemplate/Scenes/VRTemplate.unity",
+        "Assets/_EscapeRoomTemplate/Scenes/ShowcaseMuseumVR.unity",
+        "Assets/_EscapeRoomTemplate/Scenes/LockedOfficeVR.unity"
+      ],
+      "prefabs": 5,
+      "serializedReferenceIssues": [],
+      "inventoryItems": 10,
+      "ownedAssets": 321,
+      "editMode": {
+        "result": "Passed",
+        "total": 25,
+        "passed": 25,
+        "failed": 0,
+        "skipped": 0,
+        "startedAt": "2026-10-25 19:04:28Z",
+        "finishedAt": "2026-10-25 19:04:29Z"
+      },
+      "playMode": {
+        "result": "Passed",
+        "total": 34,
+        "passed": 34,
+        "failed": 0,
+        "skipped": 0,
+        "startedAt": "2026-10-25 19:04:58Z",
+        "finishedAt": "2026-10-25 19:05:01Z"
+      },
+      "windows": {
+        "result": "Succeeded",
+        "binary": "Projects/EscapeRoom/Builds/Release/v0.1.0-beta.5/Windows/escaperoom-revolt.exe",
+        "bytes": 667648,
+        "sha256": "a197542ad0d026c5c3bc7aead606b6b0184adad7b4ee3635326c575b25a5b423"
+      },
+      "portableExport": "Distributions/EscapeRoom-0.2.0",
+      "portableExportValidation": "Passed clean Unity import in a relocated temporary project outside the original repository, package/assembly path audit, serialized reference checks and full EditMode/PlayMode suites; original export unchanged.",
+      "portableValidationReport": "docs/validation/portable-exports-2026-10-25.json"
+    },
+    "Survival": {
+      "project": "Projects/Survival",
+      "productId": "survival-revolt",
+      "firstGameplayScene": "SurvivalHorrorDemo",
+      "assemblyValidation": "Passed",
+      "survivalAssemblyPresent": true,
+      "scenes": [
+        "Assets/_EscapeRoomTemplate/Scenes/Intro.unity",
+        "Assets/_EscapeRoomTemplate/Scenes/MainMenu.unity",
+        "Assets/_EscapeRoomTemplate/Scenes/SurvivalHorrorDemo.unity",
+        "Assets/_EscapeRoomTemplate/Scenes/VRTemplate.unity"
+      ],
+      "prefabs": 10,
+      "serializedReferenceIssues": [],
+      "inventoryItems": 2,
+      "ownedAssets": 271,
+      "editMode": {
+        "result": "Passed",
+        "total": 25,
+        "passed": 25,
+        "failed": 0,
+        "skipped": 0,
+        "startedAt": "2026-10-25 19:04:31Z",
+        "finishedAt": "2026-10-25 19:04:31Z"
+      },
+      "playMode": {
+        "result": "Passed",
+        "total": 38,
+        "passed": 38,
+        "failed": 0,
+        "skipped": 0,
+        "startedAt": "2026-10-25 19:04:59Z",
+        "finishedAt": "2026-10-25 19:05:01Z"
+      },
+      "windows": {
+        "result": "Succeeded",
+        "binary": "Projects/Survival/Builds/Release/v0.1.0-beta.5/Windows/survival-revolt.exe",
+        "bytes": 667648,
+        "sha256": "a197542ad0d026c5c3bc7aead606b6b0184adad7b4ee3635326c575b25a5b423"
+      },
+      "portableExport": "Distributions/Survival-0.2.0",
+      "portableExportValidation": "Passed clean Unity import in a relocated temporary project outside the original repository, package/assembly path audit, serialized reference checks and full EditMode/PlayMode suites; original export unchanged.",
+      "originalSceneSha256": "0701f0d739a2350aedfe1a02a130bf8937364aa12ea539ce6f9933bb46f58dd7",
+      "portableValidationReport": "docs/validation/portable-exports-2026-10-25.json"
+    }
+  },
+  "scope": "Consumer import/compilation, serialized references, module/resource isolation, automated tests including real first-scene startup, and Windows builds. No human visual playthrough, final performance profiling or physical VR acceptance.",
+  "latestCorrectionReport": "docs/validation/qa-corrections-2026-10-26.json",
+  "artifactStatus": "Historical 2026-10-25 results. Consumer Windows output paths have since been rebuilt by the 2026-10-26 correction pass; portable 0.2.0 snapshots remain unchanged."
+}

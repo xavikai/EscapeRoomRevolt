@@ -1,0 +1,140 @@
+{
+  "date": "2026-10-25",
+  "unityVersion": "6000.4.9f1",
+  "method": "Original portable snapshots copied without caches to unique OS temporary directories outside the source repository. Unity imported and compiled them from scratch. A test-only Editor audit verified registered package and compiled assembly paths before the product validator and full EditMode/PlayMode suites ran.",
+  "originalSnapshotsModified": false,
+  "products": {
+    "EscapeRoom": {
+      "export": "Distributions/EscapeRoom-0.2.0",
+      "result": "Passed",
+      "cleanLibraryAtStart": true,
+      "relocatedOutsideRepository": true,
+      "originalExportSha256": "14d5a12b1d84cf1e57368d33dd9bbdcd5fa35e175d21a05f15da733e921e5c47",
+      "exportUnchanged": true,
+      "packages": [
+        {
+          "name": "com.xavikai.revolt.common",
+          "version": "0.2.0",
+          "source": "Embedded",
+          "resolvedPath": "<isolated-project>/Packages/com.xavikai.revolt.common"
+        }
+      ],
+      "compiledAssemblies": [
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Bootstrap.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Core.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Core.Tests.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Editor.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Player.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Systems.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Systems.PlayModeTests.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.UI.dll"
+      ],
+      "noPackageResolvedInsideOriginalRepository": true,
+      "modules": {
+        "result": "Passed",
+        "productId": "escaperoom-revolt",
+        "firstGameplayScene": "ShowcaseMuseum",
+        "survivalAssemblyPresent": false,
+        "scenes": [
+          "Assets/_EscapeRoomTemplate/Scenes/Intro.unity",
+          "Assets/_EscapeRoomTemplate/Scenes/MainMenu.unity",
+          "Assets/_EscapeRoomTemplate/Scenes/ShowcaseMuseum.unity",
+          "Assets/_EscapeRoomTemplate/Scenes/LockedOffice.unity",
+          "Assets/_EscapeRoomTemplate/Scenes/VRTemplate.unity",
+          "Assets/_EscapeRoomTemplate/Scenes/ShowcaseMuseumVR.unity",
+          "Assets/_EscapeRoomTemplate/Scenes/LockedOfficeVR.unity"
+        ],
+        "prefabs": 5,
+        "issues": []
+      },
+      "editMode": {
+        "skipped": 0,
+        "startedAt": "2026-10-25 20:11:40Z",
+        "total": 25,
+        "finishedAt": "2026-10-25 20:11:40Z",
+        "result": "Passed",
+        "passed": 25,
+        "failed": 0
+      },
+      "playMode": {
+        "skipped": 0,
+        "startedAt": "2026-10-25 20:12:04Z",
+        "total": 34,
+        "finishedAt": "2026-10-25 20:12:06Z",
+        "result": "Passed",
+        "passed": 34,
+        "failed": 0
+      }
+    },
+    "Survival": {
+      "export": "Distributions/Survival-0.2.0",
+      "result": "Passed",
+      "cleanLibraryAtStart": true,
+      "relocatedOutsideRepository": true,
+      "originalExportSha256": "eae95263a8b2749de5b08482943bbe1fdd54e20826cfe740bbc92c08ef919678",
+      "exportUnchanged": true,
+      "packages": [
+        {
+          "name": "com.xavikai.revolt.common",
+          "version": "0.2.0",
+          "source": "Embedded",
+          "resolvedPath": "<isolated-project>/Packages/com.xavikai.revolt.common"
+        },
+        {
+          "name": "com.xavikai.revolt.survival",
+          "version": "0.2.0",
+          "source": "Embedded",
+          "resolvedPath": "<isolated-project>/Packages/com.xavikai.revolt.survival"
+        }
+      ],
+      "compiledAssemblies": [
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Bootstrap.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Core.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Core.Tests.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Editor.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Player.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Survival.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Survival.Editor.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Survival.PlayModeTests.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Survival.UI.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Systems.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Systems.PlayModeTests.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.UI.dll"
+      ],
+      "noPackageResolvedInsideOriginalRepository": true,
+      "modules": {
+        "result": "Passed",
+        "productId": "survival-revolt",
+        "firstGameplayScene": "SurvivalHorrorDemo",
+        "survivalAssemblyPresent": true,
+        "scenes": [
+          "Assets/_EscapeRoomTemplate/Scenes/Intro.unity",
+          "Assets/_EscapeRoomTemplate/Scenes/MainMenu.unity",
+          "Assets/_EscapeRoomTemplate/Scenes/SurvivalHorrorDemo.unity",
+          "Assets/_EscapeRoomTemplate/Scenes/VRTemplate.unity"
+        ],
+        "prefabs": 10,
+        "issues": []
+      },
+      "editMode": {
+        "result": "Passed",
+        "total": 25,
+        "startedAt": "2026-10-25 20:11:40Z",
+        "skipped": 0,
+        "failed": 0,
+        "finishedAt": "2026-10-25 20:11:40Z",
+        "passed": 25
+      },
+      "playMode": {
+        "result": "Passed",
+        "total": 38,
+        "startedAt": "2026-10-25 20:12:04Z",
+        "skipped": 0,
+        "failed": 0,
+        "finishedAt": "2026-10-25 20:12:06Z",
+        "passed": 38
+      }
+    }
+  },
+  "limits": "Headless import, configuration/reference checks and automated gameplay startup. External Unity registry packages may use the normal global package cache. No new Windows/Quest build, human visual playthrough or physical headset QA was performed in these relocated copies."
+}

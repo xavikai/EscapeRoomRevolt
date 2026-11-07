@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43a161e7bcc449b4fb8271d772b6054a, type: 3}
+  m_Name: Hint_demo_pipe_puzzle
+  m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Hint.HintData
+  delayBeforeFirstHint: 120
+  delayBetweenHints: 60
+  hints:
+  - hintText: El agua sale del origen verde y tiene que llegar al destino sin cortes.
+    hintAudio: {fileID: 0}
+  - hintText: "Cada clic gira el tramo 90\xB0. F\xEDjate en qu\xE9 lados tienen abertura."
+    hintAudio: {fileID: 0}
+  - hintText: Gira cada tramo hasta que sus aberturas se toquen con las del tramo vecino.
+    hintAudio: {fileID: 0}

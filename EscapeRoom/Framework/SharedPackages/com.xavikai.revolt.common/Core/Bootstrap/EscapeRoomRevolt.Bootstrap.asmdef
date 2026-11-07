@@ -1,0 +1,10 @@
+{
+    "name": "EscapeRoomRevolt.Bootstrap",
+    "references": [
+        "EscapeRoomRevolt.Core",
+        "EscapeRoomRevolt.Player",
+        "EscapeRoomRevolt.Systems"
+    ],
+    "includePlatforms": [],
+    "autoReferenced": true
+}

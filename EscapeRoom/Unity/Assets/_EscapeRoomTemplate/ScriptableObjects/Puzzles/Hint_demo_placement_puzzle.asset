@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43a161e7bcc449b4fb8271d772b6054a, type: 3}
+  m_Name: Hint_demo_placement_puzzle
+  m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Hint.HintData
+  delayBeforeFirstHint: 120
+  delayBetweenHints: 60
+  hints:
+  - hintText: "Hay tres soportes y solo dos piezas: uno de ellos es un se\xF1uelo."
+    hintAudio: {fileID: 0}
+  - hintText: "Suelta la pieza dentro del soporte; el im\xE1n la termina de encajar."
+    hintAudio: {fileID: 0}
+  - hintText: Si no se abre, vuelve a coger una pieza y prueba el otro soporte.
+    hintAudio: {fileID: 0}

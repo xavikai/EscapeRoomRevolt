@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d072b96ed0744ebbb17a5cdffc6e8886, type: 3}
+  m_Name: Objective_RecoverBattery
+  m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Core.Flow.ObjectiveDefinition
+  _objectiveId: recover_batteries
+  _title: Recupera piles de recanvi
+  _description: "Busca un recurs d'energia abans d'endinsar-te a la instal\xB7laci\xF3."
+  _hiddenUntilAvailable: 0
+  _trigger: 2
+  _targetId: batteries
+  _prerequisites: []

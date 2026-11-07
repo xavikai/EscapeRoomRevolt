@@ -1,0 +1,181 @@
+{
+  "date": "2026-10-26",
+  "unityVersion": "6000.4.9f1",
+  "snapshotRevision": "pcfix-2026-10-26",
+  "applicationControlResumed": false,
+  "method": "Fresh copies without Library/caches in unique OS temporary directories outside the repository. Unity -batchmode -nographics imports and compiles from scratch, audits package and assembly paths, validates product references, runs EditMode/PlayMode, and builds Windows. No navigation repair is run before tests: the exported persistent NavMesh must work as delivered.",
+  "originalSnapshotsModified": false,
+  "products": {
+    "EscapeRoom": {
+      "export": "Distributions/EscapeRoom-0.2.0-pcfix-2026-10-26",
+      "result": "Passed",
+      "cleanLibraryAtStart": true,
+      "relocatedOutsideRepository": true,
+      "originalExportSha256": "af15bb43602feb5ffebe97767c478817873adb734d475a8efc19ebf7785d0ff1",
+      "exportUnchanged": true,
+      "packages": [
+        {
+          "name": "com.xavikai.revolt.common",
+          "version": "0.2.0",
+          "source": "Embedded",
+          "resolvedPath": "<isolated-project>/Packages/com.xavikai.revolt.common"
+        }
+      ],
+      "compiledAssemblies": [
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Bootstrap.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Core.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Core.Tests.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Editor.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Editor.Tests.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Player.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Systems.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Systems.PlayModeTests.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.UI.dll"
+      ],
+      "noPackageResolvedInsideOriginalRepository": true,
+      "modules": {
+        "unityVersion": "6000.4.9f1",
+        "result": "Passed",
+        "productId": "escaperoom-revolt",
+        "firstGameplayScene": "ShowcaseMuseum",
+        "persistentDataDirectory": "C:/Users/user1/AppData/LocalLow/XaviKai/Escape Room Revolt\\escaperoom-revolt",
+        "survivalAssemblyPresent": false,
+        "sharedAssemblies": [
+          "EscapeRoomRevolt.Core",
+          "EscapeRoomRevolt.Player",
+          "EscapeRoomRevolt.Systems",
+          "EscapeRoomRevolt.UI",
+          "EscapeRoomRevolt.Bootstrap"
+        ],
+        "scenes": [
+          "Assets/_EscapeRoomTemplate/Scenes/Intro.unity",
+          "Assets/_EscapeRoomTemplate/Scenes/MainMenu.unity",
+          "Assets/_EscapeRoomTemplate/Scenes/ShowcaseMuseum.unity",
+          "Assets/_EscapeRoomTemplate/Scenes/LockedOffice.unity",
+          "Assets/_EscapeRoomTemplate/Scenes/VRTemplate.unity",
+          "Assets/_EscapeRoomTemplate/Scenes/ShowcaseMuseumVR.unity",
+          "Assets/_EscapeRoomTemplate/Scenes/LockedOfficeVR.unity"
+        ],
+        "prefabs": 5,
+        "issues": []
+      },
+      "editMode": {
+        "startedAt": "2026-10-25 23:40:34Z",
+        "skipped": 0,
+        "finishedAt": "2026-10-25 23:40:34Z",
+        "total": 26,
+        "passed": 26,
+        "failed": 0,
+        "result": "Passed"
+      },
+      "playMode": {
+        "startedAt": "2026-10-25 23:40:55Z",
+        "skipped": 0,
+        "finishedAt": "2026-10-25 23:40:57Z",
+        "total": 34,
+        "passed": 34,
+        "failed": 0,
+        "result": "Passed"
+      },
+      "windows": {
+        "binarySha256": "a197542ad0d026c5c3bc7aead606b6b0184adad7b4ee3635326c575b25a5b423",
+        "nativeXRPreInitialization": false,
+        "binary": "Builds/Release/v0.1.0-beta.5/Windows/escaperoom-revolt.exe",
+        "bootConfigSha256": "1e8efa7fb71b8b878652b97f8cdeaaccc89098de6990cd10f5abd4e38b798f0d",
+        "result": "Succeeded"
+      }
+    },
+    "Survival": {
+      "export": "Distributions/Survival-0.2.0-pcfix-2026-10-26",
+      "result": "Passed",
+      "cleanLibraryAtStart": true,
+      "relocatedOutsideRepository": true,
+      "originalExportSha256": "fa15be2c6aec21d0615e2f89a33659514698808d2cb9ae1e2f11d454964fa9a1",
+      "exportUnchanged": true,
+      "packages": [
+        {
+          "name": "com.xavikai.revolt.common",
+          "version": "0.2.0",
+          "source": "Embedded",
+          "resolvedPath": "<isolated-project>/Packages/com.xavikai.revolt.common"
+        },
+        {
+          "name": "com.xavikai.revolt.survival",
+          "version": "0.2.0",
+          "source": "Embedded",
+          "resolvedPath": "<isolated-project>/Packages/com.xavikai.revolt.survival"
+        }
+      ],
+      "compiledAssemblies": [
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Bootstrap.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Core.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Core.Tests.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Editor.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Editor.Tests.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Player.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Survival.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Survival.Editor.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Survival.PlayModeTests.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Survival.UI.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Systems.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.Systems.PlayModeTests.dll",
+        "<isolated-project>/Library/ScriptAssemblies/EscapeRoomRevolt.UI.dll"
+      ],
+      "noPackageResolvedInsideOriginalRepository": true,
+      "modules": {
+        "unityVersion": "6000.4.9f1",
+        "result": "Passed",
+        "productId": "survival-revolt",
+        "firstGameplayScene": "SurvivalHorrorDemo",
+        "persistentDataDirectory": "C:/Users/user1/AppData/LocalLow/XaviKai/Survival Revolt\\survival-revolt",
+        "survivalAssemblyPresent": true,
+        "sharedAssemblies": [
+          "EscapeRoomRevolt.Core",
+          "EscapeRoomRevolt.Player",
+          "EscapeRoomRevolt.Systems",
+          "EscapeRoomRevolt.UI",
+          "EscapeRoomRevolt.Bootstrap"
+        ],
+        "scenes": [
+          "Assets/_EscapeRoomTemplate/Scenes/Intro.unity",
+          "Assets/_EscapeRoomTemplate/Scenes/MainMenu.unity",
+          "Assets/_EscapeRoomTemplate/Scenes/SurvivalHorrorDemo.unity",
+          "Assets/_EscapeRoomTemplate/Scenes/VRTemplate.unity"
+        ],
+        "prefabs": 10,
+        "issues": []
+      },
+      "editMode": {
+        "failed": 0,
+        "total": 26,
+        "startedAt": "2026-10-25 23:40:34Z",
+        "skipped": 0,
+        "finishedAt": "2026-10-25 23:40:34Z",
+        "result": "Passed",
+        "passed": 26
+      },
+      "playMode": {
+        "failed": 0,
+        "total": 38,
+        "startedAt": "2026-10-25 23:40:55Z",
+        "skipped": 0,
+        "finishedAt": "2026-10-25 23:40:57Z",
+        "result": "Passed",
+        "passed": 38
+      },
+      "windows": {
+        "binarySha256": "a197542ad0d026c5c3bc7aead606b6b0184adad7b4ee3635326c575b25a5b423",
+        "nativeXRPreInitialization": false,
+        "result": "Succeeded",
+        "bootConfigSha256": "bbaf6d8229ff3eaab2111cacede9916268b0cb817e70a8420e24fa99e4c460cb",
+        "binary": "Builds/Release/v0.1.0-beta.5/Windows/survival-revolt.exe"
+      }
+    }
+  },
+  "limitations": [
+    "No visual inspection, player walkthrough or hardware QA was performed.",
+    "Unity installation and external registry packages may use the normal global package cache. No original repository code, Assets or Library were used by the relocated projects.",
+    "Windows binaries were built only in the isolated validation copies; exports remain source projects without Library, logs or builds.",
+    "Historical 0.2.0 exports and their 2026-10-25 report remain unchanged."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+    "name": "EscapeRoomRevolt.Survival.PlayModeTests",
+    "references": [
+        "EscapeRoomRevolt.Core",
+        "EscapeRoomRevolt.Systems",
+        "EscapeRoomRevolt.Survival",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "overrideReferences": true,
+    "precompiledReferences": ["nunit.framework.dll"],
+    "autoReferenced": true,
+    "defineConstraints": ["UNITY_INCLUDE_TESTS"]
+}

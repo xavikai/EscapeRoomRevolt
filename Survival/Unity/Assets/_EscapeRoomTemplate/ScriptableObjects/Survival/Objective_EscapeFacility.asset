@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d072b96ed0744ebbb17a5cdffc6e8886, type: 3}
+  m_Name: Objective_EscapeFacility
+  m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Core.Flow.ObjectiveDefinition
+  _objectiveId: escape_facility
+  _title: Arriba a la sortida
+  _description: Travessa la zona de patrulla i arriba al final del corredor.
+  _hiddenUntilAvailable: 1
+  _trigger: 0
+  _targetId: 
+  _prerequisites:
+  - {fileID: 11400000, guid: 13e123996200ea6498227991204af9be, type: 2}

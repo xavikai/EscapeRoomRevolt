@@ -1,0 +1,45 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Style src="SurvivalHUD.uss" />
+            <ui:VisualElement name="viewfinder-frame" class="viewfinder-frame" picking-mode="Ignore">
+                <ui:VisualElement class="viewfinder-bar viewfinder-bar--top" />
+                <ui:VisualElement class="viewfinder-bar viewfinder-bar--bottom" />
+                <ui:VisualElement name="viewfinder-rec" class="viewfinder-rec" picking-mode="Ignore">
+                    <ui:VisualElement name="viewfinder-rec-dot" class="viewfinder-rec-dot" />
+                    <ui:Label text="REC" class="viewfinder-rec-label" />
+                    <ui:Label name="viewfinder-timecode" text="00:00:00" class="viewfinder-timecode" />
+                </ui:VisualElement>
+                <ui:VisualElement class="viewfinder-zoom" picking-mode="Ignore">
+                    <ui:Label text="W" class="viewfinder-zoom-label" />
+                    <ui:VisualElement class="viewfinder-zoom-track">
+                        <ui:VisualElement name="viewfinder-zoom-marker" class="viewfinder-zoom-marker" />
+                    </ui:VisualElement>
+                    <ui:Label text="T" class="viewfinder-zoom-label" />
+                </ui:VisualElement>
+                <ui:Label text="HD" class="viewfinder-chip viewfinder-chip--hd" />
+                <ui:Label text="AUTO" class="viewfinder-chip viewfinder-chip--auto" />
+                <ui:Label text="F2.4" class="viewfinder-chip viewfinder-chip--fstop" />
+                <ui:Label text="1.280 x 720" class="viewfinder-chip viewfinder-chip--res" />
+            </ui:VisualElement>
+            <ui:VisualElement name="sanity-hud" class="sanity-hud" picking-mode="Ignore">
+                <ui:VisualElement class="instrument-header">
+                    <ui:Label text="ESTABILIDAD // PSI-02" class="instrument-title" />
+                    <ui:Label name="sanity-state" text="ESTABLE" class="instrument-state" />
+                </ui:VisualElement>
+                <ui:VisualElement class="sanity-track">
+                    <ui:VisualElement name="sanity-fill" class="sanity-fill" />
+                </ui:VisualElement>
+                <ui:Label name="sanity-percent" text="100%" class="sanity-percent" />
+            </ui:VisualElement>
+            <ui:VisualElement name="vitals-hud" class="vitals-hud" picking-mode="Ignore">
+                <ui:Label text="ESTADO FÍSICO // SURV-01" class="instrument-title" />
+                <ui:VisualElement class="vitals-row"><ui:Label text="SALUD" class="vitals-label" /><ui:VisualElement class="vitals-track"><ui:VisualElement name="health-fill" class="vitals-fill health-fill" /></ui:VisualElement><ui:Label name="health-percent" text="100%" class="vitals-percent" /></ui:VisualElement>
+                <ui:VisualElement class="vitals-row"><ui:Label text="RESIST." class="vitals-label" /><ui:VisualElement class="vitals-track"><ui:VisualElement name="stamina-fill" class="vitals-fill stamina-fill" /></ui:VisualElement><ui:Label name="stamina-percent" text="100%" class="vitals-percent" /></ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="camcorder-hud" class="camcorder-hud" picking-mode="Ignore">
+                <ui:VisualElement class="instrument-header"><ui:Label text="CÁMARA // NV-03" class="instrument-title" /><ui:Label name="camcorder-state" text="BAJADA" class="instrument-state" /></ui:VisualElement>
+                <ui:VisualElement class="battery-row"><ui:VisualElement class="battery-shell"><ui:VisualElement name="nightvision-fill" class="battery-fill nightvision-fill" /></ui:VisualElement><ui:Label name="nightvision-percent" text="100%" class="battery-percent" /></ui:VisualElement>
+                <ui:Label name="recording-target" text="SUJETO // NINGUNO" class="recording-target" />
+                <ui:VisualElement class="recording-track"><ui:VisualElement name="recording-fill" class="recording-fill" /></ui:VisualElement>
+                <ui:Label text="[C] CÁMARA  [N] NV  [B] BATERÍA  [RMB] ZOOM  [LMB] GRABAR" class="instrument-help" />
+            </ui:VisualElement>
+</ui:UXML>

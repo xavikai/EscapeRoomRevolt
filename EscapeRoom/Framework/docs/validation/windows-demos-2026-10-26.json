@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-26",
+  "revision": "0.2.0-pcfix-2026-10-26",
+  "applicationControlResumed": false,
+  "unityRerun": false,
+  "executableLaunched": false,
+  "method": "Verify EXE, boot.config and entire Data tree against prior successful build evidence. Copy all runtime files except Burst DoNotShip diagnostics. Read and hash every ZIP entry, verify exact paths and file list. Manual visual QA remains pending.",
+  "products": {
+    "EscapeRoom": {
+      "result": "Passed",
+      "archive": "Distributions/WindowsDemos/EscapeRoom-0.2.0-pcfix-2026-10-26-windows.zip",
+      "bytes": 41803458,
+      "archiveSha256": "801629dae6a1fd670440a8f4086c9472db90cf348294712e42968c9cb5620e7f",
+      "sourceBinary": "Projects/EscapeRoom/Builds/Release/v0.1.0-beta.5/Windows/escaperoom-revolt.exe",
+      "binarySha256": "a197542ad0d026c5c3bc7aead606b6b0184adad7b4ee3635326c575b25a5b423",
+      "bootConfigSha256": "18dca9fd0f079ffaea511350cd3ffcda12ed13e2e08c880511cd517d2a55db13",
+      "dataTreeSha256": "2f15ff2da7cfdf13637114601b1ddea40e88ae4d0c883409c8670839f11d05f8",
+      "originalBuildTreeSha256": "72cd35486c573b71d27377a49ec063771d6e057e367b8a750ce42826802e7d90",
+      "packagedRuntimeTreeSha256": "1850c4df1a687a60d9199c0aa6912976d1daf5b2fe4edf791498f18984da6f28",
+      "excludedDiagnostics": [
+        "Escape Room Revolt_BurstDebugInformation_DoNotShip"
+      ],
+      "runtimeFiles": 202,
+      "zipFilesVerified": 208,
+      "originalBuildUnchanged": true,
+      "nativeXRPreInitialization": false,
+      "manualCasesPending": 28,
+      "priorWindowsBuild": "Succeeded"
+    },
+    "Survival": {
+      "result": "Passed",
+      "archive": "Distributions/WindowsDemos/Survival-0.2.0-pcfix-2026-10-26-windows.zip",
+      "bytes": 41193398,
+      "archiveSha256": "e6e341504c58184c46c367b825a428237e17dbb34b94bc071d711d85e9221a57",
+      "sourceBinary": "Projects/Survival/Builds/Release/v0.1.0-beta.5/Windows/survival-revolt.exe",
+      "binarySha256": "a197542ad0d026c5c3bc7aead606b6b0184adad7b4ee3635326c575b25a5b423",
+      "bootConfigSha256": "fdfc113083a30f54c88e27ef87cabab8509a0a3753a6079c228b15992e9620b0",
+      "dataTreeSha256": "962237ced0c81d2599c6f6d2446d47403b829c6d8f0c803617a2c7a0a5bf47b1",
+      "originalBuildTreeSha256": "95e56ccf064a2e8a5c36bd998567db07e0684a5ef393b9a9c2312ecbac9cd2cd",
+      "packagedRuntimeTreeSha256": "26654446b8d4981aff1089de11aa6b21a815e12b5e48e4c1e5ee4068d1a19e2f",
+      "excludedDiagnostics": [
+        "Survival Revolt_BurstDebugInformation_DoNotShip"
+      ],
+      "runtimeFiles": 201,
+      "zipFilesVerified": 207,
+      "originalBuildUnchanged": true,
+      "nativeXRPreInitialization": false,
+      "manualCasesPending": 25,
+      "priorWindowsBuild": "Succeeded"
+    }
+  }
+}

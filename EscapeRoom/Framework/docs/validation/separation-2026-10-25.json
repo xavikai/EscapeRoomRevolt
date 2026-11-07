@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-25",
+  "unityVersion": "6000.4.9f1",
+  "scope": "Headless batch compilation, EditMode/PlayMode tests, compiled assembly boundaries and serialized scene/prefab references. No binary playthrough, clean distribution import or VR hardware acceptance.",
+  "editMode": {
+    "result": "Passed",
+    "total": 25,
+    "passed": 25,
+    "failed": 0,
+    "skipped": 0,
+    "startedAt": "2026-10-25 18:06:35Z",
+    "finishedAt": "2026-10-25 18:06:36Z"
+  },
+  "playMode": {
+    "result": "Passed",
+    "total": 37,
+    "passed": 37,
+    "failed": 0,
+    "skipped": 0,
+    "startedAt": "2026-10-25 18:07:56Z",
+    "finishedAt": "2026-10-25 18:07:58Z"
+  },
+  "moduleValidation": {
+    "unityVersion": "6000.4.9f1",
+    "result": "Passed",
+    "sharedAssemblies": [
+      "EscapeRoomRevolt.Core",
+      "EscapeRoomRevolt.Player",
+      "EscapeRoomRevolt.Systems",
+      "EscapeRoomRevolt.UI",
+      "EscapeRoomRevolt.Bootstrap"
+    ],
+    "scenes": [
+      "Assets/_EscapeRoomTemplate/Scenes/Intro.unity",
+      "Assets/_EscapeRoomTemplate/Scenes/MainMenu.unity",
+      "Assets/_EscapeRoomTemplate/Scenes/ShowcaseMuseum.unity",
+      "Assets/_EscapeRoomTemplate/Scenes/LockedOffice.unity",
+      "Assets/_EscapeRoomTemplate/Scenes/SurvivalHorrorDemo.unity",
+      "Assets/_EscapeRoomTemplate/Scenes/VRTemplate.unity",
+      "Assets/_EscapeRoomTemplate/Scenes/ShowcaseMuseumVR.unity",
+      "Assets/_EscapeRoomTemplate/Scenes/LockedOfficeVR.unity"
+    ],
+    "prefabs": 13,
+    "issues": []
+  },
+  "preservedScriptGuids": 10
+}

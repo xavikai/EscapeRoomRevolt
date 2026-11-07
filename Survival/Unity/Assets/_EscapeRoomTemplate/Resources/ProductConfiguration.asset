@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ce8edd9d88c787eafa1a068ac2c9f33, type: 3}
+  m_Name: ProductConfiguration
+  m_EditorClassIdentifier: EscapeRoomRevolt.Core::EscapeRoomRevolt.Core.Settings.ProductConfiguration
+  _productId: survival-revolt
+  _displayName: Survival Revolt
+  _applicationIdentifier: com.xavikai.survivalrevolt
+  _desktopScenes:
+  - Assets/_EscapeRoomTemplate/Scenes/Intro.unity
+  - Assets/_EscapeRoomTemplate/Scenes/MainMenu.unity
+  - Assets/_EscapeRoomTemplate/Scenes/SurvivalHorrorDemo.unity
+  _questScenes: []

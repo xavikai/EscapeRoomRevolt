@@ -1,0 +1,135 @@
+{
+  "date": "2026-10-26",
+  "unityVersion": "6000.4.9f1",
+  "applicationControlResumed": false,
+  "verificationMode": "Unity batchmode with -nographics, automated scene/startup/text/navigation regressions, compiled reference validation and Windows build artifact checks. No new GUI session, visual capture or player interaction was performed in this continuation.",
+  "fixes": [
+    {
+      "area": "TextMesh Pro",
+      "change": "Ship implicit TMP Resources defaults and dependencies in both consumers; seed future consumer generation; validate default font/style and force the world-text mesh update path."
+    },
+    {
+      "area": "Desktop XR",
+      "change": "Temporarily remove XR loaders and disable automatic loading/running during Windows build, restore authoring state even after a build exception, and reject desktop boot configs requesting native XR pre-init."
+    },
+    {
+      "area": "Survival navigation",
+      "change": "Fix navigation helper namespace reference, persist baked NavMesh as a project asset and reference it from the existing demo scene; verify enemy spawn sampling and runtime agents on the mesh."
+    }
+  ],
+  "products": {
+    "EscapeRoom": {
+      "project": "Projects/EscapeRoom",
+      "editMode": {
+        "result": "Passed",
+        "total": 26,
+        "passed": 26,
+        "failed": 0,
+        "skipped": 0,
+        "startedAt": "2026-10-25 22:59:11Z",
+        "finishedAt": "2026-10-25 22:59:11Z"
+      },
+      "playMode": {
+        "result": "Passed",
+        "total": 34,
+        "passed": 34,
+        "failed": 0,
+        "skipped": 0,
+        "startedAt": "2026-10-25 22:59:55Z",
+        "finishedAt": "2026-10-25 22:59:58Z"
+      },
+      "modules": {
+        "result": "Passed",
+        "survivalAssemblyPresent": false,
+        "scenes": [
+          "Assets/_EscapeRoomTemplate/Scenes/Intro.unity",
+          "Assets/_EscapeRoomTemplate/Scenes/MainMenu.unity",
+          "Assets/_EscapeRoomTemplate/Scenes/ShowcaseMuseum.unity",
+          "Assets/_EscapeRoomTemplate/Scenes/LockedOffice.unity",
+          "Assets/_EscapeRoomTemplate/Scenes/VRTemplate.unity",
+          "Assets/_EscapeRoomTemplate/Scenes/ShowcaseMuseumVR.unity",
+          "Assets/_EscapeRoomTemplate/Scenes/LockedOfficeVR.unity"
+        ],
+        "prefabs": 5,
+        "issues": []
+      },
+      "windows": {
+        "result": "Succeeded",
+        "binary": "Projects/EscapeRoom/Builds/Release/v0.1.0-beta.5/Windows/escaperoom-revolt.exe",
+        "bootConfig": "Projects/EscapeRoom/Builds/Release/v0.1.0-beta.5/Windows/escaperoom-revolt_Data/boot.config",
+        "nativeXRPreInitialization": false,
+        "binarySha256": "a197542ad0d026c5c3bc7aead606b6b0184adad7b4ee3635326c575b25a5b423",
+        "bootConfigSha256": "18dca9fd0f079ffaea511350cd3ffcda12ed13e2e08c880511cd517d2a55db13",
+        "dataFiles": 176,
+        "dataTreeSha256": "2f15ff2da7cfdf13637114601b1ddea40e88ae4d0c883409c8670839f11d05f8"
+      },
+      "textDefaults": {
+        "settings": "Assets/TextMesh Pro/Resources/TMP Settings.asset",
+        "settingsSha256": "7be438062cdc296835a1258b68bcbeb8e9fdc4b01ea27c05a24a1074260f7424",
+        "fontAndStyleVerifiedInPlayMode": true
+      }
+    },
+    "Survival": {
+      "project": "Projects/Survival",
+      "editMode": {
+        "result": "Passed",
+        "total": 26,
+        "passed": 26,
+        "failed": 0,
+        "skipped": 0,
+        "startedAt": "2026-10-25 23:05:28Z",
+        "finishedAt": "2026-10-25 23:05:28Z"
+      },
+      "playMode": {
+        "result": "Passed",
+        "total": 38,
+        "passed": 38,
+        "failed": 0,
+        "skipped": 0,
+        "startedAt": "2026-10-25 23:05:54Z",
+        "finishedAt": "2026-10-25 23:05:56Z"
+      },
+      "modules": {
+        "result": "Passed",
+        "survivalAssemblyPresent": true,
+        "scenes": [
+          "Assets/_EscapeRoomTemplate/Scenes/Intro.unity",
+          "Assets/_EscapeRoomTemplate/Scenes/MainMenu.unity",
+          "Assets/_EscapeRoomTemplate/Scenes/SurvivalHorrorDemo.unity",
+          "Assets/_EscapeRoomTemplate/Scenes/VRTemplate.unity"
+        ],
+        "prefabs": 10,
+        "issues": []
+      },
+      "windows": {
+        "result": "Succeeded",
+        "binary": "Projects/Survival/Builds/Release/v0.1.0-beta.5/Windows/survival-revolt.exe",
+        "bootConfig": "Projects/Survival/Builds/Release/v0.1.0-beta.5/Windows/survival-revolt_Data/boot.config",
+        "nativeXRPreInitialization": false,
+        "binarySha256": "a197542ad0d026c5c3bc7aead606b6b0184adad7b4ee3635326c575b25a5b423",
+        "bootConfigSha256": "fdfc113083a30f54c88e27ef87cabab8509a0a3753a6079c228b15992e9620b0",
+        "dataFiles": 175,
+        "dataTreeSha256": "962237ced0c81d2599c6f6d2446d47403b829c6d8f0c803617a2c7a0a5bf47b1"
+      },
+      "textDefaults": {
+        "settings": "Assets/TextMesh Pro/Resources/TMP Settings.asset",
+        "settingsSha256": "7be438062cdc296835a1258b68bcbeb8e9fdc4b01ea27c05a24a1074260f7424",
+        "fontAndStyleVerifiedInPlayMode": true
+      },
+      "navigation": {
+        "result": "Passed",
+        "asset": "Assets/_EscapeRoomTemplate/Scenes/Navigation/SurvivalHorrorDemo_NavMesh.asset",
+        "assetSha256": "e0d2302c5074b498a7c5de1298c7a611f90ba7d007fe4ada9ac4bc4f1333cec7",
+        "sceneReferencesAsset": true,
+        "enemySpawnsSampled": true,
+        "runtimeNavMeshAndAgentsVerified": true,
+        "sceneGuid": "e15fadc2e84e522409739f5487cd59d2",
+        "sourceSceneSha256": "0701f0d739a2350aedfe1a02a130bf8937364aa12ea539ce6f9933bb46f58dd7",
+        "repairedSceneSha256": "33bf5033d6d6d115672bd51a6ad53c8a16645a7ebb5f4f1bcda89618ea5e0b18",
+        "sourceScenePreserved": true
+      }
+    }
+  },
+  "visualQAStatus": "Pending visual reinspection: earlier interactive QA was interrupted and was not resumed. Automated success is not a visual acceptance or full puzzle/survival playthrough.",
+  "portableSnapshotStatus": "Distributions/*-0.2.0 and their 2026-10-25 portability report remain historical snapshots and were not modified or revalidated to include these QA fixes."
+}

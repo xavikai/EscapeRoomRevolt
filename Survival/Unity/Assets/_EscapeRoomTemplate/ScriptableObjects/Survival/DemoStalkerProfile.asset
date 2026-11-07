@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7a5fa013764f924797037153c1fc8f1, type: 3}
+  m_Name: DemoStalkerProfile
+  m_EditorClassIdentifier: Assembly-CSharp::EscapeRoomRevolt.Systems.Survival.HorrorEnemyProfile
+  patrolSpeed: 1.8
+  investigateSpeed: 2.7
+  chaseSpeed: 4.8
+  sightRange: 14
+  sightAngle: 85
+  hearingMultiplier: 1
+  perceptionInterval: 0.12
+  detectionSeconds: 0.65
+  awarenessDecayPerSecond: 0.55
+  instantDetectionRange: 1.75
+  useVisibilityModifiers: 1
+  chaseMemory: 4
+  searchDuration: 7
+  inspectHidingSpots: 1
+  hidingInspectionDelay: 1.35
+  operateDoors: 1
+  forceLockedDoors: 0
+  slamDoorsDuringChase: 1
+  doorInteractionDistance: 1.6
+  doorInteractionCooldown: 0.8
+  attackRange: 1.45
+  attackDamage: 45
+  attackCooldown: 1.4

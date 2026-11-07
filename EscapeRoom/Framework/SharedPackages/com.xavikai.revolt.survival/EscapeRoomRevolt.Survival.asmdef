@@ -1,0 +1,24 @@
+{
+    "name": "EscapeRoomRevolt.Survival",
+    "rootNamespace": "",
+    "references": [
+        "EscapeRoomRevolt.Core",
+        "EscapeRoomRevolt.Player",
+        "EscapeRoomRevolt.Systems",
+        "Unity.InputSystem",
+        "Unity.XR.Interaction.Toolkit",
+        "Unity.RenderPipelines.Universal.Runtime",
+        "Unity.RenderPipelines.Core.Runtime",
+        "Unity.TextMeshPro",
+        "Unity.AI.Navigation"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-26",
+  "applicationControlResumed": false,
+  "browserOpened": false,
+  "unityRerun": false,
+  "result": "Passed",
+  "checks": [
+    "EscapeRoom/Framework/docs/guia/index.html: inline syntax, unique IDs and literal local links",
+    "Survival/Documentacio/GuiaInteractiva/index.html: inline syntax, unique IDs and literal local links",
+    "Original common-guide Three.js stage implementations unchanged",
+    "No-Three.js fallback keeps textual model available",
+    "Objective prerequisites, 2.5-second recording and exit completion",
+    "Missing power/out-of-range recording does not complete evidence",
+    "Checkpoint restores captured state; Nightmare disables checkpoint",
+    "Detection increases awareness and occlusion reduces it"
+  ],
+  "originalCommonStageSha256": "0bdc1b738c4980a19455c3d315d2d54a92e227b2018ae93e6e1b80b6fdaa1ea3",
+  "files": [
+    "EscapeRoom/Framework/docs/guia/index.html",
+    "Survival/Documentacio/GuiaInteractiva/index.html",
+    "Survival/Documentacio/GuiaInteractiva/survival-guide.js"
+  ],
+  "visualVerification": "Pending: no browser or WebGL scene was executed. Node checks use a minimal DOM stub and do not certify graphical layout, rendering or actual Unity behaviour.",
+  "existingDeliveriesModified": false
+}
