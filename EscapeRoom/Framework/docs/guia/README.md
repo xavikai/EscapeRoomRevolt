@@ -4,7 +4,7 @@ Obre `index.html` en un navegador (doble clic). Necessita connexió a Internet p
 
 Idiomes: català, castellà i anglès (selector a la barra lateral).
 
-Seccions: visita guiada amb el museu 3D, laboratori de mecàniques jugables amb Inspector, taller de menús (MenuThemeSettings), jugador PC i VR, funcions (inventari, examen, guardat, pistes, perills, menú de l'editor), recepta de la primera sala i problemes freqüents.
+Seccions: **crear el projecte des de zero** (35 passos per a qui no ha obert mai Unity: instal·lar Unity Hub i la 6000.4.9f1, obrir el projecte, conèixer l'editor, crear una sala amb una porta i un teclat, i generar el joc per a Windows; amb maqueta de l'editor, sala 3D que es construeix pas a pas, glossari i problemes freqüents), visita guiada amb el museu 3D, laboratori de mecàniques jugables amb Inspector, taller de menús (MenuThemeSettings) amb **disseny del menú pas a pas** (17 passos en dos nivells: tema sense UI Toolkit i full d'estils propi amb UI Builder; esquema clicable del menú, dissenyador visual que genera l'USS i referència de selectors), jugador PC i VR, funcions (inventari, examen, guardat, pistes, perills, menú de l'editor), recepta de la primera sala i problemes freqüents.
 
 Ubicació després de la reorganització: `EscapeRoom/Framework/docs/guia/index.html`, des de l'arrel del repositori. Els índexs principals d'EscapeRoom i Survival hi enllacen. La ruta antiga `docs/guia/` s'ha traslladat; per publicar-la cal configurar el desplegament amb aquesta ubicació nova. No s'ha publicat ni modificat cap lloc web en aquesta revisió.
 
