@@ -214,7 +214,8 @@ namespace EscapeRoomRevolt.EditorTools
                 var posSo = new SerializedObject(positioner);
                 SerializedProperty positions = posSo.FindProperty("_positions");
                 positions.arraySize = 3;
-                Vector3[] angles = { new Vector3(-40f, 0f, 0f), Vector3.zero, new Vector3(40f, 0f, 0f) };
+                // Tilt sideways (Z) so the player, facing the levers, clearly sees each position.
+                Vector3[] angles = { new Vector3(0f, 0f, 40f), Vector3.zero, new Vector3(0f, 0f, -40f) };
                 for (int p = 0; p < 3; p++)
                 {
                     positions.GetArrayElementAtIndex(p).FindPropertyRelative("prompt").stringValue = "Mover palanca";
@@ -593,7 +594,7 @@ namespace EscapeRoomRevolt.EditorTools
                 {
                     SerializedProperty position = positions.GetArrayElementAtIndex(p);
                     position.FindPropertyRelative("prompt").stringValue = "Mover palanca";
-                    position.FindPropertyRelative("rotation").vector3Value = new Vector3(-40f + 40f * p, 0f, 0f);
+                    position.FindPropertyRelative("rotation").vector3Value = new Vector3(0f, 0f, 40f - 40f * p);
                 }
                 posSo.FindProperty("_visualTransform").objectReferenceValue = FindVisuals(lever.transform);
                 posSo.ApplyModifiedProperties();

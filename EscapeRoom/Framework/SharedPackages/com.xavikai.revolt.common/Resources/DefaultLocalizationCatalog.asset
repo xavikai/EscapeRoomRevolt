@@ -2702,14 +2702,14 @@ MonoBehaviour:
       text: "Four digits \xB7 combination 3142"
     - languageCode: ca
       text: "Quatre xifres \xB7 combinaci\xF3 3142"
-  - key: "Resu\xE9lvelos todos \xB7 orden opcional"
+  - key: "Primero los colores \xB7 despu\xE9s las palancas"
     translations:
     - languageCode: es
-      text: "Resu\xE9lvelos todos \xB7 orden opcional"
+      text: "Primero los colores \xB7 despu\xE9s las palancas"
     - languageCode: en
-      text: "Solve them all \xB7 any order"
+      text: "Colours first \xB7 then the levers"
     - languageCode: ca
-      text: "Resol-los tots \xB7 ordre opcional"
+      text: "Primer els colors \xB7 despr\xE9s les palanques"
   - key: "Techo m\xF3vil \xB7 temporizador HUD independiente"
     translations:
     - languageCode: es
@@ -3398,14 +3398,14 @@ MonoBehaviour:
       text: "Four digits \xB7 combination 3142"
     - languageCode: ca
       text: "Quatre xifres \xB7 combinaci\xF3 3142"
-  - key: "Resol-los tots \xB7 ordre opcional"
+  - key: "Primer els colors \xB7 despr\xE9s les palanques"
     translations:
     - languageCode: es
-      text: "Resu\xE9lvelos todos \xB7 orden opcional"
+      text: "Primero los colores \xB7 despu\xE9s las palancas"
     - languageCode: en
-      text: "Solve them all \xB7 any order"
+      text: "Colours first \xB7 then the levers"
     - languageCode: ca
-      text: "Resol-los tots \xB7 ordre opcional"
+      text: "Primer els colors \xB7 despr\xE9s les palanques"
   - key: "Sostre m\xF2bil \xB7 temporitzador HUD separat"
     translations:
     - languageCode: es

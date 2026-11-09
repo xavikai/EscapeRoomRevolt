@@ -19682,13 +19682,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.SteppedPositioner
   _positions:
   - prompt: Mover palanca
-    rotation: {x: -40, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 40}
     position: {x: 0, y: 0, z: 0}
   - prompt: Mover palanca
     rotation: {x: 0, y: 0, z: 0}
     position: {x: 0, y: 0, z: 0}
   - prompt: Mover palanca
-    rotation: {x: 40, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: -40}
     position: {x: 0, y: 0, z: 0}
   _startingIndex: 0
   _movementType: 0
@@ -35978,13 +35978,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.SteppedPositioner
   _positions:
   - prompt: Mover palanca
-    rotation: {x: -40, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 40}
     position: {x: 0, y: 0, z: 0}
   - prompt: Mover palanca
     rotation: {x: 0, y: 0, z: 0}
     position: {x: 0, y: 0, z: 0}
   - prompt: Mover palanca
-    rotation: {x: 40, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: -40}
     position: {x: 0, y: 0, z: 0}
   _startingIndex: 0
   _movementType: 0
@@ -41956,7 +41956,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Resu\xE9lvelos todos \xB7 orden opcional"
+  m_text: "Primero los colores \xB7 despu\xE9s las palancas"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -46055,13 +46055,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: EscapeRoomRevolt.Systems::EscapeRoomRevolt.Systems.Interaction.SteppedPositioner
   _positions:
   - prompt: Mover palanca
-    rotation: {x: -40, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 40}
     position: {x: 0, y: 0, z: 0}
   - prompt: Mover palanca
     rotation: {x: 0, y: 0, z: 0}
     position: {x: 0, y: 0, z: 0}
   - prompt: Mover palanca
-    rotation: {x: 40, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: -40}
     position: {x: 0, y: 0, z: 0}
   _startingIndex: 0
   _movementType: 0
@@ -59753,7 +59753,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1709528622}
-  m_Text: "Resu\xE9lvelos todos \xB7 orden opcional"
+  m_Text: "Primero los colores \xB7 despu\xE9s las palancas"
   m_OffsetZ: 0
   m_CharacterSize: 0.05
   m_LineSpacing: 1

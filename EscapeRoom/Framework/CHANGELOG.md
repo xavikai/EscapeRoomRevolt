@@ -2,7 +2,7 @@
 
 All notable changes to Escape Room Revolt are documented here.
 
-## [0.2.1] - Unreleased
+## [0.2.1] - 2026-11-09
 
 Documentation and menu-theming update for the first class sessions. Release notes: `RELEASE_NOTES_v0.2.1.md`.
 
@@ -14,7 +14,10 @@ Documentation and menu-theming update for the first class sessions. Release note
 
 ### Fixed
 
+- World and panel text (keypad screens, number wheels, room titles) rendered as broken/pink: the Escape Room consumer project only shipped `TMP_SDF-Mobile.shader` from the TextMesh Pro essential resources, without `TMPro_Properties.cginc` and the other includes, so the font material's shader failed to compile (`Couldn't open include file 'TMPro_Properties.cginc'`). Restored the full `Assets/TextMesh Pro/Shaders` folder with its original GUIDs. The Survival project has the same gap and still needs the same files.
+- Museum room 11 (chained puzzles): the levers tilted on X, towards the player, so a step was barely visible; they now tilt sideways (Z) in the museum scenes and in the `State Puzzle` / `Multi-Stage Puzzle` creators. The room sign said «any order» while the levers stay locked until the colour sequence is solved; it now reads «Colours first · then the levers» (CA/ES/EN).
 - The `Interactable Note` custom Inspector threw a NullReferenceException that hid `Note Content`; it now draws every field null-safely and relies on the component headers.
+- Release builds are now versioned 0.2.1 (`PlayerSettings.bundleVersion`) and written to `Builds/Release/v0.2.1/`, replacing the historical `v0.1.0-beta.5` folder name.
 - The Game Over Timer wizard's default HUD label is now the catalogue key `TIEMPO RESTANTE`, so it is translated in CA/ES/EN.
 
 ## [0.2.0] - 2026-11-07
