@@ -1,0 +1,23 @@
+{
+  "date": "2026-11-09",
+  "release": "escaperoom-v0.2.1",
+  "result": "Passed",
+  "scope": "Documentation only",
+  "archive": "EscapeRoom-0.2.1-source.zip",
+  "archiveSha256": "2b2cdc05c20bdacb8898f9981b6e7b5cdb7a5f1ba3d2053074374001350e63dd",
+  "validatedUnityArchiveSha256": "c944d8f5cf8696bdeb8051f41470416a91ec27f4725cb55760e1cd85b290728d",
+  "unityValidationReport": "https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.1/portable-release-0.2.1.json",
+  "fileCount": 1308,
+  "unchangedFileCount": 1305,
+  "changedDocumentationEntries": [
+    "docs/release/GUIA_README.md",
+    "docs/release/guia-escape-room-0.2.1.html",
+    "README.md"
+  ],
+  "unityProjectFilesUnchanged": true,
+  "allOtherArchiveEntriesUnchanged": true,
+  "comparison": "Every file read from both ZIPs and compared by SHA-256; exact file inventory preserved.",
+  "unityTestsRerun": false,
+  "validationBasis": "The previously validated Unity project is byte-for-byte unchanged. Only the root README, guide README and standalone HTML guide were refreshed.",
+  "guideSha256": "8f07f6ffd51e50e645ac3bcfd9fa0898a855a0e3cb32d2ea8ee527933a5afcac"
+}
