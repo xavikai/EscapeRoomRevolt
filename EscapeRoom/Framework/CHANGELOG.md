@@ -14,6 +14,9 @@ Documentation and menu-theming update for the first class sessions. Release note
 
 ### Fixed
 
+- Escape Room flashlight battery is unlimited in Auto mode; Survival and Custom Hybrid retain draining, and `Drains` explicitly enables battery puzzles. The battery HUD is hidden when consumption is disabled. Dropped equippable items now fall with gravity by default (`Fall When Dropped` can restore a stationary drop).
+- Product Windows validation resolves the build folder from `PlayerSettings.bundleVersion` instead of the historical beta folder.
+- The main-menu PlayMode test checks the translated labels in the active language instead of assuming Spanish when settings are already saved.
 - World and panel text (keypad screens, number wheels, room titles) rendered as broken/pink: the Escape Room consumer project only shipped `TMP_SDF-Mobile.shader` from the TextMesh Pro essential resources, without `TMPro_Properties.cginc` and the other includes, so the font material's shader failed to compile (`Couldn't open include file 'TMPro_Properties.cginc'`). Restored the full `Assets/TextMesh Pro/Shaders` folder with its original GUIDs. The Survival project has the same gap and still needs the same files.
 - Museum room 11 (chained puzzles): the levers tilted on X, towards the player, so a step was barely visible; they now tilt sideways (Z) in the museum scenes and in the `State Puzzle` / `Multi-Stage Puzzle` creators. The room sign said «any order» while the levers stay locked until the colour sequence is solved; it now reads «Colours first · then the levers» (CA/ES/EN).
 - The `Interactable Note` custom Inspector threw a NullReferenceException that hid `Note Content`; it now draws every field null-safely and relies on the component headers.

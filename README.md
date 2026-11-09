@@ -8,7 +8,7 @@ El repositori està organitzat en **dues carpetes principals**, una per projecte
 
 | Carpeta | Projecte Unity per editar | Demo Windows per provar sense Unity |
 |---|---|---|
-| [EscapeRoom](EscapeRoom/README.md) | [EscapeRoom/Unity](EscapeRoom/Unity) | [ZIP Escape Room](EscapeRoom/Windows/EscapeRoom-0.2.1-windows.zip) |
+| [EscapeRoom](EscapeRoom/README.md) | [EscapeRoom/Unity](EscapeRoom/Unity) | [ZIP Escape Room](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.1/EscapeRoom-0.2.1-windows.zip) |
 | [Survival](Survival/README.md) | [Survival/Unity](Survival/Unity) | [ZIP Survival](Survival/Windows/Survival-0.2.0-pcfix-2026-10-26-windows.zip) |
 
 Cada carpeta conté `Unity/`, `Documentacio/`, `Exportacions/`, `PaquetsFonts/` i `Windows/`. Els ZIP i les exportacions són artefactes locals exclosos de Git. Extreu tot el ZIP Windows abans d'executar la demo.

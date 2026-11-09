@@ -30,19 +30,25 @@ foreach ($existing in @($windowsZip, $sourceZip, $export)) {
 
 # 2. Windows demo ZIP (game inside a Windows/ folder, without Burst debug info).
 Write-Host 'Packaging Windows demo...'
-$staging = Join-Path ([IO.Path]::GetTempPath()) "EscapeRoom-$version-windows"
-if (Test-Path $staging) { Remove-Item $staging -Recurse -Force }
+$stagingRoot = [IO.Path]::GetFullPath((Join-Path $product 'Windows'))
+$staging = [IO.Path]::GetFullPath((Join-Path $stagingRoot (".staging-$version-" + [guid]::NewGuid().ToString('N'))))
+if (!$staging.StartsWith($stagingRoot + [IO.Path]::DirectorySeparatorChar)) { throw 'Staging path outside Windows directory.' }
 New-Item -ItemType Directory -Path (Join-Path $staging 'Windows') | Out-Null
 Get-ChildItem -LiteralPath $build -Force | Where-Object { $_.Name -notlike '*_BurstDebugInformation_DoNotShip' } |
     ForEach-Object { Copy-Item -LiteralPath $_.FullName -Destination (Join-Path $staging 'Windows') -Recurse }
 Compress-Archive -Path (Join-Path $staging 'Windows') -DestinationPath $windowsZip
-Remove-Item $staging -Recurse -Force
+Remove-Item -LiteralPath $staging -Recurse -Force
 Write-Sha $windowsZip
 
 # 3. Portable source project (embedded packages, no Library) and its ZIP.
 Write-Host 'Exporting portable project...'
 node (Join-Path $repo 'EscapeRoom/Framework/tools/export-product.cjs') EscapeRoom "EscapeRoom/Exportacions/EscapeRoom-$version"
 if ($LASTEXITCODE -ne 0) { throw 'export-product.cjs failed.' }
+$exportDocs = Join-Path $export 'docs/release'
+New-Item -ItemType Directory -Path $exportDocs -Force | Out-Null
+Copy-Item -LiteralPath (Join-Path $product "Framework/RELEASE_NOTES_v$version.md") -Destination $exportDocs
+Copy-Item -LiteralPath (Join-Path $product 'Framework/CHANGELOG.md') -Destination $exportDocs
+Copy-Item -LiteralPath $guide -Destination (Join-Path $exportDocs "guia-escape-room-$version.html")
 Compress-Archive -Path (Join-Path $export '*') -DestinationPath $sourceZip
 Write-Sha $sourceZip
 

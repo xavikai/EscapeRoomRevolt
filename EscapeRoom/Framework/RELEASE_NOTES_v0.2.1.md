@@ -16,6 +16,8 @@ Versió per a les primeres sessions de classe. Fa servir la mateixa versió de U
 - **Sala 11, puzles encadenats.** Les palanques s'inclinaven cap al jugador i quasi no es veia que es movien; ara s'inclinen de costat. El cartell deia «ordre opcional», però les palanques estan bloquejades fins que es resol la seqüència de colors. Ara diu «Primer els colors · després les palanques». Les palanques que es creen des del menú `Create` també s'inclinen de costat.
 - L'Inspector de les notes ja no dona l'error que amagava el camp `Note Content`.
 - El text per defecte del compte enrere es tradueix als tres idiomes.
+- La llanterna té bateria il·limitada per defecte al perfil Escape Room. Es pot activar el consum amb `Battery Mode` = `Drains`; el perfil Survival conserva el consum automàtic. L'indicador de bateria només es mostra quan hi ha consum.
+- Els objectes equipables, com la llanterna, cauen amb gravetat quan es deixen anar. Es pot desactivar amb `Fall When Dropped`.
 - Les builds es generen a `Builds/Release/v0.2.1/` amb la versió 0.2.1.
 
 ## Novetats
@@ -42,3 +44,9 @@ Les imatges s'han d'importar com a `Sprite (2D and UI)`. En mode d'alt contrast 
 ## Si ja tens la 0.2.0
 
 No has de canviar res a les teves escenes. Els temes que ja tinguis continuen funcionant, i els camps d'imatge nous comencen buits. Si el teu projecte és una còpia de la 0.2.0 i els textos 3D surten malament, fes `Window` > `TextMeshPro` > `Import TMP Essential Resources`.
+
+## Comprovacions
+
+Validació del 9 de novembre de 2026 amb Unity 6000.4.9f1: mòduls correctes, 26/26 tests EditMode i 34/34 PlayMode, cap test omès, i build Windows completada. S'ha comprovat que la configuració d'arrencada no activa la preinicialització XR nativa. La sintaxi JavaScript de la guia és correcta i inclou 24 captures incrustades.
+
+La revisió visual manual de PC i la comprovació amb maquinari VR continuen pendents. La guia HTML necessita Internet per carregar Three.js i les tipografies; les captures de Unity van incrustades.

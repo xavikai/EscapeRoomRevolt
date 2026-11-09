@@ -1,0 +1,31 @@
+{
+  "date": "2026-11-09",
+  "product": "EscapeRoom",
+  "version": "0.2.1",
+  "unity": "6000.4.9f1",
+  "modules": "Passed",
+  "editMode": {
+    "passed": 26,
+    "failed": 0,
+    "skipped": 0
+  },
+  "playMode": {
+    "passed": 34,
+    "failed": 0,
+    "skipped": 0
+  },
+  "windows": {
+    "product": "EscapeRoom",
+    "binary": "Builds/Release/v0.2.1/Windows/escaperoom-revolt.exe",
+    "bootConfigSha256": "757d261e8a2b2c1c7aeb7c756e4ccd682841f4a59819682dafae86a3bf0fec6c",
+    "binarySha256": "a197542ad0d026c5c3bc7aead606b6b0184adad7b4ee3635326c575b25a5b423",
+    "result": "Passed",
+    "nativeXRPreInitialization": false
+  },
+  "guide": {
+    "embeddedImages": 24,
+    "javascriptSyntax": "Passed"
+  },
+  "manualVisualPC": "Pending",
+  "hardwareVR": "Pending"
+}

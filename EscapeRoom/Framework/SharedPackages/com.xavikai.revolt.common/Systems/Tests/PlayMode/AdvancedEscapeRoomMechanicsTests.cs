@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using EscapeRoomRevolt.Core;
 using EscapeRoomRevolt.Core.Flow;
+using EscapeRoomRevolt.Core.Localization;
 using EscapeRoomRevolt.Core.Save;
 using EscapeRoomRevolt.Systems.Flow;
 using EscapeRoomRevolt.Systems.Interaction;
@@ -416,8 +417,9 @@ namespace EscapeRoomRevolt.Systems.Tests
 
         private static void AssertButton(List<Button> buttons, string expectedText)
         {
-            Assert.That(buttons.Exists(button => button.text == expectedText), Is.True,
-                "Missing main-menu option: " + expectedText);
+            string localizedText = LocalizationService.Tr(expectedText);
+            Assert.That(buttons.Exists(button => button.text == localizedText), Is.True,
+                "Missing main-menu option: " + expectedText + " (" + localizedText + ")");
         }
 
         private sealed class TestSaveableState : MonoBehaviour, ISaveable

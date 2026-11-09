@@ -26,7 +26,10 @@ foreach ($taskMode in @('EditMode','PlayMode')) {
 if ($BuildWindows) {
     Invoke-ProductUnity 'windows' @('-quit','-executeMethod','EscapeRoomRevolt.EditorTools.ReleaseBuilder.BuildWindows')
     $taskInventory = Get-Content -Raw -LiteralPath (Join-Path $taskProject 'product-inventory.json') | ConvertFrom-Json
-    $taskBinaryFolder = Join-Path $taskProject 'Builds/Release/v0.1.0-beta.5/Windows'
+    $taskSettings = Get-Content -Raw -LiteralPath (Join-Path $taskProject 'ProjectSettings/ProjectSettings.asset')
+    $taskVersion = [regex]::Match($taskSettings, '(?m)^\s*bundleVersion:\s*(\S+)').Groups[1].Value
+    if (!$taskVersion) { throw 'Cannot determine product version from PlayerSettings.' }
+    $taskBinaryFolder = Join-Path $taskProject "Builds/Release/v$taskVersion/Windows"
     $taskBinary = Join-Path $taskBinaryFolder ($taskInventory.productId + '.exe')
     $taskBoot = Join-Path $taskBinaryFolder ($taskInventory.productId + '_Data/boot.config')
     if (!(Test-Path -LiteralPath $taskBinary) -or !(Test-Path -LiteralPath $taskBoot)) { throw 'Expected Windows artifacts are missing.' }
