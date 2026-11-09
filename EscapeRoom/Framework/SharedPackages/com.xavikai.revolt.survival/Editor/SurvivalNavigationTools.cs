@@ -22,7 +22,7 @@ namespace EscapeRoomRevolt.EditorTools
             try
             {
                 var scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
-                var surfaces = UnityEngine.Object.FindObjectsByType<NavMeshSurface>(FindObjectsSortMode.None);
+                var surfaces = UnityEngine.Object.FindObjectsByType<NavMeshSurface>();
                 if (surfaces.Length == 0) throw new InvalidOperationException("Survival demo has no navigation surface.");
                 foreach (var surface in surfaces)
                 {
@@ -35,7 +35,7 @@ namespace EscapeRoomRevolt.EditorTools
                     EditorUtility.SetDirty(surface);
                 }
                 if (NavMesh.CalculateTriangulation().vertices.Length == 0) throw new InvalidOperationException("Survival navigation bake produced no walkable geometry.");
-                foreach (var agent in UnityEngine.Object.FindObjectsByType<NavMeshAgent>(FindObjectsSortMode.None))
+                foreach (var agent in UnityEngine.Object.FindObjectsByType<NavMeshAgent>())
                     if (!NavMesh.SamplePosition(agent.transform.position, out _, 2f, new NavMeshQueryFilter { agentTypeID = agent.agentTypeID, areaMask = NavMesh.AllAreas }))
                         throw new InvalidOperationException("Enemy is outside its baked navigation: " + agent.name);
                 EditorSceneManager.MarkSceneDirty(scene);

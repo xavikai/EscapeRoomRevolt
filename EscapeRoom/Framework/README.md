@@ -6,7 +6,7 @@
 
 **PC QA corrections (26 October 2026):** [confirmed fixes, tests and Windows rebuilds](docs/QA_PC_2026-10-26.md). TMP defaults are shipped, native desktop XR pre-init is disabled and Survival navigation is persisted. Validation remained headless; final visual reinspection is pending.
 
-**Independent Unity projects:** open [`EscapeRoom/Unity`](../Unity) or [`Survival/Unity`](../../Survival/Unity) in Unity 6000.4.9f1. Both consume the canonical source in `EscapeRoom/Framework/SharedPackages`; Survival is absent from the Escape Room installation. See [configuration, packages, validation and portable exports](docs/PROJECTES_INDEPENDENTS.md). `EscapeRoom/Framework` remains the historical authoring project. The 26 October portable snapshots passed clean imports outside this repository; those results do not certify a clean import of the newer 0.2.1 ZIP.
+**Independent Unity projects:** open [`EscapeRoom/Unity`](../Unity) or [`Survival/Unity`](../../Survival/Unity) in Unity 6000.4.9f1. Both consume the canonical source in `EscapeRoom/Framework/SharedPackages`; Survival is absent from the Escape Room installation. See [configuration, packages, validation and portable exports](docs/PROJECTES_INDEPENDENTS.md). `EscapeRoom/Framework` remains the historical authoring project. The [corrected Escape Room 0.2.1 ZIP validation](docs/validation/portable-release-0.2.1.json) covers a fresh import outside this repository, serialized resources, shaders, all 60 tests and a Windows build, and records the exact archive SHA-256. Survival's portable validation remains dated 26 October.
 
 **Interactive guide (CA/ES/EN):** open [`docs/guia/index.html`](docs/guia/index.html) in a browser for a hands-on tour of the mechanics, menus and PC/VR players.
 
@@ -21,6 +21,7 @@ Rooms, puzzles, enemies and objectives are configured through `ScriptableObjects
 ## Requirements
 
 - Unity `6000.4.9f1`
+- Unity `6000.6.8f1` compatibility is included in the corrected 0.2.1 source ZIP; obsolete InstanceID APIs have been migrated. Open the complete portable project, not only its Assets folder.
 - Universal Render Pipeline `17.4.0`
 - Input System `1.20.0`
 - XR Interaction Toolkit `3.3.0`, XR Management `4.5.3`, OpenXR `1.16.1` (keep these installed for PC too: the shared Player assembly references XR types)

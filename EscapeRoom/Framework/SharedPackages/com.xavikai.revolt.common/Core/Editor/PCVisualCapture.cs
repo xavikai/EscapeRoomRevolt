@@ -75,7 +75,7 @@ namespace EscapeRoomRevolt.EditorTools
                     if (camera == null) throw new InvalidOperationException("No main camera in " + _scenes[_sceneIndex]);
                     Capture(camera, "spawn", camera.transform.position + camera.transform.forward * 5f);
                     string[] names = { "HorrorEnemyController", "HidingSpot", "TraversalObstacle", "SurvivalPowerConsole", "RecordableEvidence", "SurvivalCheckpoint" };
-                    _subjects = new Queue<MonoBehaviour>(Object.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
+                    _subjects = new Queue<MonoBehaviour>(Object.FindObjectsByType<MonoBehaviour>()
                         .Where(component => component.gameObject.scene == SceneManager.GetActiveScene() && component.gameObject.activeInHierarchy
                             && (component is PuzzleController || names.Contains(component.GetType().Name)))
                         .OrderBy(component => component.transform.position.z).ThenBy(component => component.name));

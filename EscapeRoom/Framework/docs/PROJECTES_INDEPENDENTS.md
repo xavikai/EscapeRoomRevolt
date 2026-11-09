@@ -2,7 +2,7 @@
 
 **Carpetes reorganitzades el 26/10/2026:** consulta [l’índex actual del repositori](../../../README.md). Les rutes antigues en informes JSON i exemples històrics identifiquen l’estat de la validació; el mapa de trasllat en documenta la ubicació actual.
 
-Actualització: 9 de novembre de 2026. [Escape Room 0.2.1 publicada](https://github.com/xavikai/EscapeRoomRevolt/releases/tag/escaperoom-v0.2.1), amb [validació batch actual](validation/release-0.2.1.json). Les darreres proves completes de Survival i de portabilitat externa són les del [26 d'octubre](QA_PC_2026-10-26.md). La verificació visual final continua pendent.
+Actualització: 9 de novembre de 2026. [Escape Room 0.2.1 publicada](https://github.com/xavikai/EscapeRoomRevolt/releases/tag/escaperoom-v0.2.1), amb [validació del ZIP corregit en una importació neta](validation/portable-release-0.2.1.json). Les darreres proves completes de Survival són les del [26 d'octubre](QA_PC_2026-10-26.md). La verificació visual final continua pendent.
 
 | Projecte Unity | Perfil i entrada | Escenes | Codi |
 |---|---|---|---|
@@ -73,7 +73,7 @@ Executa aquestes ordres des de l'arrel i tria una destinació nova per a cada re
 
 ## Validació i límits
 
-La taula resumeix els resultats del 26/10/2026. Escape Room ha repetit la validació de mòduls, les suites 26/26 i 34/34 i la build Windows per a la [release 0.2.1](validation/release-0.2.1.json). Survival i la importació externa dels ZIP no s'han tornat a validar per a aquesta release.
+La taula resumeix els resultats del 26/10/2026. Escape Room ha repetit la validació de mòduls, les suites 26/26 i 34/34 i la build Windows en una importació neta del [ZIP 0.2.1 corregit](validation/portable-release-0.2.1.json), amb auditoria de GUID, objectes serialitzats i shaders sense incidències. Survival no s'ha tornat a validar per a aquesta release.
 
 Els dos consumidors s'han importat i compilat amb Unity 6000.4.9f1 sense MCP. Escape Room no carrega l'assembly Survival; Survival sí. Els perfils, rutes inicials i ubicacions de dades s'han comprovat per separat.
 
@@ -106,7 +106,7 @@ pwsh -File EscapeRoom/Framework/tools/validate-portable.ps1 -Product EscapeRoom 
 pwsh -File EscapeRoom/Framework/tools/validate-portable.ps1 -Product Survival -BuildWindows
 ```
 
-Executa des de l'arrel. Aquestes ordres seleccionen els snapshots històrics `0.2.0-pcfix-2026-10-26`. Per a la 0.2.1, selecciona `-ExportPath EscapeRoom/Exportacions/EscapeRoom-0.2.1` i omet `-BuildWindows`: la comprovació de binaris d'aquest validador portable encara busca `v0.1.0-beta.5`. El validador del projecte de treball sí que resol la versió actual.
+Executa des de l'arrel. Aquestes ordres seleccionen els snapshots històrics `0.2.0-pcfix-2026-10-26`. Per a la 0.2.1 corregida, afegeix `-ExportPath EscapeRoom/Exportacions/EscapeRoom-0.2.1`. El validador portable ja resol la versió dels binaris des de PlayerSettings i inclou l'auditoria ampliada de recursos. També pots passar `-ExportPath` amb la carpeta acabada d'extreure del ZIP per validar el contingut real del lliurament.
 
 El script copia l'exportació existent a una carpeta temporal única del sistema, fora del repositori, i comprova que comença sense Library, Temp, Logs ni objectes compilats copiats. No regenera l'exportació a partir de SharedPackages.
 

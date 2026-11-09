@@ -17,6 +17,8 @@ La **base comuna canònica**, les eines, la documentació tècnica i l'autoria U
 
 [Detall de l'organització i mapa de rutes](EscapeRoom/Framework/docs/ORGANITZACIO_CARPETES_2026-10-26.md). [Validació d'Escape Room 0.2.1 del 9/11/2026](EscapeRoom/Framework/docs/validation/release-0.2.1.json): 26/26 tests EditMode, 34/34 PlayMode i build Windows correcta. El QA visual manual de PC i la comprovació amb maquinari VR continuen pendents.
 
+El [ZIP font 0.2.1 corregit](EscapeRoom/Framework/docs/validation/portable-release-0.2.1.json) també ha passat una importació neta fora del repositori, l'auditoria de recursos i shaders, els 60 tests i una build Windows. L'informe registra el SHA-256 del paquet comprovat.
+
 Eines, executades des d'aquesta arrel:
 
 ```powershell

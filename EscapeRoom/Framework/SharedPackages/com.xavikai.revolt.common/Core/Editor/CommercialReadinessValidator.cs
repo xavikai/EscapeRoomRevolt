@@ -129,7 +129,7 @@ namespace EscapeRoomRevolt.EditorTools
                     SerializedProperty property = serialized.GetIterator();
                     while (property.NextVisible(true))
                         if (property.propertyType == SerializedPropertyType.ObjectReference &&
-                            property.objectReferenceValue == null && property.objectReferenceInstanceIDValue != 0)
+                            property.objectReferenceValue == null && property.objectReferenceEntityIdValue != EntityId.None)
                             issues.Add($"Referencia rota en '{node.name}': {property.propertyPath}.");
                 }
             }

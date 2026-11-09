@@ -14,6 +14,8 @@ Documentation and menu-theming update for the first class sessions. Release note
 
 ### Fixed
 
+- Portable 0.2.1 resource correction: restored the seven original XRI hand icons and a shared cycle icon from the installed official XRI sample, replaced missing simulator/dropdown sprites with available sample/built-in resources, removed obsolete sample baked-lighting and optional TMP EmojiOne references. Portable validation now audits serialized GUIDs, asset object references and shader errors, and resolves the Windows output version from PlayerSettings.
+- Unity 6.6 compatibility: replaced compile-error InstanceID APIs with EntityId, removed obsolete FindObjectsSortMode/FindFirstObjectByType calls, and use Unity's reload-aware loaded assembly list in 6.6. This restores compilation of the Editor assembly that supplies the Escape Room Framework menu; Unity 6.4 uses the compatible assembly-query fallback.
 - Escape Room flashlight battery is unlimited in Auto mode; Survival and Custom Hybrid retain draining, and `Drains` explicitly enables battery puzzles. The battery HUD is hidden when consumption is disabled. Dropped equippable items now fall with gravity by default (`Fall When Dropped` can restore a stationary drop).
 - Product Windows validation resolves the build folder from `PlayerSettings.bundleVersion` instead of the historical beta folder.
 - The main-menu PlayMode test checks the translated labels in the active language instead of assuming Spanish when settings are already saved.

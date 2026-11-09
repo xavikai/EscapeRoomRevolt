@@ -154,7 +154,7 @@ namespace EscapeRoomRevolt.EditorTools
 
         private static void UnifySlidingPrompts()
         {
-            foreach (SlidingTileButton tile in UnityEngine.Object.FindObjectsByType<SlidingTileButton>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            foreach (SlidingTileButton tile in UnityEngine.Object.FindObjectsByType<SlidingTileButton>(FindObjectsInactive.Include))
             {
                 InteractableTrigger trigger = tile.GetComponent<InteractableTrigger>();
                 if (trigger == null) continue;
@@ -189,20 +189,20 @@ namespace EscapeRoomRevolt.EditorTools
 
         private static T FindNamed<T>(string objectName) where T : Component
         {
-            return UnityEngine.Object.FindObjectsByType<T>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+            return UnityEngine.Object.FindObjectsByType<T>(FindObjectsInactive.Include)
                 .FirstOrDefault(component => component.name == objectName);
         }
 
         private static void RenameUnique(string oldName, string newName)
         {
-            Transform target = UnityEngine.Object.FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+            Transform target = UnityEngine.Object.FindObjectsByType<Transform>(FindObjectsInactive.Include)
                 .FirstOrDefault(transform => transform.name == oldName);
             if (target != null) target.name = newName;
         }
 
         private static void RenameNumbered(string oldName, string prefix, string suffix = "_Logic")
         {
-            List<Transform> targets = UnityEngine.Object.FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+            List<Transform> targets = UnityEngine.Object.FindObjectsByType<Transform>(FindObjectsInactive.Include)
                 .Where(transform => transform.name == oldName)
                 .OrderBy(transform => transform.position.z)
                 .ThenBy(transform => transform.position.x)
@@ -213,7 +213,7 @@ namespace EscapeRoomRevolt.EditorTools
 
         private static void RenameVisualChildren()
         {
-            foreach (Transform child in UnityEngine.Object.FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            foreach (Transform child in UnityEngine.Object.FindObjectsByType<Transform>(FindObjectsInactive.Include))
             {
                 if (child.parent == null || !child.name.StartsWith("New", StringComparison.Ordinal) || !child.name.EndsWith("_Visuals", StringComparison.Ordinal)) continue;
                 string parentName = child.parent.name.EndsWith("_Logic", StringComparison.Ordinal)
@@ -225,7 +225,7 @@ namespace EscapeRoomRevolt.EditorTools
 
         private static void RenameRemainingNewObjects(string scenePrefix)
         {
-            List<Transform> targets = UnityEngine.Object.FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+            List<Transform> targets = UnityEngine.Object.FindObjectsByType<Transform>(FindObjectsInactive.Include)
                 .Where(transform => transform.name.StartsWith("New", StringComparison.Ordinal))
                 .OrderBy(transform => BuildPath(transform))
                 .ToList();
@@ -238,7 +238,7 @@ namespace EscapeRoomRevolt.EditorTools
 
         private static void RenameCubes(string prefix)
         {
-            List<Transform> cubes = UnityEngine.Object.FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+            List<Transform> cubes = UnityEngine.Object.FindObjectsByType<Transform>(FindObjectsInactive.Include)
                 .Where(transform => transform.name == "Cube")
                 .OrderBy(transform => transform.position.z)
                 .ThenBy(transform => transform.position.x)

@@ -6,6 +6,7 @@
 
 - **Provar sense Unity:** [ZIP Windows](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.1/EscapeRoom-0.2.1-windows.zip). Extreu tot el ZIP i executa `Windows/escaperoom-revolt.exe` de la carpeta extreta.
 - **Editar:** obre [Unity/](Unity) amb Unity 6000.4.9f1.
+- **Unity 6000.6.8f1:** usa el ZIP font corregit de la release; s'han migrat les APIs que provocaven Safe Mode i impedien carregar el menú `Escape Room Framework`. Obre la carpeta completa amb `Assets`, `Packages` i `ProjectSettings` des de Unity Hub.
 - **QA manual:** [guia](Documentacio/QA_VISUAL_MANUAL_PC.md) i [registre propi](Documentacio/QA_VISUAL_MANUAL_PC_REGISTRE.md), pendent d'executar.
 - **Projecte portable:** el ZIP font porta els paquets embeguts. La carpeta local `Exportacions/EscapeRoom-0.2.1/` és un artefacte exclòs de Git.
 - **Projecte font:** [ZIP del projecte](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.1/EscapeRoom-0.2.1-source.zip), amb la guia revisada i les notes de versió a `docs/release/`. Les releases anteriors continuen disponibles a GitHub.
@@ -14,6 +15,6 @@
 
 El projecte de treball `Unity/` referencia els paquets locals de `Framework/SharedPackages`; conserva l'estructura del repositori. Per editar fora del repositori, extreu el ZIP font i obre la carpeta que conté `Assets`, `Packages` i `ProjectSettings`.
 
-**[Validació 0.2.1](Framework/docs/validation/release-0.2.1.json):** 26/26 tests EditMode, 34/34 PlayMode i build Windows correcta, sense preinicialització XR nativa. El QA visual manual i el maquinari VR continuen pendents. El ZIP portable s'ha verificat per integritat; no s'ha repetit la importació neta d'aquest ZIP fora del repositori per a la 0.2.1.
+**[Validació del ZIP portable corregit](Framework/docs/validation/portable-release-0.2.1.json):** importació neta fora del repositori, auditoria de recursos sense incidències, 26/26 tests EditMode, 34/34 PlayMode i build Windows correcta, sense preinicialització XR nativa. L'informe identifica el SHA-256 exacte del ZIP validat. El QA visual manual i el maquinari VR continuen pendents. La [validació inicial de la release](Framework/docs/validation/release-0.2.1.json) es conserva com a evidència anterior.
 
 La guia comuna incorpora una secció «Projectes i rutes» actualitzada. Per als sistemes específics consulta la [guia Survival](../Survival/Documentacio/GuiaInteractiva/index.html).

@@ -2,6 +2,8 @@ param(
     [ValidateSet('EscapeRoom','Survival')][string]$Product = 'EscapeRoom',
     [string]$UnityPath = 'C:/Program Files/Unity/Hub/Editor/6000.4.9f1/Editor/Unity.exe',
     [string]$ExportPath,
+    [string]$RecordPath,
+    [string]$ValidationProjectPath,
     [switch]$BuildWindows
 )
 $ErrorActionPreference = 'Stop'
@@ -10,6 +12,7 @@ $taskExport = Get-PortableRoot $Product
 if ($ExportPath) { $taskExport = [IO.Path]::GetFullPath($ExportPath, $taskWorkspace) }
 $taskRunId = [Guid]::NewGuid().ToString('N')
 $taskProject = Join-Path ([IO.Path]::GetTempPath()) "RevoltPortable-$Product-$taskRunId"
+if ($ValidationProjectPath) { $taskProject = [IO.Path]::GetFullPath($ValidationProjectPath, $taskWorkspace) }
 $taskRecordFolder = Join-Path $taskRepo '.utmp'
 New-Item -ItemType Directory -Path $taskRecordFolder -Force | Out-Null
 if (!(Test-Path -LiteralPath (Join-Path $taskExport 'EXPORT.json'))) { throw "Missing portable export: $taskExport" }
@@ -33,6 +36,7 @@ $taskOutput = Join-Path $taskProject '.utmp'
 New-Item -ItemType Directory -Path $taskOutput -Force | Out-Null
 $taskEditorFolder = Join-Path $taskProject 'Assets/PortableVerification/Editor'
 New-Item -ItemType Directory -Path $taskEditorFolder -Force | Out-Null
+Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'ReleaseResourceAudit.cs') -Destination $taskEditorFolder
 # This audit exists only in the temporary test copy; the exported package snapshot stays untouched.
 $taskAuditSource = @'
 #if UNITY_EDITOR
@@ -68,13 +72,14 @@ public static class PortableIsolationAudit
             report.packages.Add(new PackageRecord { name = package.name, version = package.version, source = package.source.ToString(), resolvedPath = package.resolvedPath });
         }
         if (!report.packages.Any(package => package.name == "com.xavikai.revolt.common")) throw new InvalidOperationException("Common package was not imported.");
-        foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies().Where(assembly => assembly.GetName().Name.StartsWith("EscapeRoomRevolt.", StringComparison.Ordinal)))
+        foreach (var assembly in EscapeRoomRevolt.EditorTools.FrameworkAssemblyUtility.GetLoadedAssemblies().Where(assembly => assembly.GetName().Name.StartsWith("EscapeRoomRevolt.", StringComparison.Ordinal)))
         {
             if (string.IsNullOrEmpty(assembly.Location) || !Within(assembly.Location, Path.Combine(project, "Library")))
                 throw new InvalidOperationException("Framework assembly was not compiled inside this project: " + assembly.GetName().Name);
             report.assemblyLocations.Add(assembly.Location);
         }
         EscapeRoomRevolt.EditorTools.ProductModuleValidator.ValidateBatch();
+        ReleaseResourceAudit.Run();
         report.result = "Passed";
         File.WriteAllText(".utmp/portable-isolation.json", JsonUtility.ToJson(report, true));
         Debug.Log("[Portable Isolation] PASS: embedded framework packages and assemblies resolve only inside the relocated project.");
@@ -92,13 +97,15 @@ public static class PortableIsolationAudit
 [IO.File]::WriteAllText((Join-Path $taskEditorFolder 'PortableIsolationAudit.cs'), $taskAuditSource, [Text.UTF8Encoding]::new($false))
 function Invoke-PortableUnity([string]$Label, [string[]]$ExtraArguments) {
     $taskLog = Join-Path $taskOutput "$Label.log"
-    $taskArguments = @('-batchmode','-nographics','-projectPath', ('"{0}"' -f $taskProject), '-logFile', ('"{0}"' -f $taskLog)) + $ExtraArguments
-    $taskRun = Start-Process -FilePath $UnityPath -ArgumentList $taskArguments -WorkingDirectory $taskProject -WindowStyle Hidden -Wait -PassThru
+    $taskArguments = @('-batchmode','-nographics','-accept-apiupdate','-projectPath', ('"{0}"' -f $taskProject), '-logFile', ('"{0}"' -f $taskLog)) + $ExtraArguments
+    $taskRun = Start-Process -FilePath $UnityPath -ArgumentList $taskArguments -WorkingDirectory $taskProject -WindowStyle Hidden -PassThru
+    $taskRun.WaitForExit()
     if ($taskRun.ExitCode -ne 0) { throw "$Product portable $Label failed (exit $($taskRun.ExitCode)); see $taskLog" }
     Write-Output "$Product portable $Label PASS"
 }
 $taskPending = @{ product = $Product; project = $taskProject; export = $taskExport; cleanLibraryAtStart = $taskFresh; originalExportSha256 = $taskBeforeDigest; result = 'Running' }
 $taskRecord = Join-Path $taskRecordFolder "portable-$Product.json"
+if ($RecordPath) { $taskRecord = [IO.Path]::GetFullPath($RecordPath, $taskWorkspace) }
 $taskPending | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $taskRecord -Encoding utf8
 try {
 Invoke-PortableUnity 'import-isolation' @('-quit','-executeMethod','PortableIsolationAudit.Run','-originalRepositoryRoot',('"{0}"' -f $taskWorkspace))
@@ -114,7 +121,10 @@ foreach ($taskMode in @('EditMode','PlayMode')) {
 if ($BuildWindows) {
     Invoke-PortableUnity 'windows' @('-quit','-executeMethod','EscapeRoomRevolt.EditorTools.ReleaseBuilder.BuildWindows')
     $taskInventory = Get-Content -Raw -LiteralPath (Join-Path $taskProject 'product-inventory.json') | ConvertFrom-Json
-    $taskBuildFolder = Join-Path $taskProject 'Builds/Release/v0.1.0-beta.5/Windows'
+    $taskSettings = Get-Content -Raw -LiteralPath (Join-Path $taskProject 'ProjectSettings/ProjectSettings.asset')
+    $taskVersion = [regex]::Match($taskSettings, '(?m)^\s*bundleVersion:\s*(\S+)').Groups[1].Value
+    if (!$taskVersion) { throw 'Cannot determine portable product version.' }
+    $taskBuildFolder = Join-Path $taskProject "Builds/Release/v$taskVersion/Windows"
     $taskBinary = Join-Path $taskBuildFolder ($taskInventory.productId + '.exe')
     $taskBoot = Join-Path $taskBuildFolder ($taskInventory.productId + '_Data/boot.config')
     if (!(Test-Path -LiteralPath $taskBinary) -or !(Test-Path -LiteralPath $taskBoot)) { throw 'Portable Windows artifacts are missing.' }
@@ -135,6 +145,7 @@ $taskPending.exportUnchanged = $true
 $taskPending.suites = $taskSuites
 $taskPending.isolation = Get-Content -Raw -LiteralPath (Join-Path $taskOutput 'portable-isolation.json') | ConvertFrom-Json
 $taskPending.modules = Get-Content -Raw -LiteralPath (Join-Path $taskOutput 'product-module-validation.json') | ConvertFrom-Json
+$taskPending.resources = Get-Content -Raw -LiteralPath (Join-Path $taskOutput 'release-resources.json') | ConvertFrom-Json
 $taskPending | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath $taskRecord -Encoding utf8
 Write-Output "$Product portable validation complete: $taskRecord"
 } catch {

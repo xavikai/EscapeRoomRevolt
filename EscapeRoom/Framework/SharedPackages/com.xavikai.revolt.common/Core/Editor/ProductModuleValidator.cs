@@ -46,7 +46,7 @@ namespace EscapeRoomRevolt.EditorTools
             if (textSettings == null || TMPro.TMP_Settings.defaultFontAsset == null || TMPro.TMP_Settings.defaultStyleSheet == null)
                 report.issues.Add("TextMesh Pro Resources defaults (settings, font, style sheet) are incomplete.");
             ProductConfiguration product = ProductConfiguration.Current;
-            report.survivalAssemblyPresent = AppDomain.CurrentDomain.GetAssemblies()
+            report.survivalAssemblyPresent = FrameworkAssemblyUtility.GetLoadedAssemblies()
                 .Any(assembly => assembly.GetName().Name == "EscapeRoomRevolt.Survival");
             if (product != null)
             {
@@ -72,7 +72,7 @@ namespace EscapeRoomRevolt.EditorTools
             foreach (string suffix in shared)
             {
                 string name = "EscapeRoomRevolt." + suffix;
-                var assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(candidate => candidate.GetName().Name == name);
+                var assembly = FrameworkAssemblyUtility.GetLoadedAssemblies().FirstOrDefault(candidate => candidate.GetName().Name == name);
                 if (assembly == null) { report.issues.Add("Shared assembly not loaded: " + name); continue; }
                 report.sharedAssemblies.Add(name);
                 foreach (var reference in assembly.GetReferencedAssemblies())
@@ -129,7 +129,7 @@ namespace EscapeRoomRevolt.EditorTools
                     SerializedProperty property = serialized.GetIterator();
                     while (property.Next(true))
                         if (property.propertyType == SerializedPropertyType.ObjectReference
-                            && property.objectReferenceValue == null && property.objectReferenceInstanceIDValue != 0)
+                            && property.objectReferenceValue == null && property.objectReferenceEntityIdValue != EntityId.None)
                             issues.Add($"{location}: {child.name}/{component.GetType().Name}.{property.propertyPath} has a broken reference.");
                 }
             }

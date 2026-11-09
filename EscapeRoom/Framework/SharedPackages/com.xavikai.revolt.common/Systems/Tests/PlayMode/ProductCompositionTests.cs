@@ -16,7 +16,7 @@ namespace EscapeRoomRevolt.Systems.Tests
     public sealed class ProductCompositionTests
     {
         private Scene _loadedScene;
-        private HashSet<int> _existing;
+        private HashSet<EntityId> _existing;
 
         [UnityTest]
         public IEnumerator ProductGameplay_StartsWithItsOwnServicesAndHUD()
@@ -26,8 +26,8 @@ namespace EscapeRoomRevolt.Systems.Tests
             Assert.That(Resources.Load<TMPro.TMP_Settings>("TMP Settings"), Is.Not.Null, "Implicit TMP Resources defaults must be shipped.");
             Assert.That(TMPro.TMP_Settings.defaultStyleSheet, Is.Not.Null);
             Assert.That(TMPro.TMP_Settings.defaultFontAsset, Is.Not.Null);
-            _existing = new HashSet<int>(Object.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include)
-                .Select(component => component.gameObject.GetInstanceID()));
+            _existing = new HashSet<EntityId>(Object.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include)
+                .Select(component => component.gameObject.GetEntityId()));
             var flow = Resources.Load<GameFlowSettings>("GameFlowSettings");
             string target = product.DesktopScenes.First(scene => System.IO.Path.GetFileNameWithoutExtension(scene) == flow.FirstGameplayScene);
             yield return SceneManager.LoadSceneAsync(target, LoadSceneMode.Additive);
@@ -66,7 +66,7 @@ namespace EscapeRoomRevolt.Systems.Tests
             {
                 var created = Object.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include)
                     .Where(component => component != null && component.GetType().Namespace?.StartsWith("EscapeRoomRevolt.") == true
-                        && !_existing.Contains(component.gameObject.GetInstanceID()))
+                        && !_existing.Contains(component.gameObject.GetEntityId()))
                     .Select(component => component.gameObject).Distinct().ToArray();
                 foreach (GameObject owner in created) if (owner != null) Object.Destroy(owner);
                 yield return null;

@@ -20,7 +20,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
             bool needsSanity = GameFeatures.IsEnabled(OptionalGameFeature.Sanity);
             if (!needsHUD && !needsSanity) return;
 
-            foreach (GameplayUIController ui in Object.FindObjectsByType<GameplayUIController>(FindObjectsSortMode.None))
+            foreach (GameplayUIController ui in Object.FindObjectsByType<GameplayUIController>())
             {
                 if (ui.GetComponent<SurvivalHUDMount>() == null)
                     ui.gameObject.AddComponent<SurvivalHUDMount>();

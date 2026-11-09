@@ -49,9 +49,9 @@ namespace EscapeRoomRevolt.UI
             var known = new HashSet<Object>();
             foreach (Entry e in _entries) known.Add(e.target);
 
-            foreach (TMP_Text text in Object.FindObjectsByType<TMP_Text>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            foreach (TMP_Text text in Object.FindObjectsByType<TMP_Text>(FindObjectsInactive.Include))
                 Register(service, text, text.text, known);
-            foreach (TextMesh mesh in Object.FindObjectsByType<TextMesh>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            foreach (TextMesh mesh in Object.FindObjectsByType<TextMesh>(FindObjectsInactive.Include))
                 Register(service, mesh, mesh.text, known);
         }
 
