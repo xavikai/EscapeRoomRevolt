@@ -4,7 +4,7 @@
 
 **Comença aquí:** [guia pràctica d'Escape Room PC/VR](Documentation/ESCAPE_ROOM_QUICKSTART.ca.md), les [receptes pas a pas de cada mecànica](Documentation/RECEPTES.md), desament, preparació VR i matriu d'acceptació. Consulta [l'auditoria del 9 de setembre de 2026](AUDITORIA_ESCAPE_ROOM_2026-09-09.md) per als resultats actuals; l'informe d'agost és històric.
 
-Aquesta guia cobreix el flux de treball per a dissenyadors. L'arquitectura i les API estan documentades a [PROGRAMMING_GUIDE.md](PROGRAMMING_GUIDE.md). La referència exhaustiva, amb tutorials, exemples i resolució de problemes, és a [DOCUMENTACIO_COMPLETA.md](DOCUMENTACIO_COMPLETA.md). El recorregut històric sala per sala és a [AUDITORIA_ESCAPE_ROOM_2026-08-09.md](AUDITORIA_ESCAPE_ROOM_2026-08-09.md). Per aprendre la plantilla de manera pràctica, obre la guia interactiva [`docs/guia/index.html`](../../docs/guia/index.html) (català, castellà i anglès).
+Aquesta guia cobreix el flux de treball per a dissenyadors. L'arquitectura i les API estan documentades a [PROGRAMMING_GUIDE.md](PROGRAMMING_GUIDE.md). La referència exhaustiva, amb tutorials, exemples i resolució de problemes, és a [DOCUMENTACIO_COMPLETA.md](DOCUMENTACIO_COMPLETA.md). El recorregut històric sala per sala és a [AUDITORIA_ESCAPE_ROOM_2026-08-09.md](AUDITORIA_ESCAPE_ROOM_2026-08-09.md). Per aprendre la plantilla de manera pràctica, obre la guia interactiva [`docs/guia/index.html`](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.1/guia-escape-room-0.2.1.html) (català, castellà i anglès).
 
 ## 1. Menú del framework
 

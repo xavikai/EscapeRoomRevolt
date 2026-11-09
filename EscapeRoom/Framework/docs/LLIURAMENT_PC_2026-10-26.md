@@ -1,13 +1,15 @@
 # Paquets de lliurament PC — 26/10/2026
 
+**Informe històric de la 0.2.0.** El projecte portable actual d'Escape Room és a la [release 0.2.1](https://github.com/xavikai/EscapeRoomRevolt/releases/tag/escaperoom-v0.2.1). Survival continua com a lliurament local, sense adjunt publicat a GitHub. Els inventaris i hashes següents identifiquen els paquets originals del 26 d'octubre.
+
 **Carpetes reorganitzades el 26/10/2026:** consulta [l’índex actual del repositori](../../../README.md). Les rutes antigues en informes JSON i exemples històrics identifiquen l’estat de la validació; el mapa de trasllat en documenta la ubicació actual.
 
 Revisió **0.2.0-pcfix-2026-10-26**. Unity **6000.4.9f1**. Cada ZIP conté un projecte font portable i la documentació per preparar el QA manual. No inclou Unity ni executables compilats.
 
 | Producte | Paquet | Fitxers verificats al ZIP | Casos manuals pendents |
 |---|---|---:|---:|
-| Escape Room | [EscapeRoom delivery.zip](../../PaquetsFonts/EscapeRoom-0.2.0-pcfix-2026-10-26-delivery.zip) | 1.246 | 28 |
-| Survival | [Survival delivery.zip](../../../Survival/PaquetsFonts/Survival-0.2.0-pcfix-2026-10-26-delivery.zip) | 1.281 | 25 |
+| Escape Room | [EscapeRoom delivery.zip (0.2.0)](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.0/EscapeRoom-0.2.0-pcfix-2026-10-26-delivery.zip) | 1.246 | 28 |
+| Survival | Local: `Survival/PaquetsFonts/Survival-0.2.0-pcfix-2026-10-26-delivery.zip` | 1.281 | 25 |
 
 Els ZIP, les carpetes sense comprimir i els fitxers `.zip.sha256` són a `Distributions/Deliveries/` (artefactes locals exclosos de Git). Per lliurar, enviar el ZIP i el seu `.zip.sha256`. L'informe versionat [deliveries-2026-10-26.json](validation/deliveries-2026-10-26.json) registra rutes, mida, SHA-256 de cada ZIP i hash del snapshot font.
 

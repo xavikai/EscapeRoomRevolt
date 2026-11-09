@@ -4,6 +4,6 @@ Open this directory in Unity 6000.4.9f1. Keep it inside the repository: the mani
 
 Source code is owned by the shared packages; edit gameplay data and scenes in this project independently. Default scene: SurvivalHorrorDemo. PC release uses ProductConfiguration. A Survival Quest demo has not been validated; the Quest builder intentionally rejects this configuration.
 
-Player settings and save slots are isolated by product name, application identifier and product data namespace. See docs/SEPARACIO_PROJECTES.md for this product and ../../docs/PROJECTES_INDEPENDENTS.md for the repository guide.
+Player settings and save slots are isolated by product name, application identifier and product data namespace. See [product configuration](docs/SEPARACIO_PROJECTES.md) and the [repository guide](../../EscapeRoom/Framework/docs/PROJECTES_INDEPENDENTS.md).
 
 Organització actual: consulta [l’índex del producte](../README.md). El projecte Unity és aquesta carpeta; els paquets canònics són a EscapeRoom/Framework/SharedPackages.

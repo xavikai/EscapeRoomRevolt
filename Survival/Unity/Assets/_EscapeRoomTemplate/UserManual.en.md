@@ -4,7 +4,7 @@
 
 **Start here:** [practical guide to PC/VR Escape Rooms](Documentation/ESCAPE_ROOM_QUICKSTART.en.md), the [step-by-step recipes for each mechanic](Documentation/RECIPES.md), saving, VR preparation and the acceptance matrix. See [the September 9, 2026 audit](AUDITORIA_ESCAPE_ROOM_2026-09-09.md) for the current results; the August report is historical.
 
-This guide covers the designer workflow. The architecture and APIs are documented in [PROGRAMMING_GUIDE.md](PROGRAMMING_GUIDE.md). The exhaustive reference, with tutorials, examples and troubleshooting, is in [DOCUMENTACIO_COMPLETA.md](DOCUMENTACIO_COMPLETA.md). The historical room-by-room walkthrough is in [AUDITORIA_ESCAPE_ROOM_2026-08-09.md](AUDITORIA_ESCAPE_ROOM_2026-08-09.md). To learn the template hands-on, open the interactive guide [`docs/guia/index.html`](../../docs/guia/index.html) (Catalan, Spanish and English).
+This guide covers the designer workflow. The architecture and APIs are documented in [PROGRAMMING_GUIDE.md](PROGRAMMING_GUIDE.md). The exhaustive reference, with tutorials, examples and troubleshooting, is in [DOCUMENTACIO_COMPLETA.md](DOCUMENTACIO_COMPLETA.md). The historical room-by-room walkthrough is in [AUDITORIA_ESCAPE_ROOM_2026-08-09.md](AUDITORIA_ESCAPE_ROOM_2026-08-09.md). To learn the template hands-on, open the interactive guide [`docs/guia/index.html`](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.1/guia-escape-room-0.2.1.html) (Catalan, Spanish and English).
 
 ## 1. Framework menu
 

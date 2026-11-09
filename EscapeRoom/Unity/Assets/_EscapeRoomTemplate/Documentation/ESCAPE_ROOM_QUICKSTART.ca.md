@@ -13,7 +13,7 @@ Aquesta guia s'adreça a qui utilitza la plantilla per crear el seu propi joc. L
 5. Executa `Escape Room Framework > Validation > Run Framework Smoke Tests` i `Validate Current Scene`. Llegeix el resultat a la Console, no només la confirmació que el menú s'ha executat.
 6. Prem Play. A PC, utilitza WASD i el ratolí, E per interactuar, I per a l'inventari, H per a les pistes i Esc per tancar el panell o fer pausa. F5/F9 desen/carreguen l'slot ràpid. Els tres slots manuals són independents.
 
-El museu PC conté 13 controladors de puzle (el tretzè és la sala 14, `LinkedLightsPuzzle`); `ShowcaseMuseumVR` conté els 12 anteriors i encara no inclou la sala 14. Per a una visita guiada i interactiva de cada mecànica, obre [`docs/guia/index.html`](../../../docs/guia/index.html) al navegador. Les rodes numèriques utilitzen `StatePuzzle`; la melodia utilitza `SequencePuzzle`. No són solvers separats. `LockedOffice` i `LockedOfficeVR` contenen una mostra alternativa amb dos panells de codi.
+El museu PC conté 13 controladors de puzle (el tretzè és la sala 14, `LinkedLightsPuzzle`); `ShowcaseMuseumVR` conté els 12 anteriors i encara no inclou la sala 14. Per a una visita guiada i interactiva de cada mecànica, obre [`docs/guia/index.html`](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.1/guia-escape-room-0.2.1.html) al navegador. Les rodes numèriques utilitzen `StatePuzzle`; la melodia utilitza `SequencePuzzle`. No són solvers separats. `LockedOffice` i `LockedOfficeVR` contenen una mostra alternativa amb dos panells de codi.
 
 ## 2. Crear una habitació pròpia
 

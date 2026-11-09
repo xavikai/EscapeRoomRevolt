@@ -1,5 +1,7 @@
 # Guia interactiva · Escape Room Revolt
 
+**Versió publicada 0.2.1:** [descarrega l'HTML amb captures](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.1/guia-escape-room-0.2.1.html). A GitHub, `index.html` es mostra com a codi; desa'l o descarrega l'adjunt de la release abans d'obrir-lo al navegador. [Notes i comprovacions de la 0.2.1](../../RELEASE_NOTES_v0.2.1.md).
+
 Obre `index.html` en un navegador (doble clic). Necessita connexió a Internet per carregar three.js (cdnjs) i les tipografies. Les captures de Unity van incrustades dins del fitxer: es pot copiar sol. Clica una captura per ampliar-la.
 
 Idiomes: català, castellà i anglès (selector a la barra lateral).

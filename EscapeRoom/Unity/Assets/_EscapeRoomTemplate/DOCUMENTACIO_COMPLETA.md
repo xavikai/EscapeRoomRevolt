@@ -1556,7 +1556,7 @@ Noms que **no** es poden tocar sense actualitzar el C#: `screen-content`, `inven
 
 La plantilla inclou una base OpenXR funcional i independent del fabricant. Està configurada per a `Standalone` i `Android`, utilitza XRI 3.3 i manté la lògica d'Escape Room/Survival Horror compartida amb PC. La validació amb el visor final continua sent obligatòria abans de publicar un joc.
 
-![VRTemplate executada amb XR Interaction Simulator](Documentation/Images/VRTemplate_Runtime.png)
+![VRTemplate executada amb XR Interaction Simulator](https://github.com/xavikai/EscapeRoomRevolt/blob/main/EscapeRoom/Framework/Assets/_EscapeRoomTemplate/Documentation/Images/VRTemplate_Runtime.png)
 
 ### Inici ràpid
 

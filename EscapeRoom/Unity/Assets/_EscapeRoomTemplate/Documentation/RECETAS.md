@@ -2,7 +2,7 @@
 
 **Idioma:** [català](RECEPTES.md) · [castellano](RECETAS.md) · [English](RECIPES.md)
 
-Cada receta parte de una escena vacía con el jugador ya colocado (`Setup > Instantiate Game Manager` y el jugador PC o VR). Para probarlas de forma interactiva, abre la guía [`docs/guia/index.html`](../../../docs/guia/index.html) > *Recetas paso a paso*.
+Cada receta parte de una escena vacía con el jugador ya colocado (`Setup > Instantiate Game Manager` y el jugador PC o VR). Para probarlas de forma interactiva, abre la guía [`docs/guia/index.html`](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.1/guia-escape-room-0.2.1.html) > *Recetas paso a paso*.
 
 - Puzles: [Teclado de código](#code) · [Secuencia y melodía](#seq) · [Palancas e interruptores (StatePuzzle)](#state) · [Rodillos numéricos (candado)](#wheels) · [Tuberías](#pipe) · [Rompecabezas deslizante](#slide) · [Circuito de luces](#lights) · [Lanzamiento a dianas](#throw) · [Colocación de piezas](#place) · [Puzles encadenados](#multi)
 - Sistemas de la sala: [Objetos, inventario, combinación y examen](#items) · [Puertas, cajones y armarios](#doors) · [Pistas y narración](#hints) · [Objetivos y final de partida](#objectives) · [Temporizador y peligro móvil](#hazard) · [Cambio de sala o de escena](#rooms)

@@ -33,7 +33,7 @@ Menú d'autoria: `Escape Room Framework > Demo > Add or Update Linked Lights Roo
 
 Verificació del 9 de setembre de 2026: **28/28 proves PlayMode aprovades**, sense errors a la consola al final de la comprovació. A `ShowcaseMuseum` s'han comprovat els missatges de les tres zones, el text narratiu, la resolució del circuit mitjançant els botons i el reinici de la porta i del marcador.
 
-Captures: [sala 14](Screenshots/Room14_LinkedLights.png), [pista visible al HUD](Screenshots/HintZones_Subtitle_Verified.png) i [subtítol narratiu](Screenshots/AudioTrigger_Subtitle_Verified.png).
+Captures: [sala 14](https://github.com/xavikai/EscapeRoomRevolt/blob/main/EscapeRoom/Framework/Assets/_EscapeRoomTemplate/Documentation/Screenshots/Room14_LinkedLights.png), [pista visible al HUD](https://github.com/xavikai/EscapeRoomRevolt/blob/main/EscapeRoom/Framework/Assets/_EscapeRoomTemplate/Documentation/Screenshots/HintZones_Subtitle_Verified.png) i [subtítol narratiu](https://github.com/xavikai/EscapeRoomRevolt/blob/main/EscapeRoom/Framework/Assets/_EscapeRoomTemplate/Documentation/Screenshots/AudioTrigger_Subtitle_Verified.png).
 
 Suite `HintAndCircuitTests`: detecció física amb un collider fill sense tag, retard i sortida de pistes, preservació del context nou, narració repetible, solució única del circuit, reinici i guardat/restauració parcial i resolta.
 

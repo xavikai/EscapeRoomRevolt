@@ -2,7 +2,7 @@
 
 **Language:** [català](RECEPTES.md) · [castellano](RECETAS.md) · [English](RECIPES.md)
 
-Each recipe starts from an empty scene with the player already placed (`Setup > Instantiate Game Manager` and the PC or VR player). To try them interactively, open the guide [`docs/guia/index.html`](../../../docs/guia/index.html) > *Step-by-step recipes*.
+Each recipe starts from an empty scene with the player already placed (`Setup > Instantiate Game Manager` and the PC or VR player). To try them interactively, open the guide [`docs/guia/index.html`](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.1/guia-escape-room-0.2.1.html) > *Step-by-step recipes*.
 
 - Puzzles: [Code keypad](#code) · [Sequence and melody](#seq) · [Levers and switches (StatePuzzle)](#state) · [Number wheels (lock)](#wheels) · [Pipes](#pipe) · [Sliding puzzle](#slide) · [Linked lights](#lights) · [Throw at targets](#throw) · [Piece placement](#place) · [Chained puzzles](#multi)
 - Room systems: [Items, inventory, combining and examine](#items) · [Doors, drawers and cabinets](#doors) · [Hints and narration](#hints) · [Objectives and game ending](#objectives) · [Timer and moving hazard](#hazard) · [Changing room or scene](#rooms)

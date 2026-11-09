@@ -2,7 +2,7 @@
 
 **Idioma:** [català](RECEPTES.md) · [castellano](RECETAS.md) · [English](RECIPES.md)
 
-Cada recepta parteix d'una escena buida amb el jugador ja posat (`Setup > Instantiate Game Manager` i el jugador PC o VR). Per provar-les de manera interactiva, obre la guia [`docs/guia/index.html`](../../../docs/guia/index.html) > *Receptes pas a pas*.
+Cada recepta parteix d'una escena buida amb el jugador ja posat (`Setup > Instantiate Game Manager` i el jugador PC o VR). Per provar-les de manera interactiva, obre la guia [`docs/guia/index.html`](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.1/guia-escape-room-0.2.1.html) > *Receptes pas a pas*.
 
 - Puzles: [Teclat de codi](#code) · [Seqüència i melodia](#seq) · [Palanques i interruptors (StatePuzzle)](#state) · [Rodets numèrics (cadenat)](#wheels) · [Canonades](#pipe) · [Trencaclosques lliscant](#slide) · [Circuit de llums](#lights) · [Llançament a dianes](#throw) · [Col·locació de peces](#place) · [Puzles encadenats](#multi)
 - Sistemes de la sala: [Objectes, inventari, combinació i examen](#items) · [Portes, calaixos i armaris](#doors) · [Pistes i narració](#hints) · [Objectius i final de partida](#objectives) · [Temporitzador i perill mòbil](#hazard) · [Canvi de sala o d'escena](#rooms)

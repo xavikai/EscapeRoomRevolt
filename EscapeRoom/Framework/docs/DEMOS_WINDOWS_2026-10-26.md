@@ -1,13 +1,15 @@
 # Demos executables Windows — 26/10/2026
 
+**Informe històric de la 0.2.0.** Per a Escape Room actual, usa la [release 0.2.1](https://github.com/xavikai/EscapeRoomRevolt/releases/tag/escaperoom-v0.2.1). Survival continua com a paquet local, sense adjunt publicat a GitHub. Els continguts i resultats següents corresponen als paquets del 26 d'octubre.
+
 **Carpetes reorganitzades el 26/10/2026:** consulta [l’índex actual del repositori](../../../README.md). Les rutes antigues en informes JSON i exemples històrics identifiquen l’estat de la validació; el mapa de trasllat en documenta la ubicació actual.
 
 Paquets **0.2.0-pcfix-2026-10-26** per provar les demos sense instal·lar Unity Editor ni Unity Hub. Contenen la build Windows de 64 bits completa, la guia de QA, el registre propi i els informes previs. No s'han executat les demos durant l'empaquetatge; el QA visual continua pendent.
 
 | Demo | ZIP executable | Executable dins del paquet | Casos manuals pendents |
 |---|---|---|---:|
-| Escape Room | [EscapeRoom Windows.zip](../../Windows/EscapeRoom-0.2.0-pcfix-2026-10-26-windows.zip) | `Windows/escaperoom-revolt.exe` | 28 |
-| Survival | [Survival Windows.zip](../../../Survival/Windows/Survival-0.2.0-pcfix-2026-10-26-windows.zip) | `Windows/survival-revolt.exe` | 25 |
+| Escape Room | [EscapeRoom Windows.zip (0.2.0)](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.0/EscapeRoom-0.2.0-pcfix-2026-10-26-windows.zip) | `Windows/escaperoom-revolt.exe` | 28 |
+| Survival | Local: `Survival/Windows/Survival-0.2.0-pcfix-2026-10-26-windows.zip` | `Windows/survival-revolt.exe` | 25 |
 
 Els ZIP, les carpetes sense comprimir i els fitxers `.zip.sha256` són a `Distributions/WindowsDemos/`, com a artefactes locals exclosos de Git. Per lliurar, enviar el ZIP i el seu `.zip.sha256`. [L'informe d'integritat](validation/windows-demos-2026-10-26.json) registra hashes, mides, inventari verificat i origen de cada build.
 

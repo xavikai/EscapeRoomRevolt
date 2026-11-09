@@ -13,7 +13,7 @@ Esta guía está dirigida a quien usa el template para crear su propio juego. El
 5. Ejecuta `Escape Room Framework > Validation > Run Framework Smoke Tests` y `Validate Current Scene`. Lee el resultado en Console, no solo la confirmación de que el menú se ha ejecutado.
 6. Pulsa Play. En PC, usa WASD y ratón, E para interactuar, I para inventario, H para pistas y Esc para cerrar el panel o pausar. F5/F9 guardan/cargan el slot rápido. Los tres slots manuales son independientes.
 
-El museo PC contiene 13 controladores de puzle (el decimotercero es la sala 14, `LinkedLightsPuzzle`); `ShowcaseMuseumVR` contiene los 12 anteriores y todavía no incluye la sala 14. Para una visita guiada e interactiva de cada mecánica, abre [`docs/guia/index.html`](../../../docs/guia/index.html) en el navegador. Las ruedas numéricas utilizan `StatePuzzle`; la melodía utiliza `SequencePuzzle`. No son solvers separados. `LockedOffice` y `LockedOfficeVR` contienen una muestra alternativa con dos paneles de código.
+El museo PC contiene 13 controladores de puzle (el decimotercero es la sala 14, `LinkedLightsPuzzle`); `ShowcaseMuseumVR` contiene los 12 anteriores y todavía no incluye la sala 14. Para una visita guiada e interactiva de cada mecánica, abre [`docs/guia/index.html`](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.1/guia-escape-room-0.2.1.html) en el navegador. Las ruedas numéricas utilizan `StatePuzzle`; la melodía utiliza `SequencePuzzle`. No son solvers separados. `LockedOffice` y `LockedOfficeVR` contienen una muestra alternativa con dos paneles de código.
 
 ## 2. Crear una habitación propia
 

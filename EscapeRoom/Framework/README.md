@@ -1,10 +1,12 @@
 # Escape Room Revolt
 
+**Current release: [Escape Room 0.2.1](https://github.com/xavikai/EscapeRoomRevolt/releases/tag/escaperoom-v0.2.1)** — [release notes](RELEASE_NOTES_v0.2.1.md), [downloadable interactive guide](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.1/guia-escape-room-0.2.1.html) and [9 November validation](docs/validation/release-0.2.1.json). Escape Room passes 26 EditMode and 34 PlayMode tests and its Windows build. Survival's last complete validation is dated 26 October; it has no published release assets. Manual PC and VR hardware acceptance remain pending.
+
 **Carpetes reorganitzades el 26/10/2026:** consulta [l’índex actual del repositori](../../README.md). Les rutes antigues en informes JSON i exemples històrics identifiquen l’estat de la validació; el mapa de trasllat en documenta la ubicació actual.
 
 **PC QA corrections (26 October 2026):** [confirmed fixes, tests and Windows rebuilds](docs/QA_PC_2026-10-26.md). TMP defaults are shipped, native desktop XR pre-init is disabled and Survival navigation is persisted. Validation remained headless; final visual reinspection is pending.
 
-**Independent Unity projects (25 October 2026):** open [`Projects/EscapeRoom`](../Unity) or [`Projects/Survival`](../../Survival/Unity) in Unity 6000.4.9f1. Both consume the canonical source in `SharedPackages`; Survival is absent from the Escape Room installation. See [configuration, packages, validation and portable exports](docs/PROJECTES_INDEPENDENTS.md). This root directory remains the historical authoring project. Portable snapshots have also passed clean imports and complete automated suites outside this repository; see [updated portable verification results](docs/validation/portable-exports-2026-10-26.json).
+**Independent Unity projects:** open [`EscapeRoom/Unity`](../Unity) or [`Survival/Unity`](../../Survival/Unity) in Unity 6000.4.9f1. Both consume the canonical source in `EscapeRoom/Framework/SharedPackages`; Survival is absent from the Escape Room installation. See [configuration, packages, validation and portable exports](docs/PROJECTES_INDEPENDENTS.md). `EscapeRoom/Framework` remains the historical authoring project. The 26 October portable snapshots passed clean imports outside this repository; those results do not certify a clean import of the newer 0.2.1 ZIP.
 
 **Interactive guide (CA/ES/EN):** open [`docs/guia/index.html`](docs/guia/index.html) in a browser for a hands-on tour of the mechanics, menus and PC/VR players.
 
@@ -38,7 +40,7 @@ Rooms, puzzles, enemies and objectives are configured through `ScriptableObjects
 - **Independent fail-state mechanics** — a `MovingHazard` that travels between arbitrary 3D markers (wall, ceiling, floor, platform or water) and a separate optional `GameOverTimer` presented in the shared gameplay HUD.
 - **Save/Load** — three manual slots, quick save/load, thumbnails, atomic writes with backup recovery, versioned per-object state.
 - **Survival Horror** — modular flashlight and night-vision camcorder, sanity with visual/audio/haptic feedback, patrol/perception/chase AI with two enemy archetypes, hideable lockers/beds/containers with AI inspection, checkpoints, typed damage, PC/VR-shared traversal (vault/climb/ladder/squeeze), evasion (lean/look-back/slide), a tension director that rate-limits horror events, and data-driven difficulty presets.
-- **UI Toolkit menus** — main menu, pause, settings, save/load, credits, results, all Canvas-free. Re-skinnable from a single `MenuThemeSettings` asset (colors, fonts, logo), with image-based button states available through `EscapeRoomMenu.uss`, plus a built-in high-contrast accessibility mode.
+- **UI Toolkit menus** — main menu, pause, settings, save/load, credits, results, all Canvas-free. Re-skinnable from `MenuThemeSettings` (colors, fonts, logo, screen background, panel frame and normal/hover button images with slicing). USS remains available for custom styles. High-contrast mode omits theme images for readability.
 - **VR** — a generated `Player_VR` prefab (XRI Starter Assets), per-hand equipment and haptics, world-space UI Toolkit via `VRUIToolkitPresenter`, and an XRI tunneling vignette wired to continuous move/turn.
 
 ## Demo scenes
@@ -72,7 +74,7 @@ The supported entry point is the **Escape Room Framework** Editor menu — legac
 ## Documentation
 
 - [`Assets/_EscapeRoomTemplate/ROADMAP.md`](Assets/_EscapeRoomTemplate/ROADMAP.md) — the living status document: what's verified, what's pending, in what order. Read this first for "where are we now."
-- [`Assets/_EscapeRoomTemplate/AUDITORIA_ESCAPE_ROOM_2026-09-09.md`](Assets/_EscapeRoomTemplate/AUDITORIA_ESCAPE_ROOM_2026-09-09.md) — current audit (tests, builds, scene inspection). The [August audit](Assets/_EscapeRoomTemplate/AUDITORIA_ESCAPE_ROOM_2026-08-09.md) keeps the historical room-by-room walkthrough.
+- [`Assets/_EscapeRoomTemplate/AUDITORIA_ESCAPE_ROOM_2026-09-09.md`](Assets/_EscapeRoomTemplate/AUDITORIA_ESCAPE_ROOM_2026-09-09.md) — historical September audit (tests, builds, scene inspection). The [August audit](Assets/_EscapeRoomTemplate/AUDITORIA_ESCAPE_ROOM_2026-08-09.md) keeps the historical room-by-room walkthrough. For 0.2.1, use the release notes and validation linked above.
 - [`docs/guia/index.html`](docs/guia/index.html) — interactive guide for people using the template (mechanics playground, menus, PC/VR player, feature tour).
 - [`Assets/_EscapeRoomTemplate/PROGRAMMING_GUIDE.md`](Assets/_EscapeRoomTemplate/PROGRAMMING_GUIDE.md) — API-level guide to the systems above, with code snippets.
 - [`Assets/_EscapeRoomTemplate/DOCUMENTACIO_COMPLETA.md`](Assets/_EscapeRoomTemplate/DOCUMENTACIO_COMPLETA.md) — exhaustive architecture and authoring reference.

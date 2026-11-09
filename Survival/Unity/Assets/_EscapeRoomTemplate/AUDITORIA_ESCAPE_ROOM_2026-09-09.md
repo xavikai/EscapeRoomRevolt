@@ -86,6 +86,6 @@ S'han generat els binaris de comprovació, sense publicar-los:
 
 La primera build Android tenia quatre avisos (tres d'API C# obsoletes i un de configuració OpenXR), corregits abans de les builds finals. La recompilació posterior va registrar els avisos de shaders del paquet; no s'afirma que sigui una build sense avisos.
 
-[Resum de resultats exportat](Documentation/AUDIT_RESULTS_2026-09-09.json). Captures d'arrencada a l'editor: [PC](Documentation/Audit-PC-2026-09-09.png) i [VR sense visor físic](Documentation/Audit-VR-Editor-2026-09-09.png).
+[Resum de resultats exportat](https://github.com/xavikai/EscapeRoomRevolt/blob/main/EscapeRoom/Framework/Assets/_EscapeRoomTemplate/Documentation/AUDIT_RESULTS_2026-09-09.json). Captures d'arrencada a l'editor: [PC](https://github.com/xavikai/EscapeRoomRevolt/blob/main/EscapeRoom/Framework/Assets/_EscapeRoomTemplate/Documentation/Audit-PC-2026-09-09.png) i [VR sense visor físic](https://github.com/xavikai/EscapeRoomRevolt/blob/main/EscapeRoom/Framework/Assets/_EscapeRoomTemplate/Documentation/Audit-VR-Editor-2026-09-09.png).
 
 En acabar s'ha deixat l'editor fora de Play, a `ShowcaseMuseum`, amb la configuració XR d'escriptori restaurada i retirats els canvis transitoris de preloads i filtres de shaders generats per la compilació.
