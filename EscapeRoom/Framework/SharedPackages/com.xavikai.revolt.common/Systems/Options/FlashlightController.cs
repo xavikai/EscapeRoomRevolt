@@ -10,6 +10,9 @@ namespace EscapeRoomRevolt.Systems.Survival
 {
     [Serializable] public class FlashlightState { public float charge; public bool enabled; }
 
+    /// <summary>Auto: unlimited battery in the Escape Room profile (there are no batteries to find), draining elsewhere.</summary>
+    public enum FlashlightBatteryMode { Auto, Unlimited, Drains }
+
     /// <summary>Configurable torch with persistent charge and inventory-driven battery reloads.</summary>
     public sealed class FlashlightController : MonoBehaviour, ISaveable, IEquipmentLifecycle
     {
@@ -18,12 +21,16 @@ namespace EscapeRoomRevolt.Systems.Survival
         [SerializeField, Min(0f)] private float _drainPerSecond = .006f;
         [SerializeField] private string _batteryItemId = "batteries";
         [SerializeField] private bool _startEnabled;
+        [Tooltip("Auto: unlimited in the Escape Room genre profile, drains in Survival Horror and Custom Hybrid.")]
+        [SerializeField] private FlashlightBatteryMode _batteryMode = FlashlightBatteryMode.Auto;
         private bool _isEquipped;
         private bool _requestedOn;
         private bool _featureEnabled;
         public float Charge01 => _charge;
         public bool IsOn => _light != null && _light.enabled;
         public bool IsEquipped => _isEquipped;
+        public bool UsesBattery => _batteryMode == FlashlightBatteryMode.Drains
+            || (_batteryMode == FlashlightBatteryMode.Auto && GameFeatures.Genre != GameGenre.EscapeRoom);
         public event Action<float> ChargeChanged;
         public event Action StateChanged;
 
@@ -48,12 +55,18 @@ namespace EscapeRoomRevolt.Systems.Survival
                 if (reloadPressed) TryReload();
             }
             if (!IsOn) return;
+            if (!UsesBattery)
+            {
+                if (_charge < 1f) { _charge = 1f; ChargeChanged?.Invoke(_charge); }
+                return;
+            }
             _charge = Mathf.Max(0f, _charge - _drainPerSecond * EscapeRoomRevolt.Core.GameModules.FlashlightConsumptionMultiplier * Time.deltaTime);
             if (_charge <= 0f) { _requestedOn = false; Apply(); }
             ChargeChanged?.Invoke(_charge);
         }
         public void Toggle()
         {
+            if (!UsesBattery) _charge = 1f;
             if (!_featureEnabled || !_isEquipped || _charge <= 0f) return;
             _requestedOn = !_requestedOn;
             Apply();

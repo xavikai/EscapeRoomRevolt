@@ -18,6 +18,10 @@ namespace EscapeRoomRevolt.Systems.Equipment
         [SerializeField] private Vector3 _equippedLocalEulerAngles;
         [SerializeField] private Vector3 _equippedLocalScale = Vector3.one;
 
+        [Header("Drop")]
+        [Tooltip("When dropped, fall with gravity even if the item was placed kinematic in the scene (e.g. resting on a shelf).")]
+        [SerializeField] private bool _fallWhenDropped = true;
+
         private Rigidbody _rigidbody;
         private Collider[] _colliders;
         private bool _originalUseGravity;
@@ -83,8 +87,8 @@ namespace EscapeRoomRevolt.Systems.Equipment
             foreach (Collider itemCollider in _colliders)
                 if (itemCollider != null) itemCollider.enabled = true;
 
-            _rigidbody.isKinematic = _originalIsKinematic;
-            _rigidbody.useGravity = _originalUseGravity;
+            _rigidbody.isKinematic = !_fallWhenDropped && _originalIsKinematic;
+            _rigidbody.useGravity = _fallWhenDropped || _originalUseGravity;
             _rigidbody.collisionDetectionMode = _originalCollisionMode;
             if (!_rigidbody.isKinematic) _rigidbody.AddForce(impulse, ForceMode.VelocityChange);
         }

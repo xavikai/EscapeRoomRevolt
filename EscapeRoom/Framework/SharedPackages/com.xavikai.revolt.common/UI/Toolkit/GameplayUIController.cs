@@ -417,7 +417,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
         {
             if (_flashlightHud == null) return;
             bool visible = GameFeatures.IsEnabled(OptionalGameFeature.Flashlight)
-                && _flashlight != null && _flashlight.IsEquipped;
+                && _flashlight != null && _flashlight.IsEquipped && _flashlight.UsesBattery;
             SetVisible(_flashlightHud, visible);
             if (!visible) return;
 
