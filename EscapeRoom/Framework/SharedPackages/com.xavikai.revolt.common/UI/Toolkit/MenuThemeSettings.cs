@@ -4,7 +4,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
 {
     /// <summary>
     /// Optional re-skin for UIToolkitMenuController: panel color, accent border, title/button
-    /// colors, two fonts, a logo, the main-menu title and the credits text, all assignable from the Inspector without touching USS or
+    /// colors, background and button images, two fonts, a logo, the main-menu title and the credits text, all assignable from the Inspector without touching USS or
     /// code. Defaults match the shipped look exactly, so creating one and leaving it untouched
     /// changes nothing; assign it on UIToolkitMenuController's "_theme" field to activate it.
     /// Leaving that field empty (the default) keeps using the static EscapeRoomMenu.uss values.
@@ -31,6 +31,22 @@ namespace EscapeRoomRevolt.UI.Toolkit
         public Font titleFont;
         [Tooltip("Fuente del resto de textos (botones, ajustes, etiquetas). Vacío = fuente por defecto de Unity.")]
         public Font bodyFont;
+
+        [Header("Imágenes")]
+        [Tooltip("Imagen que llena toda la pantalla detrás del menú principal. Importa la imagen como Sprite (2D and UI). Vacío = fondo oscuro de la plantilla.")]
+        public Sprite screenBackground;
+        [Tooltip("Muestra también la imagen de fondo en el menú de pausa (taparía el juego). Desmarcado = solo en el menú principal.")]
+        public bool screenBackgroundInPause;
+        [Tooltip("Imagen del marco del menú (el panel donde están el título y los botones). Se estira al tamaño del marco; el color Panel Background se ve por debajo si la imagen tiene transparencia.")]
+        public Sprite panelImage;
+        [Tooltip("Píxeles de borde de la imagen del marco que no se estiran (9-slice). 0 = se estira toda la imagen.")]
+        [Min(0)] public int panelImageSlice;
+        [Tooltip("Imagen de fondo de los botones del menú, sin texto: el texto lo pone el juego y se traduce. Sustituye el color Button Background.")]
+        public Sprite buttonImage;
+        [Tooltip("Imagen del botón con el ratón encima. Vacío = se usa la misma imagen que Button Image.")]
+        public Sprite buttonHoverImage;
+        [Tooltip("Píxeles de borde de las imágenes de botón que no se estiran (9-slice). 0 = se estira toda la imagen.")]
+        [Min(0)] public int buttonImageSlice;
 
         [Header("Marca")]
         [Tooltip("Se muestra encima del título en todas las pantallas del menú. Vacío = no se muestra nada.")]

@@ -343,6 +343,26 @@ namespace EscapeRoomRevolt.UI.Toolkit
             if (bodyFont != null && _content != null)
                 _content.style.unityFontDefinition = new StyleFontDefinition(FontDefinition.FromFont(bodyFont));
 
+            // Background images: decorative, so high contrast keeps the plain colours instead.
+            if (!highContrast)
+            {
+                VisualElement menuRoot = _root.Q<VisualElement>("menu-root");
+                bool isMainMenu = GameFlowManager.Instance != null && GameFlowManager.Instance.IsMainMenuScene;
+                if (menuRoot != null && _theme.screenBackground != null && (isMainMenu || _theme.screenBackgroundInPause))
+                {
+                    menuRoot.style.backgroundImage = new StyleBackground(_theme.screenBackground);
+                    menuRoot.style.backgroundPositionX = BackgroundPropertyHelper.ConvertScaleModeToBackgroundPosition(ScaleMode.ScaleAndCrop);
+                    menuRoot.style.backgroundPositionY = BackgroundPropertyHelper.ConvertScaleModeToBackgroundPosition(ScaleMode.ScaleAndCrop);
+                    menuRoot.style.backgroundRepeat = BackgroundPropertyHelper.ConvertScaleModeToBackgroundRepeat(ScaleMode.ScaleAndCrop);
+                    menuRoot.style.backgroundSize = BackgroundPropertyHelper.ConvertScaleModeToBackgroundSize(ScaleMode.ScaleAndCrop);
+                }
+                if (frame != null && _theme.panelImage != null)
+                {
+                    frame.style.backgroundImage = new StyleBackground(_theme.panelImage);
+                    SetSlice(frame, _theme.panelImageSlice);
+                }
+            }
+
             // Decorative branding competes with legibility, so high contrast hides the logo.
             Image logo = _root.Q<Image>("logo");
             if (logo != null)
@@ -375,8 +395,32 @@ namespace EscapeRoomRevolt.UI.Toolkit
                 button.style.borderLeftColor = HighContrastAccent;
                 button.style.borderLeftWidth = 3;
             }
+            Sprite image = highContrast ? null : _theme.buttonImage;
+            if (image != null)
+            {
+                // The image replaces the flat colour; the text stays live so it is still translated.
+                Sprite hoverImage = _theme.buttonHoverImage != null ? _theme.buttonHoverImage : image;
+                background = Color.clear;
+                hoverBackground = Color.clear;
+                button.style.backgroundColor = background;
+                button.style.backgroundImage = new StyleBackground(image);
+                button.style.borderLeftWidth = 0;
+                SetSlice(button, _theme.buttonImageSlice);
+                button.RegisterCallback<MouseEnterEvent>(_ => button.style.backgroundImage = new StyleBackground(hoverImage));
+                button.RegisterCallback<MouseLeaveEvent>(_ => button.style.backgroundImage = new StyleBackground(image));
+            }
             button.RegisterCallback<MouseEnterEvent>(_ => button.style.backgroundColor = hoverBackground);
             button.RegisterCallback<MouseLeaveEvent>(_ => button.style.backgroundColor = background);
+        }
+
+        /// <summary>9-slice: keeps the outer pixels of a background image unstretched.</summary>
+        private static void SetSlice(VisualElement element, int pixels)
+        {
+            if (pixels <= 0) return;
+            element.style.unitySliceLeft = pixels;
+            element.style.unitySliceRight = pixels;
+            element.style.unitySliceTop = pixels;
+            element.style.unitySliceBottom = pixels;
         }
 
         private void BuildSlots(bool saveMode)

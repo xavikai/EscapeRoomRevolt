@@ -2,6 +2,21 @@
 
 All notable changes to Escape Room Revolt are documented here.
 
+## [0.2.1] - Unreleased
+
+Documentation and menu-theming update for the first class sessions. Release notes: `RELEASE_NOTES_v0.2.1.md`.
+
+### Added
+
+- `MenuThemeSettings` gains an **Imágenes** section: `Screen Background` (full-screen image behind the main menu, optional in the pause menu via `Screen Background In Pause`), `Panel Image` with `Panel Image Slice` (9-slice frame) and `Button Image` / `Button Hover Image` with `Button Image Slice`. Students can change the menu background, frame and buttons from the Inspector without UI Toolkit. Images are skipped in high-contrast mode; theme images override USS backgrounds, as theme colours already did.
+- Interactive guide: the start section now begins inside Unity with the template open (no Unity installation or editor navigation), embeds Unity screenshots with a zoom viewer, and adds a phase on non-puzzle pieces: Narrative Trigger voice/subtitle zones, Hint Zone with Hint Data, Event Trigger Zone actions, Game Over Timer, Moving Hazard, Ending Definition + Game End Trigger, objectives (Objective Definition/Set/Manager), Generic Trigger, Examine Hotspot and Room Portal. CA/ES/EN.
+- Interactive guide, menu design: three new level-1 steps for the theme images, with screenshots of the theme asset and the Sprite import settings.
+
+### Fixed
+
+- The `Interactable Note` custom Inspector threw a NullReferenceException that hid `Note Content`; it now draws every field null-safely and relies on the component headers.
+- The Game Over Timer wizard's default HUD label is now the catalogue key `TIEMPO RESTANTE`, so it is translated in CA/ES/EN.
+
 ## [0.2.0] - 2026-11-07
 
 First Escape Room release as an independent product project (`EscapeRoom/Unity`) on shared packages. Ships the validated **0.2.0-pcfix-2026-10-26** Windows demo and portable source delivery; no code changes since that validation. Release notes: `RELEASE_NOTES_v0.2.0.md`. Manual visual QA and VR hardware QA remain pending.

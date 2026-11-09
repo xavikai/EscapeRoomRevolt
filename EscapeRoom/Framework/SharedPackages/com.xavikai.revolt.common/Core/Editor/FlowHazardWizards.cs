@@ -109,7 +109,7 @@ namespace EscapeRoomRevolt.EditorTools
         private float _duration = 60f;
         private bool _autoStart;
         private bool _showInHud = true;
-        private string _hudLabel = "TEMPS RESTANT";
+        private string _hudLabel = "TIEMPO RESTANTE";
 
         public static void Open()
         {

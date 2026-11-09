@@ -49,32 +49,28 @@ namespace EscapeRoomRevolt.Systems.Interaction.Editor
         {
             serializedObject.Update();
 
-            // Draw Base Interaction Settings
-            EditorGUILayout.LabelField("Interaction Settings", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(_interactionPrompt);
-            EditorGUILayout.PropertyField(_canInteract);
-            EditorGUILayout.PropertyField(_cursorType);
-            if (_saveId != null) EditorGUILayout.PropertyField(_saveId);
+            // Field [Header] attributes already draw the section titles.
+            Draw(_interactionPrompt);
+            Draw(_canInteract);
+            Draw(_cursorType);
+            Draw(_saveId);
             EditorGUILayout.Space(5);
 
             // Draw Visual Feedback (Outline)
-            EditorGUILayout.LabelField("Visual Feedback (Outline)", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(_enableOutline);
-            if (_enableOutline.boolValue)
+            Draw(_enableOutline);
+            if (_enableOutline != null && _enableOutline.boolValue)
             {
-                EditorGUILayout.PropertyField(_outlineMaterial);
-                EditorGUILayout.PropertyField(_highlightRenderers);
+                // Older InteractableBase versions had these fields; skip them when absent instead of throwing.
+                Draw(_outlineMaterial);
+                Draw(_highlightRenderers);
             }
             EditorGUILayout.Space(5);
-
-            EditorGUILayout.LabelField("Note Behaviour", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(_isPickable, new GUIContent("Is Pickable?"));
             EditorGUILayout.Space(5);
 
             if (_isPickable.boolValue)
             {
                 // Show Pickable properties
-                EditorGUILayout.LabelField("Pickable Settings", EditorStyles.boldLabel);
                 EditorGUILayout.PropertyField(_itemData);
                 EditorGUILayout.PropertyField(_quantity);
                 EditorGUILayout.PropertyField(_pickupSound);
@@ -82,13 +78,18 @@ namespace EscapeRoomRevolt.Systems.Interaction.Editor
             else
             {
                 // Show Read In-Place properties
-                EditorGUILayout.LabelField("Read In-Place Settings", EditorStyles.boldLabel);
                 EditorGUILayout.PropertyField(_noteContent);
                 EditorGUILayout.PropertyField(_readPrompt);
                 EditorGUILayout.PropertyField(_disappearAfterRead);
             }
 
             serializedObject.ApplyModifiedProperties();
+        }
+
+        /// <summary>PropertyField throws on a missing property; renamed base fields must not hide the note fields below.</summary>
+        private static void Draw(SerializedProperty property)
+        {
+            if (property != null) EditorGUILayout.PropertyField(property);
         }
     }
 }
