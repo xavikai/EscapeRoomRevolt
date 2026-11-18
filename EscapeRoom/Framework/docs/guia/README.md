@@ -6,6 +6,8 @@ Obre `index.html` en un navegador (doble clic). Necessita connexió a Internet p
 
 Idiomes: català, castellà, anglès, francès i rus (selector a la barra lateral). Les versions francesa i russa parteixen de traducció automàtica amb revisió dels menús i termes principals. Les captures de Unity conserven l'idioma original.
 
+**[Receptes pas a pas](index.html#rec):** configuració dels deu puzles i dels sistemes de la sala (incloent **Clau que obre una porta** i **Clavar un o diversos ganivets 3D a la diana** amb `GrabbablePiece.LockInPlace`) des de zero. Cada recepta indica què cal seleccionar, a quin panell es crea cada element i quina referència cal arrossegar a cada camp de l'Inspector. Inclou exemples per reduir els puzles, com passar de tres dianes a una.
+
 **[Ampliar puzles](index.html#expand):** exemples per afegir llums, palanques, notes, dianes i encaixos. També indica com redimensionar o estendre els rodets, el tauler lliscant, les canonades, el teclat i els puzles encadenats.
 
 **[Cinemàtiques](index.html#cinematics):** pas a pas per mostrar una porta quan es resol un puzle i per muntar una intro o un final amb imatges, vídeos i plans de càmera.

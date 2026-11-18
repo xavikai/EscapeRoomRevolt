@@ -13,7 +13,7 @@ This guide is for anyone using the template to create their own game. The scope 
 5. Run `Escape Room Framework > Validation > Run Framework Smoke Tests` and `Validate Current Scene`. Read the result in the Console, not just the confirmation that the menu command ran.
 6. Press Play. On PC, use WASD and the mouse, E to interact, I for the inventory, H for hints and Esc to close the panel or pause. F5/F9 save/load the quick slot. The three manual slots are independent.
 
-The PC museum contains 13 puzzle controllers (the thirteenth is room 14, `LinkedLightsPuzzle`); `ShowcaseMuseumVR` contains the previous 12 and does not include room 14 yet. For a guided, interactive tour of each mechanic, open [`docs/guia/index.html`](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.1/guia-escape-room-0.2.1.html) in the browser. The number wheels use `StatePuzzle`; the melody uses `SequencePuzzle`. They are not separate solvers. `LockedOffice` and `LockedOfficeVR` contain an alternative sample with two code panels.
+The PC museum contains 13 puzzle controllers (the thirteenth is room 14, `LinkedLightsPuzzle`); `ShowcaseMuseumVR` contains the previous 12 and does not include room 14 yet. For a guided, interactive tour of each mechanic, open [`docs/guia/index.html`](../../../docs/guia/index.html) in the browser. The number wheels use `StatePuzzle`; the melody uses `SequencePuzzle`. They are not separate solvers. `LockedOffice` and `LockedOfficeVR` contain an alternative sample with two code panels.
 
 ## 2. Creating your own room
 
@@ -34,6 +34,15 @@ The PC museum contains 13 puzzle controllers (the thirteenth is room 14, `Linked
 4. In the controller's `On Solved`, add the door and select its public open method from the drop-down. The door must have its own persistent ID.
 5. Add a visible clue that lets the player deduce 3142. Do not enable the random variant if the written clue still shows a fixed solution.
 6. Test a wrong code, the correct one, saving with the door open and loading again. `On Solved` represents a new resolution; it is not emitted again on load. The door must restore its state through its own save data.
+
+### Example: a key that opens a door
+
+1. In the `Project` panel, create the key asset with `Create > Escape Room Framework > Inventory > Item`. Set a unique lowercase `Item Id` (for example `office_key`) and a `Display Name`.
+2. Add the asset to the `Items` list of `Assets/_EscapeRoomTemplate/ScriptableObjects/DefaultItemCatalog.asset` so the inventory and save system recognize it.
+3. Place the key in the scene with `Escape Room Framework > Create > Interactables > Pickable Item` and drag the asset into its `Item Data` field.
+4. Create or select the door (`Escape Room Framework > Create > Interactables > Door`). On the `Door` component, tick `Is Locked` and enter the exact same identifier (`office_key`) in `Required Item Id`.
+5. Choose `Item Use Policy`: `Offer Compatible` (opens the HUD selector when pressing `E` while carrying the key) or `Auto Use Single` (unlocks and opens immediately on pressing `E`). Tick `Consume Required Item` if the key should be consumed on use.
+6. Test trying to open without the key, picking up the key with `E`, opening the door, saving with `F5` and loading with `F9`: the picked-up key must not respawn and the door must keep its state.
 
 ## 3. Choosing and configuring mechanics
 

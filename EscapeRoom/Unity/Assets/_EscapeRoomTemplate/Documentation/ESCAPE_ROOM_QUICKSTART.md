@@ -13,7 +13,7 @@ Esta guía está dirigida a quien usa el template para crear su propio juego. El
 5. Ejecuta `Escape Room Framework > Validation > Run Framework Smoke Tests` y `Validate Current Scene`. Lee el resultado en Console, no solo la confirmación de que el menú se ha ejecutado.
 6. Pulsa Play. En PC, usa WASD y ratón, E para interactuar, I para inventario, H para pistas y Esc para cerrar el panel o pausar. F5/F9 guardan/cargan el slot rápido. Los tres slots manuales son independientes.
 
-El museo PC contiene 13 controladores de puzle (el decimotercero es la sala 14, `LinkedLightsPuzzle`); `ShowcaseMuseumVR` contiene los 12 anteriores y todavía no incluye la sala 14. Para una visita guiada e interactiva de cada mecánica, abre [`docs/guia/index.html`](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.1/guia-escape-room-0.2.1.html) en el navegador. Las ruedas numéricas utilizan `StatePuzzle`; la melodía utiliza `SequencePuzzle`. No son solvers separados. `LockedOffice` y `LockedOfficeVR` contienen una muestra alternativa con dos paneles de código.
+El museo PC contiene 13 controladores de puzle (el decimotercero es la sala 14, `LinkedLightsPuzzle`); `ShowcaseMuseumVR` contiene los 12 anteriores y todavía no incluye la sala 14. Para una visita guiada e interactiva de cada mecánica, abre [`docs/guia/index.html`](../../../docs/guia/index.html) en el navegador. Las ruedas numéricas utilizan `StatePuzzle`; la melodía utiliza `SequencePuzzle`. No son solvers separados. `LockedOffice` y `LockedOfficeVR` contienen una muestra alternativa con dos paneles de código.
 
 ## 2. Crear una habitación propia
 
@@ -34,6 +34,15 @@ El museo PC contiene 13 controladores de puzle (el decimotercero es la sala 14, 
 4. En `On Solved` del controlador, añade la puerta y selecciona su método público de apertura en el desplegable. La puerta debe tener su propio ID persistente.
 5. Añade una pista visible que permita deducir 3142. No actives la variante aleatoria si la pista escrita sigue mostrando una solución fija.
 6. Prueba un código incorrecto, el correcto, guardar con la puerta abierta y volver a cargar. `On Solved` representa una resolución nueva; no se vuelve a emitir al cargar. La puerta debe restaurar su estado mediante su propio guardado.
+
+### Ejemplo: una llave que abre una puerta
+
+1. En el panel `Project`, crea la ficha de la llave con `Create > Escape Room Framework > Inventory > Item`. Pon un `Item Id` único en minúsculas (por ejemplo `llave_despacho`) y un `Display Name`.
+2. Añade el asset a la lista `Items` de `Assets/_EscapeRoomTemplate/ScriptableObjects/DefaultItemCatalog.asset` para que el inventario y el guardado la reconozcan.
+3. Coloca la llave en la escena con `Escape Room Framework > Create > Interactables > Pickable Item` y arrastra el asset a su campo `Item Data`.
+4. Crea o selecciona la puerta (`Escape Room Framework > Create > Interactables > Door`). En el componente `Door`, marca `Is Locked` y escribe el mismo identificador (`llave_despacho`) en `Required Item Id`.
+5. Elige `Item Use Policy`: `Offer Compatible` (abre el selector en el HUD al pulsar `E` con la llave en el inventario) o `Auto Use Single` (desbloquea y abre directamente al pulsar `E`). Marca `Consume Required Item` si la llave debe consumirse al abrir.
+6. Prueba intentar abrir sin llave, recoger la llave con `E`, abrir la puerta, guardar con `F5` y cargar con `F9`: la llave recogida no debe reaparecer y la puerta debe conservar su estado.
 
 ## 3. Elegir y configurar las mecánicas
 

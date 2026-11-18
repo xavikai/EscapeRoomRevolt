@@ -13,7 +13,7 @@ Aquesta guia s'adreça a qui utilitza la plantilla per crear el seu propi joc. L
 5. Executa `Escape Room Framework > Validation > Run Framework Smoke Tests` i `Validate Current Scene`. Llegeix el resultat a la Console, no només la confirmació que el menú s'ha executat.
 6. Prem Play. A PC, utilitza WASD i el ratolí, E per interactuar, I per a l'inventari, H per a les pistes i Esc per tancar el panell o fer pausa. F5/F9 desen/carreguen l'slot ràpid. Els tres slots manuals són independents.
 
-El museu PC conté 13 controladors de puzle (el tretzè és la sala 14, `LinkedLightsPuzzle`); `ShowcaseMuseumVR` conté els 12 anteriors i encara no inclou la sala 14. Per a una visita guiada i interactiva de cada mecànica, obre [`docs/guia/index.html`](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.1/guia-escape-room-0.2.1.html) al navegador. Les rodes numèriques utilitzen `StatePuzzle`; la melodia utilitza `SequencePuzzle`. No són solvers separats. `LockedOffice` i `LockedOfficeVR` contenen una mostra alternativa amb dos panells de codi.
+El museu PC conté 13 controladors de puzle (el tretzè és la sala 14, `LinkedLightsPuzzle`); `ShowcaseMuseumVR` conté els 12 anteriors i encara no inclou la sala 14. Per a una visita guiada i interactiva de cada mecànica, obre [`docs/guia/index.html`](../../../docs/guia/index.html) al navegador. Les rodes numèriques utilitzen `StatePuzzle`; la melodia utilitza `SequencePuzzle`. No són solvers separats. `LockedOffice` i `LockedOfficeVR` contenen una mostra alternativa amb dos panells de codi.
 
 ## 2. Crear una habitació pròpia
 
@@ -34,6 +34,15 @@ El museu PC conté 13 controladors de puzle (el tretzè és la sala 14, `LinkedL
 4. A `On Solved` del controlador, afegeix la porta i selecciona el seu mètode públic d'obertura al desplegable. La porta ha de tenir el seu propi ID persistent.
 5. Afegeix una pista visible que permeti deduir 3142. No activis la variant aleatòria si la pista escrita continua mostrant una solució fixa.
 6. Prova un codi incorrecte, el correcte, desar amb la porta oberta i tornar a carregar. `On Solved` representa una resolució nova; no es torna a emetre en carregar. La porta ha de restaurar el seu estat mitjançant el seu propi desament.
+
+### Exemple: una clau que obre una porta
+
+1. Al panell `Project`, crea la fitxa de la clau amb `Create > Escape Room Framework > Inventory > Item`. Posa un `Item Id` únic en minúscules (per exemple `clau_despatx`) i un `Display Name`.
+2. Afegeix l'asset a la llista `Items` de `Assets/_EscapeRoomTemplate/ScriptableObjects/DefaultItemCatalog.asset` perquè el sistema d'inventari i el desament la reconeguin.
+3. Col·loca la clau a l'escena amb `Escape Room Framework > Create > Interactables > Pickable Item` i arrossega l'asset al seu camp `Item Data`.
+4. Crea o selecciona la porta (`Escape Room Framework > Create > Interactables > Door`). Al component `Door`, marca `Is Locked` i escriu el mateix identificador (`clau_despatx`) a `Required Item Id`.
+5. Tria `Item Use Policy`: `Offer Compatible` (obre el selector al HUD quan prems `E` amb la clau a l'inventari) o `Auto Use Single` (desbloqueja i obre directament en prémer `E`). Marca `Consume Required Item` si la clau s'ha de gastar en obrir.
+6. Prova d'obrir sense clau, recollir la clau amb `E`, obrir la porta, desar amb `F5` i carregar amb `F9`: la clau recollida no ha de tornar a aparèixer i la porta ha de conservar l'estat.
 
 ## 3. Triar i configurar les mecàniques
 

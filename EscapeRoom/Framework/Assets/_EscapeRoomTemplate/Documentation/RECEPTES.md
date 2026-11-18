@@ -2,10 +2,18 @@
 
 **Idioma:** [català](RECEPTES.md) · [castellano](RECETAS.md) · [English](RECIPES.md)
 
-Cada recepta parteix d'una escena buida amb el jugador ja posat (`Setup > Instantiate Game Manager` i el jugador PC o VR). Per provar-les de manera interactiva, obre la guia [`docs/guia/index.html`](../../../docs/guia/index.html) > *Receptes pas a pas*.
+Les mateixes receptes es poden seguir amb caselles de progrés a la [guia interactiva](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.2/guia-escape-room-0.2.2.html), a *Receptes pas a pas*.
+
+## Abans de començar a Unity
+
+1. Obre la teva escena en mode edició. Si el botó `Play` està actiu, torna'l a prémer abans de crear o configurar res. Si no veus els panells, obre'ls des de `Window > General > Hierarchy`, `Project` i `Inspector`.
+2. `Hierarchy` conté els objectes de l'escena. Selecciona-hi un objecte amb un clic i mira els seus components a `Inspector`. L'arrel del puzle és l'objecte pare que conté el controlador. Clica el triangle del seu nom per veure els fills. Després de crear un puzle, prem `F` amb el cursor a `Scene` per centrar la vista en l'objecte seleccionat.
+3. `Project` conté fitxers i assets. Crea els teus dins d'una carpeta pròpia sota `Assets`. Per assignar una referència, deixa seleccionat a `Hierarchy` l'objecte que rep el valor i arrossega l'origen des de `Project` o `Hierarchy` fins al camp que diu `None` a `Inspector`. Clicar l'origen en comptes d'arrossegar-lo canvia la selecció.
+4. Per a una prova de PC, la teva escena necessita terra amb collider, un `GameManager` i un jugador. Si falten, crea el gestor i el jugador amb `Escape Room Framework > Setup > Instantiate Game Manager` i `Escape Room Framework > Setup > Instantiate PC Player`. Col·loca el jugador sobre el terra, a prop del puzle. Si l'escena ja els té, fes servir els existents.
+5. Quan treguis elements, revisa la llista del controlador i actualitza els textos, les pistes i la solució. Comença una partida nova per provar la configuració. Si prefereixes experimentar, duplica l'escena de prova des de `Project` abans d'editar-la.
 
 - Puzles: [Teclat de codi](#code) · [Seqüència i melodia](#seq) · [Palanques i interruptors (StatePuzzle)](#state) · [Rodets numèrics (cadenat)](#wheels) · [Canonades](#pipe) · [Trencaclosques lliscant](#slide) · [Circuit de llums](#lights) · [Llançament a dianes](#throw) · [Col·locació de peces](#place) · [Puzles encadenats](#multi)
-- Sistemes de la sala: [Objectes, inventari, combinació i examen](#items) · [Portes, calaixos i armaris](#doors) · [Pistes i narració](#hints) · [Objectius i final de partida](#objectives) · [Temporitzador i perill mòbil](#hazard) · [Canvi de sala o d'escena](#rooms)
+- Sistemes de la sala: [Clau que obre una porta](#key) · [Objectes, inventari, combinació i examen](#items) · [Portes, calaixos i armaris](#doors) · [Pistes i narració](#hints) · [Objectius i final de partida](#objectives) · [Temporitzador i perill mòbil](#hazard) · [Canvi de sala o d'escena](#rooms)
 
 ## Puzles
 
@@ -16,13 +24,14 @@ Menú: `Escape Room Framework > Create > Puzzles > Keypad Panel` · Sala del mus
 
 **Passos**
 
-1. Executa Escape Room Framework > Create > Puzzles > Keypad Panel. Es crea NewKeypad amb CodePanelPuzzle, InteractableKeypad, una pantalla, un LED i onze botons 3D (1–9, C, 0) ja connectats al puzle.
-2. Col·loca'l a la paret movent només l'arrel NewKeypad. No escalis els botons per separat.
-3. A CodePanelPuzzle escriu Correct Code (per exemple 3142), posa Max Code Length amb el mateix nombre de xifres i deixa Auto Check When Full activat.
-4. Crea les dades del puzle: al panell Project, clic dret > Create > Escape Room Framework > Puzzles > Puzzle Definition. Posa-hi un Persistent Id únic (per exemple sala1_teclat), un Display Name i l'Objective. Després crea les pistes amb Create > Escape Room Framework > Hints > Hint Data (tres pistes: context, indicació i solució) i arrossega-les al camp Hints de la definició.
-5. Selecciona l'arrel del puzle i arrossega la definició al camp Definition del component.
-6. Crea la recompensa: Escape Room Framework > Create > Interactables > Door i marca Is Locked a la porta. Selecciona el puzle, fes Ctrl+clic a la porta i executa Escape Room Framework > Create > Puzzles > Link Selected Objects To Puzzle. A On Solved hi apareixeran Door.Unlock i Door.ForceOpen.
-7. Amaga la pista del codi: Escape Room Framework > Create > Interactables > Note i escriu-la a Note Content.
+1. Al menú superior executa `Escape Room Framework > Create > Puzzles > Keypad Panel`. Selecciona `NewKeypad_Logic` a `Hierarchy` i mou l'objecte sencer a la paret amb l'eina `Move`. Els botons ja estan connectats.
+2. Al component `CodePanelPuzzle` de l'`Inspector`, posa `Correct Code` a `3142` i `Max Code Length` a `4`. Deixa `Auto Check When Full` activat i `Randomize Code` desactivat. Si vols un codi més curt, canvia els dos camps. Per exemple, `42` i `2`. No cal eliminar botons.
+3. Per donar una pista, crea una nota amb `Escape Room Framework > Create > Interactables > Note`. Selecciona `NewNote_Logic` a `Hierarchy` i escriu la pista a `Note Content`, dins d'`InteractableNote` a l'`Inspector`. Col·loca la nota on el jugador la pugui llegir.
+4. A `Project`, obre la carpeta d'`Assets` on guardes el teu puzle. Fes clic dret en un espai buit i tria `Create > Escape Room Framework > Puzzles > Puzzle Definition`. Anomena l'asset `Def_sala1_puzle` o posa-li un nom que reconeguis.
+5. Selecciona la definició a `Project`. A `Inspector`, escriu un `Persistent Id` únic, com `sala1_teclat` si és el teclat de la sala 1. Omple `Display Name` i `Objective`. Selecciona l'arrel del puzle a `Hierarchy` i arrossega l'asset del `Project` a `Definition`, al component del puzle de l'`Inspector`.
+6. Si vols pistes, a la mateixa carpeta de `Project` fes clic dret i tria `Create > Escape Room Framework > Hints > Hint Data`. Selecciona el `Hint Data` i afegeix els textos a la seva llista `Hints`. Després selecciona la `Puzzle Definition` i arrossega el `Hint Data` del `Project` al camp `Hints` de la definició.
+7. Per obrir una porta en resoldre el puzle, crea-la des del menú superior `Escape Room Framework > Create > Interactables > Door`. A `Hierarchy`, selecciona `NewDoor_Logic` i, al component `Door` de l'`Inspector`, marca `Is Locked`. Col·loca la porta on vols que estigui a l'escena.
+8. A `Hierarchy`, selecciona l'arrel del puzle. Mantén `Ctrl` a Windows o `Cmd` a Mac i clica `NewDoor_Logic` perquè quedin seleccionats tots dos. Executa `Escape Room Framework > Create > Puzzles > Link Selected Objects To Puzzle`. Torna a seleccionar només l'arrel i comprova que `On Solved` conté `Door.Unlock` i `Door.ForceOpen`. Desa l'escena amb `Ctrl+S` o `Cmd+S` i entra a `Play`.
 
 **Com ho proves**
 
@@ -41,13 +50,15 @@ Menú: `Escape Room Framework > Create > Puzzles > Sequence Puzzle` · Sala del 
 
 **Passos**
 
-1. Executa Escape Room Framework > Create > Puzzles > Sequence Puzzle. Crea tres botons (vermell, verd, blau) amb un SequenceStepButton cadascun, i l'ordre correcte vermell → verd → blau.
-2. La llista Correct Sequence de SequencePuzzle conté els identificadors en ordre. El Step Id de cada SequenceStepButton ha de coincidir exactament amb un d'aquests identificadors.
-3. Per afegir un pas, duplica un botó, canvia'n el Step Id i afegeix aquest ID a Correct Sequence. Un ID pot sortir més d'una vegada a la llista.
-4. Melodia (opcional): posa un AudioSource amb la seva nota a cada botó, afegeix un MelodyPlayer al puzle i omple Notes en l'ordre correcte. Crea un Generic Trigger «Escoltar la melodia» i, al seu On Interact Event, crida MelodyPlayer.Play.
-5. Crea les dades del puzle: al panell Project, clic dret > Create > Escape Room Framework > Puzzles > Puzzle Definition. Posa-hi un Persistent Id únic (per exemple sala1_teclat), un Display Name i l'Objective. Després crea les pistes amb Create > Escape Room Framework > Hints > Hint Data (tres pistes: context, indicació i solució) i arrossega-les al camp Hints de la definició.
-6. Selecciona l'arrel del puzle i arrossega la definició al camp Definition del component.
-7. Crea la recompensa: Escape Room Framework > Create > Interactables > Door i marca Is Locked a la porta. Selecciona el puzle, fes Ctrl+clic a la porta i executa Escape Room Framework > Create > Puzzles > Link Selected Objects To Puzzle. A On Solved hi apareixeran Door.Unlock i Door.ForceOpen.
+1. Executa `Escape Room Framework > Create > Puzzles > Sequence Puzzle`. A `Hierarchy`, selecciona `NewSequencePuzzle` i obre el seu triangle per veure els tres botons. Selecciona l'arrel i desplega `SequencePuzzle > Correct Sequence` a l'`Inspector`. L'ordre inicial és `red`, `green`, `blue`.
+2. Per afegir un botó, duplica un botó sencer a `Hierarchy` i edita el `Step Id` del seu `SequenceStepButton`. A l'arrel, afegeix el mateix text a la llista `Correct Sequence`. Per treure el botó verd, elimina totes les entrades `green` de la llista i el seu objecte `greenButton_Logic` de `Hierarchy`. Per escurçar només la seqüència, treu-ne passos i deixa els botons com a opcions. Conserva com a mínim un pas.
+3. Si vols una melodia, selecciona cada botó a `Hierarchy`, afegeix `Audio Source` amb `Add Component`, arrossega el clip de `Project` al seu camp de clip i desmarca `Play On Awake`. Al `On Interact Event` del botó, afegeix una entrada amb `+`, arrossega el botó a l'entrada i tria `AudioSource > Play`. Conserva l'entrada que comunica el pas al puzle.
+4. Per reproduir la melodia de referència, afegeix `MelodyPlayer` a l'arrel amb `Add Component`. A `Notes`, crea una entrada per cada pas i arrossega-hi el botó corresponent, en ordre. Crea un `Generic Trigger` des del menú `Create > Interactables`. Al seu `On Interact Event`, prem `+`, arrossega-hi `NewSequencePuzzle` des de `Hierarchy` i tria `MelodyPlayer > Play`. Quan treguis passos, actualitza també `Notes`.
+5. A `Project`, obre la carpeta d'`Assets` on guardes el teu puzle. Fes clic dret en un espai buit i tria `Create > Escape Room Framework > Puzzles > Puzzle Definition`. Anomena l'asset `Def_sala1_puzle` o posa-li un nom que reconeguis.
+6. Selecciona la definició a `Project`. A `Inspector`, escriu un `Persistent Id` únic, com `sala1_teclat` si és el teclat de la sala 1. Omple `Display Name` i `Objective`. Selecciona l'arrel del puzle a `Hierarchy` i arrossega l'asset del `Project` a `Definition`, al component del puzle de l'`Inspector`.
+7. Si vols pistes, a la mateixa carpeta de `Project` fes clic dret i tria `Create > Escape Room Framework > Hints > Hint Data`. Selecciona el `Hint Data` i afegeix els textos a la seva llista `Hints`. Després selecciona la `Puzzle Definition` i arrossega el `Hint Data` del `Project` al camp `Hints` de la definició.
+8. Per obrir una porta en resoldre el puzle, crea-la des del menú superior `Escape Room Framework > Create > Interactables > Door`. A `Hierarchy`, selecciona `NewDoor_Logic` i, al component `Door` de l'`Inspector`, marca `Is Locked`. Col·loca la porta on vols que estigui a l'escena.
+9. A `Hierarchy`, selecciona l'arrel del puzle. Mantén `Ctrl` a Windows o `Cmd` a Mac i clica `NewDoor_Logic` perquè quedin seleccionats tots dos. Executa `Escape Room Framework > Create > Puzzles > Link Selected Objects To Puzzle`. Torna a seleccionar només l'arrel i comprova que `On Solved` conté `Door.Unlock` i `Door.ForceOpen`. Desa l'escena amb `Ctrl+S` o `Cmd+S` i entra a `Play`.
 
 **Com ho proves**
 
@@ -67,13 +78,14 @@ Menú: `Escape Room Framework > Create > Puzzles > State Puzzle` · Sala del mus
 
 **Passos**
 
-1. Executa Escape Room Framework > Create > Puzzles > State Puzzle. Crea tres palanques de tres posicions (SteppedPositioner + InteractableCycler) que resolen quan marquen 0, 1 i 2.
-2. A cada palanca, la llista Positions defineix cada posició: el text que veu el jugador (Prompt) i la rotació o el desplaçament. Starting Index és la posició inicial.
-3. A StatePuzzle, la llista Conditions uneix cada palanca (Positioner) amb la posició que ha de tenir (Required Index, comença a 0).
-4. Per a un interruptor de dues posicions fes servir Escape Room Framework > Create > Interactables > Multi-Position Lever amb dues posicions. L'InteractableToggle (Lever/Switch) no alimenta aquest puzle.
-5. Crea les dades del puzle: al panell Project, clic dret > Create > Escape Room Framework > Puzzles > Puzzle Definition. Posa-hi un Persistent Id únic (per exemple sala1_teclat), un Display Name i l'Objective. Després crea les pistes amb Create > Escape Room Framework > Hints > Hint Data (tres pistes: context, indicació i solució) i arrossega-les al camp Hints de la definició.
-6. Selecciona l'arrel del puzle i arrossega la definició al camp Definition del component.
-7. Crea la recompensa: Escape Room Framework > Create > Interactables > Door i marca Is Locked a la porta. Selecciona el puzle, fes Ctrl+clic a la porta i executa Escape Room Framework > Create > Puzzles > Link Selected Objects To Puzzle. A On Solved hi apareixeran Door.Unlock i Door.ForceOpen.
+1. Executa `Escape Room Framework > Create > Puzzles > State Puzzle`. Obre `NewStatePuzzle` a `Hierarchy`. Clica `Lever1_Logic` i desplega `SteppedPositioner > Positions` a l'`Inspector`. L'entrada `Element 0` és la primera posició. `Starting Index` indica com comença la palanca.
+2. Selecciona l'arrel i obre `StatePuzzle > Conditions` a l'`Inspector`. Cada fila té un `Positioner` i un `Required Index`. Si hi afegeixes una palanca, duplica el seu objecte `_Logic`, prem `+` a `Conditions` i arrossega la palanca nova de `Hierarchy` al camp `Positioner` de la fila nova. Tria la posició requerida.
+3. Per deixar dues palanques, selecciona a `Conditions` la fila que referencia `Lever3_Logic` i prem `–`. Després elimina `Lever3_Logic` de `Hierarchy`. Si redueixes les posicions d'una palanca, comprova que `Starting Index` i `Required Index` continuen dins la llista. Amb dues posicions només poden ser `0` o `1`.
+4. A `Project`, obre la carpeta d'`Assets` on guardes el teu puzle. Fes clic dret en un espai buit i tria `Create > Escape Room Framework > Puzzles > Puzzle Definition`. Anomena l'asset `Def_sala1_puzle` o posa-li un nom que reconeguis.
+5. Selecciona la definició a `Project`. A `Inspector`, escriu un `Persistent Id` únic, com `sala1_teclat` si és el teclat de la sala 1. Omple `Display Name` i `Objective`. Selecciona l'arrel del puzle a `Hierarchy` i arrossega l'asset del `Project` a `Definition`, al component del puzle de l'`Inspector`.
+6. Si vols pistes, a la mateixa carpeta de `Project` fes clic dret i tria `Create > Escape Room Framework > Hints > Hint Data`. Selecciona el `Hint Data` i afegeix els textos a la seva llista `Hints`. Després selecciona la `Puzzle Definition` i arrossega el `Hint Data` del `Project` al camp `Hints` de la definició.
+7. Per obrir una porta en resoldre el puzle, crea-la des del menú superior `Escape Room Framework > Create > Interactables > Door`. A `Hierarchy`, selecciona `NewDoor_Logic` i, al component `Door` de l'`Inspector`, marca `Is Locked`. Col·loca la porta on vols que estigui a l'escena.
+8. A `Hierarchy`, selecciona l'arrel del puzle. Mantén `Ctrl` a Windows o `Cmd` a Mac i clica `NewDoor_Logic` perquè quedin seleccionats tots dos. Executa `Escape Room Framework > Create > Puzzles > Link Selected Objects To Puzzle`. Torna a seleccionar només l'arrel i comprova que `On Solved` conté `Door.Unlock` i `Door.ForceOpen`. Desa l'escena amb `Ctrl+S` o `Cmd+S` i entra a `Play`.
 
 **Com ho proves**
 
@@ -92,13 +104,13 @@ Menú: `Escape Room Framework > Create > Puzzles > Number Wheels Puzzle` · Sala
 
 **Passos**
 
-1. Executa Escape Room Framework > Create > Puzzles > Number Wheels Puzzle. A la finestra tria el nombre de rodets (de 2 a 8) i la xifra de cada un, i prem Create puzzle.
-2. Es crea un StatePuzzle amb un PuzzleFocusPoint (càmera d'aproximació), el component NumberWheelsPuzzleAuthoring i els botons ▲/▼ de cada rodet.
-3. Per canviar la combinació o el nombre de rodets, edita NumberWheelsPuzzleAuthoring i prem Rebuild wheels and layout. Es conserven la definició i On Solved.
-4. Per canviar l'aspecte (maleta, caixa forta), substitueix els models dins dels ReplaceableModelSlot de la carcassa i dels rodets.
-5. Crea les dades del puzle: al panell Project, clic dret > Create > Escape Room Framework > Puzzles > Puzzle Definition. Posa-hi un Persistent Id únic (per exemple sala1_teclat), un Display Name i l'Objective. Després crea les pistes amb Create > Escape Room Framework > Hints > Hint Data (tres pistes: context, indicació i solució) i arrossega-les al camp Hints de la definició.
-6. Selecciona l'arrel del puzle i arrossega la definició al camp Definition del component.
-7. Crea la recompensa: Escape Room Framework > Create > Interactables > Door i marca Is Locked a la porta. Selecciona el puzle, fes Ctrl+clic a la porta i executa Escape Room Framework > Create > Puzzles > Link Selected Objects To Puzzle. A On Solved hi apareixeran Door.Unlock i Door.ForceOpen.
+1. Executa `Escape Room Framework > Create > Puzzles > Number Wheels Puzzle`. A la finestra que apareix tria entre 2 i 8 rodets, posa una xifra per rodet i prem `Create puzzle`. L'objecte `NumberWheelsPuzzle` apareix a `Hierarchy` amb càmera i controls ja connectats.
+2. Per afegir o treure rodets, selecciona l'arrel a `Hierarchy`. A `Inspector > NumberWheelsPuzzleAuthoring`, canvia `Wheel Count`, revisa totes les xifres i prem `Rebuild wheels and layout`. Per passar de quatre a tres, posa `Wheel Count = 3` i verifica les tres xifres abans de reconstruir. El botó refà el tauler i les seves condicions. Actualitza la pista del codi.
+3. A `Project`, obre la carpeta d'`Assets` on guardes el teu puzle. Fes clic dret en un espai buit i tria `Create > Escape Room Framework > Puzzles > Puzzle Definition`. Anomena l'asset `Def_sala1_puzle` o posa-li un nom que reconeguis.
+4. Selecciona la definició a `Project`. A `Inspector`, escriu un `Persistent Id` únic, com `sala1_teclat` si és el teclat de la sala 1. Omple `Display Name` i `Objective`. Selecciona l'arrel del puzle a `Hierarchy` i arrossega l'asset del `Project` a `Definition`, al component del puzle de l'`Inspector`.
+5. Si vols pistes, a la mateixa carpeta de `Project` fes clic dret i tria `Create > Escape Room Framework > Hints > Hint Data`. Selecciona el `Hint Data` i afegeix els textos a la seva llista `Hints`. Després selecciona la `Puzzle Definition` i arrossega el `Hint Data` del `Project` al camp `Hints` de la definició.
+6. Per obrir una porta en resoldre el puzle, crea-la des del menú superior `Escape Room Framework > Create > Interactables > Door`. A `Hierarchy`, selecciona `NewDoor_Logic` i, al component `Door` de l'`Inspector`, marca `Is Locked`. Col·loca la porta on vols que estigui a l'escena.
+7. A `Hierarchy`, selecciona l'arrel del puzle. Mantén `Ctrl` a Windows o `Cmd` a Mac i clica `NewDoor_Logic` perquè quedin seleccionats tots dos. Executa `Escape Room Framework > Create > Puzzles > Link Selected Objects To Puzzle`. Torna a seleccionar només l'arrel i comprova que `On Solved` conté `Door.Unlock` i `Door.ForceOpen`. Desa l'escena amb `Ctrl+S` o `Cmd+S` i entra a `Play`.
 
 **Com ho proves**
 
@@ -116,13 +128,16 @@ Menú: `Escape Room Framework > Create > Puzzles > Pipe Puzzle` · Sala del muse
 
 **Passos**
 
-1. Executa Escape Room Framework > Create > Puzzles > Pipe Puzzle. Es crea NewPipePuzzle amb dos trams d'exemple (pipe_a i pipe_b) girats 180°. Només és la lògica: encara no hi ha res visible.
-2. A la llista Tiles, cada tram té Tile Id, Row, Column, Open Sides (costats oberts sense girar: North, East, South, West) i Starting Rotation Steps (0–3, en passos de 90°). Posa Source Tile Id i Sink Tile Id.
-3. Per a cada tram, crea un objecte clicable (Escape Room Framework > Create > Interactables > Generic Trigger) i afegeix-hi un PipeTileButton amb el puzle i el seu Tile Id. A On Interact Event del trigger crida PipeTileButton.Rotate.
-4. Perquè el model giri, afegeix al tram visual un SteppedPositioner amb quatre posicions (0°, 90°, 180°, 270°) i assigna'l a Visual Positioner del PipeTileButton.
-5. Crea les dades del puzle: al panell Project, clic dret > Create > Escape Room Framework > Puzzles > Puzzle Definition. Posa-hi un Persistent Id únic (per exemple sala1_teclat), un Display Name i l'Objective. Després crea les pistes amb Create > Escape Room Framework > Hints > Hint Data (tres pistes: context, indicació i solució) i arrossega-les al camp Hints de la definició.
-6. Selecciona l'arrel del puzle i arrossega la definició al camp Definition del component.
-7. Crea la recompensa: Escape Room Framework > Create > Interactables > Door i marca Is Locked a la porta. Selecciona el puzle, fes Ctrl+clic a la porta i executa Escape Room Framework > Create > Puzzles > Link Selected Objects To Puzzle. A On Solved hi apareixeran Door.Unlock i Door.ForceOpen.
+1. Executa `Escape Room Framework > Create > Puzzles > Pipe Puzzle`. A `Hierarchy`, selecciona `NewPipePuzzle` i obre `PipePuzzle > Tiles` a l'`Inspector`. El menú crea el controlador amb `pipe_a` a fila 0 columna 0 i `pipe_b` a fila 0 columna 1. Ara construiràs els dos trams visibles.
+2. Des del menú superior crea un `Generic Trigger` a `Escape Room Framework > Create > Interactables`. Selecciona `NewTrigger_Logic` a `Hierarchy`, anomena'l `Tram A` i posa'l a l'escena. A l'`Inspector`, prem `Add Component` i cerca `PipeTileButton`. Amb `Tram A` encara seleccionat, arrossega `NewPipePuzzle` de `Hierarchy` al camp `Puzzle` i escriu `pipe_a` a `Tile Id`.
+3. A `Tram A`, desplega `InteractableTrigger > On Interact Event` i prem `+`. Arrossega `Tram A` de `Hierarchy` al camp d'objecte de la fila nova. Obre `No Function` i tria `PipeTileButton > Rotate`. Repeteix-ho per al `Tram B` amb `Tile Id = pipe_b` i posa'l al costat del primer.
+4. Per veure el gir, afegeix un `SteppedPositioner` a l'arrel de cada tram. A `Positions`, prepara quatre rotacions de 0°, 90°, 180° i 270° al voltant del mateix eix. Arrossega el fill amb el model a `Visual Transform`. Al `PipeTileButton`, arrossega l'arrel d'aquell tram al camp `Visual Positioner`. El model ha de mostrar les obertures que has definit a `Open Sides`.
+5. Si afegeixes un tram, crea el control i una fila amb el mateix `Tile Id` a `Tiles`. Tria una cel·la lliure amb `Row` i `Column`. Per treure'l, elimina el control i la fila del seu ID. Conserva un origen i un destí diferents, actualitza `Source Tile Id` i `Sink Tile Id` si cal, i comprova que les obertures encara permeten un camí. A l'exemple de dos trams, gira cada tram dues vegades.
+6. A `Project`, obre la carpeta d'`Assets` on guardes el teu puzle. Fes clic dret en un espai buit i tria `Create > Escape Room Framework > Puzzles > Puzzle Definition`. Anomena l'asset `Def_sala1_puzle` o posa-li un nom que reconeguis.
+7. Selecciona la definició a `Project`. A `Inspector`, escriu un `Persistent Id` únic, com `sala1_teclat` si és el teclat de la sala 1. Omple `Display Name` i `Objective`. Selecciona l'arrel del puzle a `Hierarchy` i arrossega l'asset del `Project` a `Definition`, al component del puzle de l'`Inspector`.
+8. Si vols pistes, a la mateixa carpeta de `Project` fes clic dret i tria `Create > Escape Room Framework > Hints > Hint Data`. Selecciona el `Hint Data` i afegeix els textos a la seva llista `Hints`. Després selecciona la `Puzzle Definition` i arrossega el `Hint Data` del `Project` al camp `Hints` de la definició.
+9. Per obrir una porta en resoldre el puzle, crea-la des del menú superior `Escape Room Framework > Create > Interactables > Door`. A `Hierarchy`, selecciona `NewDoor_Logic` i, al component `Door` de l'`Inspector`, marca `Is Locked`. Col·loca la porta on vols que estigui a l'escena.
+10. A `Hierarchy`, selecciona l'arrel del puzle. Mantén `Ctrl` a Windows o `Cmd` a Mac i clica `NewDoor_Logic` perquè quedin seleccionats tots dos. Executa `Escape Room Framework > Create > Puzzles > Link Selected Objects To Puzzle`. Torna a seleccionar només l'arrel i comprova que `On Solved` conté `Door.Unlock` i `Door.ForceOpen`. Desa l'escena amb `Ctrl+S` o `Cmd+S` i entra a `Play`.
 
 **Com ho proves**
 
@@ -140,13 +155,13 @@ Menú: `Escape Room Framework > Create > Puzzles > Sliding Puzzle` · Sala del m
 
 **Passos**
 
-1. Executa Escape Room Framework > Create > Puzzles > Sliding Puzzle. Es crea un tauler 3×3 ja jugable amb vuit fitxes clicables.
-2. Selecciona el fill Board (SlidingBoardView) i assigna una imatge a Source Image: es talla en fragments i indica al jugador l'ordre correcte.
-3. Per canviar la mida, modifica Columns, Rows i Hole Cell a SlidingPuzzle i prem Rebuild board a Board.
-4. Shuffle Move Count indica quants moviments legals es fan per barrejar: sempre té solució.
-5. Crea les dades del puzle: al panell Project, clic dret > Create > Escape Room Framework > Puzzles > Puzzle Definition. Posa-hi un Persistent Id únic (per exemple sala1_teclat), un Display Name i l'Objective. Després crea les pistes amb Create > Escape Room Framework > Hints > Hint Data (tres pistes: context, indicació i solució) i arrossega-les al camp Hints de la definició.
-6. Selecciona l'arrel del puzle i arrossega la definició al camp Definition del component.
-7. Crea la recompensa: Escape Room Framework > Create > Interactables > Door i marca Is Locked a la porta. Selecciona el puzle, fes Ctrl+clic a la porta i executa Escape Room Framework > Create > Puzzles > Link Selected Objects To Puzzle. A On Solved hi apareixeran Door.Unlock i Door.ForceOpen.
+1. Executa `Escape Room Framework > Create > Puzzles > Sliding Puzzle`. A `Hierarchy`, obre `NewSlidingPuzzle` i selecciona `Board`. Per posar una imatge, importa-la arrossegant el fitxer a una carpeta teva d'`Assets` dins de `Project`. Amb `Board` seleccionat, arrossega la imatge de `Project` a `SlidingBoardView > Source Image` a l'`Inspector`. Prem `Re-apply layout and image` si cal actualitzar-la.
+2. Per reduir el tauler 3×3 a 2×2, selecciona `NewSlidingPuzzle` i posa `Columns = 2`, `Rows = 2` i `Hole Cell` a `X = 1`, `Y = 1`. Selecciona `Board` i prem `Rebuild board`. Obtindràs tres fitxes i un espai buit. Usa el mateix botó quan ampliïs la graella. Si has activat `Custom Target Order`, revisa l'ordre perquè encaixi amb la mida nova.
+3. A `Project`, obre la carpeta d'`Assets` on guardes el teu puzle. Fes clic dret en un espai buit i tria `Create > Escape Room Framework > Puzzles > Puzzle Definition`. Anomena l'asset `Def_sala1_puzle` o posa-li un nom que reconeguis.
+4. Selecciona la definició a `Project`. A `Inspector`, escriu un `Persistent Id` únic, com `sala1_teclat` si és el teclat de la sala 1. Omple `Display Name` i `Objective`. Selecciona l'arrel del puzle a `Hierarchy` i arrossega l'asset del `Project` a `Definition`, al component del puzle de l'`Inspector`.
+5. Si vols pistes, a la mateixa carpeta de `Project` fes clic dret i tria `Create > Escape Room Framework > Hints > Hint Data`. Selecciona el `Hint Data` i afegeix els textos a la seva llista `Hints`. Després selecciona la `Puzzle Definition` i arrossega el `Hint Data` del `Project` al camp `Hints` de la definició.
+6. Per obrir una porta en resoldre el puzle, crea-la des del menú superior `Escape Room Framework > Create > Interactables > Door`. A `Hierarchy`, selecciona `NewDoor_Logic` i, al component `Door` de l'`Inspector`, marca `Is Locked`. Col·loca la porta on vols que estigui a l'escena.
+7. A `Hierarchy`, selecciona l'arrel del puzle. Mantén `Ctrl` a Windows o `Cmd` a Mac i clica `NewDoor_Logic` perquè quedin seleccionats tots dos. Executa `Escape Room Framework > Create > Puzzles > Link Selected Objects To Puzzle`. Torna a seleccionar només l'arrel i comprova que `On Solved` conté `Door.Unlock` i `Door.ForceOpen`. Desa l'escena amb `Ctrl+S` o `Cmd+S` i entra a `Play`.
 
 **Com ho proves**
 
@@ -163,12 +178,15 @@ Menú: `Escape Room Framework > Create > Puzzles > Linked Lights Puzzle` · Sala
 
 **Passos**
 
-1. Executa Escape Room Framework > Create > Puzzles > Linked Lights Puzzle. La comanda crea LinkedLights_Kit amb cinc botons, etiquetes i un botó de reinici a la teva escena.
-
-   Si el menú no apareix a la teva còpia 0.2.1, obre ShowcaseMuseum i arrossega Room14_LinkedLights > LinkedLights_Kit de la Hierarchy a una carpeta teva del Project per crear-ne un prefab. Després arrossega el prefab a la teva escena. Neteja les referències de la demo que hi hagi a On Solved i al botó ResetButton, però conserva LinkedLightsPuzzle.ResetPuzzle al botó.
-2. A LinkedLightsPuzzle > Nodes, cada llum té Initially On, Target On, Connections (índexs que commuta el seu botó, començant per 0; inclou el propi si s'ha de commutar) i Indicator.
-3. Crea una Puzzle Definition amb un Persistent Id únic i assigna-la al circuit. Si has copiat el circuit del museu, substitueix la definició demo_linked_lights per la teva.
-4. Crea la recompensa: Escape Room Framework > Create > Interactables > Door i marca Is Locked a la porta. Selecciona el puzle, fes Ctrl+clic a la porta i executa Escape Room Framework > Create > Puzzles > Link Selected Objects To Puzzle. A On Solved hi apareixeran Door.Unlock i Door.ForceOpen.
+1. Executa `Escape Room Framework > Create > Puzzles > Linked Lights Puzzle`. A `Hierarchy`, selecciona `LinkedLights_Kit`. Obre el seu triangle per trobar els cinc botons i `ResetButton`. Selecciona l'arrel i obre `LinkedLightsPuzzle > Nodes` a l'`Inspector`. Els botons es numeren des d'1 i els índexs des de 0.
+2. Per afegir una llum, duplica un botó a `Hierarchy`, dona-li el nou `Index` a `LinkedLightButton` i afegeix una fila a `Nodes`. Selecciona l'arrel i arrossega el botó duplicat al camp `Indicator` de la nova fila. Revisa també `Connections` a les files que vulguis connectar-hi.
+3. Per passar de cinc a quatre, treu `Element 4` de `Nodes` i elimina `LightButton_5` i `Number_5` a `Hierarchy`. A `Element 3 > Connections`, deixa `2, 3`. Si treus una llum del mig, refés els `Index` i totes les `Connections` que canviïn de número. A la configuració de quatre llums d'aquest exemple, desmarca `Initially On` a totes quatre, marca `Target On` a totes i prova els botons 1 i 4.
+4. Si encara tens la 0.2.1 i no trobes el menú, obre `ShowcaseMuseum` des de `Project > Assets > _EscapeRoomTemplate > Scenes`. A `Hierarchy`, obre `Room14_LinkedLights` i arrossega `LinkedLights_Kit` a una carpeta teva de `Project` per fer-ne un prefab. Reobre la teva escena i arrossega-hi el prefab. Treu les referències de la demo que quedin a `On Solved` i al `ResetButton`. Mantén `LinkedLightsPuzzle.ResetPuzzle` al botó. Assigna una definició pròpia al circuit.
+5. A `Project`, obre la carpeta d'`Assets` on guardes el teu puzle. Fes clic dret en un espai buit i tria `Create > Escape Room Framework > Puzzles > Puzzle Definition`. Anomena l'asset `Def_sala1_puzle` o posa-li un nom que reconeguis.
+6. Selecciona la definició a `Project`. A `Inspector`, escriu un `Persistent Id` únic, com `sala1_teclat` si és el teclat de la sala 1. Omple `Display Name` i `Objective`. Selecciona l'arrel del puzle a `Hierarchy` i arrossega l'asset del `Project` a `Definition`, al component del puzle de l'`Inspector`.
+7. Si vols pistes, a la mateixa carpeta de `Project` fes clic dret i tria `Create > Escape Room Framework > Hints > Hint Data`. Selecciona el `Hint Data` i afegeix els textos a la seva llista `Hints`. Després selecciona la `Puzzle Definition` i arrossega el `Hint Data` del `Project` al camp `Hints` de la definició.
+8. Per obrir una porta en resoldre el puzle, crea-la des del menú superior `Escape Room Framework > Create > Interactables > Door`. A `Hierarchy`, selecciona `NewDoor_Logic` i, al component `Door` de l'`Inspector`, marca `Is Locked`. Col·loca la porta on vols que estigui a l'escena.
+9. A `Hierarchy`, selecciona l'arrel del puzle. Mantén `Ctrl` a Windows o `Cmd` a Mac i clica `NewDoor_Logic` perquè quedin seleccionats tots dos. Executa `Escape Room Framework > Create > Puzzles > Link Selected Objects To Puzzle`. Torna a seleccionar només l'arrel i comprova que `On Solved` conté `Door.Unlock` i `Door.ForceOpen`. Desa l'escena amb `Ctrl+S` o `Cmd+S` i entra a `Play`.
 
 **Com ho proves**
 
@@ -186,18 +204,28 @@ Menú: `Escape Room Framework > Create > Puzzles > Throw Puzzle` · Sala del mus
 
 **Passos**
 
-1. Executa Escape Room Framework > Create > Puzzles > Throw Puzzle. Es creen tres dianes amb ThrowTarget (target_1, target_2, target_3) llistades a Target Ids.
-2. Posa objectes per llançar: Escape Room Framework > Create > Interactables > Physics Grabbable, amb Can Be Thrown activat.
-3. A cada diana, Min Impact Speed (m/s) evita que un cop suau compti.
-4. Tanca l'espai amb parets amb collider perquè els objectes no es perdin.
-5. Crea les dades del puzle: al panell Project, clic dret > Create > Escape Room Framework > Puzzles > Puzzle Definition. Posa-hi un Persistent Id únic (per exemple sala1_teclat), un Display Name i l'Objective. Després crea les pistes amb Create > Escape Room Framework > Hints > Hint Data (tres pistes: context, indicació i solució) i arrossega-les al camp Hints de la definició.
-6. Selecciona l'arrel del puzle i arrossega la definició al camp Definition del component.
-7. Crea la recompensa: Escape Room Framework > Create > Interactables > Door i marca Is Locked a la porta. Selecciona el puzle, fes Ctrl+clic a la porta i executa Escape Room Framework > Create > Puzzles > Link Selected Objects To Puzzle. A On Solved hi apareixeran Door.Unlock i Door.ForceOpen.
+1. Executa `Escape Room Framework > Create > Puzzles > Throw Puzzle`. A `Hierarchy`, obre el triangle de `NewThrowPuzzle`. Hi trobaràs `Target1_Logic`, `Target2_Logic` i `Target3_Logic`. Cada diana conté un `ThrowTarget` i un collider sòlid.
+2. Per quedar-te una sola diana, selecciona `Target2_Logic` i `Target3_Logic` a `Hierarchy` i elimina'ls amb `Delete`. Deixa `Target1_Logic` i el seu fill visual. Torna a seleccionar `NewThrowPuzzle`. A `Inspector > ThrowPuzzle > Target Ids`, posa la mida de la llista a `1` o elimina les dues files sobrants amb `–`. Ha de quedar només `Element 0 = target_1`.
+3. Selecciona `Target1_Logic` i comprova a l'`Inspector` que `ThrowTarget > Target Id` diu `target_1`. Si el camp `Puzzle` és buit, arrossega-hi `NewThrowPuzzle` des de `Hierarchy`. Si un altre dia vols una diana més, duplica l'objecte `_Logic`, canvia `Target Id` i afegeix el mateix ID a `Target Ids` de l'arrel.
+4. Crea un objecte per llançar amb `Escape Room Framework > Create > Interactables > Physics Grabbable`. Selecciona `NewGrabbable_Logic` a `Hierarchy`. A l'`Inspector`, comprova `Can Be Thrown` a `PhysicsGrabbable` i que el collider estigui activat, amb `Is Trigger` desmarcat, i que el `Rigidbody` tingui `Is Kinematic` desmarcat. Col·loca l'objecte a l'abast. En `Play` a PC, mira'l i prem `E`, apunta a la diana i llança amb clic esquerre. Amb una sola diana, un impacte que superi `Min Impact Speed` ha de resoldre el puzle.
+5. A `Project`, obre la carpeta d'`Assets` on guardes el teu puzle. Fes clic dret en un espai buit i tria `Create > Escape Room Framework > Puzzles > Puzzle Definition`. Anomena l'asset `Def_sala1_puzle` o posa-li un nom que reconeguis.
+6. Selecciona la definició a `Project`. A `Inspector`, escriu un `Persistent Id` únic, com `sala1_teclat` si és el teclat de la sala 1. Omple `Display Name` i `Objective`. Selecciona l'arrel del puzle a `Hierarchy` i arrossega l'asset del `Project` a `Definition`, al component del puzle de l'`Inspector`.
+7. Si vols pistes, a la mateixa carpeta de `Project` fes clic dret i tria `Create > Escape Room Framework > Hints > Hint Data`. Selecciona el `Hint Data` i afegeix els textos a la seva llista `Hints`. Després selecciona la `Puzzle Definition` i arrossega el `Hint Data` del `Project` al camp `Hints` de la definició.
+8. Per obrir una porta en resoldre el puzle, crea-la des del menú superior `Escape Room Framework > Create > Interactables > Door`. A `Hierarchy`, selecciona `NewDoor_Logic` i, al component `Door` de l'`Inspector`, marca `Is Locked`. Col·loca la porta on vols que estigui a l'escena.
+9. A `Hierarchy`, selecciona l'arrel del puzle. Mantén `Ctrl` a Windows o `Cmd` a Mac i clica `NewDoor_Logic` perquè quedin seleccionats tots dos. Executa `Escape Room Framework > Create > Puzzles > Link Selected Objects To Puzzle`. Torna a seleccionar només l'arrel i comprova que `On Solved` conté `Door.Unlock` i `Door.ForceOpen`. Desa l'escena amb `Ctrl+S` o `Cmd+S` i entra a `Play`.
 
 **Com ho proves**
 
 - A PC: E per agafar, clic esquerre per llançar i Q per deixar. A VR: agafa amb el grip i deixa anar fent el gest.
 - Prova-ho a Play: guarda amb F5 a mig puzle i un cop resolt, surt i carrega amb F9. L'estat ha de ser el mateix i la porta ha de continuar oberta.
+
+**Opcional · Clavar un o diversos ganivets 3D a la diana (sense tocar la plantilla)**
+
+1. **Prepara el ganivet (`PhysicsGrabbable` + `GrabbablePiece`).** Al teu objecte llançable (`Ganivet_Logic`), afegeix el component `GrabbablePiece` amb `Add Component`. A més de permetre clavar-lo, `GrabbablePiece` té `Return When Lost` activat per defecte: si el tir falla i el ganivet cau lluny o sota el mapa, torna sol a la posició inicial.
+2. **Marca el punt i angle finals (`PuntClavat`).** Fes clic dret sobre `Target1_Logic` a `Hierarchy` → `Create Empty`, anomena'l `PuntClavat` i situa'l i gira'l amb la punta mirant cap a la diana.
+3. **Connecta l'esdeveniment (`GrabbablePiece.LockInPlace`).** Per a 1 diana i 1 ganivet, a `ThrowPuzzle > On Solved` prem `+`, arrossega `Ganivet_Logic`, selecciona `GrabbablePiece > LockInPlace (Transform)` i arrossega `PuntClavat` al camp `Transform`. `LockInPlace` congela el `Rigidbody` (`isKinematic = true`), el fa fill de la diana i desactiva l'outline i l'agafada (PC i VR).
+4. **Múltiples dianes i ganivets sense codi (`MultiStagePuzzle`).** Si tens 3 dianes i 3 ganivets i vols que cadascun es clavi en encertar la seva diana sense codi, agrupa 3 `ThrowPuzzle` d'1 diana dins d'un `MultiStagePuzzle` (amb `Require Order` desmarcat) i connecta l'`On Solved` de cada fill al `LockInPlace` del seu ganivet.
+5. **Múltiples dianes amb qualsevol ganivet a l'instant (micro-script a la teva carpeta).** Si vols que qualsevol ganivet es clavi a l'instant a qualsevol diana en xocar-hi, afegeix a cada diana un script propi (a `Assets/ElMeuJoc/StickKnifeOnTarget.cs`) que a `OnCollisionEnter` comprovi `collision.relativeVelocity.magnitude >= _minImpactSpeed` i cridi `piece.LockInPlace(_snapPoint)`.
 
 **Compte amb**
 
@@ -209,13 +237,14 @@ Menú: `Escape Room Framework > Create > Puzzles > Placement Puzzle` · Sala del
 
 **Passos**
 
-1. Executa Escape Room Framework > Create > Puzzles > Placement Puzzle. Es creen dues peces (piece_a, piece_b) i tres suports (socket_a, socket_b i socket_c, que fa d'esquer).
-2. A PlacementPuzzle, cada regla (Rules) diu a quin suport va cada peça: pieceId → correctSocketId.
-3. A cada peça, GrabbablePiece > Piece Id ha de coincidir amb la regla. Return When Lost la torna al lloc si cau fora de l'abast.
-4. A cada suport, PieceSocketReceiver té el puzle, el Socket Id i un Snap Point. Els esdeveniments On Piece Seated / Removed / Locked serveixen per a so i animació.
-5. Crea les dades del puzle: al panell Project, clic dret > Create > Escape Room Framework > Puzzles > Puzzle Definition. Posa-hi un Persistent Id únic (per exemple sala1_teclat), un Display Name i l'Objective. Després crea les pistes amb Create > Escape Room Framework > Hints > Hint Data (tres pistes: context, indicació i solució) i arrossega-les al camp Hints de la definició.
-6. Selecciona l'arrel del puzle i arrossega la definició al camp Definition del component.
-7. Crea la recompensa: Escape Room Framework > Create > Interactables > Door i marca Is Locked a la porta. Selecciona el puzle, fes Ctrl+clic a la porta i executa Escape Room Framework > Create > Puzzles > Link Selected Objects To Puzzle. A On Solved hi apareixeran Door.Unlock i Door.ForceOpen.
+1. Executa `Escape Room Framework > Create > Puzzles > Placement Puzzle`. Obre `NewPlacementPuzzle` a `Hierarchy`. Els objectes `PieceA_Logic` i `PieceB_Logic` són les peces, i `SocketA_Logic`, `SocketB_Logic` i `SocketC_Logic` són els encaixos. Selecciona l'arrel i obre `PlacementPuzzle > Rules` a l'`Inspector`.
+2. Per afegir una parella, duplica una peça i un encaix sencers a `Hierarchy`. Al component `GrabbablePiece` de la peça nova, escriu `Piece Id = piece_c`. Al `PieceSocketReceiver` de l'encaix nou, posa `Socket Id = socket_d`. Si falta `Puzzle`, arrossega-hi `NewPlacementPuzzle`. A l'arrel, prem `+` a `Rules` i escriu `piece_c` a `Piece Id` i `socket_d` a `Correct Socket Id`.
+3. Per quedar-te la peça A, elimina de `Rules` la fila `piece_b → socket_b`. A `Hierarchy`, elimina `PieceB_Logic` i `SocketB_Logic`. Si vols treure també l'esquer, elimina `SocketC_Logic`. Com que aquest últim no té cap regla, no cal canviar la llista. Deixa `piece_a → socket_a` i col·loca tots dos objectes a l'abast.
+4. A `Project`, obre la carpeta d'`Assets` on guardes el teu puzle. Fes clic dret en un espai buit i tria `Create > Escape Room Framework > Puzzles > Puzzle Definition`. Anomena l'asset `Def_sala1_puzle` o posa-li un nom que reconeguis.
+5. Selecciona la definició a `Project`. A `Inspector`, escriu un `Persistent Id` únic, com `sala1_teclat` si és el teclat de la sala 1. Omple `Display Name` i `Objective`. Selecciona l'arrel del puzle a `Hierarchy` i arrossega l'asset del `Project` a `Definition`, al component del puzle de l'`Inspector`.
+6. Si vols pistes, a la mateixa carpeta de `Project` fes clic dret i tria `Create > Escape Room Framework > Hints > Hint Data`. Selecciona el `Hint Data` i afegeix els textos a la seva llista `Hints`. Després selecciona la `Puzzle Definition` i arrossega el `Hint Data` del `Project` al camp `Hints` de la definició.
+7. Per obrir una porta en resoldre el puzle, crea-la des del menú superior `Escape Room Framework > Create > Interactables > Door`. A `Hierarchy`, selecciona `NewDoor_Logic` i, al component `Door` de l'`Inspector`, marca `Is Locked`. Col·loca la porta on vols que estigui a l'escena.
+8. A `Hierarchy`, selecciona l'arrel del puzle. Mantén `Ctrl` a Windows o `Cmd` a Mac i clica `NewDoor_Logic` perquè quedin seleccionats tots dos. Executa `Escape Room Framework > Create > Puzzles > Link Selected Objects To Puzzle`. Torna a seleccionar només l'arrel i comprova que `On Solved` conté `Door.Unlock` i `Door.ForceOpen`. Desa l'escena amb `Ctrl+S` o `Cmd+S` i entra a `Play`.
 
 **Com ho proves**
 
@@ -233,11 +262,14 @@ Menú: `Escape Room Framework > Create > Puzzles > Multi-Stage Puzzle` · Sala d
 
 **Passos**
 
-1. Executa Escape Room Framework > Create > Puzzles > Multi-Stage Puzzle. Es crea un grup amb dos fills visibles: Puzzle01_Sequence i Puzzle02_Levers.
-2. A MultiStagePuzzle > Puzzles, cada entrada té un id, el puzle fill i la seva arrel d'interacció. Hi pots afegir qualsevol altre puzle de l'escena.
-3. Require Order obliga a resoldre'ls en ordre; Lock Future Puzzles fa que els següents es vegin però no responguin fins al seu torn.
-4. Cada fill necessita la seva PuzzleDefinition amb un ID únic. El grup també en té una.
-5. Connecta la porta només a l'On Solved del grup, no als dels fills (usa Link Selected Objects To Puzzle amb el grup seleccionat).
+1. Executa `Escape Room Framework > Create > Puzzles > Multi-Stage Puzzle`. A `Hierarchy`, obre `MultiStageChainPuzzle` i després `MultiStage_Generated`. Hi ha un puzle de seqüència i un de palanques. Per editar-los, selecciona el fill de la fase corresponent. Per canviar l'ordre, selecciona l'arrel i obre `MultiStagePuzzle > Puzzles` a l'`Inspector`.
+2. Per afegir una fase, crea un puzle amb el seu menú i situa'l a l'escena. A l'arrel del grup, prem `+` a `Puzzles` i posa un `Id` diferent de les altres fases. Arrossega l'arrel del puzle nou de `Hierarchy` a `Puzzle`. Assigna a `Interaction Root` l'objecte que conté els controls, normalment la mateixa arrel.
+3. Per treure una fase, elimina la seva fila de `Puzzles` i retira el seu objecte de `Hierarchy` si no el vols a la sala. Conserva almenys un puzle al grup. Amb `Require Order` activat, les fases se segueixen en l'ordre de la llista. `Lock Future Puzzles` evita que els controls de fases posteriors responguin abans del seu torn. Connecta la porta a l'arrel del grup.
+4. A `Project`, obre la carpeta d'`Assets` on guardes el teu puzle. Fes clic dret en un espai buit i tria `Create > Escape Room Framework > Puzzles > Puzzle Definition`. Anomena l'asset `Def_sala1_puzle` o posa-li un nom que reconeguis.
+5. Selecciona la definició a `Project`. A `Inspector`, escriu un `Persistent Id` únic, com `sala1_teclat` si és el teclat de la sala 1. Omple `Display Name` i `Objective`. Selecciona l'arrel del puzle a `Hierarchy` i arrossega l'asset del `Project` a `Definition`, al component del puzle de l'`Inspector`.
+6. Si vols pistes, a la mateixa carpeta de `Project` fes clic dret i tria `Create > Escape Room Framework > Hints > Hint Data`. Selecciona el `Hint Data` i afegeix els textos a la seva llista `Hints`. Després selecciona la `Puzzle Definition` i arrossega el `Hint Data` del `Project` al camp `Hints` de la definició.
+7. Per obrir una porta en resoldre el puzle, crea-la des del menú superior `Escape Room Framework > Create > Interactables > Door`. A `Hierarchy`, selecciona `NewDoor_Logic` i, al component `Door` de l'`Inspector`, marca `Is Locked`. Col·loca la porta on vols que estigui a l'escena.
+8. A `Hierarchy`, selecciona l'arrel del puzle. Mantén `Ctrl` a Windows o `Cmd` a Mac i clica `NewDoor_Logic` perquè quedin seleccionats tots dos. Executa `Escape Room Framework > Create > Puzzles > Link Selected Objects To Puzzle`. Torna a seleccionar només l'arrel i comprova que `On Solved` conté `Door.Unlock` i `Door.ForceOpen`. Desa l'escena amb `Ctrl+S` o `Cmd+S` i entra a `Play`.
 
 **Com ho proves**
 
@@ -248,6 +280,31 @@ Menú: `Escape Room Framework > Create > Puzzles > Multi-Stage Puzzle` · Sala d
 
 
 ## Sistemes de la sala
+
+<a id="key"></a>
+### Clau que obre una porta
+
+Menú: `Create > Escape Room Framework > Inventory > Item` + `Escape Room Framework > Create > Interactables > Pickable Item · Door` · Sala del museu 1 · 3
+
+**Passos**
+
+1. **Crea la fitxa de la clau (`InventoryItemData`).** Al panell `Project`, entra a la teva carpeta sota `Assets`. Fes clic dret en un espai buit i tria `Create > Escape Room Framework > Inventory > Item`. Anomena l'asset `Item_ClauDespatx`. Selecciona'l i, a l'`Inspector`, escriu a `Item Id` un identificador únic en minúscules i sense espais, com `clau_despatx`. Omple `Display Name` (per exemple `Clau del despatx`) i `Description`. Si no tens cap icona pròpia per a `Icon`, pots generar-la automàticament més tard amb `Escape Room Framework > Maintenance > Generate Missing Item Icons`.
+2. **Registra la clau al catàleg (`DefaultItemCatalog`).** Al panell `Project`, selecciona `Assets/_EscapeRoomTemplate/ScriptableObjects/DefaultItemCatalog.asset` (el catàleg que fa servir `InventoryManager` dins del `GameManager`). A l'`Inspector`, desplega `Items`, prem `+` i arrossega-hi el teu asset `Item_ClauDespatx` des de `Project`. Això permet que el guardat i la càrrega reconeguin la clau.
+3. **Col·loca la clau a l'escena (`Pickable Item`).** Al menú superior executa `Escape Room Framework > Create > Interactables > Pickable Item`. A `Hierarchy`, selecciona `NewPickableItem_Logic` (pots anomenar-lo `ClauDespatx_Logic`) i mou-lo on el jugador l'hagi de trobar (sobre una taula, a terra o dins d'un calaix). Amb `ClauDespatx_Logic` seleccionat a `Hierarchy`, arrossega l'asset `Item_ClauDespatx` des de `Project` fins al camp `Item Data` del component `Pickable Item` a l'`Inspector`. Deixa `Quantity` a `1`.
+4. **Crea la porta i tanca-la amb la clau (`Door`).** Al menú superior executa `Escape Room Framework > Create > Interactables > Door` (o selecciona una porta, armari o calaix existent). A `Hierarchy`, selecciona `NewDoor_Logic` i mira el component `Door` a l'`Inspector`. Marca `Is Locked` i, al camp `Required Item Id`, escriu exactament el mateix text que has posat a `Item Id` de la clau: `clau_despatx`.
+5. **Tria com s'utilitza la clau (`Item Use Policy`).** Al mateix component `Door`, deixa `Item Use Policy` a `Offer Compatible` (per defecte: en prémer `E` davant la porta tancada, s'obre un selector al HUD amb la clau per confirmar-ne l'ús, i el següent `E` obre la porta) o canvia'l a `Auto Use Single` si vols que en prémer `E` es desbloquegi i s'obri directament sense menú quan el jugador porta la clau. Marca `Consume Required Item` si la clau s'ha de gastar, o desmarca-ho si serveix per a més d'una porta.
+6. **Alternativa amb pany separat (`Item Receiver`).** Si prefereixes un pany o pedestal separat on es vegi aparèixer el model 3D de la clau, executa `Escape Room Framework > Create > Interactables > Item Receiver`. Arrossega `Item_ClauDespatx` al camp `Required Item` (aquí s'arrossega l'asset, no el text) i, a `On Item Accepted`, prem `+`, arrossega la porta des de `Hierarchy` i selecciona `Door.Unlock` (i una segona fila amb `Door.ForceOpen` si vols que s'obri sola).
+
+**Com ho proves**
+
+- Entra a `Play`, apropa't a la porta abans d'agafar la clau i prem `E`: ha de continuar tancada i mostrar el missatge de bloqueig.
+- Mira la clau i prem `E` per recollir-la (pots comprovar que és a l'inventari amb `I`). Torna a la porta i prem `E`: amb `Offer Compatible`, confirma la clau al selector i prem `E` per obrir; amb `Auto Use Single`, s'obre directament.
+- Guarda amb `F5` després d'obrir la porta i carrega amb `F9`: la clau recollida no torna a aparèixer a l'escena i la porta continua desbloquejada i oberta.
+
+**Compte amb**
+
+- `Required Item Id` a `Door` és un text i ha de coincidir **exactament** (majúscules, minúscules i guions) amb `Item Id` de l'`InventoryItemData`, no amb el nom del fitxer ni amb `Display Name`.
+- Si no afegeixes l'asset al `DefaultItemCatalog`, la clau desapareixerà de l'inventari en carregar una partida guardada.
 
 <a id="items"></a>
 ### Objectes, inventari, combinació i examen

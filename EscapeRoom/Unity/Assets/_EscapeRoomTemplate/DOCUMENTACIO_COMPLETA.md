@@ -735,6 +735,15 @@ El jugador selecciona `COMBINAR` i després un candidat compatible. La UI filtra
 
 ### Ús contextual en portes i receptors
 
+#### Exemple pas a pas sense codi: una clau que obre una porta
+
+1. **Crear les dades de la clau (`InventoryItemData`):** al panell `Project`, fes clic dret a la teva carpeta → `Create > Escape Room Framework > Inventory > Item`. Escriu un `Item Id` únic en minúscules i sense espais (per exemple `clau_despatx`) i un `Display Name`.
+2. **Registrar-la al catàleg (`DefaultItemCatalog`):** obre `Assets/_EscapeRoomTemplate/ScriptableObjects/DefaultItemCatalog.asset` i afegeix l'asset de la clau a la llista `Items` perquè el guardat/càrrega la reconegui.
+3. **Col·locar la clau a l'escena (`Pickable Item`):** executa `Escape Room Framework > Create > Interactables > Pickable Item`, col·loca l'objecte a la sala i arrossega l'asset de la clau al seu camp `Item Data`.
+4. **Tancar la porta amb aquesta clau (`Door`):** executa `Escape Room Framework > Create > Interactables > Door` (o selecciona una porta, calaix o armari existent). Al component `Door` de l'`Inspector`, marca `Is Locked` i escriu el mateix `Item Id` (`clau_despatx`) al camp `Required Item Id`.
+5. **Triar com s'aplica la clau (`Item Use Policy`):** amb `Offer Compatible` (per defecte), en prémer `E` davant la porta tancada s'obre el selector del HUD amb la clau per confirmar-la, i el següent `E` obre la porta; amb `Auto Use Single`, en prémer `E` es desbloqueja i s'obre directament. Marca `Consume Required Item` si la clau s'ha de gastar en obrir.
+6. **Alternativa amb pany o pedestal separat (`Item Receiver`):** si vols un receptor a part on aparegui el model 3D de l'objecte, crea'l amb `Escape Room Framework > Create > Interactables > Item Receiver`, arrossega l'asset a `Required Item` i connecta la porta a `On Item Accepted` (`Door.Unlock` i `Door.ForceOpen`).
+
 `IInventoryItemTarget` defineix tres polítiques:
 
 | Política | Comportament |
@@ -1689,7 +1698,7 @@ Noms que **no** es poden tocar sense actualitzar el C#: `screen-content`, `inven
 
 La plantilla inclou una base OpenXR funcional i independent del fabricant. Està configurada per a `Standalone` i `Android`, utilitza XRI 3.3 i manté la lògica d'Escape Room/Survival Horror compartida amb PC. La validació amb el visor final continua sent obligatòria abans de publicar un joc.
 
-![VRTemplate executada amb XR Interaction Simulator](https://github.com/xavikai/EscapeRoomRevolt/blob/main/EscapeRoom/Framework/Assets/_EscapeRoomTemplate/Documentation/Images/VRTemplate_Runtime.png)
+![VRTemplate executada amb XR Interaction Simulator](Documentation/Images/VRTemplate_Runtime.png)
 
 ### Inici ràpid
 

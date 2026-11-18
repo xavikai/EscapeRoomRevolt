@@ -35,6 +35,15 @@ The PC museum contains 13 puzzle controllers (the thirteenth is room 14, `Linked
 5. Add a visible clue that lets the player deduce 3142. Do not enable the random variant if the written clue still shows a fixed solution.
 6. Test a wrong code, the correct one, saving with the door open and loading again. `On Solved` represents a new resolution; it is not emitted again on load. The door must restore its state through its own save data.
 
+### Example: a key that opens a door
+
+1. In the `Project` panel, create the key asset with `Create > Escape Room Framework > Inventory > Item`. Set a unique lowercase `Item Id` (for example `office_key`) and a `Display Name`.
+2. Add the asset to the `Items` list of `Assets/_EscapeRoomTemplate/ScriptableObjects/DefaultItemCatalog.asset` so the inventory and save system recognize it.
+3. Place the key in the scene with `Escape Room Framework > Create > Interactables > Pickable Item` and drag the asset into its `Item Data` field.
+4. Create or select the door (`Escape Room Framework > Create > Interactables > Door`). On the `Door` component, tick `Is Locked` and enter the exact same identifier (`office_key`) in `Required Item Id`.
+5. Choose `Item Use Policy`: `Offer Compatible` (opens the HUD selector when pressing `E` while carrying the key) or `Auto Use Single` (unlocks and opens immediately on pressing `E`). Tick `Consume Required Item` if the key should be consumed on use.
+6. Test trying to open without the key, picking up the key with `E`, opening the door, saving with `F5` and loading with `F9`: the picked-up key must not respawn and the door must keep its state.
+
 ## 3. Choosing and configuring mechanics
 
 Names in backticks are fields or methods of the component. You can connect public methods through Inspector UnityEvents when their signature is compatible.
