@@ -2,13 +2,13 @@
 
 El repositori està organitzat en **dues carpetes principals**, una per projecte:
 
-**Darrera release: [Escape Room 0.2.1](https://github.com/xavikai/EscapeRoomRevolt/releases/tag/escaperoom-v0.2.1)** — [notes de la versió](EscapeRoom/Framework/RELEASE_NOTES_v0.2.1.md) ([0.2.0](EscapeRoom/Framework/RELEASE_NOTES_v0.2.0.md)). Inclou demo Windows, projecte portable, guia revisada i sumes SHA-256.
+**Darrera release: [Escape Room 0.2.2](https://github.com/xavikai/EscapeRoomRevolt/releases/tag/escaperoom-v0.2.2)** — [notes de la versió](EscapeRoom/Framework/RELEASE_NOTES_v0.2.2.md) ([0.2.0](EscapeRoom/Framework/RELEASE_NOTES_v0.2.0.md)). Inclou demo Windows, projecte portable, guia revisada i sumes SHA-256.
 
-**[Descarrega la guia interactiva amb captures (CA/ES/EN)](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.1/guia-escape-room-0.2.1.html)** · [Fitxer font](EscapeRoom/Framework/docs/guia/index.html) · [Instruccions](EscapeRoom/Framework/docs/guia/README.md). Desa l'HTML i obre'l amb un navegador; GitHub mostra el codi del fitxer font. Necessita Internet per carregar Three.js i les tipografies; les captures van incrustades.
+**[Descarrega la guia interactiva amb captures (CA/ES/EN/FR/RU)](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.2/guia-escape-room-0.2.2.html)** · [Fitxer font](EscapeRoom/Framework/docs/guia/index.html) · [Instruccions](EscapeRoom/Framework/docs/guia/README.md). Desa l'HTML i obre'l amb un navegador; GitHub mostra el codi del fitxer font. Necessita Internet per carregar Three.js i les tipografies; les captures van incrustades.
 
 | Carpeta | Projecte Unity per editar | Demo Windows per provar sense Unity |
 |---|---|---|
-| [EscapeRoom](EscapeRoom/README.md) | [EscapeRoom/Unity](EscapeRoom/Unity) | [ZIP Escape Room](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.1/EscapeRoom-0.2.1-windows.zip) |
+| [EscapeRoom](EscapeRoom/README.md) | [EscapeRoom/Unity](EscapeRoom/Unity) | [ZIP Escape Room](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.2/EscapeRoom-0.2.2-windows.zip) |
 | [Survival](Survival/README.md) | [Survival/Unity](Survival/Unity) | Paquet local; encara sense release pròpia a GitHub |
 
 Cada carpeta conté `Unity/`, `Documentacio/`, `Exportacions/`, `PaquetsFonts/` i `Windows/`. Els ZIP i les exportacions són artefactes locals exclosos de Git. Extreu tot el ZIP Windows abans d'executar la demo.

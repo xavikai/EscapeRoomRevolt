@@ -19,6 +19,59 @@ namespace EscapeRoomRevolt.Systems.Tests
         [TearDown] public void Cleanup() { foreach (var obj in _objects) if (obj != null) Object.DestroyImmediate(obj); _objects.Clear(); }
 
         [UnityTest]
+        public IEnumerator NumberWheels_DefinitionActivatesHintsInOrderAndClearsOnSolve()
+        {
+            var manager = Owner("DefinitionHintManagerTest").AddComponent<HintManager>();
+            var hints = ScriptableObject.CreateInstance<HintData>(); _objects.Add(hints);
+            hints.delayBeforeFirstHint = .05f;
+            hints.delayBetweenHints = 30f;
+            hints.hints.Add(new HintEntry { hintText = "Look at the note" });
+            hints.hints.Add(new HintEntry { hintText = "Count in order" });
+            hints.hints.Add(new HintEntry { hintText = "Set the digit to two" });
+            var definition = ScriptableObject.CreateInstance<PuzzleDefinition>(); _objects.Add(definition);
+            Set(definition, "_persistentId", "definition_hint_test");
+            Set(definition, "_hints", hints);
+
+            var owner = Owner("NumberWheelsDefinitionTest"); owner.SetActive(false);
+            var wheelOwner = new GameObject("Wheel_Logic");
+            wheelOwner.transform.SetParent(owner.transform, false);
+            var wheel = wheelOwner.AddComponent<SteppedPositioner>();
+            Set(wheel, "_positions", new List<SteppedPosition>
+            {
+                new SteppedPosition(), new SteppedPosition(), new SteppedPosition()
+            });
+            var puzzle = owner.AddComponent<StatePuzzle>();
+            typeof(PuzzleController).GetField("_definition", BindingFlags.Instance | BindingFlags.NonPublic)
+                .SetValue(puzzle, definition);
+            Set(puzzle, "_conditions", new List<StateCondition>
+            {
+                new StateCondition { Positioner = wheel, RequiredIndex = 2 }
+            });
+            var shown = new List<int>();
+            manager.HintShown += (_, index) => shown.Add(index);
+            owner.SetActive(true);
+            yield return null;
+
+            Assert.That(puzzle.PuzzleId, Is.EqualTo("definition_hint_test"));
+            Assert.That(manager.RequestNextHint(), Is.False, "Wiring assets alone must not activate hints.");
+            wheel.Step(1);
+            Assert.That(puzzle.State, Is.EqualTo(PuzzleController.PuzzleState.InProgress));
+            yield return new WaitForSeconds(.15f);
+            Assert.That(shown, Is.EqualTo(new[] { 0 }), "The first hint must appear automatically.");
+            Assert.That(manager.RequestNextHint(), Is.True);
+            Assert.That(shown, Is.EqualTo(new[] { 0, 1 }), "A manual request must advance in order.");
+
+            wheel.Step(1);
+            Assert.That(puzzle.IsSolved, Is.True);
+            Assert.That(manager.RequestNextHint(), Is.False, "Solving must clear the pending third hint.");
+            puzzle.ResetPuzzle();
+            wheel.SetIndexInstant(0);
+            wheel.Step(1);
+            Assert.That(manager.RequestNextHint(), Is.True);
+            Assert.That(shown, Is.EqualTo(new[] { 0, 1, 0 }), "A reset puzzle must restart its hints.");
+        }
+
+        [UnityTest]
         public IEnumerator HintZone_PhysicsDetectsChildColliderAndShowsDelayedText()
         {
             var manager = Owner("HintManagerTest").AddComponent<HintManager>();

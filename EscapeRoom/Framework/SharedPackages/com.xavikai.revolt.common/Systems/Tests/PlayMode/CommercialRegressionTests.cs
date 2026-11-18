@@ -41,6 +41,54 @@ namespace EscapeRoomRevolt.Systems.Tests
         private static void Set(object target, string name, object value) =>
             target.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic).SetValue(target, value);
 
+        [UnityTest]
+        public IEnumerator PuzzleCamera_IgnoresPlayerBodyButKeepsWallOcclusion()
+        {
+            var player = Create("PlayerBetweenCameraAndPuzzle");
+            player.transform.position = new Vector3(1000f, 1000f, 1000f);
+            var body = player.AddComponent<CharacterController>();
+            body.height = 2f;
+            body.center = Vector3.up;
+            var head = Create("PlayerCamera");
+            head.transform.SetParent(player.transform, false);
+            head.AddComponent<Camera>();
+            var manager = head.AddComponent<InteractionManager>();
+            manager.enabled = false;
+            Set(manager, "_interactableLayer", (LayerMask)(~0));
+            Set(manager, "_interactionRange", 4f);
+
+            var focusOwner = Create("FocusCamera");
+            focusOwner.transform.position = player.transform.position + new Vector3(0f, 1f, -1f);
+            var focusCamera = focusOwner.AddComponent<Camera>();
+            manager.SetOverrideCamera(focusCamera);
+
+            var buttonOwner = Create("WheelButton");
+            buttonOwner.transform.position = player.transform.position + new Vector3(0f, 1f, 1f);
+            buttonOwner.AddComponent<BoxCollider>().size = Vector3.one * .2f;
+            var button = buttonOwner.AddComponent<InteractableTrigger>();
+            var ray = new Ray(focusCamera.transform.position, Vector3.forward);
+            var find = typeof(InteractionManager).GetMethod("FindInteractableAlong",
+                BindingFlags.Instance | BindingFlags.NonPublic);
+
+            body.Move(Vector3.zero);
+            Physics.SyncTransforms();
+            yield return new WaitForFixedUpdate();
+            Assert.That(Physics.Raycast(ray, out RaycastHit first, 4f), Is.True);
+            Assert.That(first.collider, Is.SameAs(body), "Reproduce the player blocking the puzzle camera.");
+            Assert.That(find.Invoke(manager, new object[] { ray }), Is.SameAs(button));
+
+            player.transform.position += Vector3.right * 2f;
+            Physics.SyncTransforms();
+            Assert.That(find.Invoke(manager, new object[] { ray }), Is.SameAs(button));
+
+            var wall = Create("RealWall");
+            wall.transform.position = buttonOwner.transform.position - Vector3.forward * .5f;
+            wall.AddComponent<BoxCollider>().size = new Vector3(1f, 1f, .1f);
+            Physics.SyncTransforms();
+            Assert.That(find.Invoke(manager, new object[] { ray }), Is.Null,
+                "Ignoring the player must not allow interaction through walls.");
+        }
+
         [Test]
         public void DisabledInteractable_RejectsDispatch()
         {

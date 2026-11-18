@@ -1,10 +1,16 @@
 # Guia interactiva · Escape Room Revolt
 
-**Versió publicada 0.2.1:** [descarrega l'HTML amb captures](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.1/guia-escape-room-0.2.1.html). A GitHub, `index.html` es mostra com a codi; desa'l o descarrega l'adjunt de la release abans d'obrir-lo al navegador. [Notes i comprovacions de la 0.2.1](../../RELEASE_NOTES_v0.2.1.md).
+**Versió publicada 0.2.2:** [descarrega l'HTML amb captures](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.2/guia-escape-room-0.2.2.html). A GitHub, `index.html` es mostra com a codi; desa'l o descarrega l'adjunt de la release abans d'obrir-lo al navegador. [Notes i comprovacions de la 0.2.2](../../RELEASE_NOTES_v0.2.2.md).
 
 Obre `index.html` en un navegador (doble clic). Necessita connexió a Internet per carregar three.js (cdnjs) i les tipografies. Les captures de Unity van incrustades dins del fitxer: es pot copiar sol. Clica una captura per ampliar-la.
 
-Idiomes: català, castellà i anglès (selector a la barra lateral).
+Idiomes: català, castellà, anglès, francès i rus (selector a la barra lateral). Les versions francesa i russa parteixen de traducció automàtica amb revisió dels menús i termes principals. Les captures de Unity conserven l'idioma original.
+
+**[Ampliar puzles](index.html#expand):** exemples per afegir llums, palanques, notes, dianes i encaixos. També indica com redimensionar o estendre els rodets, el tauler lliscant, les canonades, el teclat i els puzles encadenats.
+
+**[Cinemàtiques](index.html#cinematics):** pas a pas per mostrar una porta quan es resol un puzle i per muntar una intro o un final amb imatges, vídeos i plans de càmera.
+
+**[Definition i pistes](index.html#definitions):** exemple complet d'un candau amb `Puzzle Definition` i un `Hint Data` de tres pistes. Explica cada camp, els dos enllaços entre escena i assets, IDs únics, inici del context, temporitzadors, tecla H, Hint Zone, finalització i guardat/carregat, amb comprovacions i errors habituals. Disponible en CA/ES/EN. [Referència detallada en català](../DEFINITIONS_I_PISTES.md).
 
 **Música i efectes sonors:** nova secció amb importació de clips, música 2D en bucle, ambientació 3D, sons de portes/teclats/objectes, interaccions amb `AudioSource.Play()` i integració amb els volums d'AudioManager. Explica també les fonts independents que no queden connectades automàticament al menú de so.
 
@@ -12,7 +18,7 @@ Idiomes: català, castellà i anglès (selector a la barra lateral).
 
 **[Canviar els models 3D](index.html#models):** jerarquia `Logic`/`Visuals`, substitució manual de la geometria, preparació de prefabs visuals i ús de `Replaceable Model Slot`. Inclou diagrames, els camps `Model Prefab`/`Model Socket`/`Placeholder Visual`, les peces animades amb `Visual Transform`, els pivots, colliders, sockets, ressaltat i comprovacions de joc i guardat. També explica què pot convertir la comanda `Split Selection Into Logic + Visuals`.
 
-Els dos apartats són en CA/ES/EN i es poden obrir des de l'índex lateral o des dels accessos al final dels primers passos. Les taules de cursors són esquemes de les formes actuals, no captures noves de Unity.
+Els dos apartats són en CA/ES/EN i es poden obrir des de l'índex lateral o des dels accessos al final dels primers passos. Inclouen quatre captures reals de Unity 6000.6.8f1 amb ampliació: selector Cursor Type, nota amb Eye, components de Visuals i camps de Replaceable Model Slot/Visual Transform. Les captures es van fer en una escena de prova sense desar; no s’han modificat el codi ni les mecàniques del projecte publicat. Les taules de formes de cursor continuen sent esquemes.
 
 Seccions: **crear el teu joc amb la plantilla** (32 passos amb captures de Unity, començant amb el projecte ja obert: jugar la demo, crear una sala amb una porta, un teclat i una nota, afegir veus amb subtítols, pistes automàtiques, zones que disparen accions, compte enrere, perills, finals i objectius, i generar el joc per a Windows; amb sala 3D que es construeix pas a pas, glossari i problemes freqüents), visita guiada amb el museu 3D, laboratori de mecàniques jugables amb Inspector, taller de menús (MenuThemeSettings) amb **disseny del menú pas a pas** (20 passos en dos nivells: tema sense UI Toolkit, amb imatge de fons, imatge del marc i imatges dels botons, i full d'estils propi amb UI Builder; esquema clicable del menú, dissenyador visual que genera l'USS i referència de selectors), jugador PC i VR, funcions (inventari, examen, guardat, pistes, perills, menú de l'editor), recepta de la primera sala i problemes freqüents.
 

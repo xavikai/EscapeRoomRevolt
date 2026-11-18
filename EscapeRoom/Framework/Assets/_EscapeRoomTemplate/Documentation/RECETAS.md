@@ -159,13 +159,15 @@ Menú: `Escape Room Framework > Create > Puzzles > Sliding Puzzle` · Sala del m
 <a id="lights"></a>
 ### Circuito de luces
 
-Menú: `Assets/_EscapeRoomTemplate/Prefabs/LinkedLightsPuzzleKit.prefab` · Sala del museo 14
+Menú: `Escape Room Framework > Create > Puzzles > Linked Lights Puzzle` · Sala del museo 14
 
 **Pasos**
 
-1. Arrastra Prefabs/LinkedLightsPuzzleKit.prefab a la escena. Incluye el panel, cinco botones (LinkedLightButton), etiquetas y un botón de reinicio.
+1. Ejecuta Escape Room Framework > Create > Puzzles > Linked Lights Puzzle. Crea LinkedLights_Kit con cinco botones, etiquetas y un botón de reinicio en tu escena.
+
+   Si el menú no aparece en tu copia 0.2.1, abre ShowcaseMuseum y arrastra Room14_LinkedLights > LinkedLights_Kit de Hierarchy a tu carpeta de Project para crear un prefab. Arrástralo a tu escena. Elimina las referencias de la demo en On Solved y ResetButton, pero conserva LinkedLightsPuzzle.ResetPuzzle en el botón.
 2. En LinkedLightsPuzzle > Nodes, cada luz tiene Initially On, Target On, Connections (índices que conmuta su botón, empezando por 0; incluye el propio si debe conmutarse) e Indicator.
-3. El prefab comparte la definición demo_linked_lights: duplícala, cambia su Persistent Id y asigna la copia. Hazlo para cada circuito de la escena.
+3. Crea una Puzzle Definition con un Persistent Id único y asígnala al circuito. Si copiaste el circuito del museo, sustituye la definición demo_linked_lights por la tuya.
 4. Crea la recompensa: Escape Room Framework > Create > Interactables > Door y marca Is Locked en la puerta. Selecciona el puzle, haz Ctrl+clic en la puerta y ejecuta Escape Room Framework > Create > Puzzles > Link Selected Objects To Puzzle. En On Solved aparecerán Door.Unlock y Door.ForceOpen.
 
 **Cómo lo pruebas**

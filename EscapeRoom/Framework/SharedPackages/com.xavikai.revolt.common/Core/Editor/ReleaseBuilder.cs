@@ -13,8 +13,8 @@ namespace EscapeRoomRevolt.EditorTools
     /// <summary>Reproducible release builds used for the downloadable PC and Quest packages.</summary>
     public static class ReleaseBuilder
     {
-        private const string Version = "v0.2.1";
-        private const string ReleaseRoot = "Builds/Release/" + Version;
+        private static string Version => "v" + PlayerSettings.bundleVersion;
+        private static string ReleaseRoot => Path.Combine("Builds", "Release", Version);
 
         private static readonly string[] WindowsScenes =
         {
@@ -95,7 +95,6 @@ namespace EscapeRoomRevolt.EditorTools
         {
             PlayerSettings.companyName = "XaviKai";
             PlayerSettings.productName = ProductConfiguration.Current != null ? ProductConfiguration.Current.DisplayName : "Escape Room Revolt";
-            PlayerSettings.bundleVersion = "0.2.1";
             AssetDatabase.SaveAssets();
         }
 

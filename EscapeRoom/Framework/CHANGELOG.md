@@ -2,6 +2,14 @@
 
 All notable changes to Escape Room Revolt are documented here.
 
+## [0.2.2] - 2026-11-18
+
+- Added the Linked Lights Puzzle editor command for creating a five-light circuit in the current scene.
+- Fixed color feedback for targets and sockets whose visible mesh is a child object.
+- Fixed player-body occlusion of puzzle camera interaction rays.
+- Added a dedicated lever lab, French and Russian guide text, and recipes for cutscenes, hint data and expanding puzzle kits.
+- Release builds use the version configured in the product’s Player Settings.
+
 ## [0.2.1] - 2026-11-09
 
 Documentation and menu-theming update for the first class sessions. Release notes: `RELEASE_NOTES_v0.2.1.md`.

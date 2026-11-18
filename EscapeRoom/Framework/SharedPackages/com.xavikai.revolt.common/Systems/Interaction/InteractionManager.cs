@@ -29,6 +29,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
         private IInteractable _currentTarget;
         private Camera _mainCamera;
         private Camera _overrideCamera;
+        private Transform _playerRoot;
         private readonly RaycastHit[] _interactionHits = new RaycastHit[16];
 
         public static InteractionManager Instance { get; private set; }
@@ -50,6 +51,11 @@ namespace EscapeRoomRevolt.Systems.Interaction
                 return;
             }
             Instance = this;
+
+            var player = GetComponentInParent<EscapeRoomRevolt.Player.PlayerPlatformAdapterBase>();
+            var controller = GetComponentInParent<CharacterController>();
+            _playerRoot = player != null ? player.transform
+                : controller != null ? controller.transform : transform;
 
             _mainCamera = GetComponent<Camera>();
             if (_mainCamera == null)
@@ -146,6 +152,9 @@ namespace EscapeRoomRevolt.Systems.Interaction
             {
                 Collider collider = _interactionHits[i].collider;
                 if (collider == null) continue;
+                // A puzzle camera can be behind the player. Their body must not intercept clicks
+                // on the board; keep other solid colliders blocking line of sight normally.
+                if (_playerRoot != null && collider.transform.IsChildOf(_playerRoot)) continue;
 
                 IInteractable interactable = collider.GetComponentInParent<IInteractable>();
                 if (interactable.IsAlive()) return interactable;

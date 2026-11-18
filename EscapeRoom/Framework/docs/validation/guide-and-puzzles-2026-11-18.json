@@ -1,0 +1,98 @@
+{
+  "date": "2026-11-18",
+  "unityVersion": "6000.6.8f1",
+  "testMode": "PlayMode",
+  "result": "Passed",
+  "total": 11,
+  "passed": 11,
+  "failed": 0,
+  "skipped": 0,
+  "validationProject": "Isolated export under .utmp/validation-2026-11-18",
+  "testResults": ".utmp/validation-2026-11-18/focused-tests-rerun.xml",
+  "testedFilesMatchCanonicalSource": true,
+  "testedFiles": [
+    {
+      "path": "Systems/Interaction/InteractionManager.cs",
+      "sha256": "a68e9b23b9886724e5f036da8cee06e57d4b246eaa3fcbca566f40f194a645f4"
+    },
+    {
+      "path": "Systems/Puzzle/ThrowTarget.cs",
+      "sha256": "de0811ef94f43107cf28049173843dcf48e9a2c83c50231d664e366c3b16efbb"
+    },
+    {
+      "path": "Systems/Tests/PlayMode/AdvancedEscapeRoomMechanicsTests.cs",
+      "sha256": "a24ced5899154469c2ac4c9fe20567b9fd06814d1c7fb2e099a6a69941624276"
+    },
+    {
+      "path": "Systems/Tests/PlayMode/CommercialRegressionTests.cs",
+      "sha256": "e85240183c47024c8d4dfc6b546cc9c8ed62dd80a620cd77ea4dea71ecb206c9"
+    },
+    {
+      "path": "Systems/Tests/PlayMode/HintAndCircuitTests.cs",
+      "sha256": "a400f6a9aa2b7cd96dcbd8a394d1d42a2cd416f1a56ce6d50b3158b3a539e653"
+    }
+  ],
+  "testCases": [
+    {
+      "name": "EscapeRoomRevolt.Systems.Tests.AdvancedEscapeRoomMechanicsTests.NumberWheel_StepsBothDirectionsAndWraps",
+      "result": "Passed"
+    },
+    {
+      "name": "EscapeRoomRevolt.Systems.Tests.AdvancedEscapeRoomMechanicsTests.NumberWheelInteraction_RequiresFocusAndSupportsBothDirections",
+      "result": "Passed"
+    },
+    {
+      "name": "EscapeRoomRevolt.Systems.Tests.AdvancedEscapeRoomMechanicsTests.ThrowPuzzle_RequiresEveryAuthoredTarget",
+      "result": "Passed"
+    },
+    {
+      "name": "EscapeRoomRevolt.Systems.Tests.AdvancedEscapeRoomMechanicsTests.ThrowTarget_ImpactUpdatesChildVisualAndSolvesPuzzle",
+      "result": "Passed"
+    },
+    {
+      "name": "EscapeRoomRevolt.Systems.Tests.CommercialRegressionTests.PuzzleCamera_IgnoresPlayerBodyButKeepsWallOcclusion",
+      "result": "Passed"
+    },
+    {
+      "name": "EscapeRoomRevolt.Systems.Tests.HintAndCircuitTests.Circuit_SaveRestoresPartialProgressAndSolvedStateWithoutReplayingEvents",
+      "result": "Passed"
+    },
+    {
+      "name": "EscapeRoomRevolt.Systems.Tests.HintAndCircuitTests.Circuit_SolutionFiresOnceAndResetRestoresInitialState",
+      "result": "Passed"
+    },
+    {
+      "name": "EscapeRoomRevolt.Systems.Tests.HintAndCircuitTests.HintZone_PhysicsDetectsChildColliderAndShowsDelayedText",
+      "result": "Passed"
+    },
+    {
+      "name": "EscapeRoomRevolt.Systems.Tests.HintAndCircuitTests.LeavingOldZoneDoesNotClearNewZoneHint",
+      "result": "Passed"
+    },
+    {
+      "name": "EscapeRoomRevolt.Systems.Tests.HintAndCircuitTests.Narrative_PhysicsDetectsChildAndAlwaysCanReplay",
+      "result": "Passed"
+    },
+    {
+      "name": "EscapeRoomRevolt.Systems.Tests.HintAndCircuitTests.NumberWheels_DefinitionActivatesHintsInOrderAndClearsOnSolve",
+      "result": "Passed"
+    }
+  ],
+  "guide": {
+    "sha256": "b11793a3874d54b865f72c1e1b15090bcb720118c6959976e2de1488a613d101",
+    "url": "https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.1/guia-escape-room-0.2.1.html",
+    "verifiedByRedownload": true,
+    "languages": [
+      "ca",
+      "es",
+      "en"
+    ],
+    "embeddedImages": 28
+  },
+  "scope": "Published standalone guide HTML and checksum. Unity code fixes are local; existing source and Windows release ZIPs were not replaced.",
+  "limitations": [
+    "Automated focused tests, not a complete suite or a manual student playthrough.",
+    "No VR hardware validation.",
+    "Unity 6000.6.8f1 upgraded dependencies in the isolated test project; original project settings and manifests were not changed."
+  ]
+}

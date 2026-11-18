@@ -45,37 +45,9 @@ namespace EscapeRoomRevolt.EditorTools
             fill.transform.SetParent(room, false);
             fill.transform.localPosition = new Vector3(0f, 2.4f, -2.3f);
             fill.type = LightType.Point; fill.range = 7f; fill.intensity = 7f;
-            var kit = new GameObject("LinkedLights_Kit");
-            kit.SetActive(false);
-            kit.transform.SetParent(room, false);
-            var puzzle = kit.AddComponent<LinkedLightsPuzzle>();
-            var so = new SerializedObject(puzzle);
-            var nodes = so.FindProperty("_nodes");
-            nodes.arraySize = 5;
-            // Reachable initial state: pressing 1, 3 and 5 produces the target.
-            for (int i = 0; i < 5; i++)
-            {
-                float x = (i - 2) * .76f;
-                var button = CreateBlock(kit.transform, "LightButton_" + (i + 1),
-                    new Vector3(x, 1.1f, -.3f), new Vector3(.55f, .45f, .35f), new Color(.07f, .1f, .14f));
-                var node = nodes.GetArrayElementAtIndex(i);
-                node.FindPropertyRelative("initiallyOn").boolValue = i == 1 || i == 3;
-                node.FindPropertyRelative("targetOn").boolValue = true;
-                node.FindPropertyRelative("indicator").objectReferenceValue = button.GetComponent<Renderer>();
-                var links = node.FindPropertyRelative("connections");
-                int first = Mathf.Max(0, i - 1), last = Mathf.Min(4, i + 1);
-                links.arraySize = last - first + 1;
-                for (int j = first; j <= last; j++) links.GetArrayElementAtIndex(j - first).intValue = j;
-                var control = button.AddComponent<LinkedLightButton>();
-                var controlSo = new SerializedObject(control);
-                controlSo.FindProperty("_puzzle").objectReferenceValue = puzzle;
-                controlSo.FindProperty("_index").intValue = i;
-                controlSo.ApplyModifiedPropertiesWithoutUndo();
-                CreateWorldText(kit.transform, "Number_" + (i + 1), new Vector3(x, 1.5f, -.49f),
-                    (i + 1).ToString(), 2f, Color.white).rectTransform.sizeDelta = new Vector2(.6f, .5f);
-            }
-            so.ApplyModifiedPropertiesWithoutUndo();
-            CreateBlock(kit.transform, "ConsoleBase", new Vector3(0f, .45f, -.3f), new Vector3(4.1f, .9f, .65f), new Color(.08f, .15f, .18f));
+            GameObject kit = CreateLinkedLightsKit(room);
+            var puzzle = kit.GetComponent<LinkedLightsPuzzle>();
+            var reset = kit.transform.Find("ResetButton").GetComponent<InteractableTrigger>();
             CreateWorldText(room, "Instructions", new Vector3(0f, 2.8f, 2.25f),
                 "Cada botó commuta la seva llum i les veïnes.\nObjectiu: totes enceses. Pots reiniciar l'intent.", 1.6f, Color.white);
             AssignDefinition(puzzle, EnsureDefinition("Def_demo_linked_lights_puzzle", "demo_linked_lights", "Circuit de llums",
@@ -83,28 +55,7 @@ namespace EscapeRoomRevolt.EditorTools
                     "Cada botó canvia la seva llum i les llums immediatament veïnes.",
                     "Prémer dues vegades el mateix botó desfà el canvi.",
                     "Reinicia el panell i prem els botons 1, 3 i 5, en qualsevol ordre." }));
-            var reset = CreateBlock(kit.transform, "ResetButton", new Vector3(0f, .8f, -1f), new Vector3(.8f, .25f, .3f), new Color(.55f, .3f, .08f)).AddComponent<InteractableTrigger>();
-            var resetSo = new SerializedObject(reset);
-            resetSo.FindProperty("_prompt").stringValue = "Reiniciar circuit";
-            resetSo.ApplyModifiedPropertiesWithoutUndo();
-            CreateWorldText(kit.transform, "ResetLabel", new Vector3(0f, 1f, -1.19f), "REINICIAR", .9f, Color.white);
-            if (reset.OnInteractEvent == null) reset.OnInteractEvent = new UnityEngine.Events.UnityEvent();
-            UnityEventTools.AddVoidPersistentListener(reset.OnInteractEvent, puzzle.ResetPuzzle);
-            kit.SetActive(true);
-            // Save the reusable kit before adding scene-specific door connections.
-            const string materialFolder = "Assets/_EscapeRoomTemplate/Art/Materials/LinkedLights";
-            EnsureFolder(materialFolder);
-            foreach (var renderer in kit.GetComponentsInChildren<MeshRenderer>())
-            {
-                Material generated = renderer.sharedMaterial;
-                if (generated == null || AssetDatabase.Contains(generated)) continue;
-                string path = materialFolder + "/" + renderer.name + ".mat";
-                Material material = EscapeRoomRevolt.EditorTools.FrameworkAssetPaths.Load<Material>(path);
-                if (material == null) { material = new Material(generated); AssetDatabase.CreateAsset(material, path); }
-                else { material.CopyPropertiesFromMaterial(generated); EditorUtility.SetDirty(material); }
-                renderer.sharedMaterial = material;
-                Object.DestroyImmediate(generated);
-            }
+            PersistLinkedLightsMaterials(kit, refreshExisting: true);
             PrefabUtility.SaveAsPrefabAsset(kit, "Assets/_EscapeRoomTemplate/Prefabs/LinkedLightsPuzzleKit.prefab");
             Door door = CreatePayoffDoor(room, "LinkedLightsExitDoor", new Vector3(0f, 1.25f, 2.18f), new Color(.12f, .55f, .42f));
             UnityEventTools.AddVoidPersistentListener(puzzle.OnSolvedEvent, door.Unlock);
@@ -134,6 +85,81 @@ namespace EscapeRoomRevolt.EditorTools
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene);
             AssetDatabase.SaveAssets();
+        }
+
+        [MenuItem("Escape Room Framework/Create/Puzzles/Linked Lights Puzzle", priority = 210)]
+        public static void CreateLinkedLightsPuzzle()
+        {
+            GameObject kit = CreateLinkedLightsKit(null);
+            if (SceneView.lastActiveSceneView != null)
+                kit.transform.position = SceneView.lastActiveSceneView.pivot;
+            PersistLinkedLightsMaterials(kit, refreshExisting: false);
+            Undo.RegisterCreatedObjectUndo(kit, "Create Linked Lights Puzzle");
+            Selection.activeGameObject = kit;
+        }
+
+        private static GameObject CreateLinkedLightsKit(Transform parent)
+        {
+            var kit = new GameObject("LinkedLights_Kit");
+            kit.SetActive(false);
+            kit.transform.SetParent(parent, false);
+            var puzzle = kit.AddComponent<LinkedLightsPuzzle>();
+            var so = new SerializedObject(puzzle);
+            var nodes = so.FindProperty("_nodes");
+            nodes.arraySize = 5;
+            // Reachable initial state: pressing 1, 3 and 5 produces the target.
+            for (int i = 0; i < 5; i++)
+            {
+                float x = (i - 2) * .76f;
+                var button = CreateBlock(kit.transform, "LightButton_" + (i + 1),
+                    new Vector3(x, 1.1f, -.3f), new Vector3(.55f, .45f, .35f), new Color(.07f, .1f, .14f));
+                var node = nodes.GetArrayElementAtIndex(i);
+                node.FindPropertyRelative("initiallyOn").boolValue = i == 1 || i == 3;
+                node.FindPropertyRelative("targetOn").boolValue = true;
+                node.FindPropertyRelative("indicator").objectReferenceValue = button.GetComponent<Renderer>();
+                var links = node.FindPropertyRelative("connections");
+                int first = Mathf.Max(0, i - 1), last = Mathf.Min(4, i + 1);
+                links.arraySize = last - first + 1;
+                for (int j = first; j <= last; j++) links.GetArrayElementAtIndex(j - first).intValue = j;
+                var control = button.AddComponent<LinkedLightButton>();
+                PuzzleCreator.AddVRBridge(button, control);
+                var controlSo = new SerializedObject(control);
+                controlSo.FindProperty("_puzzle").objectReferenceValue = puzzle;
+                controlSo.FindProperty("_index").intValue = i;
+                controlSo.ApplyModifiedPropertiesWithoutUndo();
+                CreateWorldText(kit.transform, "Number_" + (i + 1), new Vector3(x, 1.5f, -.49f),
+                    (i + 1).ToString(), 2f, Color.white).rectTransform.sizeDelta = new Vector2(.6f, .5f);
+            }
+            so.ApplyModifiedPropertiesWithoutUndo();
+            CreateBlock(kit.transform, "ConsoleBase", new Vector3(0f, .45f, -.3f), new Vector3(4.1f, .9f, .65f), new Color(.08f, .15f, .18f));
+            var reset = CreateBlock(kit.transform, "ResetButton", new Vector3(0f, .8f, -1f), new Vector3(.8f, .25f, .3f), new Color(.55f, .3f, .08f)).AddComponent<InteractableTrigger>();
+            var resetSo = new SerializedObject(reset);
+            resetSo.FindProperty("_prompt").stringValue = "Reiniciar circuit";
+            resetSo.ApplyModifiedPropertiesWithoutUndo();
+            CreateWorldText(kit.transform, "ResetLabel", new Vector3(0f, 1f, -1.19f), "REINICIAR", .9f, Color.white);
+            if (reset.OnInteractEvent == null) reset.OnInteractEvent = new UnityEngine.Events.UnityEvent();
+            UnityEventTools.AddVoidPersistentListener(reset.OnInteractEvent, puzzle.ResetPuzzle);
+            PuzzleCreator.AddVRBridge(reset.gameObject, reset);
+            kit.SetActive(true);
+            return kit;
+        }
+
+        private static void PersistLinkedLightsMaterials(GameObject kit, bool refreshExisting)
+        {
+            // Save the reusable kit before adding scene-specific door connections.
+            const string materialFolder = "Assets/_EscapeRoomTemplate/Art/Materials/LinkedLights";
+            EnsureFolder(materialFolder);
+            foreach (var renderer in kit.GetComponentsInChildren<MeshRenderer>())
+            {
+                Material generated = renderer.sharedMaterial;
+                if (generated == null || AssetDatabase.Contains(generated)) continue;
+                string path = materialFolder + "/" + renderer.name + ".mat";
+                Material material = EscapeRoomRevolt.EditorTools.FrameworkAssetPaths.Load<Material>(path);
+                if (material == null) { material = new Material(generated); AssetDatabase.CreateAsset(material, path); }
+                else if (refreshExisting) { material.CopyPropertiesFromMaterial(generated); EditorUtility.SetDirty(material); }
+                renderer.sharedMaterial = material;
+                Object.DestroyImmediate(generated);
+            }
         }
 
         [MenuItem("Escape Room Framework/Demo/Add or Update Expansion Rooms", priority = 45)]

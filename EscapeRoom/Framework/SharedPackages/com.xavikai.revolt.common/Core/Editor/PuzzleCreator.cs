@@ -954,7 +954,7 @@ namespace EscapeRoomRevolt.EditorTools
             bridgeSo.ApplyModifiedProperties();
         }
 
-        private static void AddVRBridge(GameObject target, MonoBehaviour source)
+        internal static void AddVRBridge(GameObject target, MonoBehaviour source)
         {
             var interactable = target.GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable>();
             if (interactable == null)

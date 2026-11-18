@@ -19,6 +19,39 @@ namespace EscapeRoomRevolt.Systems.Tests
     public sealed class AdvancedEscapeRoomMechanicsTests
     {
         [UnityTest]
+        public IEnumerator PuzzleFeedbackCamera_ShowsAfterSolveThenReturnsToPlayer()
+        {
+            var owner = new GameObject("CinematicPuzzle");
+            var cameraObject = new GameObject("FeedbackCamera");
+            cameraObject.transform.SetParent(owner.transform);
+            cameraObject.SetActive(false);
+            var camera = cameraObject.AddComponent<Camera>();
+            var puzzle = owner.AddComponent<SequencePuzzle>();
+            SetPrivate(puzzle, "_correctSequence", new List<string> { "finish" });
+            const BindingFlags fields = BindingFlags.Instance | BindingFlags.NonPublic;
+            typeof(PuzzleController).GetField("_feedbackCamera", fields).SetValue(puzzle, camera);
+            typeof(PuzzleController).GetField("_feedbackDelay", fields).SetValue(puzzle, .05f);
+            typeof(PuzzleController).GetField("_feedbackDuration", fields).SetValue(puzzle, .2f);
+
+            try
+            {
+                puzzle.InputStep("finish");
+                Assert.That(puzzle.IsSolved, Is.True);
+                Assert.That(cameraObject.activeSelf, Is.False);
+                float deadline = Time.realtimeSinceStartup + 2f;
+                while (!cameraObject.activeSelf && Time.realtimeSinceStartup < deadline) yield return null;
+                Assert.That(cameraObject.activeSelf, Is.True);
+                deadline = Time.realtimeSinceStartup + 2f;
+                while (cameraObject.activeSelf && Time.realtimeSinceStartup < deadline) yield return null;
+                Assert.That(cameraObject.activeSelf, Is.False);
+            }
+            finally
+            {
+                Object.Destroy(owner);
+            }
+        }
+
+        [UnityTest]
         public IEnumerator MultiStage_KeepsChildrenVisibleLocksOrderAndSolvesWhenAllComplete()
         {
             var owner = new GameObject("MultiStageTest");
@@ -234,6 +267,62 @@ namespace EscapeRoomRevolt.Systems.Tests
             if (GameFlowManager.Instance != null) Object.Destroy(GameFlowManager.Instance.gameObject);
             Time.timeScale = 1f;
             yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator ThrowTarget_ImpactUpdatesChildVisualAndSolvesPuzzle()
+        {
+            var owner = new GameObject("ThrowTargetVisualTest");
+            owner.SetActive(false);
+            owner.transform.position = new Vector3(1000f, 1000f, 1000f);
+            var puzzle = owner.AddComponent<ThrowPuzzle>();
+            SetPrivate(puzzle, "_targetIds", new List<string> { "left", "right" });
+
+            var targetRoot = new GameObject("Target_Logic");
+            targetRoot.transform.SetParent(owner.transform, false);
+            targetRoot.AddComponent<BoxCollider>();
+            var visual = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            visual.transform.SetParent(targetRoot.transform, false);
+            Object.DestroyImmediate(visual.GetComponent<Collider>());
+            var renderer = visual.GetComponent<Renderer>();
+            var target = targetRoot.AddComponent<ThrowTarget>();
+            SetPrivate(target, "_puzzle", puzzle);
+            SetPrivate(target, "_targetId", "left");
+
+            var projectile = new GameObject("ThrownObject");
+            projectile.transform.SetParent(owner.transform, false);
+            projectile.transform.localPosition = Vector3.left * 2f;
+            projectile.AddComponent<SphereCollider>().radius = .1f;
+            var rb = projectile.AddComponent<Rigidbody>();
+            rb.useGravity = false;
+            rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+            projectile.AddComponent<PhysicsGrabbable>();
+
+            Material material = null;
+            try
+            {
+                owner.SetActive(true);
+                yield return null;
+                material = renderer.material;
+                Assert.That(material.color, Is.EqualTo(Color.red));
+
+                rb.linearVelocity = Vector3.right * 8f;
+                for (int i = 0; i < 30 && !puzzle.IsTargetHit("left"); i++)
+                    yield return new WaitForFixedUpdate();
+
+                Assert.That(puzzle.IsTargetHit("left"), Is.True, "A qualifying physical impact must register.");
+                Assert.That(puzzle.IsSolved, Is.False);
+                Assert.That(material.color, Is.EqualTo(Color.green), "The child mesh must show the registered hit.");
+
+                puzzle.RegisterHit("right");
+                Assert.That(puzzle.IsSolved, Is.True);
+                Assert.That(material.color, Is.EqualTo(Color.cyan), "Solving must repaint the child mesh.");
+            }
+            finally
+            {
+                Object.Destroy(owner);
+                if (material != null) Object.Destroy(material);
+            }
         }
 
         [UnityTest]

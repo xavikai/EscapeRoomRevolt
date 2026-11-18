@@ -17,7 +17,7 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         [Tooltip("Minimum impact speed (m/s) for a collision to count as a throw rather than a bump.")]
         [SerializeField] private float _minImpactSpeed = 3f;
 
-        [Header("Visual feedback (optional, uses this object's own Renderer)")]
+        [Header("Visual feedback (optional, uses this object's or a child's Renderer)")]
         [SerializeField] private Color _idleColor = Color.red;
         [SerializeField] private Color _hitColor = Color.green;
         [SerializeField] private Color _solvedColor = Color.cyan;
@@ -26,7 +26,8 @@ namespace EscapeRoomRevolt.Systems.Puzzle
 
         private void Awake()
         {
-            _renderer = GetComponent<Renderer>();
+            // Creator pieces keep gameplay on the Logic root and the mesh on a Visuals child.
+            _renderer = GetComponentInChildren<Renderer>(true);
             if (_puzzle != null) _puzzle.OnSolvedEvent.AddListener(UpdateColor);
             EventBus.Subscribe<OnGameLoaded>(HandleGameLoaded);
             UpdateColor();

@@ -10,7 +10,7 @@ La sala **14 · CIRCUIT DE LLUMS** és a la dreta, al final del passadís (x = 6
 
 ## Reutilitzar la mecànica
 
-Arrossega `Prefabs/LinkedLightsPuzzleKit.prefab` a una escena. El kit inclou panell, cinc botons, etiquetes i reinici. Connecta `On Solved` de `LinkedLightsPuzzle` a la teva recompensa. Les connexions amb la porta de la sala 14 pertanyen a l'escena de demostració.
+Executa `Escape Room Framework > Create > Puzzles > Linked Lights Puzzle` per crear el panell a la teva escena. Si fas servir una còpia 0.2.1 sense aquesta comanda, obre `ShowcaseMuseum` i arrossega l’objecte `Room14_LinkedLights > LinkedLights_Kit` de la Hierarchy a una carpeta teva del Project. Col·loca el prefab nou a la teva escena, elimina les referències de la demo a `On Solved` i `ResetButton` i conserva la crida a `LinkedLightsPuzzle.ResetPuzzle`. Assigna una definició amb un ID propi i connecta la teva recompensa a `On Solved`.
 
 En `LinkedLightsPuzzle > Nodes`, cada element defineix:
 

@@ -23,7 +23,7 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         [Tooltip("How fast a captured piece is pulled/rotated into the exact snap position, per second.")]
         [SerializeField] private float _snapSpeed = 6f;
 
-        [Header("Visual feedback (optional, uses this object's own Renderer)")]
+        [Header("Visual feedback (optional, uses this object's or a child's Renderer)")]
         [SerializeField] private Color _emptyColor = Color.grey;
         [SerializeField] private Color _occupiedColor = Color.green;
         [SerializeField] private Color _solvedColor = Color.cyan;
@@ -52,7 +52,7 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         private void Awake()
         {
             GetComponent<Collider>().isTrigger = true;
-            _renderer = GetComponent<Renderer>();
+            _renderer = GetComponentInChildren<Renderer>();
 
             _outlineTarget = GetComponent<SelectionOutlineTarget>();
             if (_outlineTarget == null) _outlineTarget = gameObject.AddComponent<SelectionOutlineTarget>();
