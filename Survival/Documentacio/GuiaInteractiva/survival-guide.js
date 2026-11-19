@@ -65,4 +65,75 @@ function mount(){
 function draw(){if(!world||document.hidden)return;const w=world;w.player.position.set(state.pos,.8,0);w.player.scale.y=$('crouch').checked?.6:1;w.player.visible=!$('hidden').checked;w.enemy.position.set(state.enemy,.9,1.4);w.enemy.visible=state.mode==='ai';w.subject.material.color.setHex(state.goals[2]?0xf3d483:0xa5e9a4);w.beam.position.set(state.pos+3,.8,0);w.beam.visible=state.mode==='ai'&&$('flashlight').checked&&!$('hidden').checked;w.checkpoint.visible=Boolean(state.checkpoint);if(state.checkpoint)w.checkpoint.position.set(state.checkpoint.pos,.02,0);w.scene.background.setHex(state.mode==='camera'&&$('night').checked?0x18391e:0x081312);w.renderer.render(w.scene,w.camera);}
 function frame(time){const dt=last?Math.min(.1,(time-last)/1000):0;last=time;step(dt);draw();if(time-lastReadout>300){show();lastReadout=time;}requestAnimationFrame(frame);}
 document.addEventListener('visibilitychange',()=>{last=0;});
+function setupGuideSearch() {
+  const form = $('guideSearch');
+  const input = $('searchQuery');
+  const results = $('searchResults');
+  const status = $('searchStatus');
+  const normalize = text => text.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
+  const entries = [...document.querySelectorAll('main > section, [role="tabpanel"]')].map(target => {
+    const tab = $(target.getAttribute('aria-labelledby'));
+    const title = (tab || target.querySelector('h2')).textContent;
+    const content = target.cloneNode(true);
+    content.querySelectorAll('[role="tabpanel"], [role="tablist"], .readout').forEach(el => el.remove());
+    return { target, tab, title, titleText: normalize(title), bodyText: normalize(content.textContent) };
+  });
+
+  function updateResults() {
+    const query = normalize(input.value);
+    const terms = query.split(' ');
+    const matches = query.length < 2 ? [] : entries
+      .filter(entry => terms.every(term => entry.titleText.includes(term) || entry.bodyText.includes(term)))
+      .sort((a, b) => Number(b.titleText.includes(query)) - Number(a.titleText.includes(query)));
+    results.replaceChildren();
+    status.textContent = query.length < 2 ? '' : matches.length ? `Resultats (${matches.length})` : 'Cap resultat';
+    for (const entry of matches) {
+      const item = document.createElement('li');
+      const link = document.createElement('a');
+      link.href = '#' + entry.target.id;
+      link.textContent = entry.title;
+      item.append(link);
+      results.append(item);
+    }
+    results.hidden = !matches.length;
+  }
+
+  function openResult(hash) {
+    const entry = entries.find(({ target }) => '#' + target.id === hash);
+    if (!entry) return;
+    if (entry.tab && entry.target.hidden) entry.tab.click();
+    const heading = entry.target.querySelector('h2,h3');
+    heading.tabIndex = -1;
+    heading.focus({ preventScroll: true });
+    entry.target.scrollIntoView();
+  }
+
+  input.addEventListener('input', updateResults);
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    results.querySelector('a')?.click();
+  });
+  form.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && input.value) {
+      event.preventDefault();
+      input.value = '';
+      updateResults();
+      input.focus();
+    }
+  });
+  results.addEventListener('click', event => {
+    const link = event.target.closest('a');
+    if (!link || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    input.value = '';
+    updateResults();
+    if (location.hash !== link.hash) history.pushState(null, '', link.hash);
+    openResult(link.hash);
+  });
+  window.addEventListener('hashchange', () => openResult(location.hash));
+  if (location.hash.startsWith('#panel-')) openResult(location.hash);
+  form.hidden = false;
+}
+setupGuideSearch();
 mount();show();requestAnimationFrame(frame);

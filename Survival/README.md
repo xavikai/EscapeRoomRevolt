@@ -12,4 +12,4 @@ La base canònica compartida és a [EscapeRoom/Framework/SharedPackages](../Esca
 
 Les [darreres proves completes de Survival](../EscapeRoom/Framework/docs/QA_PC_2026-10-26.md) són del 26/10/2026: 26/26 tests EditMode, 38/38 PlayMode i build Windows correcta. La release Escape Room 0.2.1 actualitza el paquet Common compartit, però no acredita una nova validació de Survival.
 
-**[Guia interactiva pròpia de Survival](Documentacio/GuiaInteractiva/index.html)**: com començar, rutes, IA i persecució, càmera i evidències, checkpoints i recorregut de la demo. Simulacions didàctiques Three.js en català; QA visual pendent.
+**[Descarrega la guia interactiva de Survival amb cerca](https://github.com/xavikai/EscapeRoomRevolt/releases/download/docs-search-2026-11-19/guia-survival-amb-cerca.html).** Obre l'HTML amb un navegador per consultar les rutes, els controls, la IA, la càmera, els checkpoints i el recorregut de la demo. Inclou simulacions didàctiques Three.js en català.

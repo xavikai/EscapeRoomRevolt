@@ -2,9 +2,9 @@
 
 El repositori està organitzat en **dues carpetes principals**, una per projecte:
 
-**Darrera release: [Escape Room 0.2.2](https://github.com/xavikai/EscapeRoomRevolt/releases/tag/escaperoom-v0.2.2)** — [notes de la versió](EscapeRoom/Framework/RELEASE_NOTES_v0.2.2.md) ([0.2.0](EscapeRoom/Framework/RELEASE_NOTES_v0.2.0.md)). Inclou demo Windows, projecte portable, guia revisada i sumes SHA-256.
+**Darrera versió del joc: [Escape Room 0.2.2](https://github.com/xavikai/EscapeRoomRevolt/releases/tag/escaperoom-v0.2.2)** · [Notes de la versió](EscapeRoom/Framework/RELEASE_NOTES_v0.2.2.md) ([0.2.0](EscapeRoom/Framework/RELEASE_NOTES_v0.2.0.md)). Inclou demo Windows, projecte portable, guia revisada i sumes SHA-256.
 
-**[Descarrega la guia interactiva amb captures (CA/ES/EN/FR/RU)](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.2/guia-escape-room-0.2.2.html)** · [Fitxer font](EscapeRoom/Framework/docs/guia/index.html) · [Instruccions](EscapeRoom/Framework/docs/guia/README.md). Desa l'HTML i obre'l amb un navegador; GitHub mostra el codi del fitxer font. Necessita Internet per carregar Three.js i les tipografies; les captures van incrustades.
+**Guies interactives amb cerca** · [Descarrega la guia d'Escape Room (CA/ES/EN/FR/RU)](https://github.com/xavikai/EscapeRoomRevolt/releases/download/docs-search-2026-11-19/guia-escape-room-amb-cerca.html) · [Descarrega la guia de Survival (CA)](https://github.com/xavikai/EscapeRoomRevolt/releases/download/docs-search-2026-11-19/guia-survival-amb-cerca.html). Obre els fitxers HTML amb un navegador. La cerca funciona localment i les demostracions 3D carreguen Three.js per Internet.
 
 | Carpeta | Projecte Unity per editar | Demo Windows per provar sense Unity |
 |---|---|---|

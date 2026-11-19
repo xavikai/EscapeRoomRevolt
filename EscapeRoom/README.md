@@ -10,7 +10,7 @@
 - **QA manual:** [guia](Documentacio/QA_VISUAL_MANUAL_PC.md) i [registre propi](Documentacio/QA_VISUAL_MANUAL_PC_REGISTRE.md), pendent d'executar.
 - **Projecte portable:** el ZIP font porta el paquet del framework embegut.
 - **Projecte font:** [ZIP del projecte](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.2/EscapeRoom-0.2.2-source.zip), amb la guia revisada i les notes de versió a `docs/release/`. Les releases anteriors continuen disponibles a GitHub.
-- **Guia descarregable:** [HTML amb captures i idiomes CA/ES/EN/FR/RU](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.2/guia-escape-room-0.2.2.html).
+- **Guia descarregable:** [HTML amb cerca, captures i idiomes CA/ES/EN/FR/RU](https://github.com/xavikai/EscapeRoomRevolt/releases/download/docs-search-2026-11-19/guia-escape-room-amb-cerca.html).
 - **Base comuna i eines:** [Framework/](Framework/README.md). Inclou l'autoria històrica, els paquets canònics i els informes tècnics compartits amb Survival.
 
 El projecte de treball `Unity/` referencia els paquets locals de `Framework/SharedPackages`; conserva l'estructura del repositori. Per editar fora del repositori, extreu el ZIP font i obre la carpeta que conté `Assets`, `Packages` i `ProjectSettings`.

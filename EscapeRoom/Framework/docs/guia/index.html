@@ -63,6 +63,13 @@ button{font:inherit;color:inherit;cursor:pointer}
 .langs button{flex:1;min-width:2.4rem;border:1px solid var(--line);background:none;border-radius:var(--r);padding:.3rem 0;font-family:var(--f-mono);font-size:.78rem}
 .langs button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--panel)}
 .rail .meta{margin-top:auto;font-size:var(--s-1);color:var(--muted);display:grid;gap:.4rem}
+.guide-search{display:grid;gap:.35rem;min-width:0}
+.guide-search label,.guide-search p{font-size:var(--s-1);color:var(--muted)}
+.guide-search input{width:100%;font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:.45rem .6rem}
+.guide-search ul{list-style:none;margin:0;padding:.2rem;max-height:min(19rem,34vh);overflow:auto}
+.guide-search a{display:block;padding:.4rem .55rem;border-radius:var(--r);text-decoration:none;line-height:1.3;overflow-wrap:anywhere}
+.guide-search a:hover,.guide-search a:focus-visible{background:var(--accent-soft)}
+.guide-search small{display:block;color:var(--muted);margin-top:.15rem}
 
 main{padding-inline:clamp(1rem,3.5vw,3rem);padding-block:2rem 4rem;min-width:0}
 .sec{display:grid;gap:1.6rem;max-width:74rem}
@@ -161,6 +168,7 @@ details.card summary{cursor:pointer;font-weight:600}
   .brand b{font-size:1.25rem}.brand .stamp{display:none}
   .nav{display:flex;overflow-x:auto;gap:.2rem;width:100%;order:3}
   .nav button{white-space:nowrap;grid-template-columns:auto auto;padding:.35rem .55rem}
+  .guide-search{width:100%;order:2}
   .rail .meta{display:none}
   .langs{margin-left:auto}
   .play{grid-template-columns:1fr}
@@ -268,6 +276,12 @@ details.card summary{cursor:pointer;font-weight:600}
 <div class="app">
   <nav class="rail" aria-label="Seccions">
     <div class="brand"><span class="stamp" data-t="brandStamp"></span><b>Escape Room<br>Revolt</b></div>
+    <form class="guide-search" id="guideSearch" role="search">
+      <label for="searchQuery" data-t="searchLabel"></label>
+      <input id="searchQuery" type="search" autocomplete="off" aria-controls="searchResults">
+      <p id="searchStatus" role="status"></p>
+      <ul id="searchResults" aria-labelledby="searchStatus" hidden></ul>
+    </form>
     <ul class="nav" id="nav"></ul>
     <div class="langs" role="group" aria-label="Idioma / Language">
       <button data-lang="ca" aria-pressed="true">CA</button><button data-lang="es" aria-pressed="false">ES</button><button data-lang="en" aria-pressed="false">EN</button><button data-lang="fr" aria-pressed="false" lang="fr" aria-label="Français">FR</button><button data-lang="ru" aria-pressed="false" lang="ru" aria-label="Русский">RU</button>
@@ -1571,8 +1585,13 @@ function secModels() {
 const SECTIONS = [
   ["start", "nav_start"], ["projects", "nav_projects"], ["tour", "nav_tour"], ["mech", "nav_mech"], ["rec", "nav_rec"], ["menu", "nav_menu"], ["player", "nav_player"],
   ["feat", "nav_feat"], ["definitions", "nav_definitions"], ["cinematics", "nav_cinematics"], ["expand", "nav_expand"], ["audio", "nav_audio"], ["cursors", "nav_cursors"], ["models", "nav_models"], ["room", "nav_room"], ["help", "nav_help"]];
+Object.assign(I, {
+  searchLabel: L("Cerca a la guia", "Buscar en la guía", "Search the guide", "Rechercher dans le guide", "Поиск по руководству"),
+  searchPlaceholder: L("Escriu un concepte…", "Escribe un concepto…", "Enter a term…", "Saisissez un terme…", "Введите термин…"),
+  searchEmpty: L("Cap resultat", "Sin resultados", "No results", "Aucun résultat", "Нет результатов"),
+  searchFound: L("Resultats", "Resultados", "Results", "Résultats", "Результаты"),
+});
 let current = store.get("sec", "start");
-if (location.hash && SECTIONS.some(s => s[0] === location.hash.slice(1))) current = location.hash.slice(1);
 let currentMech = store.get("mech", "code");
 
 function renderNav() {
@@ -1585,9 +1604,9 @@ function renderNav() {
   document.documentElement.lang = LANG;
 }
 
-function go(id, focusSel) {
+function go(id, focusSel, hash = "#" + id) {
   current = id; store.set("sec", id);
-  try { history.replaceState(null, "", "#" + id); } catch (e) { }
+  try { history.replaceState(null, "", hash); } catch (e) { }
   render();
   window.scrollTo({ top: 0 });
   if (focusSel) setTimeout(() => { const el = document.querySelector(focusSel); if (el) { el.scrollIntoView({ block: "center", behavior: "smooth" }); el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash"); } }, 60);
@@ -1646,8 +1665,8 @@ function showRoom(n) {
 }
 
 /* ── Section: mechanics ────────────────────────────────────────────────────── */
-function secMech() {
-  const m = MECHS.find(x => x.id === currentMech) || MECHS[0];
+function secMech(mechId = currentMech) {
+  const m = MECHS.find(x => x.id === mechId) || MECHS[0];
   return `<section class="sec">
     ${head("mech_eyebrow", "mech_title", "mech_lead")}
     <div class="tabs" role="tablist">${MECHS.map(x => `<button role="tab" data-mech="${x.id}" aria-selected="${x.id === m.id}">${esc(t("m_" + x.id))}</button>`).join("")}</div>
@@ -2339,12 +2358,13 @@ function wireMenuDesign() {
 }
 
 /* ── Render loop ───────────────────────────────────────────────────────────── */
+const sectionViews = { start: secStart, projects: secProjects, tour: secTour, mech: secMech, rec: secRec, menu: secMenu, player: secPlayer, feat: secFeat, definitions: secDefinitions, cinematics: secCinematics, expand: secExpand, audio: secAudio, cursors: secCursors, models: secModels, room: secRoom, help: secHelp };
 let activeCleanup = [];
 function render() {
   activeCleanup.forEach(f => { try { f(); } catch (e) { } }); activeCleanup = [];
   renderNav();
   const main = document.getElementById("main");
-  const fn = { start: secStart, projects: secProjects, tour: secTour, mech: secMech, rec: secRec, menu: secMenu, player: secPlayer, feat: secFeat, definitions: secDefinitions, cinematics: secCinematics, expand: secExpand, audio: secAudio, cursors: secCursors, models: secModels, room: secRoom, help: secHelp }[current] || secTour;
+  const fn = sectionViews[current] || secTour;
   main.innerHTML = `<aside class="card" style="margin-bottom:1.2rem" aria-label="Projectes"><div class="row"><a class="chip" href="#projects" id="projectIndex">${esc(t('nav_projects'))}</a><a class="chip" href="../../../../Survival/Documentacio/GuiaInteractiva/index.html">${esc(tx(L('Guia pròpia de Survival →','Guía propia de Survival →','Dedicated Survival guide →', "Guide de survie dédié →", "Посвященное руководство по выживанию")))}</a></div><p>${esc(tx(L('Les demos Three.js són exemples didàctics; no executen Unity ni acrediten el QA visual. Les rutes Assets/ es refereixen al projecte obert; el codi compartit és a Packages.','Las demos Three.js son ejemplos didácticos; no ejecutan Unity ni acreditan QA visual. Las rutas Assets/ se refieren al proyecto abierto; el código compartido está en Packages.','Three.js demos are teaching examples; they do not run Unity or certify visual QA. Assets/ paths refer to the open project; shared code is in Packages.', "Les démos Three.js sont des exemples d'enseignement; elles ne fonctionnent pas Unity ou ne certifient pas l'AQ visuelle.", "Демо-версии Three.js являются обучающими примерами; они не запускают Unity или не сертифицируют визуальный QA. Активы / пути относятся к открытому проекту; общий код находится в пакетах.")))}</p></aside>` + fn();
   document.getElementById('projectIndex').onclick = e => { e.preventDefault(); go('projects'); };
   document.querySelectorAll('[data-expand]').forEach(a => a.onclick = e => { e.preventDefault(); go('expand'); });
@@ -2363,7 +2383,141 @@ function render() {
   if (current === "start") wireStart();
   if (current === "menu") wireMenuDesign();
 }
-document.querySelectorAll(".langs button").forEach(b => b.onclick = () => { LANG = b.dataset.lang; store.set("lang", LANG); render(); if (tourStep >= 0) showTour(); });
+document.querySelectorAll(".langs button").forEach(b => b.onclick = () => { LANG = b.dataset.lang; store.set("lang", LANG); render(); updateSearch(); if (tourStep >= 0) showTour(); });
+
+/* ── Guide search ──────────────────────────────────────────────────────────── */
+const searchForm = document.getElementById("guideSearch");
+const searchInput = document.getElementById("searchQuery");
+const searchStatus = document.getElementById("searchStatus");
+const searchResults = document.getElementById("searchResults");
+let indexedLanguage;
+let searchEntries;
+
+function searchText(text) {
+  return text.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim();
+}
+
+function searchHeadings(section) {
+  return [...section.querySelectorAll("h2,h3,h4,summary")].filter(el =>
+    el.tagName === "SUMMARY" || !el.closest("summary"));
+}
+
+function searchAnchor(heading, index) {
+  return heading.tagName === "SUMMARY" && heading.parentElement.id || String(index);
+}
+
+function buildSearchIndex() {
+  const template = document.createElement("template");
+  const entries = [];
+  for (const [id, key] of SECTIONS) {
+    const page = t(key);
+    const variants = id === "mech" ? MECHS.map(m => m.id) : [undefined];
+    for (const mech of variants) {
+      template.innerHTML = sectionViews[id](mech);
+      const section = template.content.querySelector("section");
+      const headings = searchHeadings(section);
+      section.querySelectorAll("button,style,script,[data-rjump]").forEach(el => el.remove());
+      const first = mech ? headings.findIndex(el => el.tagName === "H4") : 0;
+      const last = mech ? first + 1 : headings.length;
+      const range = document.createRange();
+      for (let i = first; i < last; i++) {
+        const heading = headings[i];
+        const title = (heading.querySelector(".st-title,h3,strong") || heading).textContent.trim();
+        range.setStartAfter(heading);
+        if (headings[i + 1]) range.setEndBefore(headings[i + 1]);
+        else range.setEnd(section, section.childNodes.length);
+        const body = range.toString();
+        entries.push({
+          title, page, titleText: searchText(title), pageText: searchText(page), bodyText: searchText(body),
+          href: "#" + [id, searchAnchor(heading, i), mech].filter(Boolean).join("/"),
+        });
+      }
+    }
+  }
+  return entries;
+}
+
+function updateSearch() {
+  searchInput.placeholder = t("searchPlaceholder");
+  const query = searchText(searchInput.value);
+  searchResults.replaceChildren();
+  searchResults.hidden = true;
+  searchStatus.textContent = "";
+  if (query.length < 2) return;
+  if (indexedLanguage !== LANG) {
+    searchEntries = buildSearchIndex();
+    indexedLanguage = LANG;
+  }
+  const terms = query.split(" ");
+  const matches = searchEntries.flatMap(entry => {
+    const { titleText, pageText, bodyText } = entry;
+    if (!terms.every(term => titleText.includes(term) || pageText.includes(term) || bodyText.includes(term))) return [];
+    const score = (titleText === query ? 20 : titleText.includes(query) ? 10 : 0)
+      + terms.filter(term => titleText.includes(term)).length * 3
+      + (bodyText.includes(query) ? 2 : 0)
+      + (pageText.includes(query) ? 1 : 0);
+    return [{ entry, score }];
+  }).sort((a, b) => b.score - a.score);
+  const visible = matches.slice(0, 8);
+  searchStatus.textContent = visible.length ? `${t("searchFound")} (${visible.length}/${matches.length})` : t("searchEmpty");
+  for (const { entry } of visible) {
+    const item = document.createElement("li");
+    const link = document.createElement("a");
+    const page = document.createElement("small");
+    link.href = entry.href;
+    link.textContent = entry.title;
+    page.textContent = entry.page;
+    link.append(page);
+    item.append(link);
+    searchResults.append(item);
+  }
+  searchResults.hidden = !visible.length;
+}
+
+function openGuideLink(hash) {
+  const [id, anchor, mech] = hash.slice(1).split("/");
+  if (!SECTIONS.some(s => s[0] === id)) return false;
+  if (id === "mech" && MECHS.some(m => m.id === mech)) currentMech = mech;
+  go(id, undefined, hash);
+  if (anchor !== undefined) {
+    const headings = searchHeadings(document.querySelector("#main > .sec"));
+    const target = headings.find((el, i) => searchAnchor(el, i) === anchor);
+    if (target) {
+      for (let node = target; node; node = node.parentElement) {
+        if (node.tagName === "DETAILS") node.open = true;
+      }
+      target.tabIndex = -1;
+      target.focus({ preventScroll: true });
+      target.style.scrollMarginTop = matchMedia("(max-width:860px)").matches
+        ? `${document.querySelector(".rail").offsetHeight + 12}px` : "1rem";
+      target.scrollIntoView();
+    }
+  }
+  return true;
+}
+
+searchInput.addEventListener("input", updateSearch);
+searchForm.addEventListener("submit", event => {
+  event.preventDefault();
+  searchResults.querySelector("a")?.click();
+});
+searchForm.addEventListener("keydown", event => {
+  if (event.key === "Escape" && searchInput.value) {
+    event.preventDefault();
+    searchInput.value = "";
+    updateSearch();
+    searchInput.focus();
+  }
+});
+searchResults.addEventListener("click", event => {
+  const link = event.target.closest("a");
+  if (!link || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+  event.preventDefault();
+  searchInput.value = "";
+  updateSearch();
+  openGuideLink(link.hash);
+});
+window.addEventListener("hashchange", () => openGuideLink(location.hash));
 
 /* ── three.js stages ───────────────────────────────────────────────────────── */
 const reduceMotion = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -3317,7 +3471,8 @@ Stages.start = (el) => {
   return () => { window._startSetLevel = null; W.dispose(); };
 };
 
-render();
+if (!openGuideLink(location.hash)) render();
+updateSearch();
 </script>
 </body>
 </html>
