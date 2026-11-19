@@ -20,9 +20,6 @@ for (const [source, route] of routes) {
   // The Escape Room renderer also contains relative links inside its HTML templates.
   html = html.replace(/href="((?:\.\.\/)+[^"#]+)(#[^"]*)?"/g, (_, relative, fragment = "") => {
     const target = posix.normalize(posix.join(posix.dirname(source), relative));
-    if (routes.has(target)) {
-      return `href="../${routes.get(target)}/${fragment}"`;
-    }
     if (!/\.(md|json)$/.test(target) || !existsSync(join(root, target))) {
       throw new Error(`${source}: enllaç sense destinació publicable: ${relative}`);
     }

@@ -4,7 +4,7 @@ El repositori està organitzat en **dues carpetes principals**, una per projecte
 
 **Darrera versió del joc: [Escape Room 0.2.2](https://github.com/xavikai/EscapeRoomRevolt/releases/tag/escaperoom-v0.2.2)** · [Notes de la versió](EscapeRoom/Framework/RELEASE_NOTES_v0.2.2.md) ([0.2.0](EscapeRoom/Framework/RELEASE_NOTES_v0.2.0.md)). Inclou demo Windows, projecte portable, guia revisada i sumes SHA-256.
 
-**[Guies interactives amb cerca](https://xavikai.github.io/EscapeRoomRevolt/)** · [Escape Room (CA/ES/EN/FR/RU)](https://xavikai.github.io/EscapeRoomRevolt/escape-room/) · [Survival (CA)](https://xavikai.github.io/EscapeRoomRevolt/survival/) · [Descàrregues HTML](https://github.com/xavikai/EscapeRoomRevolt/releases/tag/docs-search-2026-11-19).
+**[Guies interactives amb cerca](https://xavikai.github.io/EscapeRoomRevolt/)** · [Escape Room (CA/ES/EN/FR/RU)](https://xavikai.github.io/EscapeRoomRevolt/escape-room/) · [Survival (CA)](https://xavikai.github.io/EscapeRoomRevolt/survival/) · [Descàrregues HTML](https://github.com/xavikai/EscapeRoomRevolt/releases/tag/docs-independent-2026-11-19).
 
 | Carpeta | Projecte Unity per editar | Demo Windows per provar sense Unity |
 |---|---|---|
@@ -28,5 +28,3 @@ pwsh -File EscapeRoom/Framework/tools/validate-product.ps1 -Product Survival -Bu
 ```
 
 La primera ordre fa comprovacions de fitxers. Les dues següents importen, proven i construeixen en batch. Escape Room s'ha validat per a la 0.2.1; les darreres proves completes de Survival corresponen a la [revisió del 26/10/2026](EscapeRoom/Framework/docs/QA_PC_2026-10-26.md), sense una nova validació de Survival per a la 0.2.1.
-
-La guia pròpia de Survival inclou arquitectura, controls, recorregut i laboratori de detecció, càmera i checkpoints. La guia comuna conserva les demos originals i incorpora la separació dels dos projectes.

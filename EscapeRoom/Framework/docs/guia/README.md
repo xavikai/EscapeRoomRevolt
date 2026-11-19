@@ -1,6 +1,6 @@
 # Guia interactiva · Escape Room Revolt
 
-**[Consulta la guia en línia](https://xavikai.github.io/EscapeRoomRevolt/escape-room/)** o [descarrega l'HTML amb cerca i captures](https://github.com/xavikai/EscapeRoomRevolt/releases/download/docs-search-2026-11-19/guia-escape-room-amb-cerca.html). Escriu un concepte a «Cerca a la guia» per anar directament al resultat. [Notes i comprovacions de la 0.2.2](../../RELEASE_NOTES_v0.2.2.md).
+**[Consulta la guia en línia](https://xavikai.github.io/EscapeRoomRevolt/escape-room/)** o [descarrega l'HTML amb cerca i captures](https://github.com/xavikai/EscapeRoomRevolt/releases/download/docs-independent-2026-11-19/guia-escape-room-amb-cerca.html). Escriu un concepte a «Cerca a la guia» per anar directament al resultat. [Notes i comprovacions de la 0.2.2](../../RELEASE_NOTES_v0.2.2.md).
 
 Obre `index.html` en un navegador (doble clic). Necessita connexió a Internet per carregar three.js (cdnjs) i les tipografies. Les captures de Unity van incrustades dins del fitxer: es pot copiar sol. Clica una captura per ampliar-la.
 
@@ -32,6 +32,5 @@ Paquets de lliurament: [exportacions portables, guia de QA i registres per produ
 
 Prova directa sense Unity: [demos executables Windows amb guia i registre](../DEMOS_WINDOWS_2026-10-26.md).
 
-Actualització 26/10/2026: nova secció de projectes i rutes en CA/ES/EN, estat de validació actual i distinció entre perfils i paquets. Les implementacions Three.js originals es conserven. [Guia pròpia de Survival](../../../../Survival/Documentacio/GuiaInteractiva/index.html), en català, amb simulacions didàctiques de detecció, càmera i checkpoints. Verificació estàtica i del model amb Node; cap control d’aplicacions ni revisió visual executada.
 
 [Informe de les comprovacions](../validation/interactive-guides-2026-10-26.json). La verificació de Node no substitueix la revisió del render WebGL ni de la disposició visual en un navegador.

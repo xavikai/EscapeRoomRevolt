@@ -10,6 +10,6 @@
 
 La base canònica compartida és a [EscapeRoom/Framework/SharedPackages](../EscapeRoom/Framework/SharedPackages). `Unity/Packages/manifest.json` referencia aquella ubicació; no hi ha una segona còpia de manteniment. Per a un lliurament fora del repositori usa l'exportació portable o els ZIP. El QA visual continua pendent.
 
-Les [darreres proves completes de Survival](../EscapeRoom/Framework/docs/QA_PC_2026-10-26.md) són del 26/10/2026: 26/26 tests EditMode, 38/38 PlayMode i build Windows correcta. La release Escape Room 0.2.1 actualitza el paquet Common compartit, però no acredita una nova validació de Survival.
+Les [darreres proves completes de Survival](../EscapeRoom/Framework/docs/QA_PC_2026-10-26.md) són del 26/10/2026 i registren 26/26 tests EditMode, 38/38 PlayMode i una build Windows correcta.
 
-[Descarrega la guia en HTML](https://github.com/xavikai/EscapeRoomRevolt/releases/download/docs-search-2026-11-19/guia-survival-amb-cerca.html) · [Consulta la guia compartida d'Escape Room](https://xavikai.github.io/EscapeRoomRevolt/escape-room/).
+[Descarrega la guia en HTML](https://github.com/xavikai/EscapeRoomRevolt/releases/download/docs-independent-2026-11-19/guia-survival-amb-cerca.html).

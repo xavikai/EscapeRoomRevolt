@@ -10,11 +10,9 @@
 - **QA manual:** [guia](Documentacio/QA_VISUAL_MANUAL_PC.md) i [registre propi](Documentacio/QA_VISUAL_MANUAL_PC_REGISTRE.md), pendent d'executar.
 - **Projecte portable:** el ZIP font porta el paquet del framework embegut.
 - **Projecte font:** [ZIP del projecte](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.2/EscapeRoom-0.2.2-source.zip), amb la guia revisada i les notes de versió a `docs/release/`. Les releases anteriors continuen disponibles a GitHub.
-- **Guia descarregable:** [HTML amb cerca, captures i idiomes CA/ES/EN/FR/RU](https://github.com/xavikai/EscapeRoomRevolt/releases/download/docs-search-2026-11-19/guia-escape-room-amb-cerca.html).
+- **Guia descarregable:** [HTML amb cerca, captures i idiomes CA/ES/EN/FR/RU](https://github.com/xavikai/EscapeRoomRevolt/releases/download/docs-independent-2026-11-19/guia-escape-room-amb-cerca.html).
 - **Base comuna i eines:** [Framework/](Framework/README.md). Inclou l'autoria històrica, els paquets canònics i els informes tècnics compartits amb Survival.
 
 El projecte de treball `Unity/` referencia els paquets locals de `Framework/SharedPackages`; conserva l'estructura del repositori. Per editar fora del repositori, extreu el ZIP font i obre la carpeta que conté `Assets`, `Packages` i `ProjectSettings`.
 
 **[Validació històrica del ZIP portable 0.2.1](Framework/docs/validation/portable-release-0.2.1.json):** importació neta fora del repositori, auditoria de recursos sense incidències, 26/26 tests EditMode, 34/34 PlayMode i build Windows correcta, sense preinicialització XR nativa. L'informe identifica el SHA-256 exacte del ZIP validat. El QA visual manual i el maquinari VR continuen pendents. La [validació inicial de la release](Framework/docs/validation/release-0.2.1.json) es conserva com a evidència anterior.
-
-La guia comuna incorpora una secció «Projectes i rutes» actualitzada. Per als sistemes específics consulta la [guia Survival](../Survival/Documentacio/GuiaInteractiva/index.html).

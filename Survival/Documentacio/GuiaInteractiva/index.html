@@ -27,7 +27,7 @@
   <ul id="searchResults" aria-labelledby="searchStatus" hidden></ul>
 </form>
 <nav aria-label="Seccions"><a href="#inici">Començar</a><a href="#laboratori">Laboratori 3D</a><a href="#recorregut">Recorregut</a><a href="#construir">Editar i ampliar</a><a href="#qa">QA i límits</a></nav>
-<p><!-- pages-home --><a href="../../../EscapeRoom/Framework/docs/guia/index.html#projects">Guia d'Escape Room</a> · <a href="../../README.md">Projecte Survival a GitHub</a></p>
+<p><!-- pages-home --><a href="../../README.md">Projecte Survival a GitHub</a></p>
 </header>
 <main>
 <section id="inici"><h2>Un projecte propi, dues maneres de començar</h2>
@@ -38,7 +38,7 @@
 <tr><td><code>EscapeRoom/Framework/SharedPackages/com.xavikai.revolt.common</code></td><td>Bootstrap, entrada, jugador, inventari, opcions compartides com la llanterna, menús, save i objectius.</td></tr>
 <tr><td><code>EscapeRoom/Framework/SharedPackages/com.xavikai.revolt.survival</code></td><td>IA, cordura, vida, estamina, càmera, amagatalls, checkpoints, traversal, HUD i eines Survival.</td></tr>
 <tr><td><code>Survival/Documentacio · Exportacions · PaquetsFonts · Windows</code></td><td>Guies, snapshots i lliuraments per a cada necessitat.</td></tr></tbody></table></div>
-<p class="note">A Unity, les rutes <code>Assets/</code> són relatives a <code>Survival/Unity</code>. El codi canònic és als paquets, visibles sota <code>Packages</code>; no s'ha de copiar a Assets ni activar Survival des del projecte Escape Room, que no instal·la aquell paquet.</p></section>
+<p class="note">A Unity, les rutes <code>Assets/</code> són relatives a <code>Survival/Unity</code>. El codi canònic és als paquets, visibles sota <code>Packages</code> dins de l’editor.</p></section>
 
 <section id="laboratori"><h2>Laboratori de sistemes · Three.js</h2>
 <p class="note">Simulació didàctica simplificada en JavaScript, no una execució de Unity: no calcula el NavMesh real, els raycasts, la cordura ni els perfils exactes de la IA. Serveix per entendre les relacions. No és evidència de QA ni un benchmark.</p>
@@ -65,7 +65,7 @@ pwsh -File EscapeRoom/Framework/tools/validate-product.ps1 -Product Survival -Bu
 pwsh -File EscapeRoom/Framework/tools/validate-portable.ps1 -Product Survival -BuildWindows</pre><p>Ordres des de l'arrel del repositori, per executar quan es decideixi validar. Aquesta revisió de documentació no les ha rellançat.</p></section>
 
 <section id="qa"><h2>QA i estat real</h2><div class="grid"><article class="card"><h3>Verificat anteriorment en batch</h3><p>Survival: 26/26 EditMode, 38/38 PlayMode i build Windows correcta. Exportació portable importada des de zero fora del repositori. Navegació persistent i agents comprovats per les proves. ZIPs verificats per integritat.</p><p>Després de reorganitzar carpetes es van fer comprovacions estàtiques de dependències/GUIDs i hashes; no una nova importació Unity.</p></article><article class="card"><h3>Pendent de la sessió humana</h3><p>Arrencada gràfica, textos, il·luminació, controls, recorregut complet, morts/checkpoints i final. QA de visor i rendiment en maquinari continuen pendents. VRTemplate és una mostra d'autoria; no és una demo Survival Quest acceptada.</p><a href="../QA_VISUAL_MANUAL_PC.md">Passos i resultats esperats</a><p><a href="../QA_VISUAL_MANUAL_PC_REGISTRE.md">Registre propi: 25 casos pendents</a></p></article></div>
-<p><a href="../../../EscapeRoom/Framework/docs/PROJECTES_INDEPENDENTS.md">Arquitectura i separació</a> · <a href="../../../EscapeRoom/Framework/docs/ORGANITZACIO_CARPETES_2026-10-26.md">Mapa de rutes</a> · <a href="../../../EscapeRoom/Framework/docs/validation/portable-exports-2026-10-26.json">Informe batch portable</a></p></section>
+</section>
 </main><footer>Guia Survival en català · Paquets 0.2.0 / revisió pcfix-2026-10-26 · Three.js r128 des de cdnjs (cal Internet). Simulacions locals, sense Unity, telemetria ni canvis als projectes.</footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="survival-guide.js"></script>
