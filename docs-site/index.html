@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ca">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guies interactives · Escape Room Revolt i Survival</title>
+  <meta name="description" content="Consulta en línia les guies interactives d’Escape Room Revolt i Survival amb cerca, passos per a Unity i laboratoris 3D.">
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #efe8d6;
+      --panel: #faf5e8;
+      --ink: #27251c;
+      --muted: #5f5746;
+      --line: #b5a783;
+      --link: #554421;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #171611;
+        --panel: #201f19;
+        --ink: #e6e1cd;
+        --muted: #bbb198;
+        --line: #61583e;
+        --link: #dfcf9e;
+      }
+    }
+    * { box-sizing: border-box }
+    body { margin: 0; color: var(--ink); background: var(--bg); font: 1rem/1.55 system-ui, sans-serif }
+    main { width: min(100% - 2.5rem, 62rem); margin: auto; padding-block: clamp(2.5rem, 8vw, 6rem) }
+    h1, h2, p { margin: 0 }
+    h1 { font-size: clamp(2.25rem, 8vw, 4.5rem); line-height: 1.05; letter-spacing: -.045em }
+    header p { max-width: 52ch; margin-top: 1rem; color: var(--muted); font-size: 1.125rem }
+    a { color: var(--link); text-underline-offset: .18em }
+    a:focus-visible { outline: 2px solid var(--link); outline-offset: 4px }
+    .guides { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 21rem), 1fr)); gap: 1rem; margin-block: 2rem }
+    article { display: grid; grid-template-rows: auto 1fr auto; gap: .8rem; padding: clamp(1rem, 4vw, 1.75rem); border: 1px solid var(--line); border-radius: .55rem; background: var(--panel) }
+    h2 { line-height: 1.2 }
+    .languages { color: var(--muted); font-size: .9rem }
+    footer { padding-top: 1rem; border-top: 1px solid var(--line) }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Guies interactives</h1>
+      <p>Obre la guia del teu projecte i escriu un concepte a «Cerca a la guia» per anar directament a l’apartat on s’explica.</p>
+    </header>
+    <div class="guides">
+      <article>
+        <h2><a href="escape-room/">Escape Room Revolt</a></h2>
+        <p>Crea la teva primera sala amb Unity. Consulta les receptes de puzles, les pistes, els menús i el laboratori 3D.</p>
+        <p class="languages">Català, castellà, anglès, francès i rus</p>
+      </article>
+      <article>
+        <h2><a href="survival/">Survival Revolt</a></h2>
+        <p>Segueix el recorregut de la demo i explora la detecció, la càmera i els checkpoints al laboratori 3D.</p>
+        <p class="languages">Català</p>
+      </article>
+    </div>
+    <footer>
+      <a href="https://github.com/xavikai/EscapeRoomRevolt/releases/tag/docs-search-2026-11-19">Descarrega les guies en HTML</a>
+    </footer>
+  </main>
+</body>
+</html>

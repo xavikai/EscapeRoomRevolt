@@ -163,7 +163,7 @@ details.card summary{cursor:pointer;font-weight:600}
 .chip{display:inline-block;font-size:.8rem;padding:.2rem .6rem;border:1px solid var(--line, currentColor);border-radius:999px;color:inherit;text-decoration:none}
 .chip:hover{background:var(--accent-soft)}
 @media (max-width:860px){
-  .app{grid-template-columns:1fr}
+  .app{grid-template-columns:minmax(0,1fr)}
   .rail{position:sticky;top:env(safe-area-inset-top,0px);height:auto;z-index:5;flex-direction:row;flex-wrap:wrap;align-items:center;padding:.6rem 1rem;gap:.6rem;border-right:0;border-bottom:1px solid var(--line)}
   .brand b{font-size:1.25rem}.brand .stamp{display:none}
   .nav{display:flex;overflow-x:auto;gap:.2rem;width:100%;order:3}
@@ -275,7 +275,7 @@ details.card summary{cursor:pointer;font-weight:600}
 <body>
 <div class="app">
   <nav class="rail" aria-label="Seccions">
-    <div class="brand"><span class="stamp" data-t="brandStamp"></span><b>Escape Room<br>Revolt</b></div>
+    <div class="brand"><span class="stamp" data-t="brandStamp"></span><b>Escape Room<br>Revolt</b><!-- pages-home --></div>
     <form class="guide-search" id="guideSearch" role="search">
       <label for="searchQuery" data-t="searchLabel"></label>
       <input id="searchQuery" type="search" autocomplete="off" aria-controls="searchResults">
@@ -1586,6 +1586,7 @@ const SECTIONS = [
   ["start", "nav_start"], ["projects", "nav_projects"], ["tour", "nav_tour"], ["mech", "nav_mech"], ["rec", "nav_rec"], ["menu", "nav_menu"], ["player", "nav_player"],
   ["feat", "nav_feat"], ["definitions", "nav_definitions"], ["cinematics", "nav_cinematics"], ["expand", "nav_expand"], ["audio", "nav_audio"], ["cursors", "nav_cursors"], ["models", "nav_models"], ["room", "nav_room"], ["help", "nav_help"]];
 Object.assign(I, {
+  guideHome: L("Totes les guies", "Todas las guías", "All guides", "Tous les guides", "Все руководства"),
   searchLabel: L("Cerca a la guia", "Buscar en la guía", "Search the guide", "Rechercher dans le guide", "Поиск по руководству"),
   searchPlaceholder: L("Escriu un concepte…", "Escribe un concepto…", "Enter a term…", "Saisissez un terme…", "Введите термин…"),
   searchEmpty: L("Cap resultat", "Sin resultados", "No results", "Aucun résultat", "Нет результатов"),

@@ -1,6 +1,6 @@
 # Guia interactiva · Escape Room Revolt
 
-**[Descarrega l'HTML amb cerca i captures](https://github.com/xavikai/EscapeRoomRevolt/releases/download/docs-search-2026-11-19/guia-escape-room-amb-cerca.html).** Obre el fitxer amb un navegador i escriu un concepte a «Cerca a la guia» per anar directament al resultat. [Notes i comprovacions de la 0.2.2](../../RELEASE_NOTES_v0.2.2.md).
+**[Consulta la guia en línia](https://xavikai.github.io/EscapeRoomRevolt/escape-room/)** o [descarrega l'HTML amb cerca i captures](https://github.com/xavikai/EscapeRoomRevolt/releases/download/docs-search-2026-11-19/guia-escape-room-amb-cerca.html). Escriu un concepte a «Cerca a la guia» per anar directament al resultat. [Notes i comprovacions de la 0.2.2](../../RELEASE_NOTES_v0.2.2.md).
 
 Obre `index.html` en un navegador (doble clic). Necessita connexió a Internet per carregar three.js (cdnjs) i les tipografies. Les captures de Unity van incrustades dins del fitxer: es pot copiar sol. Clica una captura per ampliar-la.
 
@@ -24,7 +24,7 @@ Els dos apartats són en CA/ES/EN i es poden obrir des de l'índex lateral o des
 
 Seccions: **crear el teu joc amb la plantilla** (32 passos amb captures de Unity, començant amb el projecte ja obert: jugar la demo, crear una sala amb una porta, un teclat i una nota, afegir veus amb subtítols, pistes automàtiques, zones que disparen accions, compte enrere, perills, finals i objectius, i generar el joc per a Windows; amb sala 3D que es construeix pas a pas, glossari i problemes freqüents), visita guiada amb el museu 3D, laboratori de mecàniques jugables amb Inspector, taller de menús (MenuThemeSettings) amb **disseny del menú pas a pas** (20 passos en dos nivells: tema sense UI Toolkit, amb imatge de fons, imatge del marc i imatges dels botons, i full d'estils propi amb UI Builder; esquema clicable del menú, dissenyador visual que genera l'USS i referència de selectors), jugador PC i VR, funcions (inventari, examen, guardat, pistes, perills, menú de l'editor), recepta de la primera sala i problemes freqüents.
 
-Ubicació després de la reorganització: `EscapeRoom/Framework/docs/guia/index.html`, des de l'arrel del repositori. Els índexs principals d'EscapeRoom i Survival hi enllacen. La ruta antiga `docs/guia/` s'ha traslladat; per publicar-la cal configurar el desplegament amb aquesta ubicació nova. No s'ha publicat ni modificat cap lloc web en aquesta revisió.
+El fitxer font és `EscapeRoom/Framework/docs/guia/index.html` des de l'arrel del repositori. GitHub Pages publica la guia a `/EscapeRoomRevolt/escape-room/`.
 
 Per provar les demos PC actuals: [guia de QA manual](../QA_VISUAL_MANUAL_PC.md) i [registre de resultats](../QA_VISUAL_MANUAL_PC_REGISTRE.md). Els casos estan pendents d’executar.
 

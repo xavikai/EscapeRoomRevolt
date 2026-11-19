@@ -1,0 +1,45 @@
+name: Documentació a GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/documentacio-pages.yml'
+      - 'docs-site/**'
+      - 'EscapeRoom/Framework/docs/**'
+      - 'Survival/Documentacio/**'
+      - 'Survival/README.md'
+  workflow_dispatch:
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/configure-pages@v5
+      - name: Prepare the guides
+        run: node docs-site/build.cjs _site
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish the guides
+        id: deployment
+        uses: actions/deploy-pages@v4

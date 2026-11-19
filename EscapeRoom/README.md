@@ -2,7 +2,7 @@
 
 **Versió 0.2.2** · [Notes de la versió](Framework/RELEASE_NOTES_v0.2.2.md) · [Actualitzar des de 0.2.1](Framework/UPDATE_FROM_0.2.1.ca.md) · [Canvis](Framework/CHANGELOG.md)
 
-**[Documentació interactiva amb Three.js](Framework/docs/guia/index.html)**: primers passos amb la plantilla amb captures de Unity, museu 3D, mecàniques jugables, menús i explicacions en CA/ES/EN/FR/RU. Obre l'HTML amb un navegador; necessita Internet per carregar Three.js i les tipografies.
+**[Consulta la guia interactiva amb cerca](https://xavikai.github.io/EscapeRoomRevolt/escape-room/)** per veure els primers passos amb la plantilla, captures de Unity, museu 3D, mecàniques jugables i menús en CA/ES/EN/FR/RU.
 
 - **Provar sense Unity:** [ZIP Windows](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.2/EscapeRoom-0.2.2-windows.zip). Extreu tot el ZIP i executa `Windows/escaperoom-revolt.exe` de la carpeta extreta.
 - **Editar:** obre [Unity/](Unity) amb Unity 6000.4.9f1.
