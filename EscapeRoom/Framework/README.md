@@ -8,7 +8,7 @@
 
 **Independent Unity projects:** open [`EscapeRoom/Unity`](../Unity) or [`Survival/Unity`](../../Survival/Unity) in Unity 6000.4.9f1. Both consume the canonical source in `EscapeRoom/Framework/SharedPackages`; Survival is absent from the Escape Room installation. See [configuration, packages, validation and portable exports](docs/PROJECTES_INDEPENDENTS.md). `EscapeRoom/Framework` remains the historical authoring project. The [corrected Escape Room 0.2.1 ZIP validation](docs/validation/portable-release-0.2.1.json) covers a fresh import outside this repository, serialized resources, shaders, all 60 tests and a Windows build, and records the exact archive SHA-256. Survival's portable validation remains dated 26 October.
 
-**Interactive guide (CA/ES/EN):** open [`docs/guia/index.html`](docs/guia/index.html) in a browser for a hands-on tour of the mechanics, menus and PC/VR players.
+**[Interactive Escape Room guide](https://xavikai.github.io/EscapeRoomRevolt/escape-room/)** with a hands-on tour of the mechanics, menus and PC/VR players.
 
 **Escape Room release preparation:** start with the buyer quick start ([castellano](Assets/_EscapeRoomTemplate/Documentation/ESCAPE_ROOM_QUICKSTART.md) · [català](Assets/_EscapeRoomTemplate/Documentation/ESCAPE_ROOM_QUICKSTART.ca.md) · [English](Assets/_EscapeRoomTemplate/Documentation/ESCAPE_ROOM_QUICKSTART.en.md)), then read the [September 2026 audit](Assets/_EscapeRoomTemplate/AUDITORIA_ESCAPE_ROOM_2026-09-09.md) and [release gates](Assets/_EscapeRoomTemplate/COMMERCIAL_READINESS.md). Survival Horror is outside this edition's commercial verification. VR hardware acceptance remains pending.
 
@@ -76,7 +76,7 @@ The supported entry point is the **Escape Room Framework** Editor menu — legac
 
 - [`Assets/_EscapeRoomTemplate/ROADMAP.md`](Assets/_EscapeRoomTemplate/ROADMAP.md) — the living status document: what's verified, what's pending, in what order. Read this first for "where are we now."
 - [`Assets/_EscapeRoomTemplate/AUDITORIA_ESCAPE_ROOM_2026-09-09.md`](Assets/_EscapeRoomTemplate/AUDITORIA_ESCAPE_ROOM_2026-09-09.md) — historical September audit (tests, builds, scene inspection). The [August audit](Assets/_EscapeRoomTemplate/AUDITORIA_ESCAPE_ROOM_2026-08-09.md) keeps the historical room-by-room walkthrough. For 0.2.1, use the release notes and validation linked above.
-- [`docs/guia/index.html`](docs/guia/index.html) — interactive guide for people using the template (mechanics playground, menus, PC/VR player, feature tour).
+- [Interactive guide source](../Documentacio/GuiaInteractiva/index.html) — mechanics playground, menus, PC/VR player and feature tour.
 - [`Assets/_EscapeRoomTemplate/PROGRAMMING_GUIDE.md`](Assets/_EscapeRoomTemplate/PROGRAMMING_GUIDE.md) — API-level guide to the systems above, with code snippets.
 - [`Assets/_EscapeRoomTemplate/DOCUMENTACIO_COMPLETA.md`](Assets/_EscapeRoomTemplate/DOCUMENTACIO_COMPLETA.md) — exhaustive architecture and authoring reference.
 - [`Assets/_EscapeRoomTemplate/UserManual.md`](Assets/_EscapeRoomTemplate/UserManual.md) — end-player-facing controls and menu reference ([català](Assets/_EscapeRoomTemplate/UserManual.ca.md) · [English](Assets/_EscapeRoomTemplate/UserManual.en.md)).

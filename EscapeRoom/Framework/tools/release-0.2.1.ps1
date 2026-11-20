@@ -10,7 +10,7 @@ $build = Join-Path $product "Unity/Builds/Release/v$version/Windows"
 $windowsZip = Join-Path $product "Windows/EscapeRoom-$version-windows.zip"
 $export = Join-Path $product "Exportacions/EscapeRoom-$version"
 $sourceZip = Join-Path $product "PaquetsFonts/EscapeRoom-$version-source.zip"
-$guide = Join-Path $product 'Framework/docs/guia/index.html'
+$guide = Join-Path $product 'Documentacio/GuiaInteractiva/index.html'
 $guideCopy = Join-Path $product "Windows/guia-escape-room-$version.html"
 
 function Write-Sha([string]$File) {

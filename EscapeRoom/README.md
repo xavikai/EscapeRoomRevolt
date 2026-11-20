@@ -4,6 +4,8 @@
 
 **[Consulta la guia interactiva amb cerca](https://xavikai.github.io/EscapeRoomRevolt/escape-room/)** per veure els primers passos amb la plantilla, captures de Unity, museu 3D, mecàniques jugables i menús en CA/ES/EN/FR/RU.
 
+El fitxer font i les instruccions són a [Documentacio/GuiaInteractiva](Documentacio/GuiaInteractiva/README.md).
+
 - **Provar sense Unity:** [ZIP Windows](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.2/EscapeRoom-0.2.2-windows.zip). Extreu tot el ZIP i executa `Windows/escaperoom-revolt.exe` de la carpeta extreta.
 - **Editar:** obre [Unity/](Unity) amb Unity 6000.4.9f1.
 - **ZIP 0.2.2:** validat amb Unity 6000.6.8f1. Obre la carpeta extreta amb Unity Hub.

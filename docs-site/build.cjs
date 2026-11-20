@@ -5,7 +5,7 @@ const { Script } = require("node:vm");
 const root = resolve(__dirname, "..");
 const output = resolve(process.argv[2] || join(root, ".utmp", "pages"));
 const github = "https://github.com/xavikai/EscapeRoomRevolt/blob/main/";
-const escapeRoom = "EscapeRoom/Framework/docs/guia/index.html";
+const escapeRoom = "EscapeRoom/Documentacio/GuiaInteractiva/index.html";
 const survival = "Survival/Documentacio/GuiaInteractiva/index.html";
 const routes = new Map([
   [escapeRoom, "escape-room"],

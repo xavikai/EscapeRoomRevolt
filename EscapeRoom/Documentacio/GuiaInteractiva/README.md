@@ -1,6 +1,6 @@
 # Guia interactiva · Escape Room Revolt
 
-**[Consulta la guia en línia](https://xavikai.github.io/EscapeRoomRevolt/escape-room/)** o [descarrega l'HTML amb cerca i captures](https://github.com/xavikai/EscapeRoomRevolt/releases/download/docs-independent-2026-11-19/guia-escape-room-amb-cerca.html). Escriu un concepte a «Cerca a la guia» per anar directament al resultat. [Notes i comprovacions de la 0.2.2](../../RELEASE_NOTES_v0.2.2.md).
+**[Consulta la guia en línia](https://xavikai.github.io/EscapeRoomRevolt/escape-room/)** o [descarrega l'HTML amb cerca i captures](https://github.com/xavikai/EscapeRoomRevolt/releases/download/docs-independent-2026-11-19/guia-escape-room-amb-cerca.html). Escriu un concepte a «Cerca a la guia» per anar directament al resultat. [Notes i comprovacions de la 0.2.2](../../Framework/RELEASE_NOTES_v0.2.2.md).
 
 Obre `index.html` en un navegador (doble clic). Necessita connexió a Internet per carregar three.js (cdnjs) i les tipografies. Les captures de Unity van incrustades dins del fitxer: es pot copiar sol. Clica una captura per ampliar-la.
 
@@ -12,7 +12,7 @@ Idiomes: català, castellà, anglès, francès i rus (selector a la barra latera
 
 **[Cinemàtiques](index.html#cinematics):** pas a pas per mostrar una porta quan es resol un puzle i per muntar una intro o un final amb imatges, vídeos i plans de càmera.
 
-**[Definition i pistes](index.html#definitions):** exemple complet d'un candau amb `Puzzle Definition` i un `Hint Data` de tres pistes. Explica cada camp, els dos enllaços entre escena i assets, IDs únics, inici del context, temporitzadors, tecla H, Hint Zone, finalització i guardat/carregat, amb comprovacions i errors habituals. Disponible en CA/ES/EN. [Referència detallada en català](../DEFINITIONS_I_PISTES.md).
+**[Definition i pistes](index.html#definitions):** exemple complet d'un candau amb `Puzzle Definition` i un `Hint Data` de tres pistes. Explica cada camp, els dos enllaços entre escena i assets, IDs únics, inici del context, temporitzadors, tecla H, Hint Zone, finalització i guardat/carregat, amb comprovacions i errors habituals. Disponible en CA/ES/EN. [Referència detallada en català](../../Framework/docs/DEFINITIONS_I_PISTES.md).
 
 **Música i efectes sonors:** nova secció amb importació de clips, música 2D en bucle, ambientació 3D, sons de portes/teclats/objectes, interaccions amb `AudioSource.Play()` i integració amb els volums d'AudioManager. Explica també les fonts independents que no queden connectades automàticament al menú de so.
 
@@ -24,13 +24,13 @@ Els dos apartats són en CA/ES/EN i es poden obrir des de l'índex lateral o des
 
 Seccions: **crear el teu joc amb la plantilla** (32 passos amb captures de Unity, començant amb el projecte ja obert: jugar la demo, crear una sala amb una porta, un teclat i una nota, afegir veus amb subtítols, pistes automàtiques, zones que disparen accions, compte enrere, perills, finals i objectius, i generar el joc per a Windows; amb sala 3D que es construeix pas a pas, glossari i problemes freqüents), visita guiada amb el museu 3D, laboratori de mecàniques jugables amb Inspector, taller de menús (MenuThemeSettings) amb **disseny del menú pas a pas** (20 passos en dos nivells: tema sense UI Toolkit, amb imatge de fons, imatge del marc i imatges dels botons, i full d'estils propi amb UI Builder; esquema clicable del menú, dissenyador visual que genera l'USS i referència de selectors), jugador PC i VR, funcions (inventari, examen, guardat, pistes, perills, menú de l'editor), recepta de la primera sala i problemes freqüents.
 
-El fitxer font és `EscapeRoom/Framework/docs/guia/index.html` des de l'arrel del repositori. GitHub Pages publica la guia a `/EscapeRoomRevolt/escape-room/`.
+El fitxer font és `EscapeRoom/Documentacio/GuiaInteractiva/index.html` des de l'arrel del repositori. GitHub Pages publica la guia a `/EscapeRoomRevolt/escape-room/`.
 
 Per provar les demos PC actuals: [guia de QA manual](../QA_VISUAL_MANUAL_PC.md) i [registre de resultats](../QA_VISUAL_MANUAL_PC_REGISTRE.md). Els casos estan pendents d’executar.
 
-Paquets de lliurament: [exportacions portables, guia de QA i registres per producte](../LLIURAMENT_PC_2026-10-26.md).
+Paquets de lliurament: [exportacions portables, guia de QA i registres per producte](../../Framework/docs/LLIURAMENT_PC_2026-10-26.md).
 
-Prova directa sense Unity: [demos executables Windows amb guia i registre](../DEMOS_WINDOWS_2026-10-26.md).
+Prova directa sense Unity: [demos executables Windows amb guia i registre](../../Framework/docs/DEMOS_WINDOWS_2026-10-26.md).
 
 
-[Informe de les comprovacions](../validation/interactive-guides-2026-10-26.json). La verificació de Node no substitueix la revisió del render WebGL ni de la disposició visual en un navegador.
+[Informe de les comprovacions](../../Framework/docs/validation/interactive-guides-2026-10-26.json). La verificació de Node no substitueix la revisió del render WebGL ni de la disposició visual en un navegador.
