@@ -7,8 +7,6 @@ on:
       - '.github/workflows/documentacio-pages.yml'
       - 'docs-site/**'
       - 'EscapeRoom/Documentacio/**'
-      - 'Survival/Documentacio/**'
-      - 'Survival/README.md'
   workflow_dispatch:
 
 concurrency:
@@ -24,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: actions/configure-pages@v6
-      - name: Prepare the guides
+      - name: Prepare the Escape Room guide
         run: node docs-site/build.cjs _site
       - uses: actions/upload-pages-artifact@v5
         with:
@@ -40,6 +38,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Publish the guides
+      - name: Publish the Escape Room guide
         id: deployment
         uses: actions/deploy-pages@v5.0.1

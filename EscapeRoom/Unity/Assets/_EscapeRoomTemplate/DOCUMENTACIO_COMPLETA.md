@@ -653,17 +653,16 @@ Un accés ràpid guarda l'`ItemId`. Si s'esgota l'última unitat, la referència
 1. Recull una evidència amb `E`.
 2. Obre l'inventari amb `I`.
 3. Selecciona l'objecte.
-4. La interfície només mostra accions vàlides.
-5. Pot usar/equipar, llegir, examinar, combinar, assignar a accés ràpid o deixar-lo.
+4. Tria l'acció principal de l'objecte o fes servir els botons d'examen, combinació, accés ràpid i deixar a terra segons la configuració.
 
 ### Accions principals
 
 `InventoryPrimaryAction` pot ser:
 
-- `Automatic`: tria llegir, equipar/sostenir, consumir o cap acció segons dades.
-- `Read`: obre la nota.
-- `EquipOrHold`: instancia el `WorldPrefab` i l'equipa o sosté.
-- `Consume`: elimina una unitat.
+- `Automatic`: prova, per ordre, llegir si `Is Readable` està marcat, equipar/sostenir si hi ha `World Prefab`, o consumir si `Is Consumable` està marcat.
+- `Read`: obre el text de `Note Content`.
+- `EquipOrHold`: instancia el `World Prefab` i l'equipa o sosté si el prefab té `EquippableItem` o `PhysicsGrabbable`.
+- `Consume`: elimina una unitat si `Is Consumable` està marcat.
 - `None`: no ofereix acció principal.
 
 ### API bàsica
@@ -690,21 +689,22 @@ No modifiquis directament `Slots`. Utilitza l'API perquè es publiquin esdevenim
 2. `Create > Escape Room Framework > Inventory > Item`.
 3. Configura un `ItemId` estable i únic.
 4. Escriu nom i descripció.
-5. Assigna icona i `WorldPrefab`.
+5. Assigna la icona i, si necessites examen 3D, equipament o deixar-lo a terra, el `World Prefab`.
 6. Defineix categoria i acció principal.
 7. Configura piles, consum, examen, lectura i combinacions.
 8. Afegeix l'asset al `DefaultItemCatalog` o a un catàleg assignat al teu `InventoryManager`.
 
+### Col·locar l'objecte recollible a la sala
+
+1. Executa `Escape Room Framework > Create > Interactables > Pickable Item` i col·loca l'objecte a l'escena. Si ja tens un objecte a la sala, afegeix `Pickable Item` i un collider a l'arrel que rep la interacció.
+2. Arrossega l'asset d'inventari a `Pickable Item > Item Data` i ajusta `Quantity`.
+3. Prem `E` per recollir-lo i `I` per obrir l'inventari. Desa i carrega per comprovar que l'objecte es restaura a l'inventari i la còpia recollida desapareix de l'escena.
+
 ### Què ha de contenir el World Prefab
 
-Per a un objecte recollible simple:
+Per examinar-lo n'hi ha prou amb un prefab que contingui el model. Si es pot deixar a terra i s'ha de poder tornar a recollir, afegeix-hi un collider i un `Pickable Item` amb el mateix `Item Data`.
 
-- collider;
-- `PickableItem` amb el mateix `InventoryItemData`;
-- visual sota un fill reemplaçable;
-- opcionalment `Rigidbody` i `PhysicsGrabbable`.
-
-Per a equipament:
+Per a equipament, prepara aquests elements:
 
 - `Rigidbody`;
 - collider;
@@ -722,16 +722,10 @@ Per a equipament:
 
 ### Combinació
 
-Cada `InventoryItemData` pot declarar receptes:
-
-- objecte compatible;
-- resultat;
-- si es consumeix aquest objecte;
-- si es consumeix l'altre.
-
-Exemple: `clau_trencada + cinta -> clau_reparada`.
-
-El jugador selecciona `COMBINAR` i després un candidat compatible. La UI filtra les opcions. També es pot combinar des de l'examinador amb l'objecte actiu.
+1. Al `Project`, obre la fitxa `clau_trencada` i afegeix una entrada a `Combinations`.
+2. Assigna `cinta` a `Combine With` i `clau_reparada` a `Result Item`. Afegeix les tres fitxes al catàleg.
+3. Marca `Destroy This` per gastar una unitat de `clau_trencada` i `Destroy Other` per gastar una unitat de `cinta`. La mateixa recepta funciona en tots dos ordres. Reserva espai per al resultat quan els ingredients hagin de quedar a l'inventari.
+4. Amb les dues peces a l'inventari, selecciona una casella i prem `COMBINAR`. Selecciona l'altra casella i prem `COMBINAR OBJECTES`. Comprova que apareix el resultat i es gasten les unitats configurades.
 
 ### Ús contextual en portes i receptors
 
@@ -781,14 +775,7 @@ public sealed class ReceptorFusible : MonoBehaviour, IInventoryItemTarget
 
 ### Examen 3D
 
-`GameplayUIController` crea una càmera i una escena visual d'examen en runtime:
-
-- arrossegar: rotar;
-- roda: zoom;
-- `Esc`: tancar;
-- `COMBINAR`: intenta una combinació guiada.
-
-L'objecte necessita `WorldPrefab` i `CanExamine = true`. El model d'examen és una còpia visual; no modifica l'objecte real ni el prefab.
+Assigna el `World Prefab` a la fitxa de l'objecte i marca `Can Examine`. A l'inventari, selecciona l'objecte i prem `EXAMINAR`. Arrossega el model per girar-lo, fes zoom amb la roda i prem `Esc` per tancar. La vista d'examen mostra una còpia del model.
 
 ### Punts d'interès (hotspots) a l'examen 3D
 
@@ -1271,6 +1258,16 @@ Rodets: canvia `Wheel Count` (2–8) i `Combination` a `NumberWheelsPuzzleAuthor
 2. Enquadra la porta amb la càmera. Deixa el seu GameObject inactiu a la Hierarchy. A l’arrel del puzle, comprova `Cinematics > Feedback Camera` i prova `Feedback Delay = 0.2` i `Feedback Duration = 2` segons. Si la porta ja ha acabat de moure’s quan hi ha el tall, escurça el retard.
 3. Resol el puzle a Play. Comprova que la porta s’obre, es veu el pla i torna la vista del jugador. Fes servir una sola càmera de feedback per puzle. Aquest tall és per a PC i el joc segueix en marxa. En VR, mostra la recompensa amb llum, so o animació a l’escena.
 
+### Càmeres de feedback en altres mecàniques
+
+El teclat, les dianes, els circuits de llums i els altres components derivats de `PuzzleController` comparteixen els camps `Cinematics > Feedback Camera`, `Feedback Delay` i `Feedback Duration`. Assigna la conseqüència a `On Solved ()` i enquadra-la amb la càmera. Per exemple, enfoca el compartiment que s'obre en completar unes dianes o la zona que rep energia en completar un circuit.
+
+Per muntar-la a mà, crea una `Camera` i arrossega-la a `Feedback Camera`. Ajusta el Transform i el camp de visió. Mantén habilitat el component `Camera`, deixa el GameObject de la càmera inactiu i mantén actiu el controlador del puzle. Usa `Untagged` i treu l'`Audio Listener` de la càmera de feedback si Unity n'hi ha afegit un. El controlador engega la càmera després del retard i l'apaga quan acaba la durada. Posa el retard a zero si vols veure el començament d'una animació que s'activa a `On Solved ()`.
+
+`Puzzle Focus Point > Focus Camera` és la vista que fa servir el jugador per manipular el puzle. Pots afegir una segona càmera a `Feedback Camera` per mostrar el resultat en un altre lloc.
+
+Per activar el pla amb `Item Receiver > On Item Accepted` o `Physics Socket > On Item Snapped`, crea una càmera amb `Cinematic Camera`, ajusta `Duration` i afegeix `CinematicCamera > PlayCinematic()` a l'esdeveniment. Mantén actius el GameObject de la càmera i els seus pares. El component controla quan la càmera renderitza. Reserva el tall per a les escenes de PC.
+
 ### Munta una intro o un final amb diversos plans
 
 1. Afegeix `CutsceneSequence` a un GameObject actiu. Assigna `EscapeRoomPanelSettings` a `Panel Settings`. A `Steps` afegeix els plans en ordre. Tria `Image` (Sprite), `Video` (VideoClip) o `Scene Camera` (càmera dedicada, GameObject inicialment inactiu). Per al vídeo, comprova que hi hagi una càmera activa amb el tag `MainCamera`. Ajusta `Duration` i `Fade Duration` en segons. Amb `Video`, 0 a `Duration` usa la durada del clip. Pots afegir `Audio Clip` i activar `Skippable`.
@@ -1416,10 +1413,9 @@ Agrupa els objectius d'una sala i un `EndingDefinition` de finalització.
 
 Escolta l'EventBus i completa automàticament objectius. Quan tots estan complets:
 
-1. publica `OnRoomEscaped`;
-2. calcula el temps;
-3. crida `CompleteGame`;
-4. la UI mostra la pantalla de resultats.
+1. Publica `OnRoomEscaped` amb el temps de la sala.
+2. Si `Next Room Scene` està configurat, carrega l'escena indicada.
+3. Si `Next Room Scene` és buit, acaba la partida amb una victòria i mostra els textos de `Completion Ending`.
 
 Per completar un objectiu des de codi:
 
@@ -1429,7 +1425,13 @@ ObjectiveManager.Instance?.CompleteObjective("restore_power");
 
 ### Final directe
 
-`GameEndTrigger` pot activar-se per `UnityEvent`, per codi o quan el jugador entra al trigger.
+1. Al `Project`, executa `Create > Escape Room Framework > Ending Definition`. Omple `Ending Id`, tria `Outcome` (`Victory` o `Defeat`) i escriu `Title` i `Message`.
+2. Al menú superior, executa `Escape Room Framework > Create > Flow > Game End Trigger`. A l'Inspector, arrossega la fitxa a `Ending` i deixa `One Shot` marcat.
+3. Per acabar en creuar la porta, posa el volum darrere la sortida, ajusta el `Box Collider` amb `Is Trigger` i marca `Activate On Player Enter`. El GameObject del collider del jugador ha de tenir el tag `Player`.
+4. Per acabar en resoldre un puzle, desmarca `Activate On Player Enter`. A `On Solved ()`, afegeix l'objecte de l'escena i tria `GameEndTrigger > Trigger()`. El mateix enllaç serveix per a un esdeveniment de derrota amb el seu propi `Ending`.
+5. Si hi ha cinemàtica, assigna-la a `Ending Cutscene` i desactiva `Play On Start` a la seqüència. Prova el final tant deixant que acabi com saltant-la.
+
+També pots acabar la partida des de codi:
 
 ```csharp
 using EscapeRoomRevolt.Core.Flow;
@@ -1440,7 +1442,7 @@ public void MonstreAtrapaJugador(EndingDefinition derrota)
 }
 ```
 
-La pantalla final ofereix reintentar, menú principal o sortir.
+La pantalla final ofereix reintentar i sortir. El botó de menú principal està disponible quan es pot carregar l'escena de menú.
 
 ---
 

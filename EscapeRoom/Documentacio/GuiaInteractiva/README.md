@@ -1,6 +1,6 @@
 # Guia interactiva · Escape Room Revolt
 
-**[Consulta la guia en línia](https://xavikai.github.io/EscapeRoomRevolt/escape-room/)** o [descarrega l'HTML amb cerca i captures](https://github.com/xavikai/EscapeRoomRevolt/releases/download/docs-independent-2026-11-19/guia-escape-room-amb-cerca.html). Escriu un concepte a «Cerca a la guia» per anar directament al resultat. [Notes i comprovacions de la 0.2.2](../../Framework/RELEASE_NOTES_v0.2.2.md).
+**[Descarrega l'HTML amb la versió 0.2.2](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.2/guia-escape-room-0.2.2.html)** o [consulta la guia en línia](https://xavikai.github.io/EscapeRoomRevolt/escape-room/). Escriu un concepte a «Cerca a la guia» per anar directament al resultat. [Notes i comprovacions de la 0.2.2](../../Framework/RELEASE_NOTES_v0.2.2.md).
 
 Obre `index.html` en un navegador (doble clic). Necessita connexió a Internet per carregar three.js (cdnjs) i les tipografies. Les captures de Unity van incrustades dins del fitxer: es pot copiar sol. Clica una captura per ampliar-la.
 
@@ -10,7 +10,11 @@ Idiomes: català, castellà, anglès, francès i rus (selector a la barra latera
 
 **[Ampliar puzles](index.html#expand):** exemples per afegir llums, palanques, notes, dianes i encaixos. També indica com redimensionar o estendre els rodets, el tauler lliscant, les canonades, el teclat i els puzles encadenats.
 
-**[Cinemàtiques](index.html#cinematics):** pas a pas per mostrar una porta quan es resol un puzle i per muntar una intro o un final amb imatges, vídeos i plans de càmera.
+**[Cinemàtiques i càmeres de feedback](index.html#cinematics)** explica com enquadrar la recompensa de cada puzle, ajustar el retard i la durada, i activar un pla des d'un receptor o un encaix. Inclou captures ampliables de l'Inspector d'Unity amb el camp `Feedback Camera` assignat i els esdeveniments `On Item Accepted` i `On Item Snapped` connectats. També cobreix les intros i els finals amb imatges, vídeos i plans de càmera.
+
+**[Objectes i inventari](index.html#inventory)** explica com crear les fitxes i els objectes recollibles, fer-los servir en portes i receptors, examinar-ne el model en 3D amb punts d'interès i combinar dues peces per obtenir una clau.
+
+**[Final de partida](index.html#endings)** mostra com configurar victòria i derrota, activar el final en travessar una sortida, resoldre un puzle o completar els objectius i afegir una cinemàtica abans del resultat.
 
 **[Definition i pistes](index.html#definitions):** exemple complet d'un candau amb `Puzzle Definition` i un `Hint Data` de tres pistes. Explica cada camp, els dos enllaços entre escena i assets, IDs únics, inici del context, temporitzadors, tecla H, Hint Zone, finalització i guardat/carregat, amb comprovacions i errors habituals. Disponible en CA/ES/EN. [Referència detallada en català](../../Framework/docs/DEFINITIONS_I_PISTES.md).
 

@@ -1,6 +1,6 @@
 # Guia interactiva Survival
 
-**[Consulta la guia en línia](https://xavikai.github.io/EscapeRoomRevolt/survival/)** o [descarrega l'HTML amb cerca](https://github.com/xavikai/EscapeRoomRevolt/releases/download/docs-independent-2026-11-19/guia-survival-amb-cerca.html). Escriu un concepte a «Cerca a la guia» per anar directament al resultat.
+Obre la guia localment des de la còpia del repositori. Escriu un concepte a «Cerca a la guia» per anar directament al resultat.
 
 Obre `index.html` amb un navegador quan vulguis consultar-la. Guia en català, amb laboratori didàctic Three.js: detecció/persecució, gravació d’evidència i restauració de checkpoint. Cal Internet per carregar Three.js r128 des de cdnjs; les explicacions i els controls del model poden funcionar sense la maqueta 3D.
 

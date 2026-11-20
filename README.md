@@ -4,7 +4,7 @@ El repositori està organitzat en **dues carpetes principals**, una per projecte
 
 **Darrera versió del joc: [Escape Room 0.2.2](https://github.com/xavikai/EscapeRoomRevolt/releases/tag/escaperoom-v0.2.2)** · [Notes de la versió](EscapeRoom/Framework/RELEASE_NOTES_v0.2.2.md) ([0.2.0](EscapeRoom/Framework/RELEASE_NOTES_v0.2.0.md)). Inclou demo Windows, projecte portable, guia revisada i sumes SHA-256.
 
-**[Guies interactives amb cerca](https://xavikai.github.io/EscapeRoomRevolt/)** · [Escape Room (CA/ES/EN/FR/RU)](https://xavikai.github.io/EscapeRoomRevolt/escape-room/) · [Survival (CA)](https://xavikai.github.io/EscapeRoomRevolt/survival/) · [Descàrregues HTML](https://github.com/xavikai/EscapeRoomRevolt/releases/tag/docs-independent-2026-11-19).
+**Guia d’Escape Room (CA/ES/EN/FR/RU)** · [Descarrega l’HTML amb la versió 0.2.2](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.2/guia-escape-room-0.2.2.html) · [Consulta-la en línia](https://xavikai.github.io/EscapeRoomRevolt/escape-room/).
 
 | Carpeta | Projecte Unity per editar | Demo Windows per provar sense Unity |
 |---|---|---|

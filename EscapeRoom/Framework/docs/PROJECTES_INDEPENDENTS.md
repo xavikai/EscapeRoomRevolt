@@ -130,4 +130,4 @@ Lliurament preparat: [un ZIP per projecte amb exportació, guia i registre propi
 
 Demos Windows preparades per provar sense Unity: [ZIPs executables i instruccions](DEMOS_WINDOWS_2026-10-26.md), amb runtime complet, guia i registre propi. Integritat verificada contra les builds prèvies; no s’han executat les demos ni reprès el control de les aplicacions.
 
-Guies interactives actualitzades: [projecte i rutes d’Escape Room](https://xavikai.github.io/EscapeRoomRevolt/escape-room/#projects) i [guia de Survival](https://xavikai.github.io/EscapeRoomRevolt/survival/). Es distingeixen simulacions web, funcionament real i QA pendent. No s’han modificat els ZIPs ni snapshots existents.
+Guies interactives actualitzades: [projecte i rutes d’Escape Room](https://xavikai.github.io/EscapeRoomRevolt/escape-room/#projects) i [guia local de Survival](../../../Survival/Documentacio/GuiaInteractiva/README.md). Es distingeixen simulacions web, funcionament real i QA pendent. No s’han modificat els ZIPs ni snapshots existents.
