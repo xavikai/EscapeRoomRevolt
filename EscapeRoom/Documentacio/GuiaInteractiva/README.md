@@ -10,9 +10,13 @@ Idiomes: català, castellà, anglès, francès i rus (selector a la barra latera
 
 **[Ampliar puzles](index.html#expand):** exemples per afegir llums, palanques, notes, dianes i encaixos. També indica com redimensionar o estendre els rodets, el tauler lliscant, les canonades, el teclat i els puzles encadenats.
 
+**[Tauler lliscant en una porta que s’obre cap amunt](index.html#rec/rec_slide_door)** mostra com muntar el tauler a la fulla, desactivar la interacció amb les fitxes en resoldre’l i configurar una frontissa superior.
+
 **[Cinemàtiques i càmeres de feedback](index.html#cinematics)** explica com enquadrar la recompensa de cada puzle, ajustar el retard i la durada, i activar un pla des d'un receptor o un encaix. Inclou captures ampliables de l'Inspector d'Unity amb el camp `Feedback Camera` assignat i els esdeveniments `On Item Accepted` i `On Item Snapped` connectats. També cobreix les intros i els finals amb imatges, vídeos i plans de càmera.
 
-**[Objectes i inventari](index.html#inventory)** explica com crear les fitxes i els objectes recollibles, fer-los servir en portes i receptors, examinar-ne el model en 3D amb punts d'interès i combinar dues peces per obtenir una clau.
+**[Objectes i inventari](index.html#inventory)** explica com crear les fitxes i els objectes recollibles, fer-los servir en portes i receptors, examinar-ne el model en 3D i combinar peces. Inclou una ràdio fixa que sona quan hi poses les piles i una ràdio portàtil que es combina a l'inventari.
+
+**[Triggers narratius i subtítols](index.html#narrative)** explica com col·locar un volum de narració, assignar-hi un clip de veu, escriure i sincronitzar els subtítols i triar quan es repeteix el contingut.
 
 **[Final de partida](index.html#endings)** mostra com configurar victòria i derrota, activar el final en travessar una sortida, resoldre un puzle o completar els objectius i afegir una cinemàtica abans del resultat.
 
