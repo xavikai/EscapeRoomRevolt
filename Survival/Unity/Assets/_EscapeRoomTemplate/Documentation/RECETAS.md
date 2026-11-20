@@ -128,25 +128,54 @@ Menú: `Escape Room Framework > Create > Puzzles > Pipe Puzzle` · Sala del muse
 
 **Pasos**
 
-1. Ejecuta `Escape Room Framework > Create > Puzzles > Pipe Puzzle`. Selecciona `NewPipePuzzle` en `Hierarchy` y abre `PipePuzzle > Tiles` en `Inspector`. El menú crea el controlador con `pipe_a` en fila 0 columna 0 y `pipe_b` en fila 0 columna 1. Ahora construirás los dos tramos visibles.
-2. En el menú superior, crea un `Generic Trigger` en `Escape Room Framework > Create > Interactables`. Selecciona `NewTrigger_Logic` en `Hierarchy`, llámalo `Tram A` y colócalo. En `Inspector`, pulsa `Add Component` y busca `PipeTileButton`. Con `Tram A` seleccionado, arrastra `NewPipePuzzle` de `Hierarchy` a `Puzzle` y escribe `pipe_a` en `Tile Id`.
-3. En `Tram A`, abre `InteractableTrigger > On Interact Event` y pulsa `+`. Arrastra `Tram A` desde `Hierarchy` al campo de objeto de la fila nueva. Abre `No Function` y elige `PipeTileButton > Rotate`. Repite para `Tram B` con `Tile Id = pipe_b` y colócalo al lado.
-4. Para ver el giro, añade un `SteppedPositioner` a la raíz de cada tramo. En `Positions`, prepara cuatro rotaciones de 0°, 90°, 180° y 270° en el mismo eje. Arrastra el hijo con el modelo a `Visual Transform`. En `PipeTileButton`, arrastra la raíz del tramo a `Visual Positioner`. El modelo debe mostrar las aberturas de `Open Sides`.
-5. Si añades un tramo, crea el control y una fila con el mismo `Tile Id` en `Tiles`. Elige una celda libre con `Row` y `Column`. Para quitarlo, elimina el control y la fila de su ID. Conserva un origen y un destino distintos, actualiza `Source Tile Id` y `Sink Tile Id` si hace falta y comprueba que aún hay un camino. En el ejemplo, gira cada tramo dos veces.
-6. En `Project`, abre tu carpeta bajo `Assets`. Haz clic derecho en un espacio vacío y elige `Create > Escape Room Framework > Puzzles > Puzzle Definition`. Llama al asset `Def_sala1_puzle` o usa un nombre fácil de reconocer.
-7. Selecciona la definición en `Project`. En `Inspector`, escribe un `Persistent Id` único, por ejemplo `sala1_teclat` para el teclado de la sala 1. Rellena `Display Name` y `Objective`. Selecciona la raíz del puzle en `Hierarchy` y arrastra el asset desde `Project` a `Definition`, en el componente del puzle en `Inspector`.
-8. Para añadir pistas, haz clic derecho en la misma carpeta de `Project` y elige `Create > Escape Room Framework > Hints > Hint Data`. Selecciona el `Hint Data` y añade los textos a su lista `Hints`. Selecciona la `Puzzle Definition` y arrastra el `Hint Data` de `Project` al campo `Hints` de la definición.
-9. Para abrir una puerta al resolver el puzle, créala desde `Escape Room Framework > Create > Interactables > Door`. En `Hierarchy`, selecciona `NewDoor_Logic` y, en el componente `Door` de `Inspector`, marca `Is Locked`. Coloca la puerta en la escena.
-10. En `Hierarchy`, selecciona la raíz del puzle. Mantén `Ctrl` en Windows o `Cmd` en Mac y pulsa `NewDoor_Logic` para seleccionar ambos. Ejecuta `Escape Room Framework > Create > Puzzles > Link Selected Objects To Puzzle`. Selecciona solo la raíz y comprueba que `On Solved` contiene `Door.Unlock` y `Door.ForceOpen`. Guarda con `Ctrl+S` o `Cmd+S` y entra en `Play`.
+1. **Entiende cómo funciona (el controlador lógico + las piezas 3D).** A diferencia del teclado o los rodillos, `Escape Room Framework > Create > Puzzles > Pipe Puzzle` crea **solo el cerebro del puzle** (`NewPipePuzzle` con el componente `PipePuzzle`). Las piezas 3D que el jugador ve y pulsa en la escena las creas aparte y las enlazas por su nombre (`Tile Id`). El puzle imagina un **tablero o cuadrícula 2D** (como una tabla o un Excel) y comprueba si el agua puede ir desde la casilla de inicio (`Source Tile Id`) hasta la casilla final (`Sink Tile Id`).
+2. **Qué son `Row` (fila) y `Column` (columna) y cómo se orienta la cuadrícula.** El puzle no mira las coordenadas X/Y/Z de Unity para saber qué pieza toca con cuál: **solo mira los números `Row` y `Column`** de la lista `Tiles`:
+   - **`Row` (Fila = vertical, de arriba abajo):** `Row = 0` es la fila superior (`North`), `Row = 1` es la fila de debajo (`South`), `Row = 2` una más abajo...
+   - **`Column` (Columna = horizontal, de izquierda a derecha):** `Column = 0` es la primera columna a la izquierda (`West`), `Column = 1` es la siguiente columna a la derecha (`East`), `Column = 2` una más a la derecha...
+   - **¿Cuándo se conectan dos piezas?** Dos piezas son vecinas si están en la misma fila y columnas seguidas (ej. `(Row 0, Column 0)` y `(Row 0, Column 1)`), o en la misma columna y filas seguidas (ej. `(Row 0, Column 1)` y `(Row 1, Column 1)`). Para que el agua pase entre dos casillas vecinas, **ambas deben apuntarse mutuamente con bocas opuestas**: si la pieza izquierda `(0,0)` abre hacia `East` (derecha), la derecha `(0,1)` debe abrir hacia `West` (izquierda); si la pieza de arriba `(0,1)` abre hacia `South` (abajo), la de abajo `(1,1)` debe abrir hacia `North` (arriba).
+3. **Cómo funcionan `Open Sides` (tipo de pieza) y `Starting Rotation Steps` (giro inicial).** En cada entrada de `PipePuzzle > Tiles` configuras cinco campos:
+   - **`Tile Id`**: el nombre único de la pieza (ej. `pipe_a`). Debe ser idéntico al `Tile Id` de su botón 3D.
+   - **`Row` y `Column`**: la casilla que ocupa en la cuadrícula (sin repetir la misma pareja `Row`/`Column` en dos piezas).
+   - **`Open Sides`**: las bocas que tiene la pieza **en su posición base (0°, paso 0)**. En el desplegable de Unity puedes marcar varias direcciones a la vez:
+     - **Tubo recto**: 2 lados opuestos, `North | South` (vertical `│`) o `East | West` (horizontal `─`).
+     - **Codo (curva de 90°)**: 2 lados contiguos, como `North | East` (`└`), `East | South` (`┌`), `South | West` (`┐`) o `West | North` (`┘`).
+     - **Pieza en T**: 3 lados, como `North | East | West` (`┴`). **Cruz**: los 4 lados (`Everything`). **Inicio / tapón**: 1 solo lado (`East`).
+   - **`Starting Rotation Steps` (`0`, `1`, `2` o `3`)**: cuántos cuartos de vuelta (90° en sentido horario) tiene aplicados la pieza al empezar la partida. Cada clic del jugador suma `+1` (de `3` vuelve a `0`) y rota las bocas en sentido horario: **`North` → `East` → `South` → `West` → `North`**. *(Ejemplo: si `Open Sides = East` y pones `Starting Rotation Steps = 2`, la pieza empieza girada 180° mirando a `West`; al pulsarla 2 veces, vuelve a `0` mirando a `East`).*
+4. **Crea el controlador y revisa las 2 piezas de ejemplo.** Ejecuta `Escape Room Framework > Create > Puzzles > Pipe Puzzle`. En `Hierarchy`, selecciona `NewPipePuzzle` y mira `PipePuzzle` en `Inspector`. Verás que ya incluye 2 piezas de ejemplo en `Tiles`:
+   - `Element 0`: `Tile Id = pipe_a`, `Row = 0`, `Column = 0` (izquierda), `Open Sides = East` (mira a la derecha en el paso 0), `Starting Rotation Steps = 2` (empieza girada 180°, mirando a la izquierda).
+   - `Element 1`: `Tile Id = pipe_b`, `Row = 0`, `Column = 1` (derecha), `Open Sides = West` (mira a la izquierda en el paso 0), `Starting Rotation Steps = 2` (empieza girada 180°, mirando a la derecha).
+   - `Source Tile Id = pipe_a` (origen) y `Sink Tile Id = pipe_b` (destino). Cuando ambas lleguen al paso `0`, `pipe_a` (`East`) y `pipe_b` (`West`) se mirarán frente a frente y el puzle quedará resuelto.
+5. **Construye la primera pieza 3D (`Tram A`) y conéctala al controlador.** Desde el menú superior ejecuta `Escape Room Framework > Create > Interactables > Generic Trigger`. Selecciona `NewTrigger_Logic` en `Hierarchy`, renómbralo a `Tram A` y colócalo en la pared o mesa:
+   - Con `Tram A` seleccionado, pulsa `Add Component` en `Inspector` y añade **`PipeTileButton`**.
+   - En `PipeTileButton`, arrastra `NewPipePuzzle` desde `Hierarchy` al campo **`Puzzle`**, y escribe **`pipe_a`** exactamente en **`Tile Id`**.
+   - En `InteractableTrigger` del mismo `Tram A`, despliega **`On Interact Event`**, pulsa **`+`**, arrastra el propio `Tram A` al campo de objeto y en `No Function` elige **`PipeTileButton > Rotate ()`**.
+6. **Haz que la pieza 3D gire visualmente al pulsarla (`SteppedPositioner`).** Para que el modelo 3D de `Tram A` rote 90° con cada clic en sincronía con el puzle:
+   - Con `Tram A` seleccionado, pulsa `Add Component` y añade **`SteppedPositioner`**. Deja `Movement Type = Rotate`.
+   - Despliega **`Positions`** y crea **4 elementos** (`Element 0` a `Element 3`, para los pasos `0`, `1`, `2` y `3`): si la tubería está en una pared vertical, pon las rotaciones `(0, 0, 0)`, `(0, 0, -90)`, `(0, 0, -180)` y `(0, 0, -270)`; si está sobre una mesa horizontal, usa el eje Y: `(0, 0, 0)`, `(0, 90, 0)`, `(0, 180, 0)` y `(0, 270, 0)`.
+   - Arrastra el hijo visual (`NewTrigger_Visuals`, o el modelo 3D de la tubería) al campo **`Visual Transform`** de `SteppedPositioner` (así gira el modelo y no el collider). **Importante:** orienta el modelo 3D hijo para que a `0°` (`Element 0`) sus bocas apunten hacia los mismos lados que marcaste en `Open Sides`.
+   - En **`PipeTileButton`** de `Tram A`, arrastra el `SteppedPositioner` al campo **`Visual Positioner`**. Así al empezar o cargar partida el modelo se pondrá solo en su giro inicial.
+   - **Crea `Tram B` duplicando:** duplica `Tram A` en `Hierarchy` (`Ctrl+D`), llámalo `Tram B`, muévelo a la derecha de `Tram A`, cambia su `PipeTileButton > Tile Id` a **`pipe_b`** y comprueba que su `Visual Transform` apunta al hijo visual de `Tram B`.
+7. **Ejemplo práctico para ampliar el puzle (cuadrícula 2×2 de 4 piezas).** Si quieres hacer un recorrido de 4 piezas en un cuadrado 2×2 (desde arriba a la izquierda hasta abajo a la derecha), configura estas 4 entradas en `PipePuzzle > Tiles` y duplica hasta tener 4 tramos 3D (`pipe_a`, `pipe_b`, `pipe_c`, `pipe_d`) colocados igual en la escena:
+   - **`pipe_a` (Arriba-Izquierda, inicio)**: `Row = 0, Column = 0` · `Open Sides = East` (sale hacia la derecha) · `Starting Rotation Steps = 1`.
+   - **`pipe_b` (Arriba-Derecha, codo)**: `Row = 0, Column = 1` · `Open Sides = West | South` (entra por la izquierda y baja hacia abajo) · `Starting Rotation Steps = 2`.
+   - **`pipe_c` (Abajo-Izquierda, señuelo opcional)**: `Row = 1, Column = 0` · `Open Sides = North | East` · `Starting Rotation Steps = 0`.
+   - **`pipe_d` (Abajo-Derecha, final)**: `Row = 1, Column = 1` · `Open Sides = North` (recibe el agua que baja de `pipe_b`) · `Starting Rotation Steps = 3`.
+   - Pon **`Source Tile Id = pipe_a`** y **`Sink Tile Id = pipe_d`**. Cuando `pipe_a`, `pipe_b` y `pipe_d` lleguen al paso `0`, el camino `(0,0) → (0,1) → (1,1)` quedará unido y el puzle se resolverá.
+8. En `Project`, abre tu carpeta bajo `Assets`. Haz clic derecho en un espacio vacío y elige `Create > Escape Room Framework > Puzzles > Puzzle Definition`. Llama al asset `Def_sala1_puzle` o usa un nombre fácil de reconocer.
+9. Selecciona la definición en `Project`. En `Inspector`, escribe un `Persistent Id` único, por ejemplo `sala1_teclat` para el teclado de la sala 1. Rellena `Display Name` y `Objective`. Selecciona la raíz del puzle en `Hierarchy` y arrastra el asset desde `Project` a `Definition`, en el componente del puzle en `Inspector`.
+10. Para añadir pistas, haz clic derecho en la misma carpeta de `Project` y elige `Create > Escape Room Framework > Hints > Hint Data`. Selecciona el `Hint Data` y añade los textos a su lista `Hints`. Selecciona la `Puzzle Definition` y arrastra el `Hint Data` de `Project` al campo `Hints` de la definición.
+11. Para abrir una puerta al resolver el puzle, créala desde `Escape Room Framework > Create > Interactables > Door`. En `Hierarchy`, selecciona `NewDoor_Logic` y, en el componente `Door` de `Inspector`, marca `Is Locked`. Coloca la puerta en la escena.
+12. En `Hierarchy`, selecciona la raíz del puzle. Mantén `Ctrl` en Windows o `Cmd` en Mac y pulsa `NewDoor_Logic` para seleccionar ambos. Ejecuta `Escape Room Framework > Create > Puzzles > Link Selected Objects To Puzzle`. Selecciona solo la raíz y comprueba que `On Solved` contiene `Door.Unlock` y `Door.ForceOpen`. Guarda con `Ctrl+S` o `Cmd+S` y entra en `Play`.
 
 **Cómo lo pruebas**
 
-- Se resuelve cuando hay un camino continuo de aberturas del origen al destino; una vez resuelto, los tramos dejan de girar.
+- En el ejemplo inicial de 2 piezas (`pipe_a` y `pipe_b`), entra en Play y pulsa dos veces cada pieza: al llegar al paso 0 se conectan y se abre la puerta. Una vez resuelto, las piezas dejan de girar.
 - Pruébalo en Play: guarda con F5 a mitad del puzle y una vez resuelto, sal y carga con F9. El estado debe ser el mismo y la puerta debe seguir abierta.
 
 **Ojo con**
 
-- Randomize Rotations baraja los giros iniciales y nunca empieza resuelto.
+- Si una pieza gira pero el puzle nunca se resuelve, revisa 3 cosas: 1) que `Source Tile Id` y `Sink Tile Id` existan en `Tiles`, 2) que las casillas vecinas tengan `Row`/`Column` contiguos y bocas opuestas (`East` con `West`, `North` con `South`), y 3) que el modelo 3D en el paso 0 (`Element 0` del `SteppedPositioner`) apunte realmente hacia los lados marcados en `Open Sides`.
+- Randomize Rotations baraja los giros iniciales en cada partida y se asegura de que nunca empiece ya resuelto.
 
 <a id="slide"></a>
 ### Rompecabezas deslizante

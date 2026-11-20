@@ -128,25 +128,54 @@ Menu: `Escape Room Framework > Create > Puzzles > Pipe Puzzle` · Museum room 10
 
 **Steps**
 
-1. Run `Escape Room Framework > Create > Puzzles > Pipe Puzzle`. Select `NewPipePuzzle` in `Hierarchy` and open `PipePuzzle > Tiles` in `Inspector`. The menu creates the controller with `pipe_a` at row 0 column 0 and `pipe_b` at row 0 column 1. Next, build the two visible segments.
-2. From the top menu create a `Generic Trigger` under `Escape Room Framework > Create > Interactables`. Select `NewTrigger_Logic` in `Hierarchy`, rename it `Tram A`, and place it in the scene. In `Inspector`, click `Add Component` and find `PipeTileButton`. With `Tram A` selected, drag `NewPipePuzzle` from `Hierarchy` onto `Puzzle` and type `pipe_a` into `Tile Id`.
-3. On `Tram A`, expand `InteractableTrigger > On Interact Event` and click `+`. Drag `Tram A` from `Hierarchy` onto the new row’s object field. Open `No Function` and choose `PipeTileButton > Rotate`. Repeat for `Tram B` with `Tile Id = pipe_b` and place it beside the first.
-4. To show the rotation, add a `SteppedPositioner` to each segment root. In `Positions`, set four rotations of 0°, 90°, 180° and 270° around the same axis. Drag the model child into `Visual Transform`. On `PipeTileButton`, drag that segment’s root into `Visual Positioner`. Its model should show the openings defined in `Open Sides`.
-5. When adding a segment, create its control and a row with the same `Tile Id` in `Tiles`. Choose a free cell with `Row` and `Column`. To remove it, delete the control and its row. Keep separate source and sink tiles, update `Source Tile Id` and `Sink Tile Id` if needed, and verify the openings still allow a route. In the two-segment example, turn each segment twice.
-6. In `Project`, open your folder under `Assets`. Right-click an empty spot and choose `Create > Escape Room Framework > Puzzles > Puzzle Definition`. Name the asset `Def_sala1_puzle` or give it a recognizable name.
-7. Select the definition in `Project`. In `Inspector`, enter a unique `Persistent Id`, such as `sala1_teclat` for the room 1 keypad. Fill in `Display Name` and `Objective`. Select the puzzle root in `Hierarchy` and drag the asset from `Project` onto `Definition` on the puzzle component in `Inspector`.
-8. To add hints, right-click in the same `Project` folder and choose `Create > Escape Room Framework > Hints > Hint Data`. Select the `Hint Data` and add text to its `Hints` list. Select the `Puzzle Definition` and drag the `Hint Data` from `Project` onto the definition’s `Hints` field.
-9. To open a door when the puzzle is solved, create one from the top menu `Escape Room Framework > Create > Interactables > Door`. In `Hierarchy`, select `NewDoor_Logic` and tick `Is Locked` on its `Door` component in `Inspector`. Place the door in the scene.
-10. In `Hierarchy`, select the puzzle root. Hold `Ctrl` on Windows or `Cmd` on Mac and click `NewDoor_Logic` so both are selected. Run `Escape Room Framework > Create > Puzzles > Link Selected Objects To Puzzle`. Select just the root again and check `On Solved` contains `Door.Unlock` and `Door.ForceOpen`. Save with `Ctrl+S` or `Cmd+S` and enter `Play`.
+1. **Understand how it works (the logic controller + the 3D pieces).** Unlike the keypad or number wheels, `Escape Room Framework > Create > Puzzles > Pipe Puzzle` creates **only the puzzle brain** (`NewPipePuzzle` with the `PipePuzzle` component). You build the 3D pieces that the player sees and clicks separately in the scene and link them by name (`Tile Id`). The puzzle uses an imaginary **2D grid** (like a table or spreadsheet) and checks whether water can flow from the starting cell (`Source Tile Id`) to the ending cell (`Sink Tile Id`).
+2. **What `Row` and `Column` mean and how the grid is oriented.** The puzzle does not check Unity’s 3D X/Y/Z positions to see which pieces touch: **it only checks the `Row` and `Column` numbers** in the `Tiles` list:
+   - **`Row` (vertical, top to bottom):** `Row = 0` is the top row (`North`), `Row = 1` is the row below it (`South`), `Row = 2` is one row further down...
+   - **`Column` (horizontal, left to right):** `Column = 0` is the leftmost column (`West`), `Column = 1` is the next column to the right (`East`), `Column = 2` is one more to the right...
+   - **When do two pieces connect?** Two pieces are neighbors if they share a row and have consecutive columns (e.g. `(Row 0, Column 0)` and `(Row 0, Column 1)`), or share a column and have consecutive rows (e.g. `(Row 0, Column 1)` and `(Row 1, Column 1)`). For water to flow between two neighboring cells, **both must point at each other with opposite openings**: if the left piece `(0,0)` opens `East` (right), the right piece `(0,1)` must open `West` (left); if the top piece `(0,1)` opens `South` (down), the bottom piece `(1,1)` must open `North` (up).
+3. **How `Open Sides` (piece shape) and `Starting Rotation Steps` (initial turn) work.** Each entry in `PipePuzzle > Tiles` has five fields:
+   - **`Tile Id`**: unique name for the piece (e.g. `pipe_a`). Must match the `Tile Id` on its 3D button.
+   - **`Row` and `Column`**: its grid cell (do not give two pieces the same `Row`/`Column` pair).
+   - **`Open Sides`**: which sides have openings **at its base rotation (0°, step 0)**. In Unity’s dropdown you can tick multiple flags at once:
+     - **Straight pipe**: 2 opposite sides, `North | South` (vertical `│`) or `East | West` (horizontal `─`).
+     - **Elbow (90° corner)**: 2 adjacent sides, such as `North | East` (`└`), `East | South` (`┌`), `South | West` (`┐`), or `West | North` (`┘`).
+     - **T-junction**: 3 sides, such as `North | East | West` (`┴`). **Cross**: all 4 sides (`Everything`). **Cap / endpoint**: 1 side (`East`).
+   - **`Starting Rotation Steps` (`0`, `1`, `2`, or `3`)**: how many 90° clockwise quarter-turns the piece starts with. Each player click adds `+1` (wrapping from `3` back to `0`) and rotates openings clockwise: **`North` → `East` → `South` → `West` → `North`**. *(Example: if `Open Sides = East` and `Starting Rotation Steps = 2`, the piece starts turned 180° facing `West`; clicking it twice returns it to `0` facing `East`).*
+4. **Create the controller and inspect the 2 sample pieces.** Run `Escape Room Framework > Create > Puzzles > Pipe Puzzle`. In `Hierarchy`, select `NewPipePuzzle` and look at `PipePuzzle` in `Inspector`. It comes preconfigured with 2 sample tiles in `Tiles`:
+   - `Element 0`: `Tile Id = pipe_a`, `Row = 0`, `Column = 0` (left), `Open Sides = East` (points right at step 0), `Starting Rotation Steps = 2` (starts turned 180°, pointing left).
+   - `Element 1`: `Tile Id = pipe_b`, `Row = 0`, `Column = 1` (right), `Open Sides = West` (points left at step 0), `Starting Rotation Steps = 2` (starts turned 180°, pointing right).
+   - `Source Tile Id = pipe_a` (water start) and `Sink Tile Id = pipe_b` (water goal). When both reach step `0`, `pipe_a` (`East`) and `pipe_b` (`West`) face each other and the puzzle solves.
+5. **Build the first 3D piece (`Tram A`) and wire it to the controller.** From the top menu run `Escape Room Framework > Create > Interactables > Generic Trigger`. Select `NewTrigger_Logic` in `Hierarchy`, rename it `Tram A`, and place it on your wall or table:
+   - With `Tram A` selected, click `Add Component` in `Inspector` and add **`PipeTileButton`**.
+   - On `PipeTileButton`, drag `NewPipePuzzle` from `Hierarchy` into **`Puzzle`**, and type **`pipe_a`** into **`Tile Id`**.
+   - On `InteractableTrigger` on the same `Tram A`, expand **`On Interact Event`**, click **`+`**, drag `Tram A` itself into the object slot, and under `No Function` choose **`PipeTileButton > Rotate ()`**.
+6. **Make the 3D piece rotate visually when clicked (`SteppedPositioner`).** So the 3D model on `Tram A` turns 90° on each click in sync with the puzzle:
+   - With `Tram A` selected, click `Add Component` and add **`SteppedPositioner`**. Keep `Movement Type = Rotate`.
+   - Expand **`Positions`** and create **4 entries** (`Element 0` to `Element 3`, matching steps `0`, `1`, `2`, and `3`): for a vertical wall board use rotations `(0, 0, 0)`, `(0, 0, -90)`, `(0, 0, -180)`, and `(0, 0, -270)`; for a horizontal table board use the Y axis: `(0, 0, 0)`, `(0, 90, 0)`, `(0, 180, 0)`, and `(0, 270, 0)`.
+   - Drag the visual child (`NewTrigger_Visuals`, or your pipe 3D mesh inside it) into **`Visual Transform`** on `SteppedPositioner` (so the mesh turns while the collider stays put). **Important:** orient the child 3D mesh so that at `0°` (`Element 0`) its openings visibly match the directions ticked in `Open Sides`.
+   - On **`PipeTileButton`** on `Tram A`, drag the `SteppedPositioner` into **`Visual Positioner`**. This automatically snaps the 3D model to its starting rotation when Play begins or a save loads.
+   - **Create `Tram B` by duplicating:** duplicate `Tram A` in `Hierarchy` (`Ctrl+D`), rename it `Tram B`, move it to the right of `Tram A`, change its `PipeTileButton > Tile Id` to **`pipe_b`**, and check that its `Visual Transform` points to `Tram B`’s own visual child.
+7. **Practical example to expand the puzzle (4-piece 2×2 grid).** To build a 4-piece 2×2 grid route (from top-left to bottom-right), set these 4 entries in `PipePuzzle > Tiles` and duplicate your 3D segments so you have 4 pieces (`pipe_a`, `pipe_b`, `pipe_c`, `pipe_d`) arranged in a 2×2 square in the scene:
+   - **`pipe_a` (Top-Left, start)**: `Row = 0, Column = 0` · `Open Sides = East` (exits right) · `Starting Rotation Steps = 1`.
+   - **`pipe_b` (Top-Right, elbow)**: `Row = 0, Column = 1` · `Open Sides = West | South` (enters from left and goes down) · `Starting Rotation Steps = 2`.
+   - **`pipe_c` (Bottom-Left, optional decoy)**: `Row = 1, Column = 0` · `Open Sides = North | East` · `Starting Rotation Steps = 0`.
+   - **`pipe_d` (Bottom-Right, goal)**: `Row = 1, Column = 1` · `Open Sides = North` (receives water coming down from `pipe_b`) · `Starting Rotation Steps = 3`.
+   - Set **`Source Tile Id = pipe_a`** and **`Sink Tile Id = pipe_d`**. Once `pipe_a`, `pipe_b`, and `pipe_d` are rotated to step `0`, the path `(0,0) → (0,1) → (1,1)` connects and solves the puzzle.
+8. In `Project`, open your folder under `Assets`. Right-click an empty spot and choose `Create > Escape Room Framework > Puzzles > Puzzle Definition`. Name the asset `Def_sala1_puzle` or give it a recognizable name.
+9. Select the definition in `Project`. In `Inspector`, enter a unique `Persistent Id`, such as `sala1_teclat` for the room 1 keypad. Fill in `Display Name` and `Objective`. Select the puzzle root in `Hierarchy` and drag the asset from `Project` onto `Definition` on the puzzle component in `Inspector`.
+10. To add hints, right-click in the same `Project` folder and choose `Create > Escape Room Framework > Hints > Hint Data`. Select the `Hint Data` and add text to its `Hints` list. Select the `Puzzle Definition` and drag the `Hint Data` from `Project` onto the definition’s `Hints` field.
+11. To open a door when the puzzle is solved, create one from the top menu `Escape Room Framework > Create > Interactables > Door`. In `Hierarchy`, select `NewDoor_Logic` and tick `Is Locked` on its `Door` component in `Inspector`. Place the door in the scene.
+12. In `Hierarchy`, select the puzzle root. Hold `Ctrl` on Windows or `Cmd` on Mac and click `NewDoor_Logic` so both are selected. Run `Escape Room Framework > Create > Puzzles > Link Selected Objects To Puzzle`. Select just the root again and check `On Solved` contains `Door.Unlock` and `Door.ForceOpen`. Save with `Ctrl+S` or `Cmd+S` and enter `Play`.
 
 **How to test it**
 
-- It solves when a continuous path links source to sink; once solved, segments stop turning.
+- In the initial 2-piece example (`pipe_a` and `pipe_b`), enter Play and click each piece twice: on reaching step 0 they connect and open the door. Once solved, segments stop turning.
 - Test it in Play: save with F5 halfway through and once solved, then load with F9. The state must match and the door must stay open.
 
 **Watch out for**
 
-- Randomize Rotations shuffles starting rotations and never starts solved.
+- If pieces turn but the puzzle never solves, check 3 things: 1) `Source Tile Id` and `Sink Tile Id` exist in `Tiles`, 2) neighboring cells have adjacent `Row`/`Column` numbers and opposite openings (`East` meets `West`, `North` meets `South`), and 3) the 3D model at step 0 (`Element 0` of `SteppedPositioner`) visually points toward the sides ticked in `Open Sides`.
+- Randomize Rotations shuffles starting rotations each playthrough and ensures it never starts already solved.
 
 <a id="slide"></a>
 ### Sliding puzzle
