@@ -154,3 +154,7 @@ InitTestScene*.unity*
 
 # Local Claude Code settings and temporary worktrees
 /.claude/
+# Projecte Unity buit creat per error a l'arrel (el projecte real es EscapeRoom/Unity)
+/ProjectSettings/
+/Assets/
+/Packages/

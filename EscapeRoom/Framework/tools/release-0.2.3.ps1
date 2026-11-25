@@ -8,6 +8,8 @@
 #
 # Executa'l des de l'arrel del repositori:
 #   powershell -ExecutionPolicy Bypass -File EscapeRoom/Framework/tools/release-0.2.3.ps1
+# Afegeix -Yes per respondre 's' a totes les preguntes (sense interaccio).
+param([switch]$Yes)
 $ErrorActionPreference = 'Stop'
 $version = '0.2.3'
 $previous = '0.2.2'
@@ -31,6 +33,7 @@ function Write-Sha([string]$File) {
     Write-Host "  $(Split-Path -Leaf $File)  sha256 $hash"
 }
 function Confirm-Step([string]$Question) {
+    if ($Yes) { Write-Host "$Question (s/n): s (-Yes)"; return $true }
     $answer = Read-Host "$Question (s/n)"
     return $answer -match '^(s|si|sí|y|yes)$'
 }
@@ -63,7 +66,11 @@ if ($branch -ne 'main') {
     if (!(Confirm-Step "Vols continuar igualment amb '$branch'?")) { exit 1 }
 }
 
-# 1. Paquets (no se sobreescriu res que ja existeixi).
+# 1. Paquets (si ja existeixen tots d'una execucio anterior, es reutilitzen).
+$alreadyPackaged = (Test-Path $windowsZip) -and (Test-Path $sourceZip) -and (Test-Path $guideCopy) -and (Test-Path $export)
+if ($alreadyPackaged) {
+    Write-Host 'Els paquets ja existeixen: es reutilitzen.'
+} else {
 foreach ($existing in @($windowsZip, $sourceZip, $export)) {
     if (Test-Path $existing) { throw "Ja existeix i no el sobreescric: $existing" }
 }
@@ -92,8 +99,11 @@ Write-Sha $sourceZip
 
 Copy-Item -LiteralPath $guide -Destination $guideCopy -Force
 Write-Sha $guideCopy
+}
 
 # 2. Commit i push.
+# git escriu avisos a stderr; no han d'aturar el script (els errors reals es miren amb Invoke-Checked).
+$ErrorActionPreference = 'Continue'
 Write-Host ''
 $pending = git status --porcelain
 if ($pending) {
@@ -105,13 +115,13 @@ if (!(Confirm-Step "Fer commit de TOTS aquests canvis i push a '$branch'?")) {
 }
 git add -A; Invoke-Checked 'git add'
 $message = @"
-Escape Room $version: portes que es movien en carregar i guia dels menus
+Escape Room ${version}: fixes de guardar/carregar, menu nomes escape room i guia
 
-- Door: la posicio tancada es calcula a Awake (o a LoadData si estava inactiva),
-  aixi una partida carregada ja no mou portes, calaixos i tapes al centre.
-- Dos tests PlayMode nous a SaveRestoreRegressionTests.
-- Guia: menus pas a pas (nivell 0, taula de canvis, problemes frequents),
-  preguntes frequents i enllacos a la $version.
+- Door: la posicio tancada es calcula a Awake; carregar ja no mou portes al centre.
+- Guardar/carregar: F5/F9 nomes en partida, timers, perills, zones, notes,
+  hotspots i inventari es restauren be; validador de Save IDs automatic.
+- Menu: textos i opcions nomes d'escape room (sense referencies survival).
+- Guia: menus pas a pas, missatges/notes/final del joc, data i versio visibles.
 - Notes de la versio, guia d'actualitzacio des de $previous i versio $version.
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
