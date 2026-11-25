@@ -202,16 +202,21 @@ namespace EscapeRoomRevolt.Core.Flow
             Finish(new GameResult(GameOutcome.Victory,
                 ending != null ? ending.EndingId : "escaped",
                 ending != null ? ending.Title : "Has escapado",
-                ending != null ? ending.Message : "La investigación ha terminado."));
+                ending != null ? ending.Message : IsEscapeRoom ? "Has conseguido salir de la sala." : "La investigación ha terminado."));
         }
 
         public void FailGame(EndingDefinition ending = null)
         {
             Finish(new GameResult(GameOutcome.Defeat,
                 ending != null ? ending.EndingId : "failed",
-                ending != null ? ending.Title : "Fin de la investigación",
-                ending != null ? ending.Message : "La investigación no pudo continuar."));
+                ending != null ? ending.Title : IsEscapeRoom ? "No has escapado" : "Fin de la investigación",
+                ending != null ? ending.Message : IsEscapeRoom ? "No has conseguido salir a tiempo." : "La investigación no pudo continuar."));
         }
+
+        // Default ending texts when no Ending Definition is assigned. The Escape Room product uses
+        // plain escape wording; Survival keeps its investigation flavour.
+        private static bool IsEscapeRoom =>
+            EscapeRoomRevolt.Core.Settings.GameFeatures.Genre == EscapeRoomRevolt.Core.Settings.GameGenre.EscapeRoom;
 
         public void QuitGame()
         {

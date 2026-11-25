@@ -2,7 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using EscapeRoomRevolt.Core;
+using EscapeRoomRevolt.Core.Flow;
+using EscapeRoomRevolt.Core.Save;
+using EscapeRoomRevolt.Systems.Flow;
 using EscapeRoomRevolt.Systems.Interaction;
+using EscapeRoomRevolt.Systems.Inventory;
 using EscapeRoomRevolt.Systems.Puzzle;
 using NUnit.Framework;
 using UnityEngine;
@@ -192,6 +196,145 @@ namespace EscapeRoomRevolt.Systems.Tests
             puzzle.ResetPuzzle();
             puzzle.LoadData(partial);
             Assert.That(puzzle.PlacedCount, Is.Zero);
+        }
+
+        private const string ClosedDoorSave = "{\"version\":2,\"isLocked\":true,\"isOpen\":false,\"openAmount\":0,\"openDirection\":1}";
+        private const string AjarDoorSave = "{\"version\":2,\"isLocked\":false,\"isOpen\":false,\"openAmount\":0.5,\"openDirection\":1}";
+
+        // Scene loads restore saves after Awake but before Start. A door used to capture its hinge in
+        // Start, so a loaded door, drawer or lid jumped to the centre of the scene.
+        [UnityTest]
+        public IEnumerator Door_RestoredBeforeStart_KeepsItsPlace()
+        {
+            GameObject root = Create("Drawer");
+            root.transform.SetPositionAndRotation(new Vector3(4f, 1f, -3f), Quaternion.Euler(0f, 30f, 0f));
+            var door = root.AddComponent<Door>();   // Awake runs now, Start on the next frame
+
+            door.LoadData(ClosedDoorSave);
+            Assert.That(Vector3.Distance(root.transform.position, new Vector3(4f, 1f, -3f)), Is.LessThan(.001f));
+            yield return null;
+
+            Assert.That(Vector3.Distance(root.transform.position, new Vector3(4f, 1f, -3f)), Is.LessThan(.001f));
+            Assert.That(Quaternion.Angle(root.transform.rotation, Quaternion.Euler(0f, 30f, 0f)), Is.LessThan(.01f));
+            Assert.That(door.IsLocked, Is.True);
+        }
+
+        [UnityTest]
+        public IEnumerator Door_RestoredWhileInactive_KeepsPlaceAndAjarAmount()
+        {
+            GameObject root = Create("Lid");
+            root.SetActive(false);                  // Awake has not run when the save arrives
+            root.transform.position = new Vector3(-2f, .5f, 6f);
+            var door = root.AddComponent<Door>();
+            Set(door, "_movementType", DoorMovementType.Slide);
+            Set(door, "_slideOffset", new Vector3(1f, 0f, 0f));
+
+            door.LoadData(AjarDoorSave);
+            root.SetActive(true);
+            yield return null;
+
+            Assert.That(Vector3.Distance(root.transform.position, new Vector3(-1.5f, .5f, 6f)), Is.LessThan(.001f));
+            Assert.That(door.OpenAmount, Is.EqualTo(.5f).Within(.001f));
+        }
+
+        // An auto-start timer the player had stopped used to start again after loading.
+        [UnityTest]
+        public IEnumerator GameOverTimer_RestoredStopped_DoesNotAutoStartAgain()
+        {
+            GameObject root = Create("Timer");
+            root.SetActive(false);
+            var timer = root.AddComponent<GameOverTimer>();
+            Set(timer, "_autoStart", true);
+            Set(timer, "_duration", 60f);
+            timer.LoadData("{\"elapsed\":10,\"isRunning\":false,\"hasExpired\":false}");
+            root.SetActive(true);
+            yield return null;
+
+            Assert.That(timer.IsRunning, Is.False);
+            Assert.That(timer.TimeRemaining, Is.EqualTo(50f).Within(.01f));
+        }
+
+        // A one-shot zone fired again after loading (restarting timers, reopening doors...).
+        [Test]
+        public void EventTriggerZone_RestoresHasTriggered()
+        {
+            GameObject root = Create("Zone");
+            root.AddComponent<BoxCollider>();
+            var zone = root.AddComponent<EventTriggerZone>();
+            zone.LoadData("{\"hasTriggered\":true}");
+
+            Assert.That(zone.HasTriggered, Is.True);
+            StringAssert.Contains("\"hasTriggered\":true", zone.SaveData());
+        }
+
+        // A note set to disappear after reading came back after loading.
+        [Test]
+        public void InteractableNote_ReadAndDisappearing_StaysHiddenAfterLoad()
+        {
+            GameObject root = Create("Note");
+            var note = root.AddComponent<InteractableNote>();
+            note.DisappearAfterRead = true;
+            note.LoadData("{\"hasBeenRead\":true}");
+
+            Assert.That(root.activeSelf, Is.False);
+            Assert.That(note.HasBeenRead, Is.True);
+        }
+
+        // New game / Retry kept the hotspots of the previous run revealed and stopped saving them.
+        [Test]
+        public void ExamineHotspotRegistry_NewSession_ClearsAndKeepsSaving()
+        {
+            SaveManager save = SaveManager.Instance != null ? SaveManager.Instance : Create("SaveManager").AddComponent<SaveManager>();
+            ExamineHotspotRegistry registry = ExamineHotspotRegistry.Instance != null
+                ? ExamineHotspotRegistry.Instance : Create("Hotspots").AddComponent<ExamineHotspotRegistry>();
+            save.Register(registry);
+            registry.MarkRevealed("drawer_key");
+
+            save.ResetSession();
+
+            Assert.That(registry.IsRevealed("drawer_key"), Is.False);
+            Assert.That(save.CaptureSnapshot().keys, Does.Contain(registry.SaveId));
+        }
+
+        // F5 in the main menu or on the results screen wrote a save of that screen.
+        [Test]
+        public void SaveManager_RefusesToSaveOutsideAGame()
+        {
+            SaveManager save = SaveManager.Instance != null ? SaveManager.Instance : Create("SaveManager").AddComponent<SaveManager>();
+            GameFlowManager flow = GameFlowManager.Instance != null ? GameFlowManager.Instance : Create("GameFlow").AddComponent<GameFlowManager>();
+            GameFlowState previousState = GameFlowManager.State;
+            typeof(GameFlowManager).GetMethod("SetState", BindingFlags.Instance | BindingFlags.NonPublic)
+                .Invoke(flow, new object[] { GameFlowState.MainMenu });
+            string failure = null;
+            save.OperationFailed += (slot, message) => failure = message;
+
+            save.SaveGame("test_outside_game");
+            bool canSave = SaveManager.CanSaveNow();
+            typeof(GameFlowManager).GetMethod("SetState", BindingFlags.Instance | BindingFlags.NonPublic)
+                .Invoke(flow, new object[] { previousState });
+
+            Assert.That(failure, Is.Not.Null);
+            Assert.That(canSave, Is.False);
+        }
+
+        // Items missing from the item catalogue vanished from the inventory on load.
+        [Test]
+        public void InventoryManager_RestoresSceneItemsMissingFromTheCatalogue()
+        {
+            var item = ScriptableObject.CreateInstance<InventoryItemData>();
+            Set(item, "_itemId", "test_uncatalogued_key");
+            GameObject pickupRoot = Create("Pickup");
+            pickupRoot.SetActive(false);
+            Set(pickupRoot.AddComponent<PickableItem>(), "_itemData", item);
+            var inventory = Create("Inventory").AddComponent<InventoryManager>();
+            Assert.That(inventory.AddItem(item), Is.True);
+            string json = inventory.SaveData();
+            inventory.Clear();
+
+            inventory.LoadData(json);
+
+            Assert.That(inventory.HasItem("test_uncatalogued_key"), Is.True);
+            Object.Destroy(item);
         }
     }
 }

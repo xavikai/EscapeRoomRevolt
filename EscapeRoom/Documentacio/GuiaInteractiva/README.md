@@ -1,6 +1,6 @@
 # Guia interactiva · Escape Room Revolt
 
-**[Descarrega l'HTML amb la versió 0.2.2](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.2/guia-escape-room-0.2.2.html)** o [consulta la guia en línia](https://xavikai.github.io/EscapeRoomRevolt/escape-room/). Escriu un concepte a «Cerca a la guia» per anar directament al resultat. [Notes i comprovacions de la 0.2.2](../../Framework/RELEASE_NOTES_v0.2.2.md).
+Guia actualitzada el **25/11/2026** (versió 0.2.3). **[Descarrega l'HTML amb la versió 0.2.3](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.3/guia-escape-room-0.2.3.html)** o [consulta la guia en línia](https://xavikai.github.io/EscapeRoomRevolt/escape-room/). Escriu un concepte a «Cerca a la guia» per anar directament al resultat. [Notes de la 0.2.3](../../Framework/RELEASE_NOTES_v0.2.3.md).
 
 Obre `index.html` en un navegador (doble clic). Necessita connexió a Internet per carregar three.js (cdnjs) i les tipografies. Les captures de Unity van incrustades dins del fitxer: es pot copiar sol. Clica una captura per ampliar-la.
 

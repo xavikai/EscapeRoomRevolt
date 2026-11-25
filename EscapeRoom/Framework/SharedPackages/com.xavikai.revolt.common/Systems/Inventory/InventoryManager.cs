@@ -345,7 +345,12 @@ namespace EscapeRoomRevolt.Systems.Inventory
             {
                 string id = state.slotItemIds[index];
                 int quantity = state.slotQuantities[index];
-                if (string.IsNullOrWhiteSpace(id) || quantity <= 0 || !_itemLookup.TryGetValue(id, out InventoryItemData data)) continue;
+                if (string.IsNullOrWhiteSpace(id) || quantity <= 0) continue;
+                if (!_itemLookup.TryGetValue(id, out InventoryItemData data))
+                {
+                    Debug.LogWarning($"[InventoryManager] The saved item '{id}' was not restored: add its Item asset to the item catalogue (DefaultItemCatalog).");
+                    continue;
+                }
                 _slots[index].ItemId = id;
                 _slots[index].Quantity = quantity;
                 _slots[index].Data = data;
@@ -499,6 +504,49 @@ namespace EscapeRoomRevolt.Systems.Inventory
             IEnumerable<InventoryItemData> items = _catalog != null ? _catalog.Items : Resources.LoadAll<InventoryItemData>("Items");
             foreach (InventoryItemData item in items)
                 if (item != null && !string.IsNullOrWhiteSpace(item.ItemId)) _itemLookup[item.ItemId] = item;
+            AddSceneItemsToLookup();
+        }
+
+        /// <summary>
+        /// Items that were never added to the catalogue used to vanish from the inventory when a
+        /// game was loaded. Every item the scene can hand out (pickables, pickable notes, examine
+        /// hotspots and what combining them produces) is known here as well, so a forgotten
+        /// catalogue entry no longer loses the player's items. Runs in Awake, before a loaded game
+        /// removes the pickables that were already collected.
+        /// </summary>
+        private void AddSceneItemsToLookup()
+        {
+            var pending = new Queue<InventoryItemData>();
+            foreach (PickableItem pickable in FindObjectsByType<PickableItem>(FindObjectsInactive.Include))
+                if (pickable != null) pending.Enqueue(pickable.Data);
+            foreach (InteractableNote note in FindObjectsByType<InteractableNote>(FindObjectsInactive.Include))
+                if (note != null) pending.Enqueue(note.ItemData);
+            foreach (ExamineHotspot hotspot in FindObjectsByType<ExamineHotspot>(FindObjectsInactive.Include))
+                if (hotspot != null) pending.Enqueue(hotspot.RevealedItem);
+            foreach (InventoryItemData known in _itemLookup.Values.ToList()) pending.Enqueue(known);
+
+            var visited = new HashSet<InventoryItemData>();
+            while (pending.Count > 0)
+            {
+                InventoryItemData item = pending.Dequeue();
+                if (item == null || !visited.Add(item)) continue;
+                AddToLookup(item);
+                if (item.Combinations != null)
+                    foreach (ItemCombination recipe in item.Combinations)
+                    {
+                        pending.Enqueue(recipe.CombineWith);
+                        pending.Enqueue(recipe.ResultItem);
+                    }
+                if (item.WorldPrefab != null)
+                    foreach (ExamineHotspot hotspot in item.WorldPrefab.GetComponentsInChildren<ExamineHotspot>(true))
+                        pending.Enqueue(hotspot.RevealedItem);
+            }
+        }
+
+        private void AddToLookup(InventoryItemData item)
+        {
+            if (item != null && !string.IsNullOrWhiteSpace(item.ItemId) && !_itemLookup.ContainsKey(item.ItemId))
+                _itemLookup[item.ItemId] = item;
         }
 
         private static InventorySlot[] CreateSlots(int count)

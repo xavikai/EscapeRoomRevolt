@@ -50,6 +50,11 @@ namespace EscapeRoomRevolt.Systems.Flow
             ? (_endPoint.position - _startPoint.position).normalized
             : Vector3.zero;
 
+        // A loaded game restores this object before its Start runs (SaveManager restores during
+        // sceneLoaded). Auto Start must then leave the restored state alone: a timer or hazard the
+        // player had already stopped used to start again, and a running HUD timer was hidden.
+        private bool _restoredFromSave;
+
         private void Awake()
         {
             SaveManager.Instance?.Register(this);
@@ -58,7 +63,7 @@ namespace EscapeRoomRevolt.Systems.Flow
 
         private void Start()
         {
-            if (_autoStart) StartHazard();
+            if (_autoStart && !_restoredFromSave) StartHazard();
         }
 
         private void Update()
@@ -154,6 +159,7 @@ namespace EscapeRoomRevolt.Systems.Flow
         {
             MovingHazardSaveData data = JsonUtility.FromJson<MovingHazardSaveData>(json);
             if (data == null) return;
+            _restoredFromSave = true;
             _elapsedTravel = Mathf.Clamp(data.elapsedTravel, 0f, _travelDuration);
             _isRunning = data.isRunning;
             _hasReachedDestination = data.hasReachedDestination;

@@ -21,14 +21,30 @@ namespace EscapeRoomRevolt.Systems.Interaction
         [Tooltip("Only fired if Is Toggle is checked.")]
         public UnityEvent OnInteractOffEvent;
 
+        [Header("Puzzle Focus")]
+        [Tooltip("Optional close-up to open on PC before firing the interaction event.")]
+        [SerializeField] private PuzzleFocusPoint _puzzleFocus;
+        [SerializeField] private string _focusPrompt = "Examinar";
+
         private bool _hasBeenUsed = false;
         private bool _isOn = false;
 
-        public override string InteractionPrompt => _prompt;
+        private bool UsesPuzzleFocus => _puzzleFocus != null && !PuzzleFocusPoint.IsVirtualReality;
+
+        public override bool CanInteract => base.CanInteract && (!UsesPuzzleFocus || !_puzzleFocus.IsPuzzleSolved);
+
+        public override string InteractionPrompt =>
+            UsesPuzzleFocus && !_puzzleFocus.IsFocused ? _focusPrompt : _prompt;
 
         protected override void OnInteract()
         {
             if (_singleUse && _hasBeenUsed) return;
+
+            if (UsesPuzzleFocus && !_puzzleFocus.IsFocused)
+            {
+                _puzzleFocus.Enter();
+                return;
+            }
 
             _hasBeenUsed = true;
 

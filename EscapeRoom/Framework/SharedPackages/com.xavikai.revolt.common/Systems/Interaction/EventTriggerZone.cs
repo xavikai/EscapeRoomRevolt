@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using EscapeRoomRevolt.Core.Save;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -10,13 +12,17 @@ namespace EscapeRoomRevolt.Systems.Interaction
     /// </summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(Collider))]
-    public sealed class EventTriggerZone : MonoBehaviour
+    public sealed class EventTriggerZone : MonoBehaviour, ISaveable
     {
         [Header("Activation")]
         [Tooltip("Only colliders with this tag can activate the zone. Leave empty to accept any collider.")]
         [SerializeField] private string _requiredTag = "Player";
         [Tooltip("Fire the enter event only once until ResetZone is called.")]
         [SerializeField] private bool _oneShot = true;
+
+        [Header("Save System")]
+        [Tooltip("Unique ID used by saved games. Filled in automatically; must differ from every other zone.")]
+        [SerializeField] private string _saveId = "";
 
         [Header("Events")]
         [SerializeField] private UnityEvent _onEntered = new UnityEvent();
@@ -29,7 +35,30 @@ namespace EscapeRoomRevolt.Systems.Interaction
         public UnityEvent OnExited => _onExited;
         public bool HasTriggered => _hasTriggered;
 
-        private void Awake() => EnsureTriggerCollider();
+        private void Awake()
+        {
+            EnsureTriggerCollider();
+            SaveManager.Instance?.Register(this);
+        }
+
+        private void OnDestroy() => SaveManager.Instance?.Unregister(this);
+
+        // A one-shot zone remembers it has fired, so loading a game does not fire it again
+        // (start a timer that was already stopped, reopen a door, show an object twice...).
+        public string SaveId => string.IsNullOrWhiteSpace(_saveId) ? name : _saveId;
+
+        [Serializable]
+        private sealed class ZoneSaveData { public bool hasTriggered; }
+
+        public string SaveData() => JsonUtility.ToJson(new ZoneSaveData { hasTriggered = _hasTriggered });
+
+        public void LoadData(string json)
+        {
+            ZoneSaveData data = JsonUtility.FromJson<ZoneSaveData>(json);
+            if (data == null) return;
+            _hasTriggered = data.hasTriggered;
+            _occupants.Clear();
+        }
 
         private void OnTriggerEnter(Collider other)
         {
@@ -86,7 +115,16 @@ namespace EscapeRoomRevolt.Systems.Interaction
 #if UNITY_EDITOR
         private void Reset() => EnsureTriggerCollider();
 
-        private void OnValidate() => EnsureTriggerCollider();
+        private void OnValidate()
+        {
+            EnsureTriggerCollider();
+            if (string.IsNullOrWhiteSpace(_saveId) && !UnityEditor.PrefabUtility.IsPartOfPrefabAsset(this)
+                && !Application.isPlaying)
+            {
+                _saveId = "event_zone_" + Guid.NewGuid().ToString("N");
+                UnityEditor.EditorUtility.SetDirty(this);
+            }
+        }
 #endif
     }
 }

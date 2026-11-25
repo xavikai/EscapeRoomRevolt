@@ -6,7 +6,7 @@ const root = resolve(__dirname, "..");
 const output = resolve(process.argv[2] || join(root, ".utmp", "pages"));
 const github = "https://github.com/xavikai/EscapeRoomRevolt/blob/main/";
 const escapeRoom = "EscapeRoom/Documentacio/GuiaInteractiva/index.html";
-const release = "https://github.com/xavikai/EscapeRoomRevolt/releases/tag/escaperoom-v0.2.2";
+const release = "https://github.com/xavikai/EscapeRoomRevolt/releases/tag/escaperoom-v0.2.3";
 
 mkdirSync(output, { recursive: true });
 copyFileSync(join(__dirname, "index.html"), join(output, "index.html"));

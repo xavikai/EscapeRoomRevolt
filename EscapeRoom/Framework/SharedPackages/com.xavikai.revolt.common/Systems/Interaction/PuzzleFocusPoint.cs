@@ -38,9 +38,10 @@ namespace EscapeRoomRevolt.Systems.Interaction
         private float _solvedTimer;
 
         public bool IsFocused => _isFocused;
+        internal bool IsPuzzleSolved => _puzzle != null && _puzzle.IsSolved;
 
         /// <summary>True in a headset, where taking the camera off the player's head is both unnecessary and a reliable way to make them ill.</summary>
-        private static bool IsVirtualReality =>
+        internal static bool IsVirtualReality =>
             PlayerPlatformRegistry.Current != null &&
             PlayerPlatformRegistry.Current.Platform == PlayerPlatform.VirtualReality;
 
@@ -115,7 +116,7 @@ namespace EscapeRoomRevolt.Systems.Interaction
             if (secondaryHeld && !_secondaryWasHeld) { _secondaryWasHeld = true; Exit(); return; }
             _secondaryWasHeld = secondaryHeld;
 
-            if (_puzzle == null || !_puzzle.IsSolved) return;
+            if (!IsPuzzleSolved) return;
             _solvedTimer += Time.deltaTime;
             if (_solvedTimer >= _exitDelayAfterSolved) Exit();
         }

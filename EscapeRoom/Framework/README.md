@@ -1,6 +1,6 @@
 # Escape Room Revolt
 
-**Current release: [Escape Room 0.2.1](https://github.com/xavikai/EscapeRoomRevolt/releases/tag/escaperoom-v0.2.1)** — [release notes](RELEASE_NOTES_v0.2.1.md), [downloadable interactive guide](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.1/guia-escape-room-0.2.1.html) and [9 November validation](docs/validation/release-0.2.1.json). Escape Room passes 26 EditMode and 34 PlayMode tests and its Windows build. Survival's last complete validation is dated 26 October; it has no published release assets. Manual PC and VR hardware acceptance remain pending.
+**Current release: [Escape Room 0.2.3](https://github.com/xavikai/EscapeRoomRevolt/releases/tag/escaperoom-v0.2.3)** — [release notes](RELEASE_NOTES_v0.2.3.md), [update from 0.2.2](UPDATE_FROM_0.2.2.ca.md), [downloadable interactive guide](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.3/guia-escape-room-0.2.3.html), [changelog](CHANGELOG.md). The last full validation is the [9 November one for 0.2.1](docs/validation/release-0.2.1.json): 26 EditMode and 34 PlayMode tests and the Windows build pass. Survival's last complete validation is dated 26 October; it has no published release assets. Manual PC and VR hardware acceptance remain pending.
 
 **Carpetes reorganitzades el 26/10/2026:** consulta [l’índex actual del repositori](../../README.md). Les rutes antigues en informes JSON i exemples històrics identifiquen l’estat de la validació; el mapa de trasllat en documenta la ubicació actual.
 

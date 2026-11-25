@@ -45,10 +45,16 @@ namespace EscapeRoomRevolt.Systems.Flow
         public bool HasExpired => _hasExpired;
         public bool ShowInHud => _showInHud;
 
+        // A loaded game restores this object before its Start runs (SaveManager restores during
+        // sceneLoaded). Auto Start must then leave the restored state alone: a timer or hazard the
+        // player had already stopped used to start again, and a running HUD timer was hidden.
+        private bool _restoredFromSave;
+
         private void Awake() => SaveManager.Instance?.Register(this);
 
         private void Start()
         {
+            if (_restoredFromSave) return;
             if (_autoStart) StartTimer();
             else PublishState(false);
         }
@@ -152,6 +158,7 @@ namespace EscapeRoomRevolt.Systems.Flow
         {
             TimerSaveData data = JsonUtility.FromJson<TimerSaveData>(json);
             if (data == null) return;
+            _restoredFromSave = true;
             _elapsed = Mathf.Clamp(data.elapsed, 0f, _duration);
             _isRunning = data.isRunning && !data.hasExpired;
             _hasExpired = data.hasExpired;

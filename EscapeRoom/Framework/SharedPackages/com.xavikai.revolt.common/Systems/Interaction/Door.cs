@@ -109,6 +109,12 @@ namespace EscapeRoomRevolt.Systems.Interaction
         private float _targetOpenAmount;
         private DoorOperationMode _lastOperation = DoorOperationMode.Normal;
         private float _lastNoiseRadius;
+        // The closed pose (hinge, rotation, local position) must exist before a saved state is
+        // applied. SaveManager restores a loaded scene during sceneLoaded, after Awake but before
+        // Start, so capturing it in Start left the hinge at the world origin and loaded doors,
+        // drawers and lids jumped to the centre of the scene.
+        private bool _closedPoseCaptured;
+        private bool _restoredFromSave;
 
         public override string InteractionPrompt
         {
@@ -140,9 +146,34 @@ namespace EscapeRoomRevolt.Systems.Interaction
         public event Action<DoorOperationMode, float> OperationStarted;
         public event Action<DoorOperationMode, float> OperationCompleted;
 
+        protected override void Awake()
+        {
+            base.Awake();
+            CaptureClosedPose();
+        }
+
         protected override void Start()
         {
             base.Start();
+            CaptureClosedPose();
+            // A save restored before Start already set the open amount; keep it (ajar doors too).
+            if (!_restoredFromSave)
+            {
+                _openAmount = _isOpen ? 1f : 0f;
+                _targetOpenAmount = _openAmount;
+            }
+            SetNavigationBlocked(_openAmount < _navigationOpenThreshold);
+        }
+
+        /// <summary>
+        /// Records the authored closed pose once. Called from Awake and, for a door that was
+        /// inactive when its saved state arrived (Awake not run yet), from LoadData before the
+        /// transform is touched.
+        /// </summary>
+        private void CaptureClosedPose()
+        {
+            if (_closedPoseCaptured) return;
+            _closedPoseCaptured = true;
             _navMeshObstacles = GetComponentsInChildren<NavMeshObstacle>(true);
             _closedRotation = transform.rotation;
             _closedLocalPosition = transform.localPosition;
@@ -150,9 +181,6 @@ namespace EscapeRoomRevolt.Systems.Interaction
             _localPivotOffset = _customPivot != null
                 ? transform.InverseTransformPoint(_customPivot.position)
                 : Vector3.zero;
-            _openAmount = _isOpen ? 1f : 0f;
-            _targetOpenAmount = _openAmount;
-            SetNavigationBlocked(_openAmount < _navigationOpenThreshold);
         }
 
         protected override void OnDestroy()
@@ -434,6 +462,8 @@ namespace EscapeRoomRevolt.Systems.Interaction
         {
             DoorSaveState state = JsonUtility.FromJson<DoorSaveState>(json);
             if (state == null) return;
+            CaptureClosedPose();
+            _restoredFromSave = true;
             if (_movementCoroutine != null)
             {
                 StopCoroutine(_movementCoroutine);

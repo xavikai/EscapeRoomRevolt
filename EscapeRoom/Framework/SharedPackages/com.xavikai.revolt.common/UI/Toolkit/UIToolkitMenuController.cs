@@ -111,14 +111,14 @@ namespace EscapeRoomRevolt.UI.Toolkit
             Time.timeScale = 1f;
             Show(MenuScreen.Main, _theme != null && !string.IsNullOrWhiteSpace(_theme.mainMenuTitle)
                 ? _theme.mainMenuTitle
-                : ProductConfiguration.Current != null ? ProductConfiguration.Current.DisplayName : "EXPEDIENTE DE INVESTIGACIÓN");
+                : ProductConfiguration.Current != null ? ProductConfiguration.Current.DisplayName : GenreText("ESCAPE ROOM", "EXPEDIENTE DE INVESTIGACIÓN"));
             GameFlowManager flow = GameFlowManager.EnsureInstance();
             Button continueButton = AddButton(Tr("Continuar"), flow.ContinueGame);
             continueButton.SetEnabled(flow.CanContinue());
             AddButton(Tr("Nueva partida"), () =>
             {
                 if (SaveManager.Instance != null && SaveManager.Instance.GetSlots().Count > 0)
-                    ShowConfirmation("¿Iniciar una nueva investigación? Las partidas guardadas no se borrarán.", flow.StartNewGame, ShowMain);
+                    ShowConfirmation(GenreText("¿Empezar una partida nueva? Las partidas guardadas no se borrarán.", "¿Iniciar una nueva investigación? Las partidas guardadas no se borrarán."), flow.StartNewGame, ShowMain);
                 else flow.StartNewGame();
             });
             AddButton(Tr("Cargar partida"), () => { _backScreen = MenuScreen.Main; ShowLoad(); });
@@ -131,8 +131,8 @@ namespace EscapeRoomRevolt.UI.Toolkit
         {
             GameFlowManager.EnsureInstance().SetPaused(true);
             _backScreen = MenuScreen.Pause;
-            Show(MenuScreen.Pause, "ARCHIVO DE INCIDENTE");
-            AddButton(Tr("Reanudar investigación"), Hide);
+            Show(MenuScreen.Pause, GenreText("PAUSA", "ARCHIVO DE INCIDENTE"));
+            AddButton(Tr(GenreText("Continuar", "Reanudar investigación")), Hide);
             Button saveButton = AddButton(Tr("Guardar partida"), ShowSave);
             saveButton.SetEnabled(SaveManager.ManualSaveGate());
             AddButton(Tr("Cargar partida"), ShowLoad);
@@ -149,7 +149,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
 
         public void ShowSave()
         {
-            Show(MenuScreen.Save, "ARCHIVAR INVESTIGACIÓN");
+            Show(MenuScreen.Save, GenreText("GUARDAR PARTIDA", "ARCHIVAR INVESTIGACIÓN"));
             if (GameFeatures.IsEnabled(OptionalGameFeature.PlayerVitals) && !SaveManager.ManualSaveGate())
             {
                 AddStatus("El guardado manual está desactivado por la dificultad activa.");
@@ -162,14 +162,14 @@ namespace EscapeRoomRevolt.UI.Toolkit
 
         public void ShowLoad()
         {
-            Show(MenuScreen.Load, "CINTAS DE SEGURIDAD");
+            Show(MenuScreen.Load, GenreText("CARGAR PARTIDA", "CINTAS DE SEGURIDAD"));
             BuildSlots(saveMode: false);
             AddButton("Volver", NavigateBack, "menu-button menu-button--quiet");
         }
 
         public void ShowSettings()
         {
-            Show(MenuScreen.Settings, "PANEL DE MANTENIMIENTO");
+            Show(MenuScreen.Settings, GenreText("AJUSTES", "PANEL DE MANTENIMIENTO"));
             var settings = GameSettingsService.Instance?.Data ?? new GameSettingsData();
             AddLanguageSelector(settings);
             AddSlider("Volumen maestro", settings.masterVolume, value => { settings.masterVolume = value; SaveSettings(settings); });
@@ -179,10 +179,15 @@ namespace EscapeRoomRevolt.UI.Toolkit
             AddQualitySelector(settings);
             AddToggle("Pantalla completa", settings.fullscreen, value => { settings.fullscreen = value; SaveSettings(settings); });
             AddToggle("Subtítulos", settings.subtitles, value => { settings.subtitles = value; SaveSettings(settings); });
-            AddToggle("Reducir destellos", settings.reduceFlashes, value => { settings.reduceFlashes = value; SaveSettings(settings); });
-            AddToggle("Reducir temblor de cámara", settings.reduceScreenShake, value => { settings.reduceScreenShake = value; SaveSettings(settings); });
-            AddToggle("Reducir sonidos fuertes", settings.reduceLoudSounds, value => { settings.reduceLoudSounds = value; SaveSettings(settings); });
-            AddToggle("Reducir gore", settings.reduceGore, value => { settings.reduceGore = value; SaveSettings(settings); });
+            // Horror comfort options only exist for products that ship horror events (Survival).
+            // An escape room has no gore, jump-scare flashes, loud stingers or camera shake.
+            if (GameFeatures.IsEnabled(OptionalGameFeature.HorrorEvents))
+            {
+                AddToggle("Reducir destellos", settings.reduceFlashes, value => { settings.reduceFlashes = value; SaveSettings(settings); });
+                AddToggle("Reducir temblor de cámara", settings.reduceScreenShake, value => { settings.reduceScreenShake = value; SaveSettings(settings); });
+                AddToggle("Reducir sonidos fuertes", settings.reduceLoudSounds, value => { settings.reduceLoudSounds = value; SaveSettings(settings); });
+                AddToggle("Reducir gore", settings.reduceGore, value => { settings.reduceGore = value; SaveSettings(settings); });
+            }
             AddToggle("Reducir balanceo de cámara", settings.reduceHeadBob, value => { settings.reduceHeadBob = value; SaveSettings(settings); });
             AddToggle("Modo de alto contraste", settings.highContrastMode, value => { settings.highContrastMode = value; SaveSettings(settings); ShowSettings(); });
             if (GameFeatures.IsEnabled(OptionalGameFeature.EnemyAI))
@@ -428,7 +433,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
             SaveManager manager = SaveManager.Instance;
             if (manager == null)
             {
-                AddLabel("El sistema de archivo no está disponible.");
+                AddLabel(GenreText("El sistema de guardado no está disponible.", "El sistema de archivo no está disponible."));
                 return;
             }
 
@@ -454,13 +459,13 @@ namespace EscapeRoomRevolt.UI.Toolkit
 
             var information = new VisualElement();
             information.AddToClassList("save-slot-info");
-            var heading = new Label($"{Tr("EXPEDIENTE")} {index:00}");
+            var heading = new Label($"{Tr(GenreText("PARTIDA", "EXPEDIENTE"))} {index:00}");
             heading.AddToClassList("save-slot-title");
             information.Add(heading);
 
             if (metadata == null)
             {
-                var empty = new Label(Tr("SIN REGISTRO"));
+                var empty = new Label(Tr(GenreText("VACÍA", "SIN REGISTRO")));
                 empty.AddToClassList("save-slot-empty");
                 information.Add(empty);
             }
@@ -480,7 +485,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
                 actions.Add(CreateActionButton(label, () =>
                 {
                     if (metadata == null) SaveToSlot(slotId);
-                    else ShowConfirmation("¿Sobrescribir este expediente?", () => SaveToSlot(slotId), ShowSave);
+                    else ShowConfirmation(GenreText("¿Sobrescribir esta partida?", "¿Sobrescribir este expediente?"), () => SaveToSlot(slotId), ShowSave);
                 }, false));
             }
             else
@@ -491,7 +496,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
             }
 
             Button delete = CreateActionButton("BORRAR", () => ShowConfirmation(
-                "¿Eliminar definitivamente este expediente?", () => DeleteSlot(slotId, saveMode), saveMode ? ShowSave : ShowLoad), true);
+                GenreText("¿Eliminar definitivamente esta partida?", "¿Eliminar definitivamente este expediente?"), () => DeleteSlot(slotId, saveMode), saveMode ? ShowSave : ShowLoad), true);
             delete.SetEnabled(metadata != null);
             actions.Add(delete);
             card.Add(actions);
@@ -552,7 +557,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
             SaveManager.Instance?.SaveGame(slotId);
             yield return new WaitForEndOfFrame();
             ShowSave();
-            AddStatus("EXPEDIENTE ARCHIVADO");
+            AddStatus(GenreText("PARTIDA GUARDADA", "EXPEDIENTE ARCHIVADO"));
         }
 
         private void LoadSlot(string slotId)
@@ -565,7 +570,7 @@ namespace EscapeRoomRevolt.UI.Toolkit
         {
             SaveManager.Instance?.DeleteSlot(slotId);
             if (returnToSave) ShowSave(); else ShowLoad();
-            AddStatus("EXPEDIENTE ELIMINADO");
+            AddStatus(GenreText("PARTIDA ELIMINADA", "EXPEDIENTE ELIMINADO"));
         }
 
         private void ShowConfirmation(string message, Action confirm, Action cancel)
@@ -611,6 +616,14 @@ namespace EscapeRoomRevolt.UI.Toolkit
         }
 
         private void AddLabel(string text) => _content.Add(new Label(Tr(text)));
+
+        /// <summary>
+        /// Picks the escape-room wording or the horror-themed wording of the same menu text. The
+        /// Escape Room product never shows investigation/security-tape flavour text; Survival and
+        /// custom hybrids keep their original wording. Both are catalogue keys, so both translate.
+        /// </summary>
+        private static string GenreText(string escapeRoom, string horror) =>
+            GameFeatures.Genre == GameGenre.EscapeRoom ? escapeRoom : horror;
 
         private void NavigateBack()
         {

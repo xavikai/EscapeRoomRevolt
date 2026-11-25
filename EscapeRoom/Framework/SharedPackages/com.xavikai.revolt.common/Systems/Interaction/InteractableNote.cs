@@ -75,5 +75,19 @@ namespace EscapeRoomRevolt.Systems.Interaction
         }
 
         public bool HasBeenRead => _hasBeenRead;
+
+        // A note set to disappear after reading used to come back after loading a game.
+        [System.Serializable]
+        private sealed class NoteSaveData { public bool hasBeenRead; }
+
+        public override string SaveData() => JsonUtility.ToJson(new NoteSaveData { hasBeenRead = _hasBeenRead });
+
+        public override void LoadData(string json)
+        {
+            NoteSaveData data = JsonUtility.FromJson<NoteSaveData>(json);
+            if (data == null) return;
+            _hasBeenRead = data.hasBeenRead;
+            if (_hasBeenRead && DisappearAfterRead && !IsPickable) gameObject.SetActive(false);
+        }
     }
 }

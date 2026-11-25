@@ -10,6 +10,7 @@ using EscapeRoomRevolt.Systems.Interaction;
 using EscapeRoomRevolt.Systems.Puzzle;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UIElements;
@@ -384,7 +385,7 @@ namespace EscapeRoomRevolt.Systems.Tests
         }
 
         [UnityTest]
-        public IEnumerator PipePuzzle_SolvesWhenAdjacentOpeningsConnect()
+        public IEnumerator PipePuzzle_OpensFocusBeforeTurningAndExitsAfterSolving()
         {
             var owner = new GameObject("PipePuzzleTest");
             owner.SetActive(false);
@@ -396,13 +397,52 @@ namespace EscapeRoomRevolt.Systems.Tests
             });
             SetPrivate(puzzle, "_sourceTileId", "source");
             SetPrivate(puzzle, "_sinkTileId", "sink");
+
+            var cameraObject = new GameObject("PipeFocusCamera");
+            cameraObject.transform.SetParent(owner.transform);
+            cameraObject.SetActive(false);
+            var focus = owner.AddComponent<PuzzleFocusPoint>();
+            SetPrivate(focus, "_focusCamera", cameraObject.AddComponent<Camera>());
+            SetPrivate(focus, "_puzzle", puzzle);
+            SetPrivate(focus, "_exitDelayAfterSolved", 0f);
+
+            var tile = owner.AddComponent<PipeTileButton>();
+            SetPrivate(tile, "_puzzle", puzzle);
+            SetPrivate(tile, "_tileId", "sink");
+            var trigger = owner.AddComponent<InteractableTrigger>();
+            SetPrivate(trigger, "_puzzleFocus", focus);
+            trigger.OnInteractEvent = new UnityEvent();
+            trigger.OnInteractEvent.AddListener(tile.Rotate);
+
             owner.SetActive(true);
             yield return null;
 
-            Assert.That(puzzle.IsPathConnected(), Is.False);
-            Assert.That(puzzle.RotateTile("sink"), Is.True);
-            Assert.That(puzzle.IsSolved, Is.True);
-            Object.Destroy(owner);
+            try
+            {
+                Assert.That(cameraObject.activeSelf, Is.False);
+                Assert.That(puzzle.IsPathConnected(), Is.False);
+                trigger.Interact();
+                Assert.That(cameraObject.activeSelf, Is.True);
+                Assert.That(puzzle.GetRotationSteps("sink"), Is.EqualTo(2));
+
+                focus.Exit();
+                Assert.That(cameraObject.activeSelf, Is.False);
+                trigger.Interact();
+                Assert.That(cameraObject.activeSelf, Is.True);
+                Assert.That(puzzle.GetRotationSteps("sink"), Is.EqualTo(2));
+
+                trigger.Interact();
+                Assert.That(puzzle.GetRotationSteps("sink"), Is.EqualTo(3));
+                Assert.That(puzzle.IsSolved, Is.True);
+                yield return null;
+                Assert.That(cameraObject.activeSelf, Is.False);
+                Assert.That(trigger.CanInteract, Is.False);
+            }
+            finally
+            {
+                Object.Destroy(owner);
+            }
+            yield return null;
         }
 
         [UnityTest]

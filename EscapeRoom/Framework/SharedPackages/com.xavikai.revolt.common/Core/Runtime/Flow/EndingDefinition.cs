@@ -8,7 +8,7 @@ namespace EscapeRoomRevolt.Core.Flow
         [SerializeField] private string _endingId = "ending";
         [SerializeField] private GameOutcome _outcome = GameOutcome.Victory;
         [SerializeField] private string _title = "Has escapado";
-        [TextArea(3, 8)] [SerializeField] private string _message = "La investigación ha terminado.";
+        [TextArea(3, 8)] [SerializeField] private string _message = "Has conseguido salir de la sala.";
 
         public string EndingId => string.IsNullOrWhiteSpace(_endingId) ? name : _endingId;
         public GameOutcome Outcome => _outcome;

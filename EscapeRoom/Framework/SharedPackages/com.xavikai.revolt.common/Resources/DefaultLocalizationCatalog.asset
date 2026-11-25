@@ -4070,3 +4070,139 @@ MonoBehaviour:
       text: "This is a note you picked up!\n\nYou can read it from your inventory anytime."
     - languageCode: ca
       text: "Has recollit una nota!\n\nLa pots llegir des de l'inventari quan vulguis."
+  - key: ESCAPE ROOM
+    translations:
+    - languageCode: es
+      text: ESCAPE ROOM
+    - languageCode: en
+      text: ESCAPE ROOM
+    - languageCode: ca
+      text: ESCAPE ROOM
+  - key: "\xBFEmpezar una partida nueva? Las partidas guardadas no se borrar\xE1n."
+    translations:
+    - languageCode: es
+      text: "\xBFEmpezar una partida nueva? Las partidas guardadas no se borrar\xE1n."
+    - languageCode: en
+      text: "Start a new game? Saved games will not be deleted."
+    - languageCode: ca
+      text: "Vols comen\xE7ar una partida nova? Les partides desades no s'esborraran."
+  - key: PAUSA
+    translations:
+    - languageCode: es
+      text: PAUSA
+    - languageCode: en
+      text: PAUSED
+    - languageCode: ca
+      text: PAUSA
+  - key: GUARDAR PARTIDA
+    translations:
+    - languageCode: es
+      text: GUARDAR PARTIDA
+    - languageCode: en
+      text: SAVE GAME
+    - languageCode: ca
+      text: DESAR PARTIDA
+  - key: CARGAR PARTIDA
+    translations:
+    - languageCode: es
+      text: CARGAR PARTIDA
+    - languageCode: en
+      text: LOAD GAME
+    - languageCode: ca
+      text: CARREGAR PARTIDA
+  - key: AJUSTES
+    translations:
+    - languageCode: es
+      text: AJUSTES
+    - languageCode: en
+      text: SETTINGS
+    - languageCode: ca
+      text: AJUSTOS
+  - key: "El sistema de guardado no est\xE1 disponible."
+    translations:
+    - languageCode: es
+      text: "El sistema de guardado no est\xE1 disponible."
+    - languageCode: en
+      text: The save system is not available.
+    - languageCode: ca
+      text: "El sistema per desar partides no est\xE0 disponible."
+  - key: PARTIDA
+    translations:
+    - languageCode: es
+      text: PARTIDA
+    - languageCode: en
+      text: SAVE
+    - languageCode: ca
+      text: PARTIDA
+  - key: "VAC\xCDA"
+    translations:
+    - languageCode: es
+      text: "VAC\xCDA"
+    - languageCode: en
+      text: EMPTY
+    - languageCode: ca
+      text: BUIDA
+  - key: "\xBFSobrescribir esta partida?"
+    translations:
+    - languageCode: es
+      text: "\xBFSobrescribir esta partida?"
+    - languageCode: en
+      text: "Overwrite this save?"
+    - languageCode: ca
+      text: "Vols sobreescriure aquesta partida?"
+  - key: "\xBFEliminar definitivamente esta partida?"
+    translations:
+    - languageCode: es
+      text: "\xBFEliminar definitivamente esta partida?"
+    - languageCode: en
+      text: "Delete this save permanently?"
+    - languageCode: ca
+      text: "Vols eliminar definitivament aquesta partida?"
+  - key: PARTIDA GUARDADA
+    translations:
+    - languageCode: es
+      text: PARTIDA GUARDADA
+    - languageCode: en
+      text: GAME SAVED
+    - languageCode: ca
+      text: PARTIDA DESADA
+  - key: PARTIDA ELIMINADA
+    translations:
+    - languageCode: es
+      text: PARTIDA ELIMINADA
+    - languageCode: en
+      text: SAVE DELETED
+    - languageCode: ca
+      text: PARTIDA ELIMINADA
+  - key: Solo se puede guardar durante la partida.
+    translations:
+    - languageCode: es
+      text: Solo se puede guardar durante la partida.
+    - languageCode: en
+      text: You can only save while playing.
+    - languageCode: ca
+      text: "Nom\xE9s es pot desar mentre es juga."
+  - key: Has conseguido salir de la sala.
+    translations:
+    - languageCode: es
+      text: Has conseguido salir de la sala.
+    - languageCode: en
+      text: You made it out of the room.
+    - languageCode: ca
+      text: Has aconseguit sortir de la sala.
+  - key: No has escapado
+    translations:
+    - languageCode: es
+      text: No has escapado
+    - languageCode: en
+      text: You did not escape
+    - languageCode: ca
+      text: No has escapat
+  - key: No has conseguido salir a tiempo.
+    translations:
+    - languageCode: es
+      text: No has conseguido salir a tiempo.
+    - languageCode: en
+      text: You did not get out in time.
+    - languageCode: ca
+      text: No has aconseguit sortir a temps.

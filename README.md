@@ -2,13 +2,13 @@
 
 El repositori està organitzat en **dues carpetes principals**, una per projecte:
 
-**Darrera versió del joc: [Escape Room 0.2.2](https://github.com/xavikai/EscapeRoomRevolt/releases/tag/escaperoom-v0.2.2)** · [Notes de la versió](EscapeRoom/Framework/RELEASE_NOTES_v0.2.2.md) ([0.2.0](EscapeRoom/Framework/RELEASE_NOTES_v0.2.0.md)). Inclou demo Windows, projecte portable, guia revisada i sumes SHA-256.
+**Darrera versió del joc: [Escape Room 0.2.3](https://github.com/xavikai/EscapeRoomRevolt/releases/tag/escaperoom-v0.2.3)** · [Notes de la versió](EscapeRoom/Framework/RELEASE_NOTES_v0.2.3.md) ([0.2.2](EscapeRoom/Framework/RELEASE_NOTES_v0.2.2.md), [0.2.0](EscapeRoom/Framework/RELEASE_NOTES_v0.2.0.md)) · [Actualitzar des de 0.2.2](EscapeRoom/Framework/UPDATE_FROM_0.2.2.ca.md). Inclou demo Windows, projecte portable, guia revisada i sumes SHA-256.
 
-**Guia d’Escape Room (CA/ES/EN/FR/RU)** · [Descarrega l’HTML amb la versió 0.2.2](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.2/guia-escape-room-0.2.2.html) · [Consulta-la en línia](https://xavikai.github.io/EscapeRoomRevolt/escape-room/).
+**Guia d’Escape Room (CA/ES/EN/FR/RU), versió 0.2.3 del 25/11/2026** · [Descarrega l’HTML amb la versió 0.2.3](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.3/guia-escape-room-0.2.3.html) · [Consulta-la en línia](https://xavikai.github.io/EscapeRoomRevolt/escape-room/).
 
 | Carpeta | Projecte Unity per editar | Demo Windows per provar sense Unity |
 |---|---|---|
-| [EscapeRoom](EscapeRoom/README.md) | [EscapeRoom/Unity](EscapeRoom/Unity) | [ZIP Escape Room](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.2/EscapeRoom-0.2.2-windows.zip) |
+| [EscapeRoom](EscapeRoom/README.md) | [EscapeRoom/Unity](EscapeRoom/Unity) | [ZIP Escape Room](https://github.com/xavikai/EscapeRoomRevolt/releases/download/escaperoom-v0.2.3/EscapeRoom-0.2.3-windows.zip) |
 | [Survival](Survival/README.md) | [Survival/Unity](Survival/Unity) | Paquet local; encara sense release pròpia a GitHub |
 
 Cada carpeta conté `Unity/`, `Documentacio/`, `Exportacions/`, `PaquetsFonts/` i `Windows/`. Els ZIP i les exportacions són artefactes locals exclosos de Git. Extreu tot el ZIP Windows abans d'executar la demo.

@@ -22,6 +22,7 @@ namespace EscapeRoomRevolt.Systems.Inventory
         [SerializeField] private string _revealedDescription = "Has encontrado algo.";
         [Tooltip("If assigned, granted to the inventory the first time this hotspot is revealed.")]
         [SerializeField] private InventoryItemData _revealedItem;
+        public InventoryItemData RevealedItem => _revealedItem;
         [SerializeField] private bool _onlyOnce = true;
         [SerializeField] private UnityEvent _onRevealed;
 

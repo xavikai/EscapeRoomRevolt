@@ -25,13 +25,19 @@ namespace EscapeRoomRevolt.Systems.Inventory
             Instance = this;
             DontDestroyOnLoad(gameObject);
             SaveManager.Instance?.Register(this);
+            SaveManager.SessionReset += HandleSessionReset;
         }
 
         private void OnDestroy()
         {
+            SaveManager.SessionReset -= HandleSessionReset;
             SaveManager.Instance?.Unregister(this);
             if (Instance == this) Instance = null;
         }
+
+        // New game or Retry: this registry outlives the scene, so without this every hotspot the
+        // player had already revealed stayed revealed and its item could never be found again.
+        private void HandleSessionReset() => _revealed.Clear();
 
         public bool IsRevealed(string key) => _revealed.Contains(key);
         public void MarkRevealed(string key) => _revealed.Add(key);

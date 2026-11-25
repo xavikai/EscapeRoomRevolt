@@ -84,9 +84,19 @@ namespace EscapeRoomRevolt.Core.Save
         /// </summary>
         public static Func<bool> ManualSaveGate { get; set; } = () => true;
 
+        /// <summary>
+        /// Raised by ResetSession (New game, Retry). Systems that live across scenes
+        /// (DontDestroyOnLoad) and keep progress of their own must clear it here: a fresh run must
+        /// not inherit state from the previous one.
+        /// </summary>
+        public static event Action SessionReset;
+
         public event Action<string> SaveCompleted;
         public event Action<string> LoadCompleted;
         public event Action<string, string> OperationFailed;
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetStaticEvents() => SessionReset = null;
 
         private void Awake()
         {
@@ -111,13 +121,19 @@ namespace EscapeRoomRevolt.Core.Save
             if (Time.timeScale > 0f) _playTimeSeconds += Time.unscaledDeltaTime;
 
             EscapeRoomRevolt.Core.Input.InputRouter input = EscapeRoomRevolt.Core.Input.InputRouter.Instance;
-            if (input != null && input.QuickSavePressed)
+            if (input == null) return;
+            // Quick save only while actually playing: F5 in the main menu, the intro, a loading
+            // screen or the results screen used to write a "save" of that scene, and Continue then
+            // opened the menu instead of the game.
+            if (input.QuickSavePressed && CanSaveNow()) SaveGame();
+            if (input.QuickLoadPressed && CanQuickLoadNow())
             {
-                SaveGame();
-            }
-            if (input != null && input.QuickLoadPressed)
-            {
-                LoadGame();
+                // Through the flow manager, so the game state and results are handled like the
+                // Load menu does it.
+                if (EscapeRoomRevolt.Core.Flow.GameFlowManager.Instance != null)
+                    EscapeRoomRevolt.Core.Flow.GameFlowManager.Instance.LoadSlot(DefaultSlotId);
+                else
+                    LoadGame();
             }
         }
 
@@ -177,9 +193,36 @@ namespace EscapeRoomRevolt.Core.Save
             SaveGame(DefaultSlotId);
         }
 
+        /// <summary>
+        /// True while a game is in progress (playing or paused). Without a GameFlowManager (tests,
+        /// a bare scene) saving is always allowed.
+        /// </summary>
+        public static bool CanSaveNow()
+        {
+            if (EscapeRoomRevolt.Core.Flow.GameFlowManager.Instance == null) return true;
+            var state = EscapeRoomRevolt.Core.Flow.GameFlowManager.State;
+            return state == EscapeRoomRevolt.Core.Flow.GameFlowState.Playing
+                || state == EscapeRoomRevolt.Core.Flow.GameFlowState.Paused;
+        }
+
+        private static bool CanQuickLoadNow()
+        {
+            if (EscapeRoomRevolt.Core.Flow.GameFlowManager.Instance == null) return true;
+            var state = EscapeRoomRevolt.Core.Flow.GameFlowManager.State;
+            return state != EscapeRoomRevolt.Core.Flow.GameFlowState.Loading
+                && state != EscapeRoomRevolt.Core.Flow.GameFlowState.Boot;
+        }
+
         public void SaveGame(string slotId)
         {
             if (string.IsNullOrWhiteSpace(slotId)) slotId = DefaultSlotId;
+            if (!CanSaveNow())
+            {
+                const string message = "Solo se puede guardar durante la partida.";
+                Debug.LogWarning($"[SaveManager] {message}");
+                OperationFailed?.Invoke(slotId, message);
+                return;
+            }
             if (GameFeatures.IsEnabled(OptionalGameFeature.PlayerVitals) && !ManualSaveGate())
             {
                 const string message = "La dificultad Survival Horror activa no permite guardar manualmente.";
@@ -339,7 +382,12 @@ namespace EscapeRoomRevolt.Core.Save
             SceneManager.sceneLoaded -= OnSceneLoadedForRestore;
             _pendingLoad = null;
             _destroyedEntities.Clear();
-            _saveables.Clear();
+            // Scene objects go away with their scene and register again when the next one starts.
+            // Objects that survive scene loads (DontDestroyOnLoad registries) register only once, in
+            // their Awake: dropping them here meant their state was never saved again for the rest
+            // of the session. Keep them, and let them clear their own progress.
+            _saveables.RemoveWhere(saveable => !IsAlive(saveable) || !IsPersistent(saveable));
+            SessionReset?.Invoke();
             _playTimeSeconds = 0f;
             RunSeed = Guid.NewGuid().GetHashCode();
         }
@@ -489,6 +537,11 @@ namespace EscapeRoomRevolt.Core.Save
         }
 
         private void CleanupSaveables() => _saveables.RemoveWhere(saveable => !IsAlive(saveable));
+
+        private static bool IsPersistent(ISaveable saveable) =>
+            saveable is Component component && component != null
+            && component.gameObject.scene.buildIndex == -1
+            && component.gameObject.scene.name == "DontDestroyOnLoad";
 
         private static bool IsAlive(ISaveable saveable)
         {

@@ -54,6 +54,11 @@ namespace EscapeRoomRevolt.Systems.Flow
             ? Mathf.Max(0f, _countdownDuration - _elapsedCountdown)
             : Mathf.Max(0f, _travelDuration - _elapsedTravel);
 
+        // A loaded game restores this object before its Start runs (SaveManager restores during
+        // sceneLoaded). Auto Start must then leave the restored state alone: a timer or hazard the
+        // player had already stopped used to start again, and a running HUD timer was hidden.
+        private bool _restoredFromSave;
+
         private void Awake()
         {
             SaveManager.Instance?.Register(this);
@@ -62,7 +67,7 @@ namespace EscapeRoomRevolt.Systems.Flow
 
         private void Start()
         {
-            if (_autoStart) StartHazard();
+            if (_autoStart && !_restoredFromSave) StartHazard();
         }
 
         private void OnDestroy()
@@ -167,6 +172,7 @@ namespace EscapeRoomRevolt.Systems.Flow
         {
             HazardSaveData data = JsonUtility.FromJson<HazardSaveData>(json);
             if (data == null) return;
+            _restoredFromSave = true;
             _elapsedTravel = Mathf.Clamp(data.elapsedTravel, 0f, _travelDuration);
             _elapsedCountdown = Mathf.Clamp(data.elapsedCountdown, 0f, _countdownDuration);
             _isRunning = data.isRunning;

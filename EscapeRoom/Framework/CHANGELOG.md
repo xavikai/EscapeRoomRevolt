@@ -2,6 +2,31 @@
 
 All notable changes to Escape Room Revolt are documented here.
 
+## [0.2.3] - 2026-11-25
+
+Correction release for the class sessions. Release notes: `RELEASE_NOTES_v0.2.3.md`. Updating from 0.2.2: `UPDATE_FROM_0.2.2.ca.md`.
+
+### Fixed
+
+- Loading a saved game moved doors, drawers, lids and safe doors (`Door` without an Animator) to the centre of the scene (Pivot) or of their parent (Slide). `SaveManager` restores a loaded scene after Awake but before Start, and `Door` captured its hinge and closed pose in Start, so the saved state was applied around the origin and that wrong pose was then kept as "closed". The closed pose is now captured in Awake (or in `LoadData` for a door that was inactive), and a restored open amount, including ajar doors, is no longer reset in Start. Two PlayMode regression tests cover the active and inactive cases. Projects that added the class workaround `CorreccioPortaCarregar` can keep it or remove it; both behave correctly.
+- Save/load review:
+  - New game and Retry no longer inherit examine-hotspot progress from the previous run, and that registry keeps being saved afterwards. `SaveManager.ResetSession` keeps DontDestroyOnLoad saveables registered and raises the new `SaveManager.SessionReset` event.
+  - Quick save (F5) only works while playing or paused; saving from the main menu, the intro, a loading screen or the results screen used to make Continue open the menu. Quick load (F9) goes through `GameFlowManager.LoadSlot`. `SaveManager.SaveGame` refuses outside a game with a translated message.
+  - Auto-start `Game Over Timer`, `Moving Hazard` and `Timed Game Over Hazard` no longer restart (or hide the HUD timer) after a game is loaded.
+  - `Event Trigger Zone` now saves whether a one-shot zone has fired (new auto-filled `Save ID`), so loading does not fire it again.
+  - `Interactable Note` saves whether it was read; notes set to `Disappear After Read` stay hidden after loading.
+  - `InventoryManager` also knows the items the scene can hand out (pickables, pickable notes, examine hotspots and combination results), so items missing from `DefaultItemCatalog` are no longer dropped on load; a warning names any item that still cannot be restored.
+  - New `Invoke On Solved On Load` option on every puzzle, to restore lights, visibility and other effects of `On Solved ()` that do not save themselves.
+  - `Validate Save IDs` now checks every saveable (interactables, zones, narrative triggers, timers, hazards, puzzles), fixes empty and duplicated IDs (Ctrl+D copies) automatically when the scene is saved, warns when Play starts, and reports puzzles that share a Puzzle Definition.
+- Escape Room menu: no Survival Horror content. Investigation and security-tape titles become plain escape-room wording (`PAUSA`, `AJUSTES`, `GUARDAR PARTIDA`, `CARGAR PARTIDA`, `PARTIDA 01`…), and the gore, flash, loud-sound and camera-shake comfort options only appear when the product has horror events. Default ending texts without an Ending Definition are escape-room wording too. Survival keeps its original wording. New keys in CA/ES/EN.
+
+### Documentation
+
+- Interactive guide, Menus: the old "Create the game menu" card told students to run `Create or Update Main Menu Scene`, which rebuilds the existing scene and drops its theme. It is replaced by "Where to start (in this order)": the menu already exists, connect it to the room (phase E), test it (pause button `Menú principal…`), then style it. The USS and image-button cards no longer suggest editing the template's `EscapeRoomMenu.uss`, and the Framework-menu entry for `Create or Update Main Menu Scene` warns that it rebuilds the scene.
+- Interactive guide, menu design: new "What do you want to change?" table (15 cases → field or selector and step), new level 0 "Before you start" (one person per group edits the menu, the Unity windows used, where each menu piece lives, how to undo; never `Overrides > Apply All` on `GameManager`; scene changes made in Play mode are lost), extra help in steps T2-T6 and U1, a "Common menu problems" list (9 cases), and the UI Builder section name corrected to `Margin & Padding` in U4. All in CA/ES/EN/FR/RU.
+- Interactive guide, new section **Messages, notes and ending** (CA/ES/EN/FR/RU): a “which tool?” table and 23 checkable steps in four phases — voice and subtitles with `Narrative Trigger`; text notes (fixed, editable `Note Content`, formatting tags, pickable notes read from the inventory via an `Item` with `Is Readable`); picture notes without code (a `Quad` poster with an optional readable transcription, or an examinable document whose `Item` has a `World Prefab`), since the reading panel only shows text; and the ending (`Ending Definition`, `Game End Trigger` by player entry behind the exit door or from the last puzzle's `On Solved ()`, stopping the timer, ending cutscene). Documents that `NoteRead` objectives only complete from the inventory. Linked from the narrative and endings sections and from start steps C5, D1 and D6.
+- Interactive guide, FAQ: loaded doors, drawers or lids jumping to the centre of the scene, with the 0.2.2 workaround. Build-folder examples now read `Builds/Release/v0.2.3/Windows/`.
+
 ## [0.2.2] - 2026-11-18
 
 - Added the Linked Lights Puzzle editor command for creating a five-light circuit in the current scene.

@@ -25,6 +25,10 @@ namespace EscapeRoomRevolt.Systems.Puzzle
         [Header("Unity Events")]
         [SerializeField] private UnityEvent _onSolved = new UnityEvent();
         [SerializeField] private UnityEvent _onFailed = new UnityEvent();
+        [Tooltip("When a saved game loads with this puzzle solved, run On Solved again. Turn it on when On Solved "
+               + "drives things that do not save themselves (a light, an object made visible, an animation). Leave "
+               + "it off if On Solved gives an item, plays a voice or ends the game: those would happen twice.")]
+        [SerializeField] private bool _invokeOnSolvedOnLoad;
 
         public UnityEvent OnSolvedEvent => _onSolved;
         public UnityEvent OnFailedEvent => _onFailed;
@@ -91,6 +95,7 @@ namespace EscapeRoomRevolt.Systems.Puzzle
             {
                 // Call virtual method to restore visuals immediately
                 OnPuzzleCompleted();
+                if (_invokeOnSolvedOnLoad) _onSolved?.Invoke();
             }
         }
 
